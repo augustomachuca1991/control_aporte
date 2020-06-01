@@ -15,6 +15,8 @@ class CreateLiquidacionsTable extends Migration
     {
         Schema::create('liquidacions', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('liq_jur_id')->unsigned();
+            $table->foreign('liq_jur_id')->references('id')->on('jurisdiccion_liquidacions');
             $table->timestamps();
         });
     }

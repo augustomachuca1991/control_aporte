@@ -15,6 +15,12 @@ class CreateJurisdiccionLiquidacionsTable extends Migration
     {
         Schema::create('jurisdiccion_liquidacions', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('jurisdiccion_id')->unsigned();
+            $table->foreign('jurisdiccion_id')->references('cod_jurisdiccion')->on('jurisdiccions');
+            $table->bigInteger('tipo_id')->unsigned();
+            $table->foreign('tipo_id')->references('id')->on('tipo_liquidacions');
+            $table->bigInteger('periodo_id')->unsigned();
+            $table->foreign('periodo_id')->references('cod_periodo')->on('periodos');
             $table->timestamps();
         });
     }

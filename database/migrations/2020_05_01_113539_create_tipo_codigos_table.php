@@ -15,6 +15,7 @@ class CreateTipoCodigosTable extends Migration
     {
         Schema::create('tipo_codigos', function (Blueprint $table) {
             $table->id();
+            $table->string('descripcion');
             $table->timestamps();
         });
     }

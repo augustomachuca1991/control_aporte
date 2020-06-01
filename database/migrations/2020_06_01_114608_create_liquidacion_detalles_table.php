@@ -15,6 +15,11 @@ class CreateLiquidacionDetallesTable extends Migration
     {
         Schema::create('liquidacion_detalles', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('liquidacion_id')->unsigned();
+            $table->foreign('liquidacion_id')->references('id')->on('liquidacions');
+            $table->bigInteger('concepto_id')->unsigned();
+            $table->foreign('concepto_id')->references('id')->on('concepto_liquidacions');
+            $table->decimal('importe',8,2)->unsigned();
             $table->timestamps();
         });
     }

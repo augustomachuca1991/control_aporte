@@ -15,6 +15,9 @@ class CreateSubtipoCodigosTable extends Migration
     {
         Schema::create('subtipo_codigos', function (Blueprint $table) {
             $table->id();
+            $table->string('descripcion')->nullable();
+            $table->bigInteger('tipocodigo_id')->unsigned();
+            $table->foreign('tipocodigo_id')->references('id')->on('tipo_codigos');
             $table->timestamps();
         });
     }

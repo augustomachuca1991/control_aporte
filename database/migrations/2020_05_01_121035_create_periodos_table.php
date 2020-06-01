@@ -15,6 +15,10 @@ class CreatePeriodosTable extends Migration
     {
         Schema::create('periodos', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('cod_periodo')->unsigned()->unique();
+            $table->integer('mes');
+            $table->integer('anio');
+            $table->string('periodo');
             $table->timestamps();
         });
     }

@@ -15,6 +15,7 @@ class CreateTipoLiquidacionsTable extends Migration
     {
         Schema::create('tipo_liquidacions', function (Blueprint $table) {
             $table->id();
+            $table->string('descripcion')->unique();
             $table->timestamps();
         });
     }
