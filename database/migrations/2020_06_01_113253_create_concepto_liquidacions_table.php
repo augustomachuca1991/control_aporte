@@ -17,8 +17,8 @@ class CreateConceptoLiquidacionsTable extends Migration
             $table->id();
             $table->string('concepto');
             $table->string('porcentaje')->nullable();
-            $table->bigInteger('categoriajurisdiccion_id')->unsigned();
-            $table->foreign('categoriajurisdiccion_id')->references('id')->on('categoria_jurisdiccions');
+            $table->bigInteger('organismo_id')->unsigned();
+            $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
             $table->bigInteger('suptipo_id')->unsigned();
             $table->foreign('suptipo_id')->references('id')->on('subtipo_codigos');
             $table->timestamps();

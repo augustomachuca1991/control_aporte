@@ -15,6 +15,12 @@ class CreateConfiguracionsTable extends Migration
     {
         Schema::create('configuracions', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('dpto_id')->unsigned();
+            $table->foreign('dpto_id')->references('id')->on('dptos');
+            $table->bigInteger('suptipo_id')->unsigned();
+            $table->foreign('suptipo_id')->references('id')->on('subtipo_codigos');
+            $table->bigInteger('tipocodigo_id')->unsigned();
+            $table->foreign('tipocodigo_id')->references('id')->on('tipo_codigos');
             $table->timestamps();
         });
     }

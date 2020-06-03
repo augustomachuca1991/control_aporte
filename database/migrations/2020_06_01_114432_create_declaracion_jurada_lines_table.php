@@ -15,6 +15,9 @@ class CreateDeclaracionJuradaLinesTable extends Migration
     {
         Schema::create('declaracion_jurada_lines', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('declaracionjurada_id')->unsigned();
+            $table->foreign('declaracionjurada_id')->references('id')->on('declaracion_juradas');
+            $table->text('data');
             $table->timestamps();
         });
     }

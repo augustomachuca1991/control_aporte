@@ -12,12 +12,20 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
+                background: rgba(162,197,125,1);
+                background: -moz-linear-gradient(left, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
+                background: -webkit-gradient(left top, right top, color-stop(0%, rgba(162,197,125,1)), color-stop(100%, rgba(92,164,14,1)));
+                background: -webkit-linear-gradient(left, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
+                background: -o-linear-gradient(left, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
+                background: -ms-linear-gradient(left, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
+                background: linear-gradient(to right, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2c57d', endColorstr='#5ca40e', GradientType=1 );
+                font-family: 'Cairo', sans-serif;
                 font-weight: 200;
                 height: 100vh;
                 margin: 0;
+                color: #FFFFFF;
+
             }
 
             .full-height {
@@ -49,7 +57,7 @@
             }
 
             .links > a {
-                color: #636b6f;
+                color: #FFFFFF;
                 padding: 0 25px;
                 font-size: 13px;
                 font-weight: 600;
@@ -63,36 +71,37 @@
             }
         </style>
     </head>
-    <body>
+   <body>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{route('home') }}"><i class="fas fa-home"></i> Home</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
+                        <a href="{{ route('login') }}">Iniciar Sesión</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a href="{{ route('register') }}">Registrar</a>
                         @endif
                     @endauth
                 </div>
             @endif
-
+            
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    <div class="media">
+                        <img src="{{asset('image/logo-ips.png')}}" alt="Generic placeholder image">
+                    <div>
+                    <p class="lead" style="font-size: 24px; font-family: 'Oswald', sans-serif;">SISTEMA DE CONTROL DE APORTE</p>
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="http://www.corrienteshoy.com/">principales</a>
+                    <a href="http://www.ipscorrientes.gov.ar/">Noticias</a>
+                    <a href="https://www.google.com/maps/place/Instituto+de+Previsi%C3%B3n+Social+de+Corrientes/@-27.4619399,-58.8355979,16.5z/data=!4m5!3m4!1s0x94456ca51f341343:0x9b9b2924e2fe2761!8m2!3d-27.4656224!4d-58.838876">Ubicación</a>
+                    <a href="https://www.youtube.com/channel/UC8abYCbPeDt47657K8hNS6A">Youtube</a>
+                    <a href="https://twitter.com/ipscorrientes">Twitter</a>
+                    <a href="https://www.facebook.com/ips.corrientes/">Facebook</a>
                 </div>
             </div>
         </div>
