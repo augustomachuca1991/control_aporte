@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\JurisdiccionLiquidacion;
+use App\LiquidacionOrganismo;
 use Illuminate\Http\Request;
 
-class JurisdiccionLiquidacionController extends Controller
+class LiquidacionOrganismoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class JurisdiccionLiquidacionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\JurisdiccionLiquidacion  $jurisdiccionLiquidacion
+     * @param  \App\LiquidacionOrganismo  $liquidacionOrganismo
      * @return \Illuminate\Http\Response
      */
-    public function show(JurisdiccionLiquidacion $jurisdiccionLiquidacion)
+    public function show(LiquidacionOrganismo $liquidacionOrganismo)
     {
         //
     }
@@ -52,10 +52,10 @@ class JurisdiccionLiquidacionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\JurisdiccionLiquidacion  $jurisdiccionLiquidacion
+     * @param  \App\LiquidacionOrganismo  $liquidacionOrganismo
      * @return \Illuminate\Http\Response
      */
-    public function edit(JurisdiccionLiquidacion $jurisdiccionLiquidacion)
+    public function edit(LiquidacionOrganismo $liquidacionOrganismo)
     {
         //
     }
@@ -64,10 +64,10 @@ class JurisdiccionLiquidacionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\JurisdiccionLiquidacion  $jurisdiccionLiquidacion
+     * @param  \App\LiquidacionOrganismo  $liquidacionOrganismo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, JurisdiccionLiquidacion $jurisdiccionLiquidacion)
+    public function update(Request $request, LiquidacionOrganismo $liquidacionOrganismo)
     {
         //
     }
@@ -75,10 +75,10 @@ class JurisdiccionLiquidacionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\JurisdiccionLiquidacion  $jurisdiccionLiquidacion
+     * @param  \App\LiquidacionOrganismo  $liquidacionOrganismo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(JurisdiccionLiquidacion $jurisdiccionLiquidacion)
+    public function destroy(LiquidacionOrganismo $liquidacionOrganismo)
     {
         //
     }
