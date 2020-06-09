@@ -20,8 +20,8 @@ class UserTableSeeder extends Seeder
 		//        		      'password' => '$2y$10$k9xQj/8BU/cFJe53nFPcfuups5RhPorgikZiqUDl1KHx.L713o5Fy', //36269830
 		//        		      'created_at' => now()
 		//        		     ]);
-
     	//$user->roles()->attach(1);
 
     }
 }
+

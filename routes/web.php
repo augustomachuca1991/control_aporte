@@ -23,6 +23,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('admin')->group(function(){
 	Route::get('/dashboard', function(){
-		echo 'eres admin';
+		return view('admin.index');
 	})->name('admin');
+
+	Route::get('/liquidacion', function(){
+		return view('admin.liquidacion');
+	})->name('liquidacion');
+
 });

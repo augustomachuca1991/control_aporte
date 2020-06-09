@@ -10,43 +10,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                @guest
-                @else
-
-                <li class="nav-item">
-                  <a class="nav-link" href="#"><span class="small">Agentes</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"><span class="small">Cargos</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"><span class="small">Jurisdicciones</span></a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarLiquidacion" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="small">Liquidaciones</span>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarLiquidacion">
-                     <a class="dropdown-item" href="#"><i class="far fa-id-badge"></i>
-                        Ver todas la liquidaciones
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#buscar_por_cuil"><i class="far fa-id-badge"></i>
-                        Buscar Por Cuil
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#listar_por_periodo"><i class="fas fa-calendar-alt"></i>
-                        Listar Por Periodo de Liquidación
-                    </a>
-                  </div>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"><span class="small">Organismos</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"><span class="small">Periodos</span></a>
-                </li>
-                @endguest
             </ul>
 
             <!-- Right Side Of Navbar -->
