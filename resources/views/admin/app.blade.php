@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Dashboard</title>
+  <title>I.P.S Corrientes</title>
 
   <!-- Custom fonts for this template-->
   <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -156,9 +156,9 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar..." aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-success" type="button">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
@@ -342,7 +342,8 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>2020 &copy; Copyright:
+            <a href="https://www.google.com.ar/maps/place/Instituto+de+Previsi%C3%B3n+Social+de+Corrientes/@-27.4656176,-58.8410647,17z/data=!3m1!4b1!4m5!3m4!1s0x94456ca51f341343:0x9b9b2924e2fe2761!8m2!3d-27.4656224!4d-58.838876"> Instituto de Previsión Social de Corrientes - Dirección de Sistemas</span>
           </div>
         </div>
       </footer>
@@ -391,13 +392,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="admin/js/sb-admin-2.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="admin/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="admin/js/demo/chart-area-demo.js"></script>
-  <script src="admin/js/demo/chart-pie-demo.js"></script>
+  @yield('js')
 
 </body>
 
