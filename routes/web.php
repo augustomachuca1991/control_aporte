@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/info', function () {
+    echo phpinfo();
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -27,6 +31,7 @@ Route::middleware('admin')->group(function(){
 	})->name('admin');
 
 	Route::get('/liquidacion', function(){
+		
 		return view('admin.liquidacion');
 	})->name('liquidacion');
 

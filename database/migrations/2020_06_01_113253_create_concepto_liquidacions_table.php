@@ -16,11 +16,11 @@ class CreateConceptoLiquidacionsTable extends Migration
         Schema::create('concepto_liquidacions', function (Blueprint $table) {
             $table->id();
             $table->string('concepto');
-            $table->string('porcentaje')->nullable();
+            
             $table->bigInteger('organismo_id')->unsigned();
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
-            $table->bigInteger('suptipo_id')->unsigned();
-            $table->foreign('suptipo_id')->references('id')->on('subtipo_codigos');
+            $table->bigInteger('subtipo_id')->unsigned();
+            $table->foreign('subtipo_id')->references('id')->on('subtipo_codigos');
             $table->timestamps();
         });
     }

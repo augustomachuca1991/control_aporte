@@ -9,6 +9,9 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  
   <title>I.P.S Corrientes</title>
 
   <!-- Custom fonts for this template-->
@@ -17,6 +20,13 @@
 
   <!-- Custom styles for this template-->
   <link href="admin/css/sb-admin-2.min.css" rel="stylesheet">
+
+
+  <!-- Fonts -->
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+  <!-- Styles -->
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 </head>
 
@@ -33,7 +43,7 @@
         <div class="sidebar-brand-icon">
           <img class="img-profile p-3" src="image/logo-ips.png">
         </div>
-        <div class="sidebar-brand-text mx-2"><sup>corrientes</sup></div>
+        <div class="sidebar-brand-text mx-2"><sup>Corrientes</sup></div>
       </a>
 
       <!-- Divider -->
@@ -389,7 +399,7 @@
 
   <!-- Core plugin JavaScript-->
   <script src="admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
+  <script src="{{ asset('js/app.js') }}" defer></script>
   <!-- Custom scripts for all pages-->
   <script src="admin/js/sb-admin-2.min.js"></script>
   @yield('js')
