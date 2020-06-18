@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col">
         <label for="descripcion" class="required">Categoría</label>
-        <input type="text" name="descripcion" id="descripcion" value="{{ old('descripcion', $categoria->categoria) }}"
+        <input type="text" name="descripcion" id="descripcion" value="{{ old('descripcion', $jurisdiccion->jurisdiccion) }}"
                class="form-control @error('descripcion') is-invalid @enderror">
         @error('descripcion')
             <span class="invalid-feedback" role="alert">
@@ -14,5 +14,5 @@
 <br>
 <div class="form-group">
     <input type="submit" class="btn btn-primary" onclick="return confirm('Está seguro que desea guardar?')" value="Guardar">
-    <a href="{{ route('categorias.index') }}" class="btn btn-danger">Volver</a>
+    <a href="{{ route('jurisdicciones.index') }}" class="btn btn-danger">Volver</a>
 </div>
