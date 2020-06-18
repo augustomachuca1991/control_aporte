@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Origen extends Model
 {
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+    
     public function Jurisdicciones()
     {
         return $this->hasMany('App\Jurisdiccion');
