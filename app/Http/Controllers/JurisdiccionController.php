@@ -30,6 +30,9 @@ class JurisdiccionController extends Controller
     public function create()
     {
         //
+        return view('jurisdicciones.create', [
+            'jurisdiccion' => new Jurisdiccion()
+        ]);
     }
 
     /**
@@ -41,6 +44,22 @@ class JurisdiccionController extends Controller
     public function store(Request $request)
     {
         //
+        $date = Carbon::now()->toDateTimeString();
+        $request->validate([
+            'jurisdiccion'     =>  'required'
+        ]);
+
+        $form_data = array(
+            'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
+            'origen_id'       =>   $request->origen_id,
+            'jurisdiccion'       =>   $request->jurisdiccion,
+            'created_at'    =>   $date,
+            'updated_at'       =>   $date
+        );
+
+        Jurisdiccion::create($form_data);
+
+        return redirect()->route('jurisdicciones.index')->with('message', 'Jurisdicción creado satisfactoriamente');
     }
 
     /**
@@ -52,6 +71,9 @@ class JurisdiccionController extends Controller
     public function show(Jurisdiccion $jurisdiccion)
     {
         //
+        return view('jurisdicciones.show', [
+            'jurisdiccion' => $jurisdiccion
+        ]);
     }
 
     /**
@@ -63,6 +85,9 @@ class JurisdiccionController extends Controller
     public function edit(Jurisdiccion $jurisdiccion)
     {
         //
+        return view('tipo_articulos.edit', [
+            'jurisdiccion' => $jurisdiccion
+        ]);
     }
 
     /**
@@ -75,6 +100,21 @@ class JurisdiccionController extends Controller
     public function update(Request $request, Jurisdiccion $jurisdiccion)
     {
         //
+        $date = Carbon::now()->toDateTimeString();
+        $request->validate([
+            'jurisdiccion'     =>  'required'
+        ]);
+
+        $form_data = array(
+            'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
+            'origen_id'       =>   $request->origen_id,
+            'jurisdiccion'       =>   $request->jurisdiccion,
+            'created_at'    =>   $date,
+            'updated_at'       =>   $date
+        );
+
+        Jurisdiccion::whereId($jurisdiccion->id)->update($form_data);
+        return redirect()->route('jurisdicciones.show', $jurisdiccion)->with('message', 'Jurisdicción actualizado satisfactoriamente');
     }
 
     /**
@@ -86,5 +126,8 @@ class JurisdiccionController extends Controller
     public function destroy(Jurisdiccion $jurisdiccion)
     {
         //
+        $jurisdiccion->delete();
+
+        return redirect()->route('jurisdicciones.index')->with('message', 'Jurisdicción eliminada satisfactoriamente');
     }
 }

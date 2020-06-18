@@ -11,4 +11,8 @@ class Origen extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
+    public function origen(){
+        return $this->hasMany(Jurisdiccion::class);
+    }
 }
