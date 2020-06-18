@@ -17,6 +17,8 @@ class CreateLiquidacionsTable extends Migration
             $table->id();
             $table->bigInteger('declaracion_id')->unsigned();
             $table->foreign('declaracion_id')->references('id')->on('declaracion_juradas');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

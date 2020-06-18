@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jurisdiccion;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class JurisdiccionController extends Controller
 {
@@ -15,6 +16,10 @@ class JurisdiccionController extends Controller
     public function index()
     {
         //
+        $jurisdicciones = Jurisdiccion::paginate(10);
+        return view('jurisdicciones.index', [
+            'jurisdicciones' => $jurisdicciones
+        ]);
     }
 
     /**

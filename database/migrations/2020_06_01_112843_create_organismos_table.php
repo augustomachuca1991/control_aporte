@@ -19,6 +19,8 @@ class CreateOrganismosTable extends Migration
             $table->bigInteger('jurisdiccion_id')->unsigned();
             $table->foreign('jurisdiccion_id')->references('cod_jurisdiccion')->on('jurisdiccions');
             $table->string('organismo');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

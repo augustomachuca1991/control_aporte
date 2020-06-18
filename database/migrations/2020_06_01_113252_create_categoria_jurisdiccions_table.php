@@ -19,6 +19,8 @@ class CreateCategoriaJurisdiccionsTable extends Migration
             $table->foreign('categoria_id')->references('cod_categoria')->on('categorias');
             $table->bigInteger('jurisdiccion_id')->unsigned();
             $table->foreign('jurisdiccion_id')->references('cod_jurisdiccion')->on('jurisdiccions');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

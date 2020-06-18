@@ -23,6 +23,8 @@ class CreateLiquidacionOrganismosTable extends Migration
             $table->foreign('tipo_id')->references('id')->on('tipo_liquidacions');
             $table->bigInteger('periodo_id')->unsigned();
             $table->foreign('periodo_id')->references('cod_periodo')->on('periodos');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

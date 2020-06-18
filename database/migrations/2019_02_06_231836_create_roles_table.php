@@ -17,6 +17,7 @@ class CreateRolesTable extends Migration
             $table->id();
             $table->bigInteger('cod_rol')->unsigned()->unique();
             $table->string('rol')->unique();
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

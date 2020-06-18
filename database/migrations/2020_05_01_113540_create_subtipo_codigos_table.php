@@ -18,6 +18,8 @@ class CreateSubtipoCodigosTable extends Migration
             $table->string('descripcion')->nullable();
             $table->bigInteger('tipocodigo_id')->unsigned();
             $table->foreign('tipocodigo_id')->references('id')->on('tipo_codigos');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

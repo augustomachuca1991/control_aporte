@@ -17,6 +17,8 @@ class CreateOrigensTable extends Migration
             $table->id();
             $table->bigInteger('cod_origen')->unsigned()->unique();
             $table->string('origen');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

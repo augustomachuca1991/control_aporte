@@ -16,6 +16,8 @@ class CreateDptosTable extends Migration
         Schema::create('dptos', function (Blueprint $table) {
             $table->id();
             $table->string('departamento');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

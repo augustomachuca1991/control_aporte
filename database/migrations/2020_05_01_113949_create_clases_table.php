@@ -18,6 +18,8 @@ class CreateClasesTable extends Migration
             $table->bigInteger('categoria_id')->unsigned();
             $table->foreign('categoria_id')->references('cod_categoria')->on('categorias');
             $table->string('clase');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

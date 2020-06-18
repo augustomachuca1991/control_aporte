@@ -22,6 +22,8 @@ class CreatePuestoLaboralsTable extends Migration
             //$table->foreign('estado_id')->references('id')->on('estados');
             $table->bigInteger('agente_id')->unsigned();
             $table->foreign('agente_id')->references('id')->on('agentes');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

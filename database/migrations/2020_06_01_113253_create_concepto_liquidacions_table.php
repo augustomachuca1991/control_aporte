@@ -21,6 +21,8 @@ class CreateConceptoLiquidacionsTable extends Migration
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
             $table->bigInteger('subtipo_id')->unsigned();
             $table->foreign('subtipo_id')->references('id')->on('subtipo_codigos');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }
