@@ -17,6 +17,8 @@ class CreateCategoriasTable extends Migration
             $table->id();
             $table->bigInteger('cod_categoria')->unsigned()->unique();
             $table->string('categoria');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

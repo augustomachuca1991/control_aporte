@@ -21,6 +21,8 @@ class CreateLiquidacionDetallesTable extends Migration
             $table->foreign('concepto_id')->references('id')->on('concepto_liquidacions');
             $table->string('unidad')->nullable();
             $table->decimal('importe',8,2)->unsigned();
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

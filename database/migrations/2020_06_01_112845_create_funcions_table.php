@@ -18,6 +18,8 @@ class CreateFuncionsTable extends Migration
             $table->bigInteger('organismo_id')->unsigned();
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
             $table->string('funcion');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }
