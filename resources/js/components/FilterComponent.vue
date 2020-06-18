@@ -4,14 +4,14 @@
         <label class="mr-sm-2 sr-only" for="origen">Origen</label>
         <select class="custom-select mr-sm-2" id="origen" name="origen"  v-model="selectedOrigen">
           <option :value="null" disabled selected>Seleccione Origen</option>
-          <option v-for="(country_obj, country) in origen" :value="country">{{country}}</option>
+          <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.id">{{origen.origen}}</option>
         </select>
       </div>
       <div class="col">
       <label class="mr-sm-2 sr-only" for="jurisdiccion">Jurisdiccion</label>
         <select  :disabled="jurisdicciones.length == 0" class="custom-select mr-sm-2" id="jurisdiccion" name="jurisdiccion" v-model="selectedJurisdicion">
            <option :value="null" disabled selected>Seleccione Jurisdiccion</option>
-           <option v-for="(city_obj, city) in jurisdicciones">{{city}}</option>
+           <option v-for="(jurisdiccion, index) in jurisdicciones">{{jurisdiccion.jurisdiccion}}</option>
         </select>
       </div>
       <div class="col-6">
@@ -28,23 +28,7 @@
     export default {
         data: function() {
                 return {
-                    origen: {
-                        "Sisper": {
-                            "Salud Publica": ["Beijing", "Shanghai", "Guangzhou", "Tianjin"],
-                            "Poder Judicial": ["New Delhi", "Mumbai", "Bangalore", "Chennai"],
-                            "Direccion Enseñanza Privada": ["Tokyo", "Kyoto", "Nagoya", "Hiroshima"],
-                            "Ministerio Hacienda y Finanzas": ["Instituto de Prevision Social", "IOSCOR"],
-                            "Ministerio de Seguridad": ["Jefatura de Policía"]
-                        },
-                        "Munucipios": {
-                            "Municipalidad Goya": ["Goya"],
-                            "Municipalidad Saladas": ["Saladas"],
-                            "Municipalidad Empedrado": ["Empedrado"]
-                        },
-                        "Entidades Autonomas": {
-                            "DPEC": ["Direccion Provincial Energia de Corrientes"],
-                        }
-                    },
+                    origenes: [],
                     jurisdicciones: [],
                     organismos: [],
                     selectedOrigen: "",
@@ -58,20 +42,25 @@
                     this.organismos = [];
                     this.selectedJurisdicion = "";
                     this.selectedOrganismo = "";
-                    if (this.selectedOrigen.length > 0) {
-                        this.jurisdicciones = this.origen[this.selectedOrigen]
+                    if (this.selectedOrigen != 0) {
+
+                        this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
                     }
+                    //this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
                 },
                 selectedJurisdicion: function() {
                     this.organismos = [];
                     this.selectedOrganismo = "";
                     if (this.selectedJurisdicion.length > 0) {
-                        this.organismos = this.origen[this.selectedOrigen][this.selectedJurisdicion]
+                        this.organismos = this.origenes[this.selectedOrigen][this.selectedJurisdicion]
                     }
                 }
       },
       mounted() {
-            console.log('Filter mounted.')
+            axios.get('api/origen').then((response)=>{
+                this.origenes = response.data;
+                console.log(this.origenes);
+            });
       }
 
     }

@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
         //});
         $user = User::create(['name'  => 'Augusto Machuca',
 		        		  	  'email' => 'augusto_fer22@hotmail.com', 
-		        		      'password' => '$2y$10$k9xQj/8BU/cFJe53nFPcfuups5RhPorgikZiqUDl1KHx.L713o5Fy', //36269830
+		        		      'password' => '$2y$10$jtFMq6os0fUXeFvtVZQqm.M1g7/AK9mTthBgXNgPH2JYSfo4Fd3cG', //12345678
 		        		     ]);
     	$user->roles()->attach(1);
 

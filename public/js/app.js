@@ -1991,23 +1991,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      origen: {
-        "Sisper": {
-          "Salud Publica": ["Beijing", "Shanghai", "Guangzhou", "Tianjin"],
-          "Poder Judicial": ["New Delhi", "Mumbai", "Bangalore", "Chennai"],
-          "Direccion Enseñanza Privada": ["Tokyo", "Kyoto", "Nagoya", "Hiroshima"],
-          "Ministerio Hacienda y Finanzas": ["Instituto de Prevision Social", "IOSCOR"],
-          "Ministerio de Seguridad": ["Jefatura de Policía"]
-        },
-        "Munucipios": {
-          "Municipalidad Goya": ["Goya"],
-          "Municipalidad Saladas": ["Saladas"],
-          "Municipalidad Empedrado": ["Empedrado"]
-        },
-        "Entidades Autonomas": {
-          "DPEC": ["Direccion Provincial Energia de Corrientes"]
-        }
-      },
+      origenes: [],
       jurisdicciones: [],
       organismos: [],
       selectedOrigen: "",
@@ -2022,21 +2006,27 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedJurisdicion = "";
       this.selectedOrganismo = "";
 
-      if (this.selectedOrigen.length > 0) {
-        this.jurisdicciones = this.origen[this.selectedOrigen];
-      }
+      if (this.selectedOrigen != 0) {
+        this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones;
+      } //this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
+
     },
     selectedJurisdicion: function selectedJurisdicion() {
       this.organismos = [];
       this.selectedOrganismo = "";
 
       if (this.selectedJurisdicion.length > 0) {
-        this.organismos = this.origen[this.selectedOrigen][this.selectedJurisdicion];
+        this.organismos = this.origenes[this.selectedOrigen][this.selectedJurisdicion];
       }
     }
   },
   mounted: function mounted() {
-    console.log('Filter mounted.');
+    var _this = this;
+
+    axios.get('api/origen').then(function (response) {
+      _this.origenes = response.data;
+      console.log(_this.origenes);
+    });
   }
 });
 
@@ -53354,10 +53344,12 @@ var render = function() {
             [_vm._v("Seleccione Origen")]
           ),
           _vm._v(" "),
-          _vm._l(_vm.origen, function(country_obj, country) {
-            return _c("option", { domProps: { value: country } }, [
-              _vm._v(_vm._s(country))
-            ])
+          _vm._l(_vm.origenes, function(origen, index) {
+            return _c(
+              "option",
+              { key: origen.id, domProps: { value: origen.id } },
+              [_vm._v(_vm._s(origen.origen))]
+            )
           })
         ],
         2
@@ -53414,8 +53406,8 @@ var render = function() {
             [_vm._v("Seleccione Jurisdiccion")]
           ),
           _vm._v(" "),
-          _vm._l(_vm.jurisdicciones, function(city_obj, city) {
-            return _c("option", [_vm._v(_vm._s(city))])
+          _vm._l(_vm.jurisdicciones, function(jurisdiccion, index) {
+            return _c("option", [_vm._v(_vm._s(jurisdiccion.jurisdiccion))])
           })
         ],
         2

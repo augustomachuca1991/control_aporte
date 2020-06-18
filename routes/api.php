@@ -17,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/origen', 'OrigenController@index')->name('origen');
+Route::get('/jurisdiccion', 'JurisdiccionController@index')->name('jurisdiccion');
+Route::get('/organismo', 'OrganismoController@index')->name('organismo');
