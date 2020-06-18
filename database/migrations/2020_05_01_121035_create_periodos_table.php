@@ -19,6 +19,8 @@ class CreatePeriodosTable extends Migration
             $table->integer('mes');
             $table->integer('anio');
             $table->string('periodo');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

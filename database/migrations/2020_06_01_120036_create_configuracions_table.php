@@ -21,6 +21,8 @@ class CreateConfiguracionsTable extends Migration
             $table->foreign('suptipo_id')->references('id')->on('subtipo_codigos');
             $table->bigInteger('tipocodigo_id')->unsigned();
             $table->foreign('tipocodigo_id')->references('id')->on('tipo_codigos');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

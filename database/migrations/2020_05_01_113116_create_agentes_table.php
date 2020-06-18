@@ -19,6 +19,8 @@ class CreateAgentesTable extends Migration
             $table->string('nombre');
             $table->date('fecha_nac');
             $table->string('sexo')->unique();
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

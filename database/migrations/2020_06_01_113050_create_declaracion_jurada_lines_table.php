@@ -18,6 +18,8 @@ class CreateDeclaracionJuradaLinesTable extends Migration
             $table->bigInteger('declaracionjurada_id')->unsigned();
             $table->foreign('declaracionjurada_id')->references('id')->on('declaracion_juradas');
             $table->text('data');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

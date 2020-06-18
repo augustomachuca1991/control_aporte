@@ -21,6 +21,8 @@ class CreateHistoriaLaboralsTable extends Migration
             $table->foreign('clase_id')->references('id')->on('clases');
             $table->date('fecha_ingreso');
             $table->date('fecha_egreso');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

@@ -19,6 +19,8 @@ class CreateJurisdiccionsTable extends Migration
             $table->bigInteger('origen_id')->unsigned();
             $table->foreign('origen_id')->references('cod_origen')->on('origens');
             $table->string('jurisdiccion');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

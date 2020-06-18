@@ -23,6 +23,8 @@ class CreateHistoriaLiquidacionsTable extends Migration
             $table->foreign('h_laboral_id')->references('id')->on('historia_laborals');
             $table->bigInteger('liquidacion_id')->unsigned();
             $table->foreign('liquidacion_id')->references('id')->on('liquidacions');
+
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }
