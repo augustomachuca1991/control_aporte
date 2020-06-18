@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b5a9edd-e8f3-4f42-9027-f795061770bb" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/views/categorias/_buttons.blade.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/views/categorias/_form.blade.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/views/categorias/create.blade.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/views/categorias/edit.blade.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/views/categorias/index.blade.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/views/categorias/show.blade.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/CategoriaController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/CategoriaController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Jurisdiccion.php" afterPath="$PROJECT_DIR$/app/Jurisdiccion.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -84,7 +81,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/jurisdicciones/show.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
@@ -92,6 +89,38 @@
               <folding>
                 <element signature="e#1119#1156#0#HTML" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JurisdiccionController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+              <folding>
+                <element signature="e#40#61#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Jurisdiccion.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Jurisdiccion.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="web.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/routes/web.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="415">
+              <caret line="43" column="57" lean-forward="true" selection-start-line="43" selection-start-column="57" selection-end-line="43" selection-end-column="57" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -135,6 +164,9 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/CategoriaController.php" />
         <option value="$PROJECT_DIR$/resources/views/jurisdicciones/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/jurisdicciones/show.blade.php" />
+        <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php" />
+        <option value="$PROJECT_DIR$/app/Jurisdiccion.php" />
       </list>
     </option>
   </component>
@@ -177,6 +209,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="control_aporte" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="control_aporte" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="control_aporte" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="routes" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -300,6 +346,20 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="control_aporte" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="control_aporte" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -409,12 +469,12 @@
       <option name="presentableId" value="Default" />
       <updated>1592406015415</updated>
       <workItem from="1592406016666" duration="2399000" />
-      <workItem from="1592476295379" duration="4803000" />
+      <workItem from="1592476295379" duration="6535000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7202000" />
+    <option name="totallyTimeSpent" value="8934000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1376" height="744" extended-state="0" />
@@ -717,6 +777,32 @@
           <folding>
             <element signature="e#1119#1156#0#HTML" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Jurisdiccion.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#40#61#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="43" column="57" lean-forward="true" selection-start-line="43" selection-start-column="57" selection-end-line="43" selection-end-column="57" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -31,8 +31,14 @@ Route::middleware('admin')->group(function(){
 	})->name('admin');
 
 	Route::get('/liquidacion', function(){
-		
+
 		return view('admin.liquidacion');
 	})->name('liquidacion');
 
 });
+
+//-------- Jurisdicciones Controller------------
+
+Route::resource('/jurisdicciones', 'JurisdiccionController')
+    ->names('jurisdicciones')
+    ->parameters(['jurisdicciones' => 'jurisdicciones']);
