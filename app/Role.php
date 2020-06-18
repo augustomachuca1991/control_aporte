@@ -14,4 +14,6 @@ class Role extends Model
 
         return $this->belongsToMany('App\User');
     }
+
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
 }
