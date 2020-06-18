@@ -42,11 +42,13 @@ Route::middleware('admin')->group(function(){
 		return view('categorias.index');
 	})->name('categorias');
 
-});
-
-//-------- Jurisdicciones Controller------------
+	//-------- Jurisdicciones Controller------------
 
 Route::resource('/jurisdicciones', 'JurisdiccionController')
     ->names('jurisdicciones')
 	->parameters(['jurisdicciones' => 'jurisdicciones']);
+
+});
+
+
 	

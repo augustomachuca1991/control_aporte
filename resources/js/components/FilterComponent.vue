@@ -51,7 +51,7 @@
                 selectedJurisdicion: function() {
                     this.organismos = [];
                     this.selectedOrganismo = "";
-                    if (this.selectedJurisdicion.length > 0) {
+                    if (this.selectedJurisdicion != 0) {
                         this.organismos = this.origenes[this.selectedOrigen][this.selectedJurisdicion]
                     }
                 }
