@@ -37,10 +37,9 @@ Route::middleware('admin')->group(function(){
 
 	// Categoria 
 
-	Route::get('/categorias', function(){
-
-		return view('categorias.index');
-	})->name('categorias');
+	Route::get('/categorias', 'CategoriaController@index')->name('categorias');
+	Route::post('/categorias/create','CategoriaController@store')->name('create_categoria');
+	Route::get('/categorias/delete/{id}','CategoriaController@delete')->name('delete_categoria');
 
 	//-------- Jurisdicciones Controller------------
 

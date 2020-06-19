@@ -14,7 +14,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        //
+        return view('categorias.index');
     }
 
     /**
@@ -35,7 +35,17 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $validarDatos = $request->validate([
+            'cod_categoria' => 'required|numeric',
+            'categoria'     => 'required|string',
+        ]);
+
+        $categoria = Categoria::create([
+                                        'cod_categoria' => $request['cod_categoria'],
+                                        'categoria'     => $request['categoria']
+                                        ]);
+        return back()->withSuccess('Categoria creada con éxito');
     }
 
     /**
@@ -47,9 +57,6 @@ class CategoriaController extends Controller
     public function show(Categoria $categoria)
     {
         //
-        $categorias = Categoria::All();
-
-        return $categorias;
     }
 
     /**
@@ -84,5 +91,9 @@ class CategoriaController extends Controller
     public function destroy(Categoria $categoria)
     {
         //
+    }
+
+    public function categoria_json(){
+        return Categoria::all();
     }
 }

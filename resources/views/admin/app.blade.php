@@ -26,7 +26,7 @@
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
 
   <!-- Styles -->
- 
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 </head>
 
@@ -406,6 +406,8 @@
 
   <!-- Core plugin JavaScript-->
   <script src="admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <script src="{{ asset('js/app.js') }}" defer></script>
  
   <!-- Custom scripts for all pages-->
   <script src="admin/js/sb-admin-2.min.js"></script>
