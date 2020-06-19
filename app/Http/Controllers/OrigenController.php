@@ -14,7 +14,8 @@ class OrigenController extends Controller
      */
     public function index()
     {
-        return Origen::with('jurisdicciones')->get();
+        return Origen::with('Jurisdicciones')->get();
+        //return Origen::with('jurisdiccionOrganismo')->get();
         //return Origen::all();
     }
 

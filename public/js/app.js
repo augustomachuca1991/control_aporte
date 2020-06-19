@@ -1996,7 +1996,10 @@ __webpack_require__.r(__webpack_exports__);
       organismos: [],
       selectedOrigen: "",
       selectedJurisdicion: "",
-      selectedOrganismo: ""
+      selectedOrganismo: "",
+      origenTitle: '',
+      JurisdiccionTitle: '',
+      organismoTitle: ''
     };
   },
   watch: {
@@ -2006,17 +2009,18 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedJurisdicion = "";
       this.selectedOrganismo = "";
 
-      if (this.selectedOrigen != 0) {
+      if (this.selectedOrigen > 0) {
         this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones;
-      } //this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
-
+        this.origenTitle = this.origenes[this.selectedOrigen - 1].origen;
+      }
     },
     selectedJurisdicion: function selectedJurisdicion() {
       this.organismos = [];
       this.selectedOrganismo = "";
 
-      if (this.selectedJurisdicion.length > 0) {
-        this.organismos = this.origenes[this.selectedOrigen][this.selectedJurisdicion];
+      if (this.selectedJurisdicion > 0) {
+        this.organismos = this.origenes[this.selectedOrigen - 1].jurisdicciones[this.selectedJurisdicion - 1].organismos;
+        console.log(this.organismos);
       }
     }
   },
@@ -2025,7 +2029,6 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get('api/origen').then(function (response) {
       _this.origenes = response.data;
-      console.log(_this.origenes);
     });
   }
 });
@@ -53347,7 +53350,10 @@ var render = function() {
           _vm._l(_vm.origenes, function(origen, index) {
             return _c(
               "option",
-              { key: origen.id, domProps: { value: origen.id } },
+              {
+                key: origen.cod_origen,
+                domProps: { value: origen.cod_origen }
+              },
               [_vm._v(_vm._s(origen.origen))]
             )
           })
@@ -53376,7 +53382,7 @@ var render = function() {
           ],
           staticClass: "custom-select mr-sm-2",
           attrs: {
-            disabled: _vm.jurisdicciones.length == 0,
+            disabled: _vm.selectedOrigen.length == 0,
             id: "jurisdiccion",
             name: "jurisdiccion"
           },
@@ -53407,7 +53413,14 @@ var render = function() {
           ),
           _vm._v(" "),
           _vm._l(_vm.jurisdicciones, function(jurisdiccion, index) {
-            return _c("option", [_vm._v(_vm._s(jurisdiccion.jurisdiccion))])
+            return _c(
+              "option",
+              {
+                key: jurisdiccion.cod_jurisdiccion,
+                domProps: { value: jurisdiccion.cod_jurisdiccion }
+              },
+              [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
+            )
           })
         ],
         2
@@ -53434,7 +53447,9 @@ var render = function() {
           ],
           staticClass: "custom-select mr-sm-2",
           attrs: {
-            disabled: _vm.organismos.length == 0,
+            disabled:
+              _vm.selectedJurisdicion.length == 0 ||
+              _vm.selectedOrigen.length == 0,
             id: "organismo",
             name: "organismo"
           },
@@ -53464,8 +53479,15 @@ var render = function() {
             [_vm._v("Seleccione Organismo")]
           ),
           _vm._v(" "),
-          _vm._l(_vm.organismos, function(organismo) {
-            return _c("option", [_vm._v(_vm._s(organismo))])
+          _vm._l(_vm.organismos, function(organismo, index) {
+            return _c(
+              "option",
+              {
+                key: organismo.cod_organismo,
+                domProps: { value: organismo.cod_organismo }
+              },
+              [_vm._v(_vm._s(organismo.organismo))]
+            )
           })
         ],
         2

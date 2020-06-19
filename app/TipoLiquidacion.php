@@ -11,4 +11,19 @@ class TipoLiquidacion extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
+    public function liquidaciones()
+    {
+    	return $this->belongsToMany('App\Liquidacion');
+    }
+
+    public function organismos()
+    {
+    	return $this->belongsToMany('App\Organismo');
+    }
+
+    public function periodos()
+    {
+    	return $this->belongsToMany('App\Periodo');
+    }
 }

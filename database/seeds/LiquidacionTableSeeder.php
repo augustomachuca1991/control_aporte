@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Liquidacion;
+use App\Organismo;
 
 class LiquidacionTableSeeder extends Seeder
 {
@@ -12,11 +13,15 @@ class LiquidacionTableSeeder extends Seeder
      */
     public function run()
     {
-        $liquidaciones = [
-        	
-        	['declaracion_id' => 2, 'created_at' => now()],
+        $liquidacion = Liquidacion::create([
+                                                'declaracion_id' => 2, 
+                                                'created_at'     => now()
+                                            ]);
+
         
-        ];
-        Liquidacion::insert($liquidaciones);
+        $organismos = Organismo::find(1);
+        $periodo    = 25616;
+        $tipo_liquidacion = 1;
+        $liquidacion->organismos()->attach($organismos->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
     }
 }

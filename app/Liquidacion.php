@@ -15,4 +15,9 @@ class Liquidacion extends Model
     {
     	return $this->belongsToMany( 'App\HistoriaLaboral');
     }
+
+    public function organismos()
+    {
+    	return $this->belongsToMany('App\Organismo');
+    }
 }
