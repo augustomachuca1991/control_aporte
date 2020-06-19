@@ -82,10 +82,11 @@ class JurisdiccionController extends Controller
      * @param  \App\Jurisdiccion  $jurisdiccion
      * @return \Illuminate\Http\Response
      */
-    public function edit(Jurisdiccion $jurisdiccion)
+    public function edit(Request $request, Jurisdiccion $jurisdiccion)
     {
         //
-        return view('tipo_articulos.edit', [
+        dd($request);
+        return view('jurisdicciones.edit', [
             'jurisdiccion' => $jurisdiccion
         ]);
     }

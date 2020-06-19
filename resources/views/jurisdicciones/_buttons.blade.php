@@ -1,6 +1,6 @@
 <td class="td-button">
     <a href="{{ route('jurisdicciones.edit', $jurisdiccion) }}" class="btn btn-primary">
-        <i class="fa fa-cog"> Editar</i>
+        <i class="fa fa-cog"> Editar </i>
     </a>
 </td>
 <td class="td-button">

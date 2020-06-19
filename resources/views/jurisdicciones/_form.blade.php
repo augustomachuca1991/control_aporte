@@ -1,7 +1,7 @@
 @csrf
 <div class="row">
     <div class="col">
-        <label for="descripcion" class="required">Categoría</label>
+        <label for="descripcion" class="required">Jurisdicción</label>
         <input type="text" name="descripcion" id="descripcion" value="{{ old('descripcion', $jurisdiccion->jurisdiccion) }}"
                class="form-control @error('descripcion') is-invalid @enderror">
         @error('descripcion')
