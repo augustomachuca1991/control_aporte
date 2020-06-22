@@ -1,36 +1,56 @@
 <template>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-        Launch demo modal
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <table class="table border-rounded table-striped" v-model="jurisdicciones">
+        <thead class="thead-dark">
+            <tr style="text-align: center;">
+                <th scope="col">Id.</th>
+                <th scope="col">cod.</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Origen</th>
+                <th scope="col">Creación</th>
+                <th scope="col">Modificación</th>
+                <th scope="col" nowrap colspan="2">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="text-align: center;" v-for="jurisdiccion in jurisdicciones">
+                <td>{{ jurisdiccion.id }}</td>
+                <td>{{ jurisdiccion.cod_jurisdiccion }}</td>
+                <td>{{ jurisdiccion.jurisdiccion }}</td>
+                <td>{{ jurisdiccion.origen_id }}</td>
+                <td>{{ jurisdiccion.created_at }}</td>
+                <td>{{ jurisdiccion.updated_at }}</td>
+                <td class="td-button">
+                    <a href="" class="btn btn-primary">
+                        <i class="fa fa-cog"> Editar </i>
+                    </a>
+                </td>
+                <td class="td-button">
+                    <form method="POST" action="">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Desea eliminar a {{ $jurisdiccion->jurisdiccion }}?')" >
+                            <i class="fa fa-trash"> Eliminar</i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </template>
 
 <script>
     export default {
+        data: function(){
+            return{
+                jurisdicciones:[],
+            }
 
+        },
         mounted() {
-            console.log('JurisdiccionComponent mounted.')
+            axios.get('/jurisdicciones').then((response)=>{
+                this.jurisdicciones = response.data;
+            })
+
         }
+
     }
 </script>
