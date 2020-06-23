@@ -22,3 +22,8 @@ Route::get('/origen', 'OrigenController@index')->name('origen');
 Route::get('/jurisdiccion', 'JurisdiccionController@index')->name('jurisdiccion');
 Route::get('/organismo', 'OrganismoController@index')->name('organismo');
 Route::get('/categoria', 'CategoriaController@categoria_json')->name('categoria');
+
+
+Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
+
+Route::get('/puesto', 'PuestoLaboralController@getpuestoLaboral')->name('puesto_laboral');

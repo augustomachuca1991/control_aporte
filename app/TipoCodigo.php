@@ -11,4 +11,9 @@ class TipoCodigo extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
+    public function subtipocodigo()
+    {
+        return $this->hasMany('App\SubtipoCodigo');
+    }
 }

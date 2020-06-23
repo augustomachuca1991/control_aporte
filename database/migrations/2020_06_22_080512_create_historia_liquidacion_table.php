@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHistoriaLiquidacionsTable extends Migration
+class CreateHistoriaLiquidacionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateHistoriaLiquidacionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('historia_liquidacions', function (Blueprint $table) {
+        Schema::create('historia_liquidacion', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('estado_id')->unsigned()->nullable();
+            $table->bigInteger('estado_id')->unsigned();
             $table->foreign('estado_id')->references('id')->on('estados');
             $table->bigInteger('funcion_id')->unsigned()->nullable();
             $table->foreign('funcion_id')->references('id')->on('funcions');
@@ -23,7 +23,6 @@ class CreateHistoriaLiquidacionsTable extends Migration
             $table->foreign('h_laboral_id')->references('id')->on('historia_laborals');
             $table->bigInteger('liquidacion_id')->unsigned();
             $table->foreign('liquidacion_id')->references('id')->on('liquidacions');
-
             $table->softDeletes(); 
             $table->timestamps();
         });
@@ -36,6 +35,6 @@ class CreateHistoriaLiquidacionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historia_liquidacions');
+        Schema::dropIfExists('historia_liquidacion');
     }
 }

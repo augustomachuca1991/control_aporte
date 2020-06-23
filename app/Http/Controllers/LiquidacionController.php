@@ -14,7 +14,7 @@ class LiquidacionController extends Controller
      */
     public function index()
     {
-        //
+        return view('liquidacion.index');
     }
 
     /**
@@ -82,4 +82,11 @@ class LiquidacionController extends Controller
     {
         //
     }
+
+    public function getliquidaciones()
+    {
+        return Liquidacion::with(['organismos','periodos','tipoLiquidaciones','historia_laborales'])->get();
+    }
+
+
 }

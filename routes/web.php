@@ -25,15 +25,15 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+//middleware admin
 Route::middleware('admin')->group(function(){
+	
 	Route::get('/dashboard', function(){
 		return view('admin.index');
 	})->name('admin');
 
-	Route::get('/liquidacion', function(){
-
-		return view('admin.liquidacion');
-	})->name('liquidacion');
+	Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidacion');
 
 	// Categoria 
 
@@ -43,7 +43,7 @@ Route::middleware('admin')->group(function(){
 
 	//-------- Jurisdicciones Controller------------
 
-Route::resource('/jurisdicciones', 'JurisdiccionController')
+	Route::resource('/jurisdicciones', 'JurisdiccionController')
     ->names('jurisdicciones')
 	->parameters(['jurisdicciones' => 'jurisdicciones']);
 

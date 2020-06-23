@@ -14,16 +14,16 @@ class Periodo extends Model
 
     public function liquidaciones()
     {
-    	return $this->belongsToMany('App\Liquidacion');
+    	return $this->belongsToMany('App\Liquidacion','liquidacion_organismo','id', 'periodo_id');
     }
 
     public function organismos()
     {
-    	return $this->belongsToMany('App\Organismo');
+    	return $this->belongsToMany('App\Organismo','liquidacion_organismo','id', 'periodo_id');
     }
 
     public function tipoLiquidaciones()
     {
-    	return $this->belongsToMany('App\TipoLiquidacion');
+    	return $this->belongsToMany('App\TipoLiquidacion','liquidacion_organismo','id', 'periodo_id');
     }
 }

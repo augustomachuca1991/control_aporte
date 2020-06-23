@@ -13,6 +13,16 @@ class HistoriaLaboral extends Model
     
     public function liquidaciones()
     {
-    	return $this->belongsToMany('App\Liquidacion');
+    	return $this->belongsToMany('App\Liquidacion','historia_liquidacion', 'h_laboral_id', 'liquidacion_id');
+    }
+
+    public function puesto()
+    {
+        return $this->belongsTo('App\PuestoLaboral')->with('agente');
+    }
+
+    public function clase()
+    {
+        return $this->belongsTo('App\Clase')->with('Categoria');
     }
 }

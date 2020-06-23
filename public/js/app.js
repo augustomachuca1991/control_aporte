@@ -1899,27 +1899,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DetalleComponent.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DetalleComponent.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('administrador mounted.');
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
@@ -1996,10 +1975,7 @@ __webpack_require__.r(__webpack_exports__);
       organismos: [],
       selectedOrigen: "",
       selectedJurisdicion: "",
-      selectedOrganismo: "",
-      origenTitle: '',
-      JurisdiccionTitle: '',
-      organismoTitle: ''
+      selectedOrganismo: ""
     };
   },
   watch: {
@@ -2010,8 +1986,7 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedOrganismo = "";
 
       if (this.selectedOrigen > 0) {
-        this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones;
-        this.origenTitle = this.origenes[this.selectedOrigen - 1].origen;
+        this.jurisdicciones = this.origenes[this.selectedOrigen].jurisdicciones;
       }
     },
     selectedJurisdicion: function selectedJurisdicion() {
@@ -2019,8 +1994,7 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedOrganismo = "";
 
       if (this.selectedJurisdicion > 0) {
-        this.organismos = this.origenes[this.selectedOrigen - 1].jurisdicciones[this.selectedJurisdicion - 1].organismos;
-        console.log(this.organismos);
+        this.organismos = this.origenes[this.selectedOrigen].jurisdicciones[this.selectedJurisdicion].organismos;
       }
     }
   },
@@ -2093,6 +2067,53 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/JurisdiccionComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/JurisdiccionComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    console.log('JurisdiccionComponent mounted.');
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LiquidacionComponent.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LiquidacionComponent.vue?vue&type=script&lang=js& ***!
@@ -2157,11 +2178,296 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      liquidaciones: []
+    };
+  },
   mounted: function mounted() {
-    console.log('administrador mounted.');
+    var _this = this;
+
+    axios.get('api/liquidacion').then(function (response) {
+      console.log(response.data);
+      _this.liquidaciones = response.data;
+    });
   }
-});
+}); //$('#detalle').on('show.bs.modal', function (event) {
+//  //Capturo Datos del Click en el boton 
+//  var button  = $(event.relatedTarget)
+//  var id      = button.data('id')
+//  console.log(id)
+//  //cargo en el modal mostrar
+//  var modal = $(this)
+//  //modal.find('.modal-title #liquidacion').html(id)
+//})
 
 /***/ }),
 
@@ -53214,30 +53520,6 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DetalleComponent.vue?vue&type=template&id=46ecf4b1&":
-/*!*******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DetalleComponent.vue?vue&type=template&id=46ecf4b1& ***!
-  \*******************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div")
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e& ***!
@@ -53447,9 +53729,7 @@ var render = function() {
           ],
           staticClass: "custom-select mr-sm-2",
           attrs: {
-            disabled:
-              _vm.selectedJurisdicion.length == 0 ||
-              _vm.selectedOrigen.length == 0,
+            disabled: _vm.selectedJurisdicion.length == 0,
             id: "organismo",
             name: "organismo"
           },
@@ -53586,6 +53866,128 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/JurisdiccionComponent.vue?vue&type=template&id=de5545e0&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/JurisdiccionComponent.vue?vue&type=template&id=de5545e0& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          attrs: {
+            type: "button",
+            "data-toggle": "modal",
+            "data-target": "#exampleModalCenter"
+          }
+        },
+        [_vm._v("\n        Launch demo modal\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "exampleModalCenter",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "exampleModalCenterTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-dialog-centered",
+              attrs: { role: "document" }
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _c("div", { staticClass: "modal-header" }, [
+                  _c(
+                    "h5",
+                    {
+                      staticClass: "modal-title",
+                      attrs: { id: "exampleModalLongTitle" }
+                    },
+                    [_vm._v("Modal title")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: {
+                        type: "button",
+                        "data-dismiss": "modal",
+                        "aria-label": "Close"
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _vm._v("\n                    ...\n                ")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Close")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" }
+                    },
+                    [_vm._v("Save changes")]
+                  )
+                ])
+              ])
+            ]
+          )
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LiquidacionComponent.vue?vue&type=template&id=7d1a069e&":
 /*!***********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LiquidacionComponent.vue?vue&type=template&id=7d1a069e& ***!
@@ -53601,28 +54003,754 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "card shadow mb-3" }, [
-          _c("div", { staticClass: "card-header text-center" }, [
-            _vm._v(
-              "Liquidacion de marzo de 2019 - Jurisdiccion Municipio Saladas"
-            )
-          ]),
-          _vm._v(" "),
+  return _c("div", [
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("div", { staticClass: "col-md-8" }, [
           _c(
             "div",
-            { staticClass: "card-body" },
-            [_c("filter-component"), _vm._v(" "), _c("details-component")],
-            1
+            {
+              staticClass: "card shadow mb-3",
+              model: {
+                value: _vm.liquidaciones,
+                callback: function($$v) {
+                  _vm.liquidaciones = $$v
+                },
+                expression: "liquidaciones"
+              }
+            },
+            [
+              _vm._l(_vm.liquidaciones, function(liquidacion) {
+                return _c("div", { staticClass: "card-header text-center" }, [
+                  _vm._v(
+                    "\n                      Liquidacion de " +
+                      _vm._s(liquidacion.periodos[0].periodo) +
+                      "\n                  "
+                  )
+                ])
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "container-fluid my-3" }, [
+                  _c("div", { staticClass: "table-responsive" }, [
+                    _c(
+                      "table",
+                      { staticClass: "table table-borderless" },
+                      [
+                        _vm._l(_vm.liquidaciones, function(liquidacion) {
+                          return _c("caption", [
+                            _vm._v(
+                              "\n                                  Jurisdiccion de " +
+                                _vm._s(
+                                  liquidacion.organismos[0].jurisdiccion_id
+                                ) +
+                                "\n                              "
+                            )
+                          ])
+                        }),
+                        _vm._v(" "),
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.liquidaciones, function(liquidacion) {
+                            return _c(
+                              "tr",
+                              [
+                                _c("th", { attrs: { scope: "row" } }, [
+                                  _c("tr", [
+                                    _c("td", [
+                                      _vm._v("13214" + _vm._s(liquidacion.id))
+                                    ])
+                                  ])
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  _vm._l(liquidacion.organismos, function(
+                                    organismo
+                                  ) {
+                                    return _c("tr", [
+                                      _c("td", [
+                                        _vm._v(
+                                          " " + _vm._s(organismo.organismo)
+                                        )
+                                      ])
+                                    ])
+                                  }),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  _vm._l(
+                                    liquidacion.tipo_liquidaciones,
+                                    function(tipo) {
+                                      return _c("tr", [
+                                        _c("td", [
+                                          _vm._v(" " + _vm._s(tipo.descripcion))
+                                        ])
+                                      ])
+                                    }
+                                  ),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  _vm._l(
+                                    liquidacion.historia_laborales,
+                                    function(historia_laboral) {
+                                      return _c("tr", [
+                                        _c("td", [
+                                          _vm._v(
+                                            " " +
+                                              _vm._s(
+                                                historia_laboral.puesto
+                                                  .cod_laboral
+                                              )
+                                          )
+                                        ])
+                                      ])
+                                    }
+                                  ),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _vm._l(liquidacion.historia_laborales, function(
+                                  historia_laboral
+                                ) {
+                                  return _c("td", [
+                                    _c("tr", [
+                                      _c("td", [
+                                        _vm._v(
+                                          _vm._s(
+                                            historia_laboral.puesto.agente
+                                              .nombre
+                                          )
+                                        )
+                                      ])
+                                    ])
+                                  ])
+                                }),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("tr", [
+                                    _c("td", [
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "btn btn-primary btn-block text-white",
+                                          attrs: {
+                                            href: "#detalle",
+                                            "data-toggle": "modal",
+                                            "data-id": "liquidacion.id"
+                                          }
+                                        },
+                                        [_vm._v("ver")]
+                                      )
+                                    ])
+                                  ])
+                                ])
+                              ],
+                              2
+                            )
+                          }),
+                          0
+                        )
+                      ],
+                      2
+                    )
+                  ])
+                ])
+              ])
+            ],
+            2
           )
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: {
+          id: "detalle",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myLargeModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c(
+              "div",
+              { staticClass: "modal-header" },
+              [
+                _vm._l(_vm.liquidaciones, function(liquidacion) {
+                  return _c(
+                    "h5",
+                    {
+                      staticClass: "modal-title",
+                      attrs: { id: "exampleModalLabel" }
+                    },
+                    [
+                      _vm._v(
+                        "Periodo - " + _vm._s(liquidacion.periodos[0].periodo)
+                      )
+                    ]
+                  )
+                }),
+                _vm._v(" "),
+                _vm._m(1)
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "modal-body" },
+              [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "row bg-light" }, [
+                  _c("div", { staticClass: "col" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col" },
+                        _vm._l(_vm.liquidaciones, function(liquidacion) {
+                          return _c("small", [
+                            _vm._v(
+                              _vm._s(liquidacion.organismos[0].jurisdiccion_id)
+                            )
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col" },
+                        _vm._l(_vm.liquidaciones, function(liquidacion) {
+                          return _c("small", [
+                            _vm._v(_vm._s(liquidacion.organismos[0].organismo))
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col" },
+                        _vm._l(_vm.liquidaciones, function(liquidacion) {
+                          return _c("small", [
+                            _vm._v(
+                              "\n                          " +
+                                _vm._s(liquidacion.periodos[0].mes) +
+                                "\n                        "
+                            )
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col" },
+                        _vm._l(_vm.liquidaciones, function(liquidacion) {
+                          return _c("small", [
+                            _vm._v(
+                              "\n                          " +
+                                _vm._s(liquidacion.periodos[0].anio) +
+                                "\n                        "
+                            )
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.liquidaciones, function(liquidacion) {
+                  return _c("div", { staticClass: "row my-3 bg-light" }, [
+                    _c("div", { staticClass: "col" }, [
+                      _vm._m(8, true),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c(
+                          "div",
+                          { staticClass: "col" },
+                          _vm._l(liquidacion.historia_laborales, function(
+                            historia_laboral
+                          ) {
+                            return _c("small", [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    historia_laboral.puesto.agente.nombre
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          }),
+                          0
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col" }, [
+                      _vm._m(9, true),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c(
+                          "div",
+                          { staticClass: "col" },
+                          _vm._l(liquidacion.historia_laborales, function(
+                            historia_laboral
+                          ) {
+                            return _c("small", [
+                              _vm._v(
+                                _vm._s(historia_laboral.puesto.agente.cuil)
+                              )
+                            ])
+                          }),
+                          0
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col" }, [
+                      _vm._m(10, true),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c(
+                          "div",
+                          { staticClass: "col" },
+                          _vm._l(liquidacion.historia_laborales, function(
+                            historia_laboral
+                          ) {
+                            return _c("small", [
+                              _vm._v(
+                                "\n                             " +
+                                  _vm._s(historia_laboral.puesto.cod_laboral) +
+                                  "\n                        "
+                              )
+                            ])
+                          }),
+                          0
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(11, true),
+                    _vm._v(" "),
+                    _vm._m(12, true)
+                  ])
+                }),
+                _vm._v(" "),
+                _vm._m(13)
+              ],
+              2
+            )
+          ])
+        ])
+      ]
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("# Codigo")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Organismo")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Tipo liquidacion")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Puesto laboral")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Agente")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("accion")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [
+        _c(
+          "span",
+          { staticClass: "btn btn-danger", attrs: { "aria-hidden": "true" } },
+          [_vm._v("×")]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("p", { staticClass: "text-center" }, [_vm._v("LIQUIDACIONES")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Jurisdiccion")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Organismo")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Cargo")])])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("small", [_vm._v("Personal IPS")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Mes")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Año ")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Nombre")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Cuil")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("small", [_vm._v("Puesto Laboral")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Antigüedad")])])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [_c("small", [_vm._v("12")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Estado")])])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [_c("small", [_vm._v("Activo")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "table-responsive shadow p-3 mb-5 bg-white rounded" },
+      [
+        _c(
+          "table",
+          { staticClass: "table table-borderless table-fixed table-sm" },
+          [
+            _c("caption", { staticClass: "justify-content-end" }, [
+              _c("small", [_vm._v("Total Neto $ 31070.50")])
+            ]),
+            _vm._v(" "),
+            _c("thead", { staticClass: "bg-light" }, [
+              _c("tr", [
+                _c(
+                  "th",
+                  { staticClass: "text-center", attrs: { scope: "col" } },
+                  [_c("small", [_vm._v("Cod")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  { staticClass: "text-center", attrs: { scope: "col" } },
+                  [_c("small", [_vm._v("Concepto")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  { staticClass: "text-center", attrs: { scope: "col" } },
+                  [_c("small", [_vm._v("Cantidad")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  { staticClass: "text-center", attrs: { scope: "col" } },
+                  [_c("small", [_vm._v("Remunerativo")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  { staticClass: "text-center", attrs: { scope: "col" } },
+                  [_c("small", [_vm._v("No-Remunerativo")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  { staticClass: "text-center", attrs: { scope: "col" } },
+                  [_c("small", [_vm._v("Adicional-Familiar")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  { staticClass: "text-center", attrs: { scope: "col" } },
+                  [_c("small", [_vm._v("Descuento")])]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "row" } }, [
+                  _c("small", [_vm._v("1")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("Basico")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("1")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("7590.72")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("-")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("-")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("-")])])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { attrs: { scope: "row" } }, [
+                  _c("small", [_vm._v("2")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("Antigüedad")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("12 años")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("3795.40")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("-")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("-")])]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("-")])])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { attrs: { scope: "row" } }, [
+                  _c("small", [_vm._v("65")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("Funcion Especifica")])]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("23379.47")])]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { attrs: { scope: "row" } }, [
+                  _c("small", [_vm._v("3")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("Bonificacion por titulo")])]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("6695.03")])]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { attrs: { scope: "row" } }, [
+                  _c("small", [_vm._v("4")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("Presentismo")])]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("2277.22")])]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { attrs: { scope: "row" } }, [
+                  _c("small", [_vm._v("5")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("Aporte Jubilatorio")])]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("9972.16")])])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { attrs: { scope: "row" } }, [
+                  _c("small", [_vm._v("6")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("Obra Social")])]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("-")]),
+                _vm._v(" "),
+                _c("td", [_c("small", [_vm._v("2695.18")])])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tfoot", { staticClass: "bg-light" }, [
+              _c("th", { attrs: { scope: "row", colspan: "3" } }, [
+                _c("small", [_vm._v("Subtotal")])
+              ]),
+              _vm._v(" "),
+              _c("td", [_c("small", [_vm._v("$ 34765.59")])]),
+              _vm._v(" "),
+              _c("td", [_c("small", [_vm._v("$ 8972.25")])]),
+              _vm._v(" "),
+              _c("td", [_c("small", [_vm._v("-")])]),
+              _vm._v(" "),
+              _c("td", [_c("small", [_vm._v("$ 12667.34")])])
+            ])
+          ]
+        )
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -65819,8 +66947,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('filter-component', __webpack_require__(/*! ./components/FilterComponent.vue */ "./resources/js/components/FilterComponent.vue")["default"]);
 Vue.component('liquidacion-component', __webpack_require__(/*! ./components/LiquidacionComponent.vue */ "./resources/js/components/LiquidacionComponent.vue")["default"]);
-Vue.component('datails-component', __webpack_require__(/*! ./components/DetalleComponent.vue */ "./resources/js/components/DetalleComponent.vue")["default"]);
 Vue.component('footer-component', __webpack_require__(/*! ./components/FooterComponent.vue */ "./resources/js/components/FooterComponent.vue")["default"]);
+Vue.component('jurisdiccion-component', __webpack_require__(/*! ./components/JurisdiccionComponent.vue */ "./resources/js/components/JurisdiccionComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -65879,75 +67007,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
-
-/***/ }),
-
-/***/ "./resources/js/components/DetalleComponent.vue":
-/*!******************************************************!*\
-  !*** ./resources/js/components/DetalleComponent.vue ***!
-  \******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _DetalleComponent_vue_vue_type_template_id_46ecf4b1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DetalleComponent.vue?vue&type=template&id=46ecf4b1& */ "./resources/js/components/DetalleComponent.vue?vue&type=template&id=46ecf4b1&");
-/* harmony import */ var _DetalleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DetalleComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/DetalleComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _DetalleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _DetalleComponent_vue_vue_type_template_id_46ecf4b1___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _DetalleComponent_vue_vue_type_template_id_46ecf4b1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/DetalleComponent.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/DetalleComponent.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/components/DetalleComponent.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DetalleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./DetalleComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DetalleComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DetalleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/DetalleComponent.vue?vue&type=template&id=46ecf4b1&":
-/*!*************************************************************************************!*\
-  !*** ./resources/js/components/DetalleComponent.vue?vue&type=template&id=46ecf4b1& ***!
-  \*************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DetalleComponent_vue_vue_type_template_id_46ecf4b1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./DetalleComponent.vue?vue&type=template&id=46ecf4b1& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DetalleComponent.vue?vue&type=template&id=46ecf4b1&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DetalleComponent_vue_vue_type_template_id_46ecf4b1___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DetalleComponent_vue_vue_type_template_id_46ecf4b1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
 
 /***/ }),
 
@@ -66153,6 +67212,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterComponent_vue_vue_type_template_id_abfbddf2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterComponent_vue_vue_type_template_id_abfbddf2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/JurisdiccionComponent.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/JurisdiccionComponent.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JurisdiccionComponent_vue_vue_type_template_id_de5545e0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JurisdiccionComponent.vue?vue&type=template&id=de5545e0& */ "./resources/js/components/JurisdiccionComponent.vue?vue&type=template&id=de5545e0&");
+/* harmony import */ var _JurisdiccionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JurisdiccionComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/JurisdiccionComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _JurisdiccionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JurisdiccionComponent_vue_vue_type_template_id_de5545e0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JurisdiccionComponent_vue_vue_type_template_id_de5545e0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/JurisdiccionComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/JurisdiccionComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/JurisdiccionComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JurisdiccionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./JurisdiccionComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/JurisdiccionComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JurisdiccionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/JurisdiccionComponent.vue?vue&type=template&id=de5545e0&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/JurisdiccionComponent.vue?vue&type=template&id=de5545e0& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JurisdiccionComponent_vue_vue_type_template_id_de5545e0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./JurisdiccionComponent.vue?vue&type=template&id=de5545e0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/JurisdiccionComponent.vue?vue&type=template&id=de5545e0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JurisdiccionComponent_vue_vue_type_template_id_de5545e0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JurisdiccionComponent_vue_vue_type_template_id_de5545e0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

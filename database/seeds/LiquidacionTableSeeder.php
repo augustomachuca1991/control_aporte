@@ -23,5 +23,7 @@ class LiquidacionTableSeeder extends Seeder
         $periodo    = 25616;
         $tipo_liquidacion = 1;
         $liquidacion->organismos()->attach($organismos->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+
+        $liquidacion->historia_laborales()->attach(1,['estado_id' => 1 , 'funcion_id' => null]);
     }
 }

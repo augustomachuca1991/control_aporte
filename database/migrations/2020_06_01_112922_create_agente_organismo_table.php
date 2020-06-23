@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePuestoLaboralsTable extends Migration
+class CreateAgenteOrganismoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,13 @@ class CreatePuestoLaboralsTable extends Migration
      */
     public function up()
     {
-        Schema::create('puesto_laborals', function (Blueprint $table) {
+        Schema::create('agente_organismo', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('cod_laboral')->unsigned();
             $table->bigInteger('organismo_id')->unsigned();
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
-            //$table->bigInteger('estado_id')->unsigned();
-            //$table->foreign('estado_id')->references('id')->on('estados');
             $table->bigInteger('agente_id')->unsigned();
             $table->foreign('agente_id')->references('id')->on('agentes');
-
             $table->softDeletes(); 
             $table->timestamps();
         });
@@ -35,6 +32,6 @@ class CreatePuestoLaboralsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('puesto_laborals');
+        Schema::dropIfExists('agente_organismo');
     }
 }

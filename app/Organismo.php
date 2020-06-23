@@ -32,4 +32,14 @@ class Organismo extends Model
     {
     	return $this->belongsToMany('App\TipoLiquidacion');
     }
+
+    public function agentes(){
+
+        return $this->belongsToMany( 'App\Agente');
+    }
+
+    public function conceptos()
+    {
+        return $this->hasMany('App\ConceptoLiquidacion');
+    } 
 }
