@@ -35,14 +35,14 @@ Route::middleware('admin')->group(function(){
 		return view('admin.liquidacion');
 	})->name('liquidacion');
 
-	// Categoria 
+	// Categoria
 
 	Route::get('/categorias', 'CategoriaController@index')->name('categorias');
 	Route::post('/categorias/create','CategoriaController@store')->name('create_categoria');
 	Route::get('/categorias/delete/{id}','CategoriaController@delete')->name('delete_categoria');
 
 	//-------- Jurisdicciones Controller------------
-
+    //Route::get('jurisdicciones' , 'JurisdiccionController@get_jurisdicciones')->name('jurisdicciones');
 Route::resource('/jurisdicciones', 'JurisdiccionController')
     ->names('jurisdicciones')
 	->parameters(['jurisdicciones' => 'jurisdicciones']);
@@ -50,4 +50,4 @@ Route::resource('/jurisdicciones', 'JurisdiccionController')
 });
 
 
-	
+

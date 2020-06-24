@@ -19,6 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/origen', 'OrigenController@index')->name('origen');
-Route::get('/jurisdiccion', 'JurisdiccionController@index')->name('jurisdiccion');
+Route::get('/jurisdiccion', 'JurisdiccionController@jurisdiccion_json')->name('jurisdiccion');
 Route::get('/organismo', 'OrganismoController@index')->name('organismo');
 Route::get('/categoria', 'CategoriaController@categoria_json')->name('categoria');
