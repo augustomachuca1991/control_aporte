@@ -29,6 +29,6 @@ class LiquidacionDetalle extends Model
      */
     public function concepto()
     {
-        return $this->belongsTo('App\ConceptoLiquidacion');
+        return $this->belongsTo('App\ConceptoLiquidacion')->with('subtipo');
     }
 }

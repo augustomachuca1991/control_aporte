@@ -17,7 +17,12 @@ class CreateLiquidacionsTable extends Migration
             $table->id();
             $table->bigInteger('declaracion_id')->unsigned();
             $table->foreign('declaracion_id')->references('id')->on('declaracion_juradas');
-
+            $table->decimal('bruto',8,2)->unsigned()->nullable();
+            $table->decimal('bonificable',8,2)->unsigned()->nullable();
+            $table->decimal('no_bonificable',8,2)->unsigned()->nullable();
+            $table->decimal('no_remunerativo',8,2)->unsigned()->nullable();
+            $table->decimal('familiar',8,2)->unsigned()->nullable();
+            $table->decimal('descuento',8,2)->unsigned()->nullable();
             $table->softDeletes(); 
             $table->timestamps();
         });

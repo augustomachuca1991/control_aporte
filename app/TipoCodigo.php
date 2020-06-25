@@ -12,8 +12,8 @@ class TipoCodigo extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function subtipocodigo()
+    public function subtipos()
     {
-        return $this->hasMany('App\SubtipoCodigo');
+        return $this->hasMany('App\SubtipoCodigo' , 'id', 'tipocodigo_id')->with('conceptos');
     }
 }

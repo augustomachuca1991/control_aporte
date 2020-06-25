@@ -82,4 +82,9 @@ class TipoLiquidacionController extends Controller
     {
         //
     }
+
+    public function getTipoLiquidacion(){
+
+        return TipoLiquidacion::all();
+    }
 }

@@ -82,4 +82,9 @@ class PeriodoController extends Controller
     {
         //
     }
+
+    public function getPeriodo(){
+
+        return Periodo::all();
+    }
 }

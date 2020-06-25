@@ -11,7 +11,7 @@ class Origen extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function Jurisdicciones()
+    public function jurisdicciones()
     {
         return $this->hasMany('App\Jurisdiccion')->with('organismos');
     }

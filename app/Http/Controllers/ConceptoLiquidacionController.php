@@ -82,4 +82,9 @@ class ConceptoLiquidacionController extends Controller
     {
         //
     }
+
+    public function getConcepto()
+    {
+        return ConceptoLiquidacion::with('subtipo')->get();
+    }
 }

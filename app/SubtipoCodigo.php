@@ -14,7 +14,7 @@ class SubtipoCodigo extends Model
 
     public function conceptos()
     {
-        return $this->hasMany('App\ConceptoLiquidacion');
+        return $this->hasMany('App\ConceptoLiquidacion')->with('detalles');
     }
 
     public function tipocodigo()

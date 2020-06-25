@@ -48,7 +48,7 @@ class Liquidacion extends Model
      */
     public function organismos()
     {
-    	return $this->belongsToMany('App\Organismo');
+    	return $this->belongsToMany('App\Organismo')->with('jurisdiccion');
     }
 
     /**
@@ -78,8 +78,16 @@ class Liquidacion extends Model
      */
     public function detalles()
     {
-        return $this->hasMany('App\LiquidacionDetalle');
+        return $this->hasMany('App\LiquidacionDetalle')->with('concepto');
     }
+
+
+    //public function conceptos()
+    //{
+    //    return $this->belongsToMany('App\ConceptoLiquidacion','liquidacion_detalles','concepto_id', 'liquidacion_id')->with('subtipocodigo');
+    //}
+
+
 
 }
     

@@ -44,9 +44,30 @@ class LiquidacionController extends Controller
      * @param  \App\Liquidacion  $liquidacion
      * @return \Illuminate\Http\Response
      */
-    public function show(Liquidacion $liquidacion)
+    public function show($id)
     {
-        //
+
+        $liquidaciones = Liquidacion::where('id',$id)
+                        ->with(['organismos','periodos','tipoLiquidaciones','historia_laborales','detalles'])
+                        ->get();
+        foreach ($liquidaciones as $liquidacion) {
+            foreach ($liquidacion->detalles as $detalle) {
+                if ($detalle->concepto->subtipo->tipocodigo->id == 1) {
+                    $liquidacion->bruto += $detalle->importe;
+                }elseif ($detalle->concepto->subtipo->tipocodigo->id == 2) {
+                    $liquidacion->bonificable += $detalle->importe;
+                }elseif ($detalle->concepto->subtipo->tipocodigo->id == 3) {
+                    $liquidacion->no_bonificable += $detalle->importe;
+                }elseif ($detalle->concepto->subtipo->tipocodigo->id == 4) {
+                    $liquidacion->no_remunerativo += $detalle->importe;
+                }elseif ($detalle->concepto->subtipo->tipocodigo->id == 5) {
+                    $liquidacion->familiar += $detalle->importe;
+                }else{
+                    $liquidacion->descuento += $detalle->importe;
+                }
+            }
+        }
+        return $liquidaciones;
     }
 
     /**
@@ -85,6 +106,7 @@ class LiquidacionController extends Controller
 
     public function getliquidaciones()
     {
+        
         return Liquidacion::with(['organismos','periodos','tipoLiquidaciones','historia_laborales'])->get();
     }
 

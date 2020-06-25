@@ -14,16 +14,22 @@ class ConceptoLiquidacion extends Model
 
     public function detalles()
     {
-        return $this->hasMany('App\LiquidacionDetalle');
+        return $this->hasMany('App\LiquidacionDetalle')->with('liquidacion');
     }
 
-    public function subtipocodigo()
+    
+    public function subtipo()
     {
-        return $this->belongsTo('App\SubtipoCodigo');
+        return $this->belongsTo('App\SubtipoCodigo')->with('tipocodigo');
     }
 
     public function organismo()
     {
         return $this->belongsTo('App\Organismo');
     }
+
+    //public function liquidaciones()
+    //{
+    //    return $this->belongsToMany('App\Liquidacion','liquidacion_detalles','id', 'concepto_id');
+    //}
 }

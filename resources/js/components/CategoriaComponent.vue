@@ -14,7 +14,7 @@
                 <td>{{categoria.categoria}}</td>
                 <td>
                    <a :href="'edit_categoria/' + categoria.id" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#edit_categoria"><i class="far fa-edit"></i></a>
-                   <a :href="'delete_categoria/' + categoria.id" class="btn btn-primary btn-sm text-white"><i class="far fa-trash-alt"></i></i></a>
+                   <a :href="'delete_categoria/' + categoria.id" class="btn btn-primary btn-sm text-white"><i class="far fa-trash-alt"></i></a>
                 </td>
               </tr>
             </tbody>

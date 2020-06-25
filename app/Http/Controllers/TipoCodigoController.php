@@ -82,4 +82,8 @@ class TipoCodigoController extends Controller
     {
         //
     }
+
+    public function getTipo(){
+        return TipoCodigo::with('subtipos')->get();
+    }
 }

@@ -14,7 +14,7 @@ class Organismo extends Model
 
     public function jurisdiccion()
     {
-        return $this->belongsTo('App\Jurisdiccion');
+        return $this->belongsTo('App\Jurisdiccion')->with('origen');
     }
 
     public function liquidaciones()
