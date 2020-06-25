@@ -14,8 +14,8 @@
           <th scope="row">{{categoria.cod_categoria}}</th>
           <td>{{categoria.categoria}}</td>
           <td>
-              <a @click="editCategoria(categoria.id)" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#edit_categoria"><i class="far fa-edit"></i></a>
-              <a @click="deleteCategoria(categoria.id)" class="btn btn-primary btn-sm text-white"><i class="far fa-trash-alt"></i></i></a>
+              <a @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#edit_categoria"><i class="far fa-edit"></i></a>
+              <a @click="deleteCategoria(categoria.id)" class="btn btn-outline-danger border-0 btn-sm shadow"><i class="far fa-trash-alt"></i></i></a>
           </td>
         </tr>
       </tbody>
@@ -41,7 +41,7 @@
               <input type="text"class="form-control" name="categoria" v-model="categoria.categoria">
             </div>
             <div class="modal-footer">
-              <button v-on:click="updateCategoria(categoria.id)" data-dismiss="modal" id="editar_categoria" class="btn btn-primary">Editar</button>
+              <button v-on:click="updateCategoria(categoria.id)" data-dismiss="modal" id="editar_categoria" class="btn btn-outline-danger border-0">Editar</button>
             </div>
           </div>
         </div>
