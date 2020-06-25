@@ -12,7 +12,7 @@ class CategoriaTableSeeder extends Seeder
      */
     public function run()
     {
-        $categorias = Categoria::create([
+        $categoria = Categoria::create([
             'cod_categoria' => 1, 'categoria' => 'Docentes' ,  'created_at' => now()
         ]);
 
