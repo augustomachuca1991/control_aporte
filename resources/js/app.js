@@ -27,6 +27,9 @@ Vue.component('liquidacion-component', require('./components/LiquidacionComponen
 Vue.component('footer-component', require('./components/FooterComponent.vue').default);
 Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
 Vue.component('filtertipoliquidacion-component', require('./components/FilterTipoLiquidacionComponent.vue').default);
+Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
+Vue.component('clase-component', require('./components/ClaseComponent.vue').default);
+Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

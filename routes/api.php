@@ -44,3 +44,8 @@ Route::get('/tipoliquidacion', 'TipoLiquidacionController@getTipoLiquidacion')->
 
 //periodos
 Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
+
+// Categoria 
+
+Route::get('/categorias', 'CategoriaController@index')->name('categorias');
+Route::get('/clases', 'ClaseController@get_clases')->name('clases');

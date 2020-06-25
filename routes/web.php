@@ -35,11 +35,19 @@ Route::middleware('admin')->group(function(){
 
 	Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidacion');
 
-	// Categoria 
+	//-------- Categoria Controller------------
+	Route::get('/categoria', 'CategoriaController@get_categorias')->name('categoria');
+	Route::get('/categoria/edit/{id}', 'CategoriaController@edit')->name('edit_categoria');
+	Route::put('/categoria/update/{id}', 'CategoriaController@update')->name('update_categoria');
+	Route::post('/categoria/create', 'CategoriaController@store')->name('create_categoria');
+	Route::delete('/categoria/delete/{id}', 'CategoriaController@destroy')->name('delete_categoria');
 
-	Route::get('/categorias', 'CategoriaController@index')->name('categorias');
-	Route::post('/categorias/create','CategoriaController@store')->name('create_categoria');
-	Route::get('/categorias/delete/{id}','CategoriaController@delete')->name('delete_categoria');
+	//-------- Clase Controller------------	
+	Route::get('/clase', 'ClaseController@index')->name('clase');
+	Route::get('/clase/edit/{id}', 'ClaseController@edit')->name('edit_clase');
+	Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase');
+	Route::post('/clase/create', 'ClaseController@store')->name('create_clase');
+	Route::delete('/clase/delete/{id}', 'ClaseController@destroy')->name('delete_clase');
 
 	//-------- Jurisdicciones Controller------------
 

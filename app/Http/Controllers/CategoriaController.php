@@ -37,15 +37,18 @@ class CategoriaController extends Controller
     {
         // dd($request->all());
         $validarDatos = $request->validate([
-            'cod_categoria' => 'required|numeric',
-            'categoria'     => 'required|string',
+            'cod_jurisdiccion'  => 'required',
+            'cod_categoria'     => 'required|numeric',
+            'categoria'         => 'required|string',
         ]);
 
         $categoria = Categoria::create([
                                         'cod_categoria' => $request['cod_categoria'],
                                         'categoria'     => $request['categoria']
                                         ]);
-        return back()->withSuccess('Categoria creada con éxito');
+        $cod_jurisdiccion = $request->cod_jurisdiccion;
+        $categoria->jurisdicciones()->attach($cod_jurisdiccion);
+        return $categoria;
     }
 
     /**
@@ -65,9 +68,9 @@ class CategoriaController extends Controller
      * @param  \App\Categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function edit(Categoria $categoria)
+    public function edit($id)
     {
-        //
+        return Categoria::find($id);
     }
 
     /**
@@ -77,9 +80,21 @@ class CategoriaController extends Controller
      * @param  \App\Categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categoria $categoria)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'categoria'     => 'required'
+        ]);
+
+        $categoria =  Categoria::find($id);
+
+        $categoria->categoria = $request['categoria'];
+        $categoria->updated_at = now();
+        $categoria->save();
+
+        return $categoria;
+       
+      
     }
 
     /**
@@ -88,12 +103,15 @@ class CategoriaController extends Controller
      * @param  \App\Categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categoria $categoria)
+    public function destroy($id)
     {
-        //
+        $categoria = Categoria::find($id);
+        $categoria->delete();
+
+        return back()->withSuccess('Categoria eliminada con éxito');
     }
 
-    public function categoria_json(){
+    public function get_categorias(){
         return Categoria::all();
     }
 }
