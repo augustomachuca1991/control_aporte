@@ -108,7 +108,7 @@ class ClaseController extends Controller
         return back()->withSuccess('Clase eliminada con éxito');
     }
 
-    public function get_clases(){
+    public function getClases(){
         return view('clases.index');
     }
 }

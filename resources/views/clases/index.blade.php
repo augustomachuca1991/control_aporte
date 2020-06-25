@@ -20,8 +20,7 @@
     </div>  
  </div>
 
-{{-- <!-- Modal -->
-@include('modal.nueva_clase') --}}
+
 
 
 

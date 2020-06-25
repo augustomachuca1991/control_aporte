@@ -1,18 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <!-- Button trigger modal -->
-    <div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Launch demo modal
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-=======
     <div id="jurisdicciones">
 
         <div class="row">
@@ -125,7 +111,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="eliminarModalLabel">Eliminar Modal</h5>
->>>>>>> 0a0d1bdc35ba67d04538eb7d3eeb825a32fde760
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -135,11 +120,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<<<<<<< HEAD
-                        <button type="button" class="btn btn-primary">Save changes</button>
-=======
                         <button type="button" class="btn btn-danger">Eliminar</button>
->>>>>>> 0a0d1bdc35ba67d04538eb7d3eeb825a32fde760
                     </div>
                 </div>
             </div>
@@ -165,7 +146,6 @@
                 form_editar: false,
                 encabezado: ''
             }
-
         },
         mounted() {
             axios.get('api/jurisdiccion').then((response)=>{
@@ -173,13 +153,10 @@
                 this.jurisdicciones = response.data;
             })
         },
-
         verJurisdiccion: function(event){
             console.log(event);
             this.jur.jurisdiccion = event,
             this.encabezado = 'Detalle Jurisdicción'
         }
-
     }
-
 </script>

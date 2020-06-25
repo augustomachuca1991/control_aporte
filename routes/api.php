@@ -21,7 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/origen', 'OrigenController@index')->name('origen');
 Route::get('/jurisdiccion', 'JurisdiccionController@jurisdiccion_json')->name('jurisdiccion');
 Route::get('/organismo', 'OrganismoController@index')->name('organismo');
-Route::get('/categoria', 'CategoriaController@categoria_json')->name('categoria');
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
@@ -47,5 +46,15 @@ Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
 
 // Categoria 
 
-Route::get('/categorias', 'CategoriaController@index')->name('categorias');
-Route::get('/clases', 'ClaseController@get_clases')->name('clases');
+Route::get('/categoria', 'CategoriaController@getCategorias')->name('categoria');
+Route::get('/categoria/edit/{id}', 'CategoriaController@edit')->name('edit_categoria');
+Route::put('/categoria/update/{id}', 'CategoriaController@update')->name('update_categoria');
+Route::post('/categoria/create', 'CategoriaController@store')->name('create_categoria');
+Route::delete('/categoria/delete/{id}', 'CategoriaController@destroy')->name('delete_categoria');
+
+Route::get('/clase', 'ClaseController@getClases')->name('clases');
+Route::get('/clase/edit/{id}', 'ClaseController@edit')->name('edit_clase');
+Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase');
+Route::post('/clase/create', 'ClaseController@store')->name('create_clase');
+Route::delete('/clase/delete/{id}', 'ClaseController@destroy')->name('delete_clase');
+

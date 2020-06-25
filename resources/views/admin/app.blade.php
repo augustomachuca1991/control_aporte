@@ -138,7 +138,7 @@
 
     
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('categorias')}}">
+        <a class="nav-link" href="{{ route('categoria')}}">
           <i class="fas fa-fw fa-table"></i>
           <span>ABM</span></a>
       </li>

@@ -111,7 +111,7 @@ class CategoriaController extends Controller
         return back()->withSuccess('Categoria eliminada con éxito');
     }
 
-    public function get_categorias(){
+    public function getCategorias(){
         return Categoria::all();
     }
 }
