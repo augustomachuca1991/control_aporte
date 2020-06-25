@@ -2,7 +2,7 @@
 @section('body')
     <div class="card">
         <div class="card-header">
-            <h1>{{ $jurisdicciones->jurisdiccion }}</h1>
+            <h1>{{ $jurisdiccion->jurisdiccion }}</h1>
         </div>
         <div class="card-body">
             <div class="one">

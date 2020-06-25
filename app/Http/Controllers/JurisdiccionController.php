@@ -16,10 +16,12 @@ class JurisdiccionController extends Controller
     public function index()
     {
         //
-        $jurisdicciones = Jurisdiccion::paginate(10);
-        return view('jurisdicciones.index', [
-            'jurisdicciones' => $jurisdicciones
-        ]);
+        //$jurisdicciones = Jurisdiccion::paginate(10);
+        //return view('jurisdicciones.index', [
+        //    'jurisdicciones' => $jurisdicciones
+        //]);
+
+        return view('jurisdicciones.index');
     }
 
     /**
@@ -130,5 +132,10 @@ class JurisdiccionController extends Controller
         $jurisdiccion->delete();
 
         return redirect()->route('jurisdicciones.index')->with('message', 'Jurisdicción eliminada satisfactoriamente');
+    }
+
+    public function jurisdiccion_json(Jurisdiccion $jurisdiccion)
+    {
+        return Jurisdiccion::all();
     }
 }
