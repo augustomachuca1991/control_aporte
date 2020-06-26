@@ -19,7 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/origen', 'OrigenController@index')->name('origen');
-Route::get('/jurisdiccion', 'JurisdiccionController@jurisdiccion_json')->name('jurisdiccion');
 Route::get('/organismo', 'OrganismoController@index')->name('organismo');
 
 //liquidaciones
@@ -44,9 +43,9 @@ Route::get('/tipoliquidacion', 'TipoLiquidacionController@getTipoLiquidacion')->
 //periodos
 Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
 
-// Categoria 
+// Categoria
 
-Route::get('/categoria', 'CategoriaController@getCategorias')->name('categoria');
+Route::get('/categoria/{id}', 'CategoriaController@getCategorias')->name('categoria');
 Route::get('/categoria/edit/{id}', 'CategoriaController@edit')->name('edit_categoria');
 Route::put('/categoria/update/{id}', 'CategoriaController@update')->name('update_categoria');
 Route::post('/categoria/create', 'CategoriaController@store')->name('create_categoria');
@@ -58,3 +57,9 @@ Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase')
 Route::post('/clase/create', 'ClaseController@store')->name('create_clase');
 Route::delete('/clase/delete/{id}', 'ClaseController@destroy')->name('delete_clase');
 
+// Jurisdicciones
+Route::get('/jurisdiccion', 'JurisdiccionController@jurisdiccion_json')->name('jurisdiccion');
+Route::get('/jurisdiccion/edit/{id}', 'JurisdiccionController@edit')->name('edit_jurisdiccion');
+Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('update_jurisdiccion');
+Route::post('/jurisdiccion/create', 'JurisdiccionController@store')->name('create_jurisdiccion');
+Route::delete('/jurisdiccion/delete/{id}', 'JurisdiccionController@destroy')->name('delete_jurisdiccion');

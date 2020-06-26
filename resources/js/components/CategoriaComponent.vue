@@ -11,11 +11,17 @@
       </thead>
       <tbody>
         <tr v-for="(categoria, index) in categorias"  v-bind:key="categoria.id">
-          <th scope="row">{{categoria.cod_categoria}}</th>
+          <th>{{categoria.cod_categoria}}</th>
           <td>{{categoria.categoria}}</td>
-          <td>
-              <a @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#edit_categoria"><i class="far fa-edit"></i></a>
-              <a @click="deleteCategoria(categoria.id)" class="btn btn-outline-danger border-0 btn-sm shadow"><i class="far fa-trash-alt"></i></i></a>
+          <td class="row">
+              <button @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark col-md-2" data-toggle="modal" data-target="#edit_categoria">
+                <i class="far fa-edit"></i>
+              </button>
+              <form @submit.prevent="deleteCategoria(categoria.id)">
+                <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark col-md-2">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+              </form>
           </td>
         </tr>
       </tbody>
@@ -33,7 +39,7 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label class="col-form-label">Cod. categoría</label>
+              <label class="col-form-label">Código categoría</label>
               <input type="text" class="form-control" name="cod_categoria" v-model="categoria.cod_categoria" :disabled="0">
             </div>
             <div class="form-group">
@@ -58,15 +64,15 @@
               <span class="btn btn-danger" aria-hidden="true">&times;</span>
             </button>
           </div>
-        
           <div class="modal-body">
             <form @submit.prevent="createCategoria()">
               <div class="form-group">
                 <label class="col-form-label" for="origen">Origen</label>
                 <select class="custom-select mr-sm-2" :id="origen" name="origen" v-model="selectedOrigen" placeholder="Seleccione origen">
-                <option :value="''" disabled selected>Selecciona una opción</option>
+                <option :value="''" disabled selected>Seleccione Origen</option>
                 <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
                 </select>
+                <span style="color:red" v-if="feedback.cod_origen" v-text="feedback.cod_origen[0]" ></span>
               </div>
               <div class="form-group">
                 <label class="col-form-label" for="origen">Jurisdicción</label>
@@ -74,18 +80,18 @@
                   <option :value="''" disabled selected> Seleccione Jurisdicción</option>
                   <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
                 </select>
+                <span style="color:red" v-if="feedback.cod_jurisdiccion" v-text="feedback.cod_jurisdiccion[0]" ></span>
               </div>
               <div class="form-group has-feedback">
-                <label for="cod_categoria" class="col-form-label">Cod. categoría</label>
-                <input type="number" class="form-control" id="cod_categoria" name="cod_categoria" v-model="categoria.cod_categoria">
+                <label for="cod_categoria" class="col-form-label">Código Categoría</label>
+                <input type="number" class="form-control" id="cod_categoria" name="cod_categoria" v-model="categoria.cod_categoria" required>
+                <span  style="color:red" v-if="feedback.cod_categoria" v-text="feedback.cod_categoria[0]" ></span>
               </div>
               <div class="form-group">
                 <label for="categoria" class="col-form-label">Nombre</label>
-                <input type="text" class="form-control" id="categoria" name="categoria" v-model="categoria.categoria">
+                <input type="text" class="form-control" id="categoria" name="categoria" v-model="categoria.categoria" required>
+                <span style="color:red" v-if="feedback.categoria" v-text="feedback.categoria[0]" ></span>
               </div>
-                <div  v-if="feedback">
-                  <span  style="color:red" v-text="feedback" ></span>
-                </div>
               <div class="modal-footer">
                 <button id="crear_categoria" type="submit" class="btn btn-primary">Crear</button>
               </div>
@@ -117,11 +123,11 @@
                 errors:[]
             }
         },
-      
         methods:{
             getCategorias(){
-              axios.get('api/categoria/').then((response)=>{
+              axios.get('api/categoria/1').then((response)=>{
                 this.categorias = response.data;
+                this.category=response.data
               })
               .catch(function (error) {
                   console.log(error);
@@ -137,19 +143,24 @@
               });
             },
             createCategoria() {
-              const params = {
-                cod_jurisdiccion : this.selectedJurisdiccion,
-                cod_categoria : this.categoria.cod_categoria,
-                categoria : this.categoria.categoria
+              if(confirm("¿Seguro que quieres crear este registro?")){
+                const params = {
+                    cod_jurisdiccion : this.selectedJurisdiccion,
+                    cod_categoria : this.categoria.cod_categoria,
+                    categoria : this.categoria.categoria
+                  }
+                  axios.post('api/categoria/create', params )
+                  .then(response => {
+                    console.log(response.data);
+                    this.categorias = response.data;
+                    $('#categorias').removeClass('modal-open');
+                    $("#nueva_categoria").modal('hide');
+                    this.empty();
+                    this.getCategorias();
+                  }).catch(error => {
+                    this.feedback = error.response.data.errors;
+                  });
               }
-              axios.post('api/categoria/create', params )
-              .then(response => {
-                console.log(response.data);
-                this.categorias = response.data;
-                this.getCategorias();
-              }).catch(error => {
-                this.feedback = error.response.data.errors;
-              });
             },
             editCategoria(id){
               axios.get(`api/categoria/edit/${id}`)
@@ -160,30 +171,39 @@
               });
             },
             updateCategoria(id){
-              const params = {
-                cod_categoria : this.categoria.cod_categoria,
-                categoria : this.categoria.categoria
-              };
-              axios.put(`api/categoria/update/${id}`, params)
-              .then((response)=>{
-                // $('#edit_categoria').modal('hide');
-                // $('#edit_categoria').removeClass('.modal-backdrop');
-                this.getCategorias(); 
-                this.categoria = [];      
-              }).catch(function (error) {
-                console.log(error);
-              });
+              if(confirm("¿Seguro que desea guardar los cambios?")){
+                const params = {
+                  cod_categoria : this.categoria.cod_categoria,
+                  categoria : this.categoria.categoria
+                };
+                axios.put(`api/categoria/update/${id}`, params)
+                .then((response)=>{
+                  this.getCategorias(); 
+                  this.categoria = [];      
+                }).catch(function (error) {
+                  console.log(error);
+                });
+              }
             },
             deleteCategoria(id){
-              axios.delete(`api/categoria/delete/${id}`)
-              .then((response)=>{
-                this.getCategorias();
-              }).catch(function (error) {
-                console.log(error);
-              });
+              if(confirm("¿Seguro que quieres eliminar este registro?")){
+                axios.delete(`api/categoria/delete/${id}`)
+                .then((response)=>{
+                  this.categorias = response.data;
+                  this.getCategorias();
+                }).catch(function (error) {
+                  console.log(error);
+                });
+              }
             },
             empty(){
               this.categoria = [];
+              this.selectedOrigen = "";
+              this.selectedJurisdiccion = "";
+              this.feedback = [];
+            },
+            onFail(errors) {
+              this.errors.record(errors.errors);
             }
         },
         watch: {

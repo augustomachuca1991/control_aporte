@@ -38,7 +38,7 @@ class CategoriaController extends Controller
         // dd($request->all());
         $validarDatos = $request->validate([
             'cod_jurisdiccion'  => 'required',
-            'cod_categoria'     => 'required|numeric',
+            'cod_categoria'     => 'required|unique:categorias',
             'categoria'         => 'required|string',
         ]);
 
@@ -108,10 +108,12 @@ class CategoriaController extends Controller
         $categoria = Categoria::find($id);
         $categoria->delete();
 
-        return back()->withSuccess('Categoria eliminada con éxito');
+        return $this->getCategorias();
     }
 
-    public function getCategorias(){
-        return Categoria::all();
+    public function getCategorias($id){
+        return Categoria::whereHas('jurisdicciones', function ($query) {
+            $query->where('jurisdiccion_id',2);
+        })->get();
     }
 }
