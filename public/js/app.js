@@ -2241,8 +2241,17 @@ __webpack_require__.r(__webpack_exports__);
         created_at: '',
         updated_at: ''
       },
+      jur_aux: {
+        id: null,
+        cod_jurisdiccion: null,
+        jurisdiccion: '',
+        origen_id: null,
+        created_at: '',
+        updated_at: ''
+      },
       form_editar: false,
-      encabezado: ''
+      encabezado: '',
+      resguardo: ''
     };
   },
   mounted: function mounted() {
@@ -2253,9 +2262,23 @@ __webpack_require__.r(__webpack_exports__);
       _this.jurisdicciones = response.data;
     });
   },
-  verJurisdiccion: function verJurisdiccion(event) {
-    console.log(event);
-    this.jur.jurisdiccion = event, this.encabezado = 'Detalle Jurisdicción';
+  methods: {
+    restaurar: function (p_jurisdiccion) {
+      console.log(p_jurisdiccion);
+      alert(p_jurisdiccion.jurisdiccion); //this.jur = Object.assign({},p_jurisdiccion);
+
+      this.jur.id = p_jurisdiccion.id;
+      this.jur.cod_jurisdiccion = p_jurisdiccion.cod_jurisdiccion;
+      this.jur.jurisdiccion = p_jurisdiccion.jurisdiccion;
+      this.jur.origen_id = p_jurisdiccion.origen_id;
+      this.jur.created_at = p_jurisdiccion.created_at;
+      this.jur.updated_at = p_jurisdiccion.updated_at;
+    }.bind(undefined),
+    empty: function empty(p_jurisdiccion) {
+      console.log(p_jurisdiccion);
+      this.resguardo = p_jurisdiccion.jurisdiccion;
+      this.jur_aux = p_jurisdiccion;
+    }
   }
 });
 
@@ -53841,7 +53864,6 @@ var render = function() {
                   {
                     staticClass: "btn btn-primary",
                     attrs: {
-                      href: "jurisdicciones/" + jurisdiccion.id + "edit/",
                       "data-toggle": "modal",
                       "data-target": "#altaModal"
                     }
@@ -53853,7 +53875,13 @@ var render = function() {
                         staticClass: "fa fa-cog",
                         on: {
                           click: function($event) {
-                            _vm.encabezado = "Editar Jurisdicción"
+                            ;(_vm.jur_aux = Object.assign(
+                              {},
+                              _vm.jur_aux,
+                              _vm.jur
+                            )),
+                              (_vm.jur = jurisdiccion),
+                              (_vm.encabezado = "Editar Jurisdicción")
                           }
                         }
                       },
@@ -53881,13 +53909,6 @@ var render = function() {
           role: "dialog",
           "aria-labelledby": "mostrarModalLabel",
           "aria-hidden": "true"
-        },
-        model: {
-          value: _vm.jurisdiccion,
-          callback: function($$v) {
-            _vm.jurisdiccion = $$v
-          },
-          expression: "jurisdiccion"
         }
       },
       [
@@ -53924,19 +53945,37 @@ var render = function() {
                             [_vm._v("Jurisdicción")]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "textarea",
-                            {
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                name: "descripcion",
-                                id: "mostrarDescripcion",
-                                readonly: ""
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.jur.jurisdiccion,
+                                expression: "jur.jurisdiccion"
                               }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              name: "descripcion",
+                              id: "mostrarDescripcion",
+                              value: "",
+                              readonly: ""
                             },
-                            [_vm._v(_vm._s(_vm.jur.jurisdiccion))]
-                          )
+                            domProps: { value: _vm.jur.jurisdiccion },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.jur,
+                                  "jurisdiccion",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
                         ])
                       ]),
                       _vm._v(" "),
@@ -53963,13 +54002,6 @@ var render = function() {
           role: "dialog",
           "aria-labelledby": "altaModalLabel",
           "aria-hidden": "true"
-        },
-        model: {
-          value: _vm.encabezado,
-          callback: function($$v) {
-            _vm.encabezado = $$v
-          },
-          expression: "encabezado"
         }
       },
       [
@@ -53986,12 +54018,102 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "modal-header" }, [
-                  _c("h1", { staticClass: "modal-title" }, [
-                    _vm._v(_vm._s(_vm.encabezado))
-                  ])
+                  _c(
+                    "h1",
+                    {
+                      staticClass: "modal-title",
+                      model: {
+                        value: _vm.encabezado,
+                        callback: function($$v) {
+                          _vm.encabezado = $$v
+                        },
+                        expression: "encabezado"
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.encabezado))]
+                  )
                 ]),
                 _vm._v(" "),
-                _vm._m(4)
+                _c("div", { staticClass: "modal-body" }, [
+                  _c(
+                    "form",
+                    {
+                      staticClass: "form-group",
+                      attrs: { action: "", method: "POST" }
+                    },
+                    [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "required",
+                              attrs: { for: "altaDescripcion" }
+                            },
+                            [_vm._v("Jurisdicción")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.jur.jurisdiccion,
+                                expression: "jur.jurisdiccion"
+                              }
+                            ],
+                            attrs: {
+                              type: "text",
+                              name: "descripcion",
+                              id: "altaDescripcion"
+                            },
+                            domProps: { value: _vm.jur.jurisdiccion },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.jur,
+                                  "jurisdiccion",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _c("input", {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            type: "submit",
+                            onclick:
+                              "return confirm('Está seguro que desea guardar?')",
+                            value: "Guardar"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-danger",
+                            attrs: { href: "", "data-dismiss": "modal" },
+                            on: {
+                              click: function($event) {
+                                return _vm.empty(_vm.jur)
+                              }
+                            }
+                          },
+                          [_vm._v("Volver")]
+                        )
+                      ])
+                    ]
+                  )
+                ])
               ]
             )
           ]
@@ -53999,27 +54121,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "eliminarModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "eliminarModalLabel",
-          "aria-hidden": "true"
-        },
-        model: {
-          value: _vm.encabezado,
-          callback: function($$v) {
-            _vm.encabezado = $$v
-          },
-          expression: "encabezado"
-        }
-      },
-      [_vm._m(5)]
-    )
+    _vm._m(4)
   ])
 }
 var staticRenderFns = [
@@ -54095,111 +54197,75 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-body" }, [
-      _c(
-        "form",
-        { staticClass: "form-group", attrs: { action: "", method: "POST" } },
-        [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col" }, [
-              _c(
-                "label",
-                { staticClass: "required", attrs: { for: "altaDescripcion" } },
-                [_vm._v("Jurisdicción")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass:
-                  "form-control @error('descripcion') is-invalid @enderror",
-                attrs: {
-                  type: "text",
-                  name: "descripcion",
-                  id: "altaDescripcion",
-                  value: ""
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-footer" }, [
-            _c("input", {
-              staticClass: "btn btn-primary",
-              attrs: {
-                type: "submit",
-                onclick: "return confirm('Está seguro que desea guardar?')",
-                value: "Guardar"
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-danger",
-                attrs: { href: "", "data-dismiss": "modal" }
-              },
-              [_vm._v("Volver")]
-            )
-          ])
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "modal-dialog", attrs: { role: "document" } },
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "eliminarModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "eliminarModalLabel",
+          "aria-hidden": "true"
+        }
+      },
       [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "modal-header" }, [
-            _c(
-              "h5",
-              {
-                staticClass: "modal-title",
-                attrs: { id: "eliminarModalLabel" }
-              },
-              [_vm._v("Eliminar Modal")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "close",
-                attrs: {
-                  type: "button",
-                  "data-dismiss": "modal",
-                  "aria-label": "Close"
-                }
-              },
-              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _vm._v("\n                    ...\n                ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-footer" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-secondary",
-                attrs: { type: "button", "data-dismiss": "modal" }
-              },
-              [_vm._v("Close")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-danger", attrs: { type: "button" } },
-              [_vm._v("Eliminar")]
-            )
-          ])
-        ])
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "eliminarModalLabel" }
+                  },
+                  [_vm._v("Eliminar Modal")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _vm._v("\n                    ...\n                ")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-danger", attrs: { type: "button" } },
+                  [_vm._v("Eliminar")]
+                )
+              ])
+            ])
+          ]
+        )
       ]
     )
   }

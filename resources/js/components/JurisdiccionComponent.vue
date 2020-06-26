@@ -31,8 +31,9 @@
                 <td>{{ jurisdiccion.updated_at }}</td>
                 <td class="td-button">
                     <!-- Button trigger modal -->
-                    <a :href="'jurisdicciones/'+jurisdiccion.id+'edit/'" class="btn btn-primary" data-toggle="modal" data-target="#altaModal">
-                        <i class="fa fa-cog" v-on:click="encabezado = 'Editar Jurisdicción'"> Editar </i>
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#altaModal">
+                        <!--i class="fa fa-cog" v-on:click="editarJurisdiccion(jurisdiccion)"> Editar </i-->
+                        <i class="fa fa-cog" v-on:click="jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion, encabezado = 'Editar Jurisdicción'"> Editar </i>
                     </a>
 
                     <!-- Button trigger modal
@@ -52,7 +53,7 @@
     </table>
 
         <!-- Modal mostrar -->
-        <div class="modal fade" id="mostrarModal" tabindex="-1" role="dialog" aria-labelledby="mostrarModalLabel" aria-hidden="true" v-model="jurisdiccion">
+        <div class="modal fade" id="mostrarModal" tabindex="-1" role="dialog" aria-labelledby="mostrarModalLabel" aria-hidden="true" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
                     <div class="modal-header">
@@ -63,8 +64,8 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="altaDescripcion" class="required">Jurisdicción</label>
-                                    <textarea type="text" name="descripcion" id="mostrarDescripcion"
-                                              class="form-control" readonly>{{jur.jurisdiccion}}</textarea>
+                                    <input type="text" name="descripcion" id="mostrarDescripcion" value=""
+                                           class="form-control"  v-model="jur.jurisdiccion" readonly>
                                 </div>
                             </div>
                             <br>
@@ -79,25 +80,24 @@
 
 
         <!-- Modal alta -->
-        <div class="modal fade" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="altaModalLabel" aria-hidden="true" v-model="encabezado">
+        <div class="modal fade" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="altaModalLabel" aria-hidden="true" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
                     <div class="modal-header">
-                        <h1 class="modal-title">{{encabezado}}</h1>
+                        <h1 class="modal-title" v-model="encabezado">{{encabezado}}</h1>
                     </div>
                     <div class="modal-body">
                         <form action="" class="form-group" method="POST">
                             <div class="row">
                                 <div class="col">
                                     <label for="altaDescripcion" class="required">Jurisdicción</label>
-                                    <input type="text" name="descripcion" id="altaDescripcion" value=""
-                                           class="form-control @error('descripcion') is-invalid @enderror">
+                                    <input type="text"  v-model="jur.jurisdiccion" name="descripcion" id="altaDescripcion">
                                 </div>
                             </div>
                             <br>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-primary" onclick="return confirm('Está seguro que desea guardar?')" value="Guardar">
-                                <a href="" class="btn btn-danger" data-dismiss="modal">Volver</a>
+                                <a href="" class="btn btn-danger" data-dismiss="modal" v-on:click="empty(jur)">Volver</a>
                             </div>
                         </form>
                     </div>
@@ -106,7 +106,7 @@
         </div>
 
         <!-- Modal eliminar -->
-        <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true" v-model="encabezado">
+        <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -132,9 +132,11 @@
 
 <script>
     export default {
+
         data: function(){
             return{
                 jurisdicciones:[],
+
                 jur:{
                     id: null,
                     cod_jurisdiccion: null,
@@ -143,8 +145,17 @@
                     created_at: '',
                     updated_at: '',
                 },
+                jur_aux:{
+                    id: null,
+                    cod_jurisdiccion: null,
+                    jurisdiccion: '',
+                    origen_id: null,
+                    created_at: '',
+                    updated_at: '',
+                },
                 form_editar: false,
-                encabezado: ''
+                encabezado: '',
+                resguardo: ''
             }
 
         },
@@ -154,11 +165,26 @@
                 this.jurisdicciones = response.data;
             })
         },
+        methods: {
+            restaurar: function(p_jurisdiccion){
+                console.log(p_jurisdiccion);
+                alert(p_jurisdiccion.jurisdiccion);
+                //this.jur = Object.assign({},p_jurisdiccion);
+                this.jur.id = p_jurisdiccion.id;
+                this.jur.cod_jurisdiccion = p_jurisdiccion.cod_jurisdiccion;
+                this.jur.jurisdiccion= p_jurisdiccion.jurisdiccion;
+                this.jur.origen_id= p_jurisdiccion.origen_id;
+                this.jur.created_at= p_jurisdiccion.created_at;
+                this.jur.updated_at= p_jurisdiccion.updated_at;
 
-        verJurisdiccion: function(event){
-            console.log(event);
-            this.jur.jurisdiccion = event,
-            this.encabezado = 'Detalle Jurisdicción'
+            }.bind(this),
+
+            empty:function(p_jurisdiccion){
+                console.log(p_jurisdiccion);
+                this.resguardo = p_jurisdiccion.jurisdiccion;
+                this.jur_aux = p_jurisdiccion;
+
+            }
         }
 
     }
