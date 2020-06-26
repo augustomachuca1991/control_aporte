@@ -1,63 +1,57 @@
 <template>
-  <div>
-    <div class="card shadow"> 
-      <div class="card-header">
-          <h5 class="card-title">Liquidaciones</h5>
-      </div>
-      <div class="card-body table-resposive">
-        <table class="table table-sm table-borderless table-striped border" v-model="liquidaciones">
-          <caption>
-              Instituto de Previsión Social de Corrientes
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col"># Codigo</th>
-              <th scope="col">Tipo liquidacion</th>
-              <th scope="col">Agente</th>
-              <th scope="col">Puesto laboral</th>
-              <th scope="col">Periodo</th>
-              <th scope="col">Detalle</th>
+  <div class="table-responsive-lg">
+    <label v-model="buscar">Filtro {{buscar}} </label>
+    <table class="table table-sm table-borderless table-striped border" v-model="liquidaciones">
+      <caption>
+          Instituto de Previsión Social de Corrientes
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col"># Codigo</th>
+          <th scope="col">Tipo liquidacion</th>
+          <th scope="col">Agente</th>
+          <th scope="col">Puesto laboral</th>
+          <th scope="col">Periodo</th>
+          <th scope="col">Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="liquidacion in liquidaciones" :key="liquidacion.id" :liquidacion="liquidacion">
+          <th scope="row">
+              <tr>  
+                  <td>000{{liquidacion.id}}</td>
+              </tr>
+          </th>
+          <td>
+              <tr v-for="tipo in liquidacion.tipo_liquidaciones">  
+                  <td> {{tipo.descripcion}}</td>
+              </tr>
+          </td>
+          <td v-for="historia_laboral in liquidacion.historia_laborales">
+              <tr>  
+                  <td>{{historia_laboral.puesto.agente.nombre}}</td>
+              </tr>
+          </td>
+          <td>
+              <tr v-for="historia_laboral in liquidacion.historia_laborales">  
+                  <td> {{historia_laboral.puesto.cod_laboral}}</td>
+              </tr>
+          </td>
+          <td v-for="periodo in liquidacion.periodos">
+              <tr>  
+                  <td>{{periodo.periodo}}</td>
+              </tr>
+          </td>
+          <td>
+            <tr>  
+                <td>
+                  <a :href="'#detalle'"  class="btn btn-outline-primary border-0  btn-sm shadow" data-toggle="modal" v-on:click="show(liquidacion.id)"><i class="fas fa-dollar-sign"></i></a>  
+                </td>
             </tr>
-          </thead>
-          <tbody>
-            <tr v-for="liquidacion in liquidaciones" :key="liquidacion.id" :liquidacion="liquidacion">
-              <th scope="row">
-                  <tr>  
-                      <td>000{{liquidacion.id}}</td>
-                  </tr>
-              </th>
-              <td>
-                  <tr v-for="tipo in liquidacion.tipo_liquidaciones">  
-                      <td> {{tipo.descripcion}}</td>
-                  </tr>
-              </td>
-              <td v-for="historia_laboral in liquidacion.historia_laborales">
-                  <tr>  
-                      <td>{{historia_laboral.puesto.agente.nombre}}</td>
-                  </tr>
-              </td>
-              <td>
-                  <tr v-for="historia_laboral in liquidacion.historia_laborales">  
-                      <td> {{historia_laboral.puesto.cod_laboral}}</td>
-                  </tr>
-              </td>
-              <td v-for="periodo in liquidacion.periodos">
-                  <tr>  
-                      <td>{{periodo.periodo}}</td>
-                  </tr>
-              </td>
-              <td>
-                <tr>  
-                    <td>
-                      <a :href="'#detalle'"  class="btn btn-outline-primary border-0  btn-sm shadow" data-toggle="modal" v-on:click="show(liquidacion.id)"><i class="fas fa-dollar-sign"></i></a>  
-                    </td>
-                </tr>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>      
-    </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <!--modal-->
     <div id="detalle" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" v-model="liquidacion">
       <div class="modal-dialog modal-lg">
@@ -281,35 +275,39 @@
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
     export default {
+        props:['filtro'],
         data: function(){
             return{
                 liquidaciones:[],
                 liquidacion:[],
+                buscar: this.filtro,
             }
         
         },
         mounted() {
-           axios.get('api/liquidacion').then((response)=>{
-               console.log('Liquidaciones mounted');
-               this.liquidaciones = response.data;
-            })
+            //console.log(this.buscar.length === 1)    
+            if (this.buscar.periodo == "" && this.buscar.tipo_liquidacion == "" ) {
+                
+                axios.get('api/liquidacion').then((response)=>{
+                   this.liquidaciones = response.data;
+                })
+            }
         }, 
         methods:{
             show(id){
                 axios.get(`api/liquidacion/detalle/`+id).then((response)=>{
-                  console.log('Liquidacion mounted');
                    this.liquidacion = [];
                    this.liquidacion = response.data;
                 })
-
             },
             empty(){
                 this.liquidacion = [];
             },
-        }
+        },
     }
 </script>

@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div>
     <form>
-      <div class="form-group" v-model="tipoliquidaciones">
+      <div class="form-group border-0 shadow p-3" v-model="tipoliquidaciones">
         <label for="tipoLiquidacion" class="text-muted"><i class="fas fa-search"></i> Tipo de Liquidacion</label>
-        <select class="form-control border-0 shadow" id="tipoLiquidacion" v-model="selected">
+        <select class="form-control form-control-sm" id="tipoLiquidacion" v-model="selected">
           <option class="text-muted" :value="''" selected disabled>Seleccione tipo de Liquidacion</option>
           <option v-for="tipo in tipoliquidaciones" :value="tipo.id" :tipo="tipo">{{tipo.descripcion}}</option>
         </select>
@@ -28,10 +28,12 @@
                this.tipoliquidaciones= response.data;
             })
         },
-        methods:{
-            click(){
-                console.log('tipo liquidacion: '+this.tipo)
-            },
+        watch: {
+            selected: function() {
+                //console.log(this.selected);
+                const tipoLiquidacion = this.selected;
+                this.$emit('sendTipo',tipoLiquidacion);
+            }
         }
   }
 </script>

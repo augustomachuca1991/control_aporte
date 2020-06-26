@@ -21,7 +21,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('panel-component', require('./components/PanelComponent.vue').default);
 Vue.component('filter-component', require('./components/FilterComponent.vue').default);
 Vue.component('liquidacion-component', require('./components/LiquidacionComponent.vue').default);
 Vue.component('footer-component', require('./components/FooterComponent.vue').default);
@@ -30,6 +30,8 @@ Vue.component('filtertipoliquidacion-component', require('./components/FilterTip
 Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
 Vue.component('clase-component', require('./components/ClaseComponent.vue').default);
 Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);
+Vue.component('filtroperiodo-component', require('./components/FilterPeriodoComponent.vue').default);
+Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesCompnent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

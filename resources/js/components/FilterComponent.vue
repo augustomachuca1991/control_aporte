@@ -1,27 +1,27 @@
 <template>
-  <div class="container">
-     <div class="form-row my-3">
-      <div class="col">
+  <div>
+     <div class="form-row my-3 border-0 shadow p-3">
+      <div class="col-12 col-lg">
         <label for="origen" class="text-muted"><i class="fas fa-search"></i> Origen</label>
-        <select class="custom-select mr-sm-2 border-0 shadow" id="origen" name="origen"  v-model="selectedOrigen">
+        <select class="form-control form-control-sm" id="origen" name="origen"  v-model="selectedOrigen">
           <option :value="''" disabled selected>Seleccione Origen</option>
           <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
         </select>
-        <label class="text-muted">Cod Origen:&nbsp;{{selectedOrigen}}</label>
+        <!--<label class="text-muted">Cod Origen:&nbsp;{{selectedOrigen}}</label>-->
       </div>
-      <div class="col">
+      <div class="col-12 col-lg">
       <label for="jurisdiccion" class="text-muted"><i class="fas fa-search"></i> Jurisdiccion</label>
-        <select  :disabled="selectedOrigen.length == 0" class="custom-select mr-sm-2 border-0 shadow" id="jurisdiccion" name="jurisdiccion" v-model="selectedJurisdicion">
+        <select  :disabled="selectedOrigen.length == 0" class="form-control form-control-sm" id="jurisdiccion" name="jurisdiccion" v-model="selectedJurisdicion">
            <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
            <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
         </select>
-        <label class="text-muted">Cod Jurisdiccion:&nbsp;{{selectedJurisdicion}}</label>
+        <!--<label class="text-muted">Cod Jurisdiccion:&nbsp;{{selectedJurisdicion}}</label>-->
       </div>
-      <div class="col-6">
+      <div class="col-12 col-lg-6">
       <label for="organismo" class="text-muted"><i class="fas fa-search"></i> Organismo</label>
-        <select :disabled="selectedJurisdicion.length == 0" class="custom-select mr-sm-2 border-0 shadow" id="organismo" name="organismo" v-model="selectedOrganismo">
+        <select :disabled="selectedJurisdicion.length == 0" class="form-control form-control-sm" id="organismo" name="organismo" v-model="selectedOrganismo">
           <option :value="''" disabled selected>Seleccione Organismo</option>
-          <option v-for="(organismo, index) in organismos" :key="organismo.cod_organismo" :value="organismo.cod_organismo">{{organismo.organismo}}</option>
+          <option v-for="(organismo, index) in organismos"  :key="organismo.cod_organismo" :value="organismos.cod_organismo">{{organismo.organismo}}</option>
         </select>
         <label class="text-muted">Cod Organismo:&nbsp;{{selectedOrganismo}}</label>
       </div>
@@ -49,15 +49,24 @@
                     this.selectedOrganismo = "";
                     if (this.selectedOrigen > 0) {
                       this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
+                      const origen = this.selectedOrigen;
+                      this.$emit('sendOrigen',origen);
                     }
                 },
                 selectedJurisdicion: function() {
                     this.organismos = [];
                     this.selectedOrganismo = "";
                       if (this.selectedJurisdicion > 0) {
-                          this.organismos = this.origenes[this.selectedOrigen-1].jurisdicciones[this.selectedJurisdicion-1].organismos
+                          this.organismos = this.jurisdicciones[this.selectedJurisdicion-1].organismos
+                          const jur = this.selectedJurisdicion;
+                          this.$emit('sendJur',jur);
                       }
-                }
+                },
+                selectedOrganismo: function() {
+                    
+                          const organismo = this.selectedOrganismo;
+                          this.$emit('sendOrganismo',organismo);
+                },
       },
       mounted() {
             axios.get('api/origen').then((response)=>{
