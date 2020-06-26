@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b5a9edd-e8f3-4f42-9027-f795061770bb" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/control_aporte.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/control_aporte.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/JurisdiccionComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/JurisdiccionComponent.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/jurisdicciones/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/jurisdicciones/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/jurisdicciones/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/jurisdicciones/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,6 +23,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
+  <component name="PhpServers">
+    <servers>
+      <server host="127.0.0.1" id="40ef2d58-f665-49f6-a6a4-533c77ad4341" name="127.0.0.1" port="8000" />
+    </servers>
+  </component>
+  <component name="PhpWebServerValidation" path_to_validation_script="C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\public" selected_validation_type="LOCAL" web_path_to_validation_script="http://127.0.0.1:8000/" />
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/asm89/stack-cors" />
@@ -139,7 +140,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../VUE-PROBANDO/ipsliquidacionesweb" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="web.server" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -153,12 +155,15 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="PHPUnit.phpunit.xml">
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <method />
     </configuration>
     <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
       <method />
+    </configuration>
+    <configuration name="JurisdiccionComponent.vue" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/control_aporte/resources/js/components/JurisdiccionComponent.vue" useBuiltInWebServerPort="true">
+      <method v="2" />
     </configuration>
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner scope="XML" />
@@ -173,6 +178,11 @@
       <envs />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.JurisdiccionComponent.vue" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -191,7 +201,8 @@
       <workItem from="1592577153276" duration="21124000" />
       <workItem from="1592999811483" duration="414000" />
       <workItem from="1593000337645" duration="27000" />
-      <workItem from="1593000620389" duration="12198000" />
+      <workItem from="1593000620389" duration="12800000" />
+      <workItem from="1593084166961" duration="35116000" />
     </task>
     <servers />
   </component>
