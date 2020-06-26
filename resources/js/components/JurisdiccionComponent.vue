@@ -35,7 +35,7 @@
                         <!--i class="fa fa-cog" v-on:click="editarJurisdiccion(jurisdiccion)"> Editar </i-->
                         <i class="fa fa-cog" v-on:click="jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion, encabezado = 'Editar Jurisdicción'"> Editar </i>
                     </a>
-                    <!--a @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#edit_categoria"><i class="far fa-edit"></i></a-->
+                    <!--a @click="editJurisdiccion(jurisdiccion.id)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#edit_jurisdiccion"><i class="far fa-edit"></i></a-->
 
                 </td>
                 <td class="td-button">
@@ -44,7 +44,7 @@
                             <i class="fa fa-trash"> Eliminar</i>
                         </button>
                     </form>
-                    <!--a @click="deleteCategoria(categoria.id)" class="btn btn-outline-danger border-0 btn-sm shadow"><i class="far fa-trash-alt"></i></a-->
+                    <!--a @click="deleteJurisdiccion(jurisdiccion.id)" class="btn btn-outline-danger border-0 btn-sm shadow"><i class="far fa-trash-alt"></i></a-->
                 </td>
             </tr>
         </tbody>
