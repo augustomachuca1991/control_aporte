@@ -2711,6 +2711,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2756,10 +2759,12 @@ __webpack_require__.r(__webpack_exports__);
       this.jur.created_at = p_jurisdiccion.created_at;
       this.jur.updated_at = p_jurisdiccion.updated_at;
     }.bind(undefined),
-    empty: function empty(p_jurisdiccion) {
-      console.log(p_jurisdiccion);
-      this.resguardo = p_jurisdiccion.jurisdiccion;
-      this.jur_aux = p_jurisdiccion;
+    empty: function empty() {
+      this.jur = [];
+    },
+    verJurisdiccion: function verJurisdiccion(event) {
+      console.log(event);
+      this.jur.jurisdiccion = event, this.encabezado = 'Detalle Jurisdicción';
     }
   }
 });
@@ -38680,7 +38685,8 @@ var render = function() {
                 _c(
                   "a",
                   {
-                    staticClass: "btn btn-outline-warning border-0  btn-sm",
+                    staticClass:
+                      "btn btn-outline-warning border-0  btn-sm shadow",
                     attrs: {
                       "data-toggle": "modal",
                       "data-target": "#edit_categoria"
@@ -38697,7 +38703,8 @@ var render = function() {
                 _c(
                   "a",
                   {
-                    staticClass: "btn btn-outline-danger border-0 btn-sm",
+                    staticClass:
+                      "btn btn-outline-danger border-0 btn-sm shadow",
                     on: {
                       click: function($event) {
                         return _vm.deleteCategoria(categoria.id)
@@ -40374,7 +40381,34 @@ var render = function() {
                       _vm._v(" "),
                       _c("br"),
                       _vm._v(" "),
-                      _vm._m(3)
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "close",
+                            attrs: {
+                              type: "button",
+                              "data-dismiss": "modal",
+                              "aria-label": "Close"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.empty()
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass: "btn btn-danger",
+                                attrs: { "aria-hidden": "true" }
+                              },
+                              [_vm._v("×")]
+                            )
+                          ]
+                        )
+                      ])
                     ]
                   )
                 ])
@@ -40491,17 +40525,30 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c(
-                          "a",
+                          "button",
                           {
-                            staticClass: "btn btn-danger",
-                            attrs: { href: "", "data-dismiss": "modal" },
+                            staticClass: "close",
+                            attrs: {
+                              type: "button",
+                              "data-dismiss": "modal",
+                              "aria-label": "Close"
+                            },
                             on: {
                               click: function($event) {
-                                return _vm.empty(_vm.jur)
+                                return _vm.empty()
                               }
                             }
                           },
-                          [_vm._v("Volver")]
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass: "btn btn-danger",
+                                attrs: { "aria-hidden": "true" }
+                              },
+                              [_vm._v("×")]
+                            )
+                          ]
                         )
                       ])
                     ]
@@ -40514,7 +40561,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _vm._m(4)
+    _vm._m(3)
   ])
 }
 var staticRenderFns = [
@@ -40569,21 +40616,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
       _c("h1", { staticClass: "modal-title" }, [_vm._v("Detalles")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-danger",
-          attrs: { href: "", "data-dismiss": "modal" }
-        },
-        [_vm._v("Volver")]
-      )
     ])
   },
   function() {
@@ -54323,8 +54355,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

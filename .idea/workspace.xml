@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="3b5a9edd-e8f3-4f42-9027-f795061770bb" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/JurisdiccionComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/JurisdiccionComponent.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
@@ -200,7 +203,7 @@
       <workItem from="1592999811483" duration="414000" />
       <workItem from="1593000337645" duration="27000" />
       <workItem from="1593000620389" duration="12800000" />
-      <workItem from="1593084166961" duration="21857000" />
+      <workItem from="1593084166961" duration="22926000" />
     </task>
     <servers />
   </component>
