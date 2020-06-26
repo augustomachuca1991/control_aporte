@@ -2008,6 +2008,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2027,8 +2033,9 @@ __webpack_require__.r(__webpack_exports__);
     getCategorias: function getCategorias() {
       var _this = this;
 
-      axios.get('api/categoria/').then(function (response) {
+      axios.get('api/categoria/1').then(function (response) {
         _this.categorias = response.data;
+        _this.category = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2045,19 +2052,25 @@ __webpack_require__.r(__webpack_exports__);
     createCategoria: function createCategoria() {
       var _this3 = this;
 
-      var params = {
-        cod_jurisdiccion: this.selectedJurisdiccion,
-        cod_categoria: this.categoria.cod_categoria,
-        categoria: this.categoria.categoria
-      };
-      axios.post('api/categoria/create', params).then(function (response) {
-        console.log(response.data);
-        _this3.categorias = response.data;
+      if (confirm("¿Seguro que quieres crear este registro?")) {
+        var params = {
+          cod_jurisdiccion: this.selectedJurisdiccion,
+          cod_categoria: this.categoria.cod_categoria,
+          categoria: this.categoria.categoria
+        };
+        axios.post('api/categoria/create', params).then(function (response) {
+          console.log(response.data);
+          _this3.categorias = response.data;
+          $('#categorias').removeClass('modal-open');
+          $("#nueva_categoria").modal('hide');
 
-        _this3.getCategorias();
-      })["catch"](function (error) {
-        _this3.feedback = error.response.data.errors;
-      });
+          _this3.empty();
+
+          _this3.getCategorias();
+        })["catch"](function (error) {
+          _this3.feedback = error.response.data.errors;
+        });
+      }
     },
     editCategoria: function editCategoria(id) {
       var _this4 = this;
@@ -2071,31 +2084,41 @@ __webpack_require__.r(__webpack_exports__);
     updateCategoria: function updateCategoria(id) {
       var _this5 = this;
 
-      var params = {
-        cod_categoria: this.categoria.cod_categoria,
-        categoria: this.categoria.categoria
-      };
-      axios.put("api/categoria/update/".concat(id), params).then(function (response) {
-        // $('#edit_categoria').modal('hide');
-        // $('#edit_categoria').removeClass('.modal-backdrop');
-        _this5.getCategorias();
+      if (confirm("¿Seguro que desea guardar los cambios?")) {
+        var params = {
+          cod_categoria: this.categoria.cod_categoria,
+          categoria: this.categoria.categoria
+        };
+        axios.put("api/categoria/update/".concat(id), params).then(function (response) {
+          _this5.getCategorias();
 
-        _this5.categoria = [];
-      })["catch"](function (error) {
-        console.log(error);
-      });
+          _this5.categoria = [];
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
     },
     deleteCategoria: function deleteCategoria(id) {
       var _this6 = this;
 
-      axios["delete"]("api/categoria/delete/".concat(id)).then(function (response) {
-        _this6.getCategorias();
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      if (confirm("¿Seguro que quieres eliminar este registro?")) {
+        axios["delete"]("api/categoria/delete/".concat(id)).then(function (response) {
+          _this6.categorias = response.data;
+
+          _this6.getCategorias();
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
     },
     empty: function empty() {
       this.categoria = [];
+      this.selectedOrigen = "";
+      this.selectedJurisdiccion = "";
+      this.feedback = [];
+    },
+    onFail: function onFail(errors) {
+      this.errors.record(errors.errors);
     }
   },
   watch: {
@@ -2469,10 +2492,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       origenes: [],
+      category: [],
+      selectedCategory: null,
       jurisdicciones: [],
       categorias: [],
       selectedOrigen: "",
@@ -2489,6 +2515,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.selectedOrigen > 0) {
         this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones;
+        console.log(this.jurisdicciones);
       }
     },
     selectedJurisdiccion: function selectedJurisdiccion() {
@@ -2496,7 +2523,7 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedCategoria = "";
 
       if (this.selectedJurisdiccion > 0) {
-        this.categorias = this.origenes[this.selectedOrigen - 1].jurisdicciones[this.selectedJurisdiccion].categorias;
+        this.categorias = this.origenes[this.selectedOrigen - 1].jurisdicciones[this.selectedJurisdiccion - 1].categorias;
       }
     }
   },
@@ -38647,17 +38674,16 @@ var render = function() {
           "tbody",
           _vm._l(_vm.categorias, function(categoria, index) {
             return _c("tr", { key: categoria.id }, [
-              _c("th", { attrs: { scope: "row" } }, [
-                _vm._v(_vm._s(categoria.cod_categoria))
-              ]),
+              _c("th", [_vm._v(_vm._s(categoria.cod_categoria))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(categoria.categoria))]),
               _vm._v(" "),
-              _c("td", [
+              _c("td", { staticClass: "row" }, [
                 _c(
-                  "a",
+                  "button",
                   {
-                    staticClass: "btn btn-outline-warning border-0  btn-sm",
+                    staticClass:
+                      "btn btn-outline-warning border-0 btn-sm shadow text-dark col-md-2",
                     attrs: {
                       "data-toggle": "modal",
                       "data-target": "#edit_categoria"
@@ -38672,16 +38698,16 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c(
-                  "a",
+                  "form",
                   {
-                    staticClass: "btn btn-outline-danger border-0 btn-sm",
                     on: {
-                      click: function($event) {
+                      submit: function($event) {
+                        $event.preventDefault()
                         return _vm.deleteCategoria(categoria.id)
                       }
                     }
                   },
-                  [_c("i", { staticClass: "far fa-trash-alt" })]
+                  [_vm._m(1, true)]
                 )
               ])
             ])
@@ -38744,7 +38770,7 @@ var render = function() {
             _c("div", { staticClass: "modal-body" }, [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", { staticClass: "col-form-label" }, [
-                  _vm._v("Cod. categoría")
+                  _vm._v("Código categoría")
                 ]),
                 _vm._v(" "),
                 _c("input", {
@@ -38838,7 +38864,7 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog modal-md" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(1),
+            _vm._m(2),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
               _c(
@@ -38902,7 +38928,7 @@ var render = function() {
                             attrs: { disabled: "", selected: "" },
                             domProps: { value: "" }
                           },
-                          [_vm._v("Selecciona una opción")]
+                          [_vm._v("Seleccione Origen")]
                         ),
                         _vm._v(" "),
                         _vm._l(_vm.origenes, function(origen, index) {
@@ -38917,7 +38943,16 @@ var render = function() {
                         })
                       ],
                       2
-                    )
+                    ),
+                    _vm._v(" "),
+                    _vm.feedback.cod_origen
+                      ? _c("span", {
+                          staticStyle: { color: "red" },
+                          domProps: {
+                            textContent: _vm._s(_vm.feedback.cod_origen[0])
+                          }
+                        })
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
@@ -38988,7 +39023,18 @@ var render = function() {
                         })
                       ],
                       2
-                    )
+                    ),
+                    _vm._v(" "),
+                    _vm.feedback.cod_jurisdiccion
+                      ? _c("span", {
+                          staticStyle: { color: "red" },
+                          domProps: {
+                            textContent: _vm._s(
+                              _vm.feedback.cod_jurisdiccion[0]
+                            )
+                          }
+                        })
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group has-feedback" }, [
@@ -38998,7 +39044,7 @@ var render = function() {
                         staticClass: "col-form-label",
                         attrs: { for: "cod_categoria" }
                       },
-                      [_vm._v("Cod. categoría")]
+                      [_vm._v("Código Categoría")]
                     ),
                     _vm._v(" "),
                     _c("input", {
@@ -39014,7 +39060,8 @@ var render = function() {
                       attrs: {
                         type: "number",
                         id: "cod_categoria",
-                        name: "cod_categoria"
+                        name: "cod_categoria",
+                        required: ""
                       },
                       domProps: { value: _vm.categoria.cod_categoria },
                       on: {
@@ -39029,7 +39076,16 @@ var render = function() {
                           )
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.feedback.cod_categoria
+                      ? _c("span", {
+                          staticStyle: { color: "red" },
+                          domProps: {
+                            textContent: _vm._s(_vm.feedback.cod_categoria[0])
+                          }
+                        })
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
@@ -39055,7 +39111,8 @@ var render = function() {
                       attrs: {
                         type: "text",
                         id: "categoria",
-                        name: "categoria"
+                        name: "categoria",
+                        required: ""
                       },
                       domProps: { value: _vm.categoria.categoria },
                       on: {
@@ -39070,19 +39127,19 @@ var render = function() {
                           )
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.feedback.categoria
+                      ? _c("span", {
+                          staticStyle: { color: "red" },
+                          domProps: {
+                            textContent: _vm._s(_vm.feedback.categoria[0])
+                          }
+                        })
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
-                  _vm.feedback
-                    ? _c("div", [
-                        _c("span", {
-                          staticStyle: { color: "red" },
-                          domProps: { textContent: _vm._s(_vm.feedback) }
-                        })
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm._m(2)
+                  _vm._m(3)
                 ]
               )
             ])
@@ -39106,6 +39163,20 @@ var staticRenderFns = [
         _c("th", [_vm._v("Acción")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass:
+          "btn btn-outline-danger border-0 btn-sm shadow text-dark col-md-2",
+        attrs: { type: "submit" }
+      },
+      [_c("i", { staticClass: "far fa-trash-alt" })]
+    )
   },
   function() {
     var _vm = this
@@ -39861,198 +39932,214 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-row col-md-6 mb-3" }, [
-    _c("div", { staticClass: "col" }, [
-      _c(
-        "label",
-        { staticClass: "mr-sm-2 sr-only", attrs: { for: "origen" } },
-        [_vm._v("Origen")]
-      ),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.selectedOrigen,
-              expression: "selectedOrigen"
-            }
-          ],
-          staticClass: "custom-select mr-sm-2",
-          attrs: { id: "origen", name: "origen" },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.selectedOrigen = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        [
-          _c(
-            "option",
-            {
-              attrs: { disabled: "", selected: "" },
-              domProps: { value: null }
-            },
-            [_vm._v("Seleccione Origen")]
-          ),
-          _vm._v(" "),
-          _vm._l(_vm.origenes, function(origen, index) {
-            return _c(
-              "option",
+  return _c(
+    "div",
+    { staticClass: "form-row col mb-3" },
+    [
+      _c("div", { staticClass: "col-md-4" }, [
+        _c(
+          "label",
+          { staticClass: "mr-sm-2 sr-only", attrs: { for: "origen" } },
+          [_vm._v("Origen")]
+        ),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
               {
-                key: origen.cod_origen,
-                domProps: { value: origen.cod_origen }
-              },
-              [_vm._v(_vm._s(origen.origen))]
-            )
-          })
-        ],
-        2
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col" }, [
-      _c(
-        "label",
-        { staticClass: "mr-sm-2 sr-only", attrs: { for: "jurisdiccion" } },
-        [_vm._v("Jurisdiccion")]
-      ),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.selectedJurisdiccion,
-              expression: "selectedJurisdiccion"
+                name: "model",
+                rawName: "v-model",
+                value: _vm.selectedOrigen,
+                expression: "selectedOrigen"
+              }
+            ],
+            staticClass: "custom-select mr-sm-2",
+            attrs: { id: "origen", name: "origen" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.selectedOrigen = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
             }
-          ],
-          staticClass: "custom-select mr-sm-2",
-          attrs: {
-            disabled: _vm.selectedOrigen.length == 0,
-            id: "jurisdiccion",
-            name: "jurisdiccion"
           },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.selectedJurisdiccion = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        [
-          _c(
-            "option",
-            {
-              attrs: { disabled: "", selected: "" },
-              domProps: { value: null }
-            },
-            [_vm._v("Seleccione Jurisdiccion")]
-          ),
-          _vm._v(" "),
-          _vm._l(_vm.jurisdicciones, function(jurisdiccion, index) {
-            return _c(
+          [
+            _c(
               "option",
               {
-                key: jurisdiccion.cod_jurisdiccion,
-                domProps: { value: jurisdiccion.cod_jurisdiccion }
+                attrs: { disabled: "", selected: "" },
+                domProps: { value: null }
               },
-              [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
-            )
-          })
-        ],
-        2
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-6" }, [
-      _c(
-        "label",
-        { staticClass: "mr-sm-2 sr-only", attrs: { for: "categoria" } },
-        [_vm._v("Categoria")]
-      ),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.selectedCategoria,
-              expression: "selectedCategoria"
-            }
+              [_vm._v("Seleccione Origen")]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.origenes, function(origen, index) {
+              return _c(
+                "option",
+                {
+                  key: origen.cod_origen,
+                  domProps: { value: origen.cod_origen }
+                },
+                [_vm._v(_vm._s(origen.origen))]
+              )
+            })
           ],
-          staticClass: "custom-select mr-sm-2",
-          attrs: {
-            disabled: _vm.selectedJurisdiccion.length == 0,
-            id: "categoria",
-            name: "categoria"
-          },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.selectedCategoria = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        [
-          _c(
-            "option",
-            {
-              attrs: { disabled: "", selected: "" },
-              domProps: { value: null }
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c(
+          "label",
+          { staticClass: "mr-sm-2 sr-only", attrs: { for: "jurisdiccion" } },
+          [_vm._v("Jurisdiccion")]
+        ),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.selectedJurisdiccion,
+                expression: "selectedJurisdiccion"
+              }
+            ],
+            staticClass: "custom-select mr-sm-2",
+            attrs: {
+              disabled: _vm.selectedOrigen.length == 0,
+              id: "jurisdiccion",
+              name: "jurisdiccion"
             },
-            [_vm._v("Seleccione Categoria")]
-          ),
-          _vm._v(" "),
-          _vm._l(_vm.categorias, function(categoria, index) {
-            return _c(
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.selectedJurisdiccion = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          [
+            _c(
               "option",
               {
-                key: categoria.cod_categoria,
-                domProps: { value: categoria.cod_categoria }
+                attrs: { disabled: "", selected: "" },
+                domProps: { value: null }
               },
-              [_vm._v(_vm._s(categoria.categoria))]
-            )
-          })
-        ],
-        2
-      )
-    ])
-  ])
+              [_vm._v("Seleccione Jurisdiccion")]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.jurisdicciones, function(jurisdiccion, index) {
+              return _c(
+                "option",
+                {
+                  key: jurisdiccion.cod_jurisdiccion,
+                  domProps: { value: jurisdiccion.cod_jurisdiccion }
+                },
+                [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
+              )
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c(
+          "label",
+          { staticClass: "mr-sm-2 sr-only", attrs: { for: "categoria" } },
+          [_vm._v("Categoria")]
+        ),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.selectedCategoria,
+                expression: "selectedCategoria"
+              }
+            ],
+            staticClass: "custom-select mr-sm-2",
+            attrs: {
+              disabled: _vm.selectedJurisdiccion.length == 0,
+              id: "categoria",
+              name: "categoria"
+            },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.selectedCategoria = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          [
+            _c(
+              "option",
+              {
+                attrs: { disabled: "", selected: "" },
+                domProps: { value: null }
+              },
+              [_vm._v("Seleccione Categoria")]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.categorias, function(categoria, index) {
+              return _c(
+                "option",
+                {
+                  key: categoria.cod_categoria,
+                  domProps: { value: categoria.cod_categoria }
+                },
+                [_vm._v(_vm._s(categoria.categoria))]
+              )
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("v-select", {
+        attrs: { label: "category_desc", options: _vm.category },
+        model: {
+          value: _vm.selectedCategory,
+          callback: function($$v) {
+            _vm.selectedCategory = $$v
+          },
+          expression: "selectedCategory"
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -54257,8 +54344,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -13,7 +13,7 @@ class Origen extends Model
 
     public function jurisdicciones()
     {
-        return $this->hasMany('App\Jurisdiccion')->with('organismos');
+        return $this->hasMany('App\Jurisdiccion')->with('organismos')->with('categorias');
     }
 
     //public function jurisdiccionOrganismo()
