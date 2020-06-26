@@ -15,5 +15,4 @@
 @endsection
 
 <!-- jurisdicciones
-@include('modal.nueva_categoria')
-@include('modal.edit_categoria')
+
