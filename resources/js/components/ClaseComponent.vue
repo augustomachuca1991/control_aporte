@@ -5,14 +5,14 @@
             <caption>Clases</caption>
             <thead>
                 <tr>
-                    <th scope="col">Categoría</th>
+                    <th scope="col">Cod. Clase</th>
                     <th scope="col">Clase</th>
                     <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(clase, index) in clases"  v-bind:key="clase.id">
-                    <th scope="row"></th>
+                    <th>{{clase.id}}</th>
                     <td>{{clase.clase}}</td>
                     <td>
                         <a @click="editClase(clase.id)" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#edit_clase"><i class="far fa-edit"></i></a>

@@ -21,7 +21,6 @@
           <option v-for="(categoria, index) in categorias" :key="categoria.cod_categoria" :value="categoria.cod_categoria">{{categoria.categoria}}</option>
         </select>
       </div>
-       <v-select  v-model="selectedCategory" label="category_desc" :options="category"></v-select>
     </div>
 </template>
 

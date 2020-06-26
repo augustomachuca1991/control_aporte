@@ -14,7 +14,7 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        return Clase::all();
+        return view('clases.index');
     }
 
     /**
@@ -109,6 +109,6 @@ class ClaseController extends Controller
     }
 
     public function getClases(){
-        return view('clases.index');
+       return Clase::all();
     }
 }

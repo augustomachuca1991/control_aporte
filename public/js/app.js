@@ -2492,7 +2492,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -38808,11 +38807,7 @@ var render = function() {
                   "button",
                   {
                     staticClass:
-<<<<<<< HEAD
                       "btn btn-outline-warning border-0 btn-sm shadow text-dark col-md-2",
-=======
-                      "btn btn-outline-warning border-0  btn-sm shadow",
->>>>>>> dff47b7629622cf43679d5e76cebbbc75d64edc2
                     attrs: {
                       "data-toggle": "modal",
                       "data-target": "#edit_categoria"
@@ -38829,11 +38824,6 @@ var render = function() {
                 _c(
                   "form",
                   {
-<<<<<<< HEAD
-=======
-                    staticClass:
-                      "btn btn-outline-danger border-0 btn-sm shadow",
->>>>>>> dff47b7629622cf43679d5e76cebbbc75d64edc2
                     on: {
                       submit: function($event) {
                         $event.preventDefault()
@@ -39407,7 +39397,7 @@ var render = function() {
             "tbody",
             _vm._l(_vm.clases, function(clase, index) {
               return _c("tr", { key: clase.id }, [
-                _c("th", { attrs: { scope: "row" } }),
+                _c("th", [_vm._v(_vm._s(clase.id))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(clase.clase))]),
                 _vm._v(" "),
@@ -39572,7 +39562,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Categoría")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Cod. Clase")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Clase")]),
         _vm._v(" "),
@@ -40066,214 +40056,198 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "form-row col mb-3" },
-    [
-      _c("div", { staticClass: "col-md-4" }, [
-        _c(
-          "label",
-          { staticClass: "mr-sm-2 sr-only", attrs: { for: "origen" } },
-          [_vm._v("Origen")]
-        ),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.selectedOrigen,
-                expression: "selectedOrigen"
-              }
-            ],
-            staticClass: "custom-select mr-sm-2",
-            attrs: { id: "origen", name: "origen" },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.selectedOrigen = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
-            }
-          },
-          [
-            _c(
-              "option",
-              {
-                attrs: { disabled: "", selected: "" },
-                domProps: { value: null }
-              },
-              [_vm._v("Seleccione Origen")]
-            ),
-            _vm._v(" "),
-            _vm._l(_vm.origenes, function(origen, index) {
-              return _c(
-                "option",
-                {
-                  key: origen.cod_origen,
-                  domProps: { value: origen.cod_origen }
-                },
-                [_vm._v(_vm._s(origen.origen))]
-              )
-            })
-          ],
-          2
-        )
-      ]),
+  return _c("div", { staticClass: "form-row col mb-3" }, [
+    _c("div", { staticClass: "col-md-4" }, [
+      _c(
+        "label",
+        { staticClass: "mr-sm-2 sr-only", attrs: { for: "origen" } },
+        [_vm._v("Origen")]
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [
-        _c(
-          "label",
-          { staticClass: "mr-sm-2 sr-only", attrs: { for: "jurisdiccion" } },
-          [_vm._v("Jurisdiccion")]
-        ),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.selectedJurisdiccion,
-                expression: "selectedJurisdiccion"
-              }
-            ],
-            staticClass: "custom-select mr-sm-2",
-            attrs: {
-              disabled: _vm.selectedOrigen.length == 0,
-              id: "jurisdiccion",
-              name: "jurisdiccion"
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.selectedOrigen,
+              expression: "selectedOrigen"
+            }
+          ],
+          staticClass: "custom-select mr-sm-2",
+          attrs: { id: "origen", name: "origen" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.selectedOrigen = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
+        },
+        [
+          _c(
+            "option",
+            {
+              attrs: { disabled: "", selected: "" },
+              domProps: { value: null }
             },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.selectedJurisdiccion = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
-            }
-          },
-          [
-            _c(
+            [_vm._v("Seleccione Origen")]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.origenes, function(origen, index) {
+            return _c(
               "option",
               {
-                attrs: { disabled: "", selected: "" },
-                domProps: { value: null }
+                key: origen.cod_origen,
+                domProps: { value: origen.cod_origen }
               },
-              [_vm._v("Seleccione Jurisdiccion")]
-            ),
-            _vm._v(" "),
-            _vm._l(_vm.jurisdicciones, function(jurisdiccion, index) {
-              return _c(
-                "option",
-                {
-                  key: jurisdiccion.cod_jurisdiccion,
-                  domProps: { value: jurisdiccion.cod_jurisdiccion }
-                },
-                [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
-              )
-            })
-          ],
-          2
-        )
-      ]),
+              [_vm._v(_vm._s(origen.origen))]
+            )
+          })
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-4" }, [
+      _c(
+        "label",
+        { staticClass: "mr-sm-2 sr-only", attrs: { for: "jurisdiccion" } },
+        [_vm._v("Jurisdiccion")]
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [
-        _c(
-          "label",
-          { staticClass: "mr-sm-2 sr-only", attrs: { for: "categoria" } },
-          [_vm._v("Categoria")]
-        ),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.selectedCategoria,
-                expression: "selectedCategoria"
-              }
-            ],
-            staticClass: "custom-select mr-sm-2",
-            attrs: {
-              disabled: _vm.selectedJurisdiccion.length == 0,
-              id: "categoria",
-              name: "categoria"
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.selectedJurisdiccion,
+              expression: "selectedJurisdiccion"
+            }
+          ],
+          staticClass: "custom-select mr-sm-2",
+          attrs: {
+            disabled: _vm.selectedOrigen.length == 0,
+            id: "jurisdiccion",
+            name: "jurisdiccion"
+          },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.selectedJurisdiccion = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
+        },
+        [
+          _c(
+            "option",
+            {
+              attrs: { disabled: "", selected: "" },
+              domProps: { value: null }
             },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.selectedCategoria = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
-            }
-          },
-          [
-            _c(
+            [_vm._v("Seleccione Jurisdiccion")]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.jurisdicciones, function(jurisdiccion, index) {
+            return _c(
               "option",
               {
-                attrs: { disabled: "", selected: "" },
-                domProps: { value: null }
+                key: jurisdiccion.cod_jurisdiccion,
+                domProps: { value: jurisdiccion.cod_jurisdiccion }
               },
-              [_vm._v("Seleccione Categoria")]
-            ),
-            _vm._v(" "),
-            _vm._l(_vm.categorias, function(categoria, index) {
-              return _c(
-                "option",
-                {
-                  key: categoria.cod_categoria,
-                  domProps: { value: categoria.cod_categoria }
-                },
-                [_vm._v(_vm._s(categoria.categoria))]
-              )
-            })
-          ],
-          2
-        )
-      ]),
+              [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
+            )
+          })
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-4" }, [
+      _c(
+        "label",
+        { staticClass: "mr-sm-2 sr-only", attrs: { for: "categoria" } },
+        [_vm._v("Categoria")]
+      ),
       _vm._v(" "),
-      _c("v-select", {
-        attrs: { label: "category_desc", options: _vm.category },
-        model: {
-          value: _vm.selectedCategory,
-          callback: function($$v) {
-            _vm.selectedCategory = $$v
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.selectedCategoria,
+              expression: "selectedCategoria"
+            }
+          ],
+          staticClass: "custom-select mr-sm-2",
+          attrs: {
+            disabled: _vm.selectedJurisdiccion.length == 0,
+            id: "categoria",
+            name: "categoria"
           },
-          expression: "selectedCategory"
-        }
-      })
-    ],
-    1
-  )
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.selectedCategoria = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
+        },
+        [
+          _c(
+            "option",
+            {
+              attrs: { disabled: "", selected: "" },
+              domProps: { value: null }
+            },
+            [_vm._v("Seleccione Categoria")]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.categorias, function(categoria, index) {
+            return _c(
+              "option",
+              {
+                key: categoria.cod_categoria,
+                domProps: { value: categoria.cod_categoria }
+              },
+              [_vm._v(_vm._s(categoria.categoria))]
+            )
+          })
+        ],
+        2
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -54989,13 +54963,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
 __webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
-=======
-__webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\sass\app.scss */"./resources/sass/app.scss");
->>>>>>> dff47b7629622cf43679d5e76cebbbc75d64edc2
 
 
 /***/ })
