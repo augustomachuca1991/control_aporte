@@ -35,6 +35,7 @@
                         <!--i class="fa fa-cog" v-on:click="editarJurisdiccion(jurisdiccion)"> Editar </i-->
                         <i class="fa fa-cog" v-on:click="jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion, encabezado = 'Editar Jurisdicción'"> Editar </i>
                     </a>
+                    <a @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#edit_categoria"><i class="far fa-edit"></i></a>
 
                     <!-- Button trigger modal
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -47,6 +48,7 @@
                             <i class="fa fa-trash"> Eliminar</i>
                         </button>
                     </form>
+                    <a @click="deleteCategoria(categoria.id)" class="btn btn-outline-danger border-0 btn-sm shadow"><i class="far fa-trash-alt"></i></a>
                 </td>
             </tr>
         </tbody>
@@ -70,7 +72,10 @@
                             </div>
                             <br>
                             <div class="modal-footer">
-                                <a href="" class="btn btn-danger" data-dismiss="modal">Volver</a>
+                                <!--a href="" class="btn btn-danger" data-dismiss="modal">Volver</a-->
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
+                                    <span class="btn btn-danger" aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -97,7 +102,10 @@
                             <br>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-primary" onclick="return confirm('Está seguro que desea guardar?')" value="Guardar">
-                                <a href="" class="btn btn-danger" data-dismiss="modal" v-on:click="empty(jur)">Volver</a>
+                                <!--a href="" class="btn btn-danger" data-dismiss="modal" v-on:click="empty()">Volver</a-->
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
+                                    <span class="btn btn-danger" aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -164,7 +172,7 @@
                 this.jurisdicciones = response.data;
             })
         },
-<<<<<<< HEAD
+
         methods: {
             restaurar: function(p_jurisdiccion){
                 console.log(p_jurisdiccion);
@@ -179,18 +187,14 @@
 
             }.bind(this),
 
-            empty:function(p_jurisdiccion){
-                console.log(p_jurisdiccion);
-                this.resguardo = p_jurisdiccion.jurisdiccion;
-                this.jur_aux = p_jurisdiccion;
-
+            empty(){
+                this.jur = [];
+            },
+            verJurisdiccion: function(event) {
+                console.log(event);
+                this.jur.jurisdiccion = event,
+                this.encabezado = 'Detalle Jurisdicción'
             }
-=======
-        verJurisdiccion: function(event){
-            console.log(event);
-            this.jur.jurisdiccion = event,
-            this.encabezado = 'Detalle Jurisdicción'
->>>>>>> 176d73cefc04e963030e20fb7f78840308f7f7f1
         }
     }
 </script>

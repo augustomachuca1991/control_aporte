@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3b5a9edd-e8f3-4f42-9027-f795061770bb" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/JurisdiccionComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/JurisdiccionComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -138,6 +138,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../VUE-PROBANDO/ipsliquidacionesweb" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="web.server" />
   </component>
   <component name="RunDashboard">
@@ -199,7 +200,7 @@
       <workItem from="1592999811483" duration="414000" />
       <workItem from="1593000337645" duration="27000" />
       <workItem from="1593000620389" duration="12800000" />
-      <workItem from="1593084166961" duration="19755000" />
+      <workItem from="1593084166961" duration="21857000" />
     </task>
     <servers />
   </component>
