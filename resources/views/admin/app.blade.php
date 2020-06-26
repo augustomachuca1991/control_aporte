@@ -14,17 +14,15 @@
   
   <title>I.P.S Corrientes</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
+ 
   <!-- Custom styles for this template-->
   <link href="admin/css/sb-admin-2.min.css" rel="stylesheet">
 
 
   <!-- Fonts -->
+  <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
-
+  @yield('css')
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -140,7 +138,7 @@
 
     
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('categorias')}}">
+        <a class="nav-link" href="{{ route('categoria')}}">
           <i class="fas fa-fw fa-table"></i>
           <span>ABM</span></a>
       </li>
@@ -306,7 +304,7 @@
                     <div class="small text-gray-500">Chicken the Dog · 2w</div>
                   </div>
                 </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Leer mensajes</a>
               </div>
             </li>
 
@@ -323,11 +321,11 @@
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
+                  Perfil
                 </a>
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
+                  Configuracion
                 </a>
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -336,7 +334,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
+                  Cerrar Sesión
                 </a>
               </div>
             </li>
@@ -382,16 +380,16 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Quiere Salir?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-body">Click en <mark><i class="fas fa-power-off"></i></mark> para salir</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">Cerrar Sesion</a>
+          <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+          <a class="btn btn-secondary" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();"><i class="fas fa-power-off"></i></a>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
               @csrf
           </form>
@@ -401,16 +399,15 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
+  <!-- Bootstrap core JavaScript-->
   <script src="admin/vendor/jquery/jquery.min.js"></script>
-  <script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <script src="{{ asset('js/app.js') }}" defer></script>
+  <!--<script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
+  
+  
  
   <!-- Custom scripts for all pages-->
   <script src="admin/js/sb-admin-2.min.js"></script>
+  <script src="{{ asset('js/app.js') }}" defer></script>
   @yield('js')
 
 </body>

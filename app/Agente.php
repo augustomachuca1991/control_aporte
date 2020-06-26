@@ -9,5 +9,15 @@ class Agente extends Model
 {
     use SoftDeletes; 
 
-    protected $dates = ['deleted_at']; 
+    protected $dates = ['deleted_at'];
+
+    public function organismos(){
+
+        return $this->belongsToMany( 'App\Organismo');
+    }
+
+    public function puestolaborales()
+    {
+        return $this->hasMany('App\PuestoLaborales');
+    } 
 }

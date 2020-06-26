@@ -15,6 +15,7 @@ class DeclaracionJuradaTableSeeder extends Seeder
         $declaraciones = [
         	['user_id' => 1, 'organismo_id' => 29,	'secuencia' => null, 'created_at' => now()],
         	['user_id' => 1, 'organismo_id' => 29,	'secuencia' => 1, 'created_at' => now()],
+            ['user_id' => 1, 'organismo_id' => 30,  'secuencia' => null, 'created_at' => now()],
         ];
         DeclaracionJurada::insert($declaraciones);
     }

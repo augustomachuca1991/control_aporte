@@ -82,4 +82,9 @@ class PuestoLaboralController extends Controller
     {
         //
     }
+
+    public function getpuestoLaboral()
+    {
+         return PuestoLaboral::with('clases')->get();
+    }
 }

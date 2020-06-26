@@ -16,4 +16,9 @@ class Clase extends Model
     {
     	return $this->belongsTo('App\Categoria');
     }
+
+    public function puestolaborales(){
+
+        return $this->belongsToMany( 'App\PuestoLaboral', 'historia_laborals', 'id', 'clase_id');
+    }
 }

@@ -14,7 +14,7 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        //
+        return Clase::all();
     }
 
     /**
@@ -24,7 +24,7 @@ class ClaseController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -35,7 +35,16 @@ class ClaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validarDatos = $request->validate([
+            'categoria_id' => 'required',
+            'clase'     => 'required|string',
+        ]);
+
+        $clase = Clase::create([
+                                        'categoria_id' => $request['categoria_id'],
+                                        'clase'     => $request['clase']
+                                        ]);
+        return back()->withSuccess('Clase creada con éxito');
     }
 
     /**
@@ -46,7 +55,7 @@ class ClaseController extends Controller
      */
     public function show(Clase $clase)
     {
-        //
+        
     }
 
     /**
@@ -55,9 +64,9 @@ class ClaseController extends Controller
      * @param  \App\Clase  $clase
      * @return \Illuminate\Http\Response
      */
-    public function edit(Clase $clase)
+    public function edit($id)
     {
-        //
+        return Clase::find($id);
     }
 
     /**
@@ -67,9 +76,22 @@ class ClaseController extends Controller
      * @param  \App\Clase  $clase
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Clase $clase)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'clase'     => 'required'
+        ]);
+
+        $clase =  Clase::find($id);
+
+        $clase->categoria_id = $request['categoria_id'];
+        $clase->clase = $request['clase'];
+        $clase->updated_at = now();
+        $clase->save();
+
+        return $clase;
+       
+      
     }
 
     /**
@@ -78,8 +100,15 @@ class ClaseController extends Controller
      * @param  \App\Clase  $clase
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Clase $clase)
+    public function destroy($id)
     {
-        //
+        $clase = Clase::find($id);
+        $clase->delete();
+
+        return back()->withSuccess('Clase eliminada con éxito');
+    }
+
+    public function getClases(){
+        return view('clases.index');
     }
 }

@@ -23,4 +23,8 @@ class Jurisdiccion extends Model
         return $this->hasMany('App\Organismo');
     }
 
+    public function categorias(){
+        return $this->belongsToMany('App\Categoria', 'categoria_jurisdiccion');
+    }
+
 }

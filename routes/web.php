@@ -25,29 +25,30 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+//middleware admin
 Route::middleware('admin')->group(function(){
+	
 	Route::get('/dashboard', function(){
 		return view('admin.index');
 	})->name('admin');
 
-	Route::get('/liquidacion', function(){
+	Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidacion');
 
-		return view('admin.liquidacion');
-	})->name('liquidacion');
 
-	// Categoria
+	Route::get('/categoria', 'CategoriaController@index')->name('categoria');
 
-	Route::get('/categorias', 'CategoriaController@index')->name('categorias');
-	Route::post('/categorias/create','CategoriaController@store')->name('create_categoria');
-	Route::get('/categorias/delete/{id}','CategoriaController@delete')->name('delete_categoria');
+	//-------- Clase Controller------------
+	
+	Route::get('/clase', 'ClaseController@index')->name('clase');
 
 	//-------- Jurisdicciones Controller------------
-    //Route::get('jurisdicciones' , 'JurisdiccionController@get_jurisdicciones')->name('jurisdicciones');
-Route::resource('/jurisdicciones', 'JurisdiccionController')
+
+	Route::resource('/jurisdicciones', 'JurisdiccionController')
     ->names('jurisdicciones')
 	->parameters(['jurisdicciones' => 'jurisdicciones']);
 
 });
 
 
-
+	

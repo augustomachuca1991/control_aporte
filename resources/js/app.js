@@ -24,9 +24,13 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('filter-component', require('./components/FilterComponent.vue').default);
 Vue.component('liquidacion-component', require('./components/LiquidacionComponent.vue').default);
-Vue.component('datails-component', require('./components/DetalleComponent.vue').default);
 Vue.component('footer-component', require('./components/FooterComponent.vue').default);
 Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
+Vue.component('filtertipoliquidacion-component', require('./components/FilterTipoLiquidacionComponent.vue').default);
+Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
+Vue.component('clase-component', require('./components/ClaseComponent.vue').default);
+Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

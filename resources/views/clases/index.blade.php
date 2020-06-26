@@ -4,8 +4,9 @@
  <div id="app" class="container">
     <div class="card shadow"> 
       <div class="card-header">
-          <h5 class="card-title">Categorías</h5>
-          <a href="#" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#nueva_categoria">Nueva</a>
+          <h5 class="card-title">Clases</h5>
+          <a href="#" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#nueva_clase">Nueva</a>
+          
       </div>
       <div class="card-body">
           @if(session('success'))
@@ -14,10 +15,13 @@
               {{session('success')}}
             </div>
           @endif
-          <categoria-component></categoria-component>
+          <clase-component></clase-component>
       </div>      
     </div>  
  </div>
+
+
+
 
 
 @endsection

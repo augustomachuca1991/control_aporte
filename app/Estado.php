@@ -11,4 +11,9 @@ class Estado extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
+    public function liquidaciones()
+    {
+    	return $this->belongsToMany('App\Liquidacion','historia_liquidacion','cod_estado','estado_id');
+    }
 }

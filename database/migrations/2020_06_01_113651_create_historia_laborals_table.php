@@ -16,11 +16,11 @@ class CreateHistoriaLaboralsTable extends Migration
         Schema::create('historia_laborals', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('puesto_id')->unsigned();
-            $table->foreign('puesto_id')->references('id')->on('puesto_laborals');
+            $table->foreign('puesto_id')->references('id')->on('agente_organismo');
             $table->bigInteger('clase_id')->unsigned();
             $table->foreign('clase_id')->references('id')->on('clases');
             $table->date('fecha_ingreso');
-            $table->date('fecha_egreso');
+            $table->date('fecha_egreso')->nullable();
 
             $table->softDeletes(); 
             $table->timestamps();

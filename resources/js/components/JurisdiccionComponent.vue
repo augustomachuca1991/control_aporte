@@ -157,7 +157,6 @@
                 encabezado: '',
                 resguardo: ''
             }
-
         },
         mounted() {
             axios.get('api/jurisdiccion').then((response)=>{
@@ -165,6 +164,7 @@
                 this.jurisdicciones = response.data;
             })
         },
+<<<<<<< HEAD
         methods: {
             restaurar: function(p_jurisdiccion){
                 console.log(p_jurisdiccion);
@@ -185,8 +185,12 @@
                 this.jur_aux = p_jurisdiccion;
 
             }
+=======
+        verJurisdiccion: function(event){
+            console.log(event);
+            this.jur.jurisdiccion = event,
+            this.encabezado = 'Detalle Jurisdicción'
+>>>>>>> 176d73cefc04e963030e20fb7f78840308f7f7f1
         }
-
     }
-
 </script>

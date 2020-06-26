@@ -18,7 +18,7 @@ class CreateAgentesTable extends Migration
             $table->bigInteger('cuil')->unsigned()->unique();
             $table->string('nombre');
             $table->date('fecha_nac');
-            $table->string('sexo')->unique();
+            $table->string('sexo');
 
             $table->softDeletes(); 
             $table->timestamps();
