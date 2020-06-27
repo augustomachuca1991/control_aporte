@@ -6,7 +6,6 @@
 @section('content')
     <div class="container"> 
             <filter-component></filter-component>
-            <liquidacion-component></liquidacion-component>
     </div>
 @endsection
 

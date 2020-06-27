@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class Liquidacion extends Model
 {
-    use SoftDeletes;
+    //use SoftDeletes;
 
     protected $dates = ['deleted_at'];
     
@@ -82,10 +82,10 @@ class Liquidacion extends Model
     }
 
 
-    //public function conceptos()
-    //{
-    //    return $this->belongsToMany('App\ConceptoLiquidacion','liquidacion_detalles','concepto_id', 'liquidacion_id')->with('subtipocodigo');
-    //}
+    public function liquidacionOrganismo()
+    {
+        return $this->hasMany('App\LiquidacionOrganismo')->with(['organismo','periodo','tipoliquidacion']);
+    }
 
 
 

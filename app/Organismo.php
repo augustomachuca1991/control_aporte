@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\softDeletes;
 class Organismo extends Model
 {
     
-	use SoftDeletes;
+	//use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
     public function jurisdiccion()
     {
-        return $this->belongsTo('App\Jurisdiccion')->with('origen');
+        return $this->belongsTo('App\Jurisdiccion','jurisdiccion_id' , 'cod_jurisdiccion')->with('origen');
     }
 
     public function liquidaciones()
@@ -41,5 +41,10 @@ class Organismo extends Model
     public function conceptos()
     {
         return $this->hasMany('App\ConceptoLiquidacion');
+    }
+
+    public function liquidacionOrganismo()
+    {
+        return $this->hasMany('App\LiquidacionOrganismo')->with(['liquidacion','periodo','tipoLiquidacion']);
     } 
 }

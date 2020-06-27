@@ -16,8 +16,7 @@ class CreateOrigensTable extends Migration
         Schema::create('origens', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('cod_origen')->unsigned()->unique();
-            $table->string('origen');
-
+            $table->string('origen'); 
             $table->softDeletes(); 
             $table->timestamps();
         });

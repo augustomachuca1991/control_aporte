@@ -9,7 +9,7 @@ class DeclaracionJuradaLine extends Model
 {
     //
 
-    use SoftDeletes;
+    //use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 }

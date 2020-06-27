@@ -1,72 +1,53 @@
 <template>
   <div class="table-responsive-lg">
     <label v-model="buscar">Filtro {{buscar}} </label>
-    <table class="table table-sm table-borderless table-striped border" v-model="liquidaciones">
+
+    <!--table-->
+    <table class="table table-sm table-hover table-bordeless" v-model="liquidaciones">
       <caption>
           Instituto de Previsión Social de Corrientes
       </caption>
       <thead>
         <tr>
-          <th scope="col"># Codigo</th>
-          <th scope="col">Tipo liquidacion</th>
+          <th scope="col">#cod</th>
+          <th scope="col">Tipo Liquidacion</th>
           <th scope="col">Agente</th>
-          <th scope="col">Puesto laboral</th>
+          <th scope="col">Puesto Laboral</th>
           <th scope="col">Periodo</th>
           <th scope="col">Detalle</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="liquidacion in liquidaciones" :key="liquidacion.id" :liquidacion="liquidacion">
-          <th scope="row">
-              <tr>  
-                  <td>000{{liquidacion.id}}</td>
-              </tr>
-          </th>
+        <tr v-for="liquidacion in liquidaciones">
+          <th scope="row">00{{liquidacion.id}}</th>
+          <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
+          <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
+          <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.cod_laboral}}</td>
+          <td v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.periodo}}</td>
           <td>
-              <tr v-for="tipo in liquidacion.tipo_liquidaciones">  
-                  <td> {{tipo.descripcion}}</td>
-              </tr>
-          </td>
-          <td v-for="historia_laboral in liquidacion.historia_laborales">
-              <tr>  
-                  <td>{{historia_laboral.puesto.agente.nombre}}</td>
-              </tr>
-          </td>
-          <td>
-              <tr v-for="historia_laboral in liquidacion.historia_laborales">  
-                  <td> {{historia_laboral.puesto.cod_laboral}}</td>
-              </tr>
-          </td>
-          <td v-for="periodo in liquidacion.periodos">
-              <tr>  
-                  <td>{{periodo.periodo}}</td>
-              </tr>
-          </td>
-          <td>
-            <tr>  
-                <td>
-                  <a :href="'#detalle'"  class="btn btn-outline-primary border-0  btn-sm shadow" data-toggle="modal" v-on:click="show(liquidacion.id)"><i class="fas fa-dollar-sign"></i></a>  
-                </td>
-            </tr>
+              <a :href="'#detalle'" class="btn btn-outline-success border-0 btn-sm shadow text-muteds" data-toggle="modal" v-on:click="show(liquidacion.id)">
+              <i class="fas fa-dollar-sign"></i>
+              </a>  
           </td>
         </tr>
       </tbody>
     </table>
+
     <!--modal-->
     <div id="detalle" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" v-model="liquidacion">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel" v-for="liquid in liquidacion">Periodo -&nbsp;{{liquid.periodos[0].periodo}}</h5>
+            <h5 class="modal-title" id="exampleModalLabel" v-for="periodo in liquidacion.liquidacion_organismo">Periodo -&nbsp;{{periodo.periodo.periodo}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
               <span class="btn btn-danger" aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body" v-for="liquid in liquidacion">
+          <div class="modal-body">
             <!--cabecera-->
             <div class="row"> 
               <div class="col">
-                  <p class="text-center">LIQUIDACIONES</p> 
+                  <p class="text-center">LIQUIDACIÓN</p> 
               </div>
             </div> 
             <!--cabecera -->
@@ -79,7 +60,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small v-for="organismo in liquid.organismos">{{organismo.jurisdiccion.jurisdiccion}}</small> 
+                          <small v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</small> 
                       </div>
                     </div> 
 
@@ -92,7 +73,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small v-for="organismo in liquid.organismos">{{organismo.organismo}}</small> 
+                          <small v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</small> 
                       </div> 
                     </div>
 
@@ -105,7 +86,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small>Personal IPS</small> 
+                          <small>no definido</small> 
                       </div> 
                     </div>
 
@@ -118,7 +99,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                        <small v-for="periodo in liquid.periodos">{{periodo.mes}}</small>
+                        <small v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.mes}}</small>
                       </div> 
                     </div>
                 </div> 
@@ -131,7 +112,7 @@
                     <div class="row">
                       <div class="col">
                           <small>
-                             <small v-for="periodo in liquid.periodos">{{periodo.anio}}</small>
+                             <small v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.anio}}</small>
                           </small> 
                       </div> 
                     </div>
@@ -147,7 +128,7 @@
                     </div>    
                     <div class="row">
                       <div class="col">
-                           <small v-for="historia_laboral in liquid.historia_laborales">{{historia_laboral.puesto.agente.nombre}}
+                           <small v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}
                            </small>
                       </div> 
                     </div>
@@ -160,7 +141,7 @@
                     </div> 
                     <div class="row">
                       <div class="col">
-                          <small v-for="historia_laboral in liquid.historia_laborales">{{historia_laboral.puesto.agente.cuil}}</small> 
+                          <small v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.cuil}}</small> 
                       </div> 
                     </div>
                 </div> 
@@ -172,7 +153,7 @@
                     </div> 
                     <div class="row">
                       <div class="col">
-                          <small v-for="historia_laboral in liquid.historia_laborales">
+                          <small v-for="historia_laboral in liquidacion.historia_laborales">
                                {{historia_laboral.puesto.cod_laboral}}
                           </small>
                       </div> 
@@ -186,7 +167,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small v-for="historia_laboral in liquid.historia_laborales">
+                          <small v-for="historia_laboral in liquidacion.historia_laborales">
                             {{historia_laboral.fecha_ingreso}}
                           </small> 
                       </div>
@@ -208,9 +189,9 @@
             <!--table-->
             <div class="table-responsive shadow p-3 mb-5 bg-white rounded">
               <table class="table table-sm table-borderless table-fixed">
-                <caption class="justify-content-end" v-model="liquidacion" v-for="liquid in liquidacion">
+                <caption class="justify-content-end" v-model="liquidacion">
                   <small>
-                    Total Neto $ {{(liquid.bruto + liquid.bonificable + liquid.no_bonificable + liquid.no_remunerativo + liquid.familiar) - liquid.descuento}}
+                    Total Neto $ {{(liquidacion.bruto + liquidacion.bonificable + liquidacion.no_bonificable + liquidacion.no_remunerativo + liquidacion.familiar) - liquidacion.descuento}}
                   </small>
                 </caption>
                 <thead class="bg-light" >
@@ -225,7 +206,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="detalle in liquid.detalles">
+                  <tr v-for="detalle in liquidacion.detalles">
                     <th scope="row"><small>{{detalle.concepto_id}}</small></th>
                     <td>
                       <small>{{detalle.concepto.concepto}}</small>
@@ -251,21 +232,21 @@
                     </td>
                   </tr>
                 </tbody>
-                <tfoot class="bg-light" v-model="liquidacion" v-for="liq in liquidacion">
+                <tfoot class="bg-light" v-model="liquidacion">
                   <th scope="row" colspan="3">
                     <small>Subtotal</small>
                   </th>
                   <td>
-                    <small>$ {{liq.bruto + liq.bonificable + liq.no_bonificable}}</small>
+                    <small>$ {{liquidacion.bruto + liquidacion.bonificable + liquidacion.no_bonificable}}</small>
                   </td>
                   <td>
-                    <small>$ {{liq.no_remunerativo}}</small>
+                    <small>$ {{liquidacion.no_remunerativo}}</small>
                   </td>
                   <td>
-                    <small>$ {{liq.familiar}}</small>
+                    <small>$ {{liquidacion.familiar}}</small>
                   </td>
                   <td>
-                    <small>$ {{liq.descuento}}</small>
+                    <small>$ {{liquidacion.descuento}}</small>
                   </td>
                 </tfoot>
               </table>
@@ -291,12 +272,12 @@
         },
         mounted() {
             //console.log(this.buscar.length === 1)    
-            if (this.buscar.periodo == "" && this.buscar.tipo_liquidacion == "" ) {
+            //if (this.buscar.periodo == "" && this.buscar.tipo_liquidacion == "" ) {
                 
                 axios.get('api/liquidacion').then((response)=>{
                    this.liquidaciones = response.data;
                 })
-            }
+            //}
         }, 
         methods:{
             show(id){

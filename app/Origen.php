@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class Origen extends Model
 {
-    use SoftDeletes;
+    //use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
@@ -15,16 +15,4 @@ class Origen extends Model
     {
         return $this->hasMany('App\Jurisdiccion')->with('organismos')->with('categorias');
     }
-
-    //public function jurisdiccionOrganismo()
-    //{
-    //    return $this->hasManyThrough(
-    //        'App\Organismo',
-    //        'App\Jurisdiccion',
-    //        'origen_id', // Foreign key on cars table...
-    //        'jurisdiccion_id', // Foreign key on owners table...
-    //        'cod_origen', // Local key on mechanics table...
-    //        'cod_jurisdiccion' // Local key on cars table...
-    //    );
-    //}
 }

@@ -47,10 +47,9 @@ class LiquidacionController extends Controller
     public function show($id)
     {
 
-        $liquidaciones = Liquidacion::where('id',$id)
-                        ->with(['organismos','periodos','tipoLiquidaciones','historia_laborales','detalles'])
-                        ->get();
-        foreach ($liquidaciones as $liquidacion) {
+        $liquidacion = Liquidacion::where('id',$id)
+                        ->with(['liquidacionOrganismo','historia_laborales','detalles'])
+                        ->first();
             foreach ($liquidacion->detalles as $detalle) {
                 if ($detalle->concepto->subtipo->tipocodigo->id == 1) {
                     $liquidacion->bruto += $detalle->importe;
@@ -66,8 +65,8 @@ class LiquidacionController extends Controller
                     $liquidacion->descuento += $detalle->importe;
                 }
             }
-        }
-        return $liquidaciones;
+        //$liquidacion->save();
+        return $liquidacion;
     }
 
     /**
@@ -107,7 +106,7 @@ class LiquidacionController extends Controller
     public function getliquidaciones()
     {
         
-        return Liquidacion::with(['organismos','periodos','tipoLiquidaciones','historia_laborales'])->get();
+        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->get();
     }
 
 

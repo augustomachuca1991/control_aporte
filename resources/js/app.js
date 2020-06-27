@@ -23,14 +23,14 @@ window.Vue = require('vue');
 
 Vue.component('panel-component', require('./components/PanelComponent.vue').default);
 Vue.component('filter-component', require('./components/FilterComponent.vue').default);
-Vue.component('liquidacion-component', require('./components/LiquidacionComponent.vue').default);
-Vue.component('footer-component', require('./components/FooterComponent.vue').default);
-Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
+Vue.component('filtroperiodo-component', require('./components/FilterPeriodoComponent.vue').default);
 Vue.component('filtertipoliquidacion-component', require('./components/FilterTipoLiquidacionComponent.vue').default);
+//Vue.component('footer-component', require('./components/FooterComponent.vue').default);
+Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
 Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
 Vue.component('clase-component', require('./components/ClaseComponent.vue').default);
 Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);
-Vue.component('filtroperiodo-component', require('./components/FilterPeriodoComponent.vue').default);
+
 Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesCompnent.vue').default);
 
 /**

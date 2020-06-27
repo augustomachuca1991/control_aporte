@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\softDeletes;
 class Estado extends Model
 {
     //
-    use SoftDeletes;
+    //use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

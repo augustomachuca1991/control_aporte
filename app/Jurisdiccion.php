@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\softDeletes;
 class Jurisdiccion extends Model
 {
     
-    use SoftDeletes;
+    //use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
     public function origen()
     {
-        return $this->belongsTo('App\Origen');
+        return $this->belongsTo('App\Origen' ,'origen_id' , 'cod_origen');
     }
 
 

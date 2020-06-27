@@ -1,27 +1,28 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <filtroperiodo-component 
-                        @sendPeriodo="search('periodo',...arguments)">
-                </filtroperiodo-component>
-
-                <filtertipoliquidacion-component 
-                        @sendTipo="search('tipo_liquidacion',...arguments)">
-                </filtertipoliquidacion-component>
-
+            <div class="col-12 col-lg-6">
                 <filter-component 
                         @sendOrigen="search('origen',...arguments)" 
                         @sendJur="search('jurisdiccion',...arguments)" 
                         @sendOrganismo="search('organismo',...arguments)">
                 </filter-component>
-
+            </div>
+            <div class="col-12 col-lg-3">
+                <filtroperiodo-component 
+                        @sendPeriodo="search('periodo',...arguments)">
+                </filtroperiodo-component>
+            </div>
+            <div class="col-12 col-lg-3">
+                <filtertipoliquidacion-component 
+                        @sendTipo="search('tipo_liquidacion',...arguments)">
+                </filtertipoliquidacion-component>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col">
-                <div class="card  border-0 shadow p-3">
-                    <div class="card-header">Liquidaciones</div>
+                <div class="card border-0 shadow">
+                    <div class="card-header border-0 shadow">Liquidaciones</div>
 
                     <div class="card-body">
                         <listaliquidaciones-component :filtro="filtro">
@@ -81,4 +82,9 @@
         }
     }
 </script>
+
+
+
+
+
 
