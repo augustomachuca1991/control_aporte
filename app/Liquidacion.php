@@ -28,7 +28,7 @@ class Liquidacion extends Model
      */
     public function estados()
     {
-        return $this->belongsToMany( 'App\Estado','historia_liquidacion','id','liquidacion_id');
+        return $this->belongsToMany( 'App\Estado','historia_liquidacion','estado_id','liquidacion_id');
     }
 
     /**

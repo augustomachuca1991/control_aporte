@@ -2425,7 +2425,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     axios.get('api/periodo').then(function (response) {
-      console.log(response.data);
+      console.log("filter Periodo component mounted");
       _this.periodos = response.data;
     });
   },
@@ -2480,7 +2480,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     axios.get('api/tipoliquidacion').then(function (response) {
-      console.log(response.data);
+      console.log("filter tipo liquidacion mounted");
       _this.tipoliquidaciones = response.data;
     });
   },
@@ -3145,23 +3145,68 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['filtro'],
   data: function data() {
     return {
       liquidaciones: [],
       liquidacion: [],
-      buscar: this.filtro
+      buscar: this.filtro,
+      pagination: {
+        current_page: '',
+        primero: '',
+        ultimo: '',
+        from: '',
+        last_page: '',
+        next_page_url: '',
+        path: '',
+        per_page: '',
+        to: '',
+        total: ''
+      }
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    //console.log(this.buscar.length === 1)    
-    //if (this.buscar.periodo == "" && this.buscar.tipo_liquidacion == "" ) {
     axios.get('api/liquidacion').then(function (response) {
-      _this.liquidaciones = response.data;
-    }); //}
+      _this.liquidaciones = response.data.data;
+      _this.pagination.primero = response.data.first_page_url;
+      _this.pagination.ultimo = response.data.last_page_url;
+      _this.pagination.current_page = response.data.current_page;
+      _this.pagination.from = response.data.from;
+      _this.pagination.last_page = response.data.last_page;
+      _this.pagination.next_page_url = response.data.next_page_url;
+      _this.pagination.path = response.data.path;
+      _this.pagination.per_page = response.data.per_page;
+      _this.pagination.to = response.data.to;
+      _this.pagination.total = response.data.total;
+      console.log('tabla liquidacion component mounted'); //alert(JSON.stringify(this.pagination))
+    });
   },
   methods: {
     show: function show(id) {
@@ -3174,6 +3219,25 @@ __webpack_require__.r(__webpack_exports__);
     },
     empty: function empty() {
       this.liquidacion = [];
+    },
+    cargar: function cargar() {//if (this.buscar.condition) {
+      //  axios.get('api/liquidacion').then((response)=>{
+      //   this.loadMode = false
+      //   this.liquidaciones = response.data.data;
+      //   this.pagination.primero = response.data.first_page_url
+      //   this.pagination.ultimo = response.data.last_page_url
+      //   this.pagination.current_page = response.data.current_page
+      //   this.pagination.from = response.data.from
+      //   this.pagination.last_page = response.data.last_page
+      //   this.pagination.next_page_url = response.data.next_page_url
+      //   this.pagination.path = response.data.path
+      //   this.pagination.per_page = response.data.per_page
+      //   this.pagination.to = response.data.to
+      //   this.pagination.total = response.data.total
+      //   console.log('tabla liquidacion component mounted')
+      //   //alert(JSON.stringify(this.pagination))
+      //  })
+      //}
     }
   }
 });
@@ -3234,7 +3298,8 @@ __webpack_require__.r(__webpack_exports__);
         tipo_liquidacion: '',
         origen: '',
         jurisdiccion: '',
-        organismo: ''
+        organismo: '',
+        condition: false
       }
     };
   },
@@ -3244,6 +3309,8 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     search: function search(index, parm) {
       //console.log(parm);
+      this.filtro.condition = true;
+
       switch (index) {
         case 'periodo':
           this.filtro.periodo = "";
@@ -41165,20 +41232,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "table-responsive-lg" }, [
     _c(
-      "label",
-      {
-        model: {
-          value: _vm.buscar,
-          callback: function($$v) {
-            _vm.buscar = $$v
-          },
-          expression: "buscar"
-        }
-      },
-      [_vm._v("Filtro " + _vm._s(_vm.buscar) + " ")]
-    ),
-    _vm._v(" "),
-    _c(
       "table",
       {
         staticClass: "table table-sm table-hover table-bordeless",
@@ -41199,63 +41252,135 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.liquidaciones, function(liquidacion) {
-            return _c(
-              "tr",
-              [
-                _c("th", { attrs: { scope: "row" } }, [
-                  _vm._v("00" + _vm._s(liquidacion.id))
-                ]),
-                _vm._v(" "),
-                _vm._l(liquidacion.liquidacion_organismo, function(
-                  tipoliquidacion
-                ) {
-                  return _c("td", [
-                    _vm._v(_vm._s(tipoliquidacion.tipoliquidacion.descripcion))
+          [
+            _vm.buscar.condition == false
+              ? _c("tr", { staticClass: "table-default text-center" }, [
+                  _c("td", { attrs: { colspan: "6" } }, [
+                    _vm._v("No hay datos")
                   ])
-                }),
-                _vm._v(" "),
-                _vm._l(liquidacion.historia_laborales, function(
-                  historia_laboral
-                ) {
-                  return _c("td", [
-                    _vm._v(_vm._s(historia_laboral.puesto.agente.nombre))
-                  ])
-                }),
-                _vm._v(" "),
-                _vm._l(liquidacion.historia_laborales, function(
-                  historia_laboral
-                ) {
-                  return _c("td", [
-                    _vm._v(_vm._s(historia_laboral.puesto.cod_laboral))
-                  ])
-                }),
-                _vm._v(" "),
-                _vm._l(liquidacion.liquidacion_organismo, function(periodo) {
-                  return _c("td", [_vm._v(_vm._s(periodo.periodo.periodo))])
-                }),
-                _vm._v(" "),
-                _c("td", [
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "btn btn-outline-success border-0 btn-sm shadow text-muteds",
-                      attrs: { href: "#detalle", "data-toggle": "modal" },
-                      on: {
-                        click: function($event) {
-                          return _vm.show(liquidacion.id)
-                        }
-                      }
-                    },
-                    [_c("i", { staticClass: "fas fa-dollar-sign" })]
-                  )
                 ])
-              ],
-              2
-            )
-          }),
-          0
+              : _vm._l(_vm.liquidaciones, function(liquidacion) {
+                  return _c(
+                    "tr",
+                    [
+                      _c("th", { attrs: { scope: "row" } }, [
+                        _vm._v("00" + _vm._s(liquidacion.id))
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(liquidacion.liquidacion_organismo, function(
+                        tipoliquidacion
+                      ) {
+                        return _c("td", [
+                          _vm._v(
+                            _vm._s(tipoliquidacion.tipoliquidacion.descripcion)
+                          )
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _vm._l(liquidacion.historia_laborales, function(
+                        historia_laboral
+                      ) {
+                        return _c("td", [
+                          _vm._v(_vm._s(historia_laboral.puesto.agente.nombre))
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _vm._l(liquidacion.historia_laborales, function(
+                        historia_laboral
+                      ) {
+                        return _c("td", [
+                          _vm._v(_vm._s(historia_laboral.puesto.cod_laboral))
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _vm._l(liquidacion.liquidacion_organismo, function(
+                        periodo
+                      ) {
+                        return _c("td", [
+                          _vm._v(_vm._s(periodo.periodo.periodo))
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "btn btn-outline-success border-0 btn-sm shadow text-muteds",
+                            attrs: { href: "#detalle", "data-toggle": "modal" },
+                            on: {
+                              click: function($event) {
+                                return _vm.show(liquidacion.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fas fa-dollar-sign" })]
+                        )
+                      ])
+                    ],
+                    2
+                  )
+                })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c(
+          "tfoot",
+          {
+            model: {
+              value: _vm.pagination,
+              callback: function($$v) {
+                _vm.pagination = $$v
+              },
+              expression: "pagination"
+            }
+          },
+          [
+            _c("tr", [
+              _c("th", { attrs: { scope: "row", colspan: "6" } }, [
+                _c(
+                  "nav",
+                  { attrs: { "aria-label": "Page navigation example" } },
+                  [
+                    _c(
+                      "ul",
+                      { staticClass: "pagination justify-content-end" },
+                      [
+                        _c("li", { staticClass: "page-item disabled" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "page-link",
+                              attrs: { href: _vm.pagination.primero }
+                            },
+                            [_vm._v("Primero")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c("li", { staticClass: "page-item" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "page-link",
+                              attrs: { href: _vm.pagination.ultimo }
+                            },
+                            [_vm._v("Ultimo")]
+                          )
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              ])
+            ])
+          ]
         )
       ]
     ),
@@ -41330,11 +41455,11 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
-              _vm._m(1),
+              _vm._m(4),
               _vm._v(" "),
               _c("div", { staticClass: "row bg-light" }, [
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(2),
+                  _vm._m(5),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41357,7 +41482,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(3),
+                  _vm._m(6),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41375,10 +41500,10 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(4),
+                _vm._m(7),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(5),
+                  _vm._m(8),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41397,7 +41522,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(6),
+                  _vm._m(9),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "col" }, [
@@ -41419,7 +41544,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "row my-3 bg-light" }, [
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(7),
+                  _vm._m(10),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41441,7 +41566,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(8),
+                  _vm._m(11),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41460,7 +41585,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(9),
+                  _vm._m(12),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41483,7 +41608,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(10),
+                  _vm._m(13),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41505,7 +41630,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(11)
+                _vm._m(14)
               ]),
               _vm._v(" "),
               _c(
@@ -41551,7 +41676,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(12),
+                      _vm._m(15),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -41612,7 +41737,7 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._m(13),
+                          _vm._m(16),
                           _vm._v(" "),
                           _c("td", [
                             _c("small", [
@@ -41665,7 +41790,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [
+      _c("tr", { staticClass: "table-dark" }, [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("#cod")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Tipo Liquidacion")]),
@@ -41678,6 +41803,30 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Detalle")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "page-item" }, [
+      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [_vm._v("1")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "page-item" }, [
+      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [_vm._v("2")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "page-item" }, [
+      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [_vm._v("3")])
     ])
   },
   function() {
@@ -41930,9 +42079,11 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col" }, [
         _c("div", { staticClass: "card border-0 shadow" }, [
-          _c("div", { staticClass: "card-header border-0 shadow" }, [
-            _vm._v("Liquidaciones")
-          ]),
+          _c(
+            "div",
+            { staticClass: "card-header border-0 shadow text-center" },
+            [_vm._v("LIQUIDACIONES")]
+          ),
           _vm._v(" "),
           _c(
             "div",

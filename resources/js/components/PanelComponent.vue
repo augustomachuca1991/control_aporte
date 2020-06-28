@@ -22,7 +22,7 @@
         <div class="row justify-content-center">
             <div class="col">
                 <div class="card border-0 shadow">
-                    <div class="card-header border-0 shadow">Liquidaciones</div>
+                    <div class="card-header border-0 shadow text-center">LIQUIDACIONES</div>
 
                     <div class="card-body">
                         <listaliquidaciones-component :filtro="filtro">
@@ -45,6 +45,7 @@
                 origen:'',
                 jurisdiccion:'',
                 organismo:'',
+                condition:false
 
               },
           };
@@ -55,6 +56,7 @@
         methods:{
             search(index,parm){
                     //console.log(parm);
+                this.filtro.condition = true
                 switch (index) {
                   case 'periodo':
                     this.filtro.periodo = ""

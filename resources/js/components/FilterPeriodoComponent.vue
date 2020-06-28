@@ -24,7 +24,7 @@
         },
         mounted() {
            axios.get('api/periodo').then((response)=>{
-               console.log(response.data);
+               console.log("filter Periodo component mounted");
                this.periodos= response.data;
             })
         },

@@ -106,7 +106,7 @@ class LiquidacionController extends Controller
     public function getliquidaciones()
     {
         
-        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->get();
+        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->paginate(5);
     }
 
 

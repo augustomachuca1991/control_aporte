@@ -24,7 +24,7 @@
         },
         mounted() {
            axios.get('api/tipoliquidacion').then((response)=>{
-               console.log(response.data);
+               console.log("filter tipo liquidacion mounted");
                this.tipoliquidaciones= response.data;
             })
         },

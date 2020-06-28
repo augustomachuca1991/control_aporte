@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive-lg">
-    <label v-model="buscar">Filtro {{buscar}} </label>
+    <!--<label v-model="buscar">Filtro {{buscar}} </label>-->
 
     <!--table-->
     <table class="table table-sm table-hover table-bordeless" v-model="liquidaciones">
@@ -8,7 +8,7 @@
           Instituto de Previsión Social de Corrientes
       </caption>
       <thead>
-        <tr>
+        <tr class="table-dark">
           <th scope="col">#cod</th>
           <th scope="col">Tipo Liquidacion</th>
           <th scope="col">Agente</th>
@@ -18,7 +18,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="liquidacion in liquidaciones">
+        <tr v-if="buscar.condition == false" class="table-default text-center">
+          <td colspan="6">No hay datos</td>
+        </tr>
+        <tr v-else v-for="liquidacion in liquidaciones">
           <th scope="row">00{{liquidacion.id}}</th>
           <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
           <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
@@ -31,6 +34,26 @@
           </td>
         </tr>
       </tbody>
+      <tfoot v-model="pagination"> 
+        <!--pagination-->
+        <tr>
+          <th scope="row" colspan="6">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-end">
+                <li class="page-item disabled">
+                  <a class="page-link" :href="pagination.primero">Primero</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" :href="pagination.ultimo">Ultimo</a>
+                </li>
+              </ul>
+            </nav>
+          </th>
+        </tr>
+      </tfoot>
     </table>
 
     <!--modal-->
@@ -190,6 +213,7 @@
             <div class="table-responsive shadow p-3 mb-5 bg-white rounded">
               <table class="table table-sm table-borderless table-fixed">
                 <caption class="justify-content-end" v-model="liquidacion">
+                  
                   <small>
                     Total Neto $ {{(liquidacion.bruto + liquidacion.bonificable + liquidacion.no_bonificable + liquidacion.no_remunerativo + liquidacion.familiar) - liquidacion.descuento}}
                   </small>
@@ -267,17 +291,38 @@
                 liquidaciones:[],
                 liquidacion:[],
                 buscar: this.filtro,
+                pagination:{
+                  current_page:'',
+                  primero:'',
+                  ultimo:'',
+                  from:'',
+                  last_page:'',
+                  next_page_url:'',
+                  path:'',
+                  per_page:'',
+                  to:'',
+                  total:''
+                },
             }
         
         },
         mounted() {
-            //console.log(this.buscar.length === 1)    
-            //if (this.buscar.periodo == "" && this.buscar.tipo_liquidacion == "" ) {
                 
                 axios.get('api/liquidacion').then((response)=>{
-                   this.liquidaciones = response.data;
+                   this.liquidaciones = response.data.data;
+                   this.pagination.primero = response.data.first_page_url
+                   this.pagination.ultimo = response.data.last_page_url
+                   this.pagination.current_page = response.data.current_page
+                   this.pagination.from = response.data.from
+                   this.pagination.last_page = response.data.last_page
+                   this.pagination.next_page_url = response.data.next_page_url
+                   this.pagination.path = response.data.path
+                   this.pagination.per_page = response.data.per_page
+                   this.pagination.to = response.data.to
+                   this.pagination.total = response.data.total
+                   console.log('tabla liquidacion component mounted')
+                   //alert(JSON.stringify(this.pagination))
                 })
-            //}
         }, 
         methods:{
             show(id){
@@ -289,6 +334,26 @@
             empty(){
                 this.liquidacion = [];
             },
+            cargar(){
+                //if (this.buscar.condition) {
+                //  axios.get('api/liquidacion').then((response)=>{
+                //   this.loadMode = false
+                //   this.liquidaciones = response.data.data;
+                //   this.pagination.primero = response.data.first_page_url
+                //   this.pagination.ultimo = response.data.last_page_url
+                //   this.pagination.current_page = response.data.current_page
+                //   this.pagination.from = response.data.from
+                //   this.pagination.last_page = response.data.last_page
+                //   this.pagination.next_page_url = response.data.next_page_url
+                //   this.pagination.path = response.data.path
+                //   this.pagination.per_page = response.data.per_page
+                //   this.pagination.to = response.data.to
+                //   this.pagination.total = response.data.total
+                //   console.log('tabla liquidacion component mounted')
+                //   //alert(JSON.stringify(this.pagination))
+                //  })
+                //}
+            }
         },
     }
 </script>
