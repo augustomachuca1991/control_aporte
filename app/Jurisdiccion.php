@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\softDeletes;
 class Jurisdiccion extends Model
 {
     
-    //use SoftDeletes;
+    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
@@ -24,7 +24,7 @@ class Jurisdiccion extends Model
     }
 
     public function categorias(){
-        return $this->belongsToMany('App\Categoria', 'categoria_jurisdiccion');
+        return $this->belongsToMany('App\Categoria');
     }
 
 }

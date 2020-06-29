@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class PuestoLaboral extends Model
 {
-    //
-    //use SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'agente_organismo';
     protected $dates = ['deleted_at'];

@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class LiquidacionOrganismo extends Model
 {
-    //
-    //use SoftDeletes;
-	protected $table = 'liquidacion_organismo';
+    use SoftDeletes;
+	
+    protected $table = 'liquidacion_organismo';
+    
     protected $dates = ['deleted_at'];
 
     public function organismo()

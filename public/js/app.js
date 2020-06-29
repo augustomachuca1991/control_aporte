@@ -55254,8 +55254,13 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\sass\app.scss */"./resources/sass/app.scss");
+=======
+__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
+>>>>>>> 565ede045fb512c83a965b90caf31cd7d94912c1
 
 
 /***/ })
