@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class DeclaracionJuradaLine extends Model
 {
-    //
-
-    //use SoftDeletes;
+    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 }

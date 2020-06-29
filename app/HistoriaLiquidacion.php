@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class HistoriaLiquidacion extends Model
 {
-    //
-    //use SoftDeletes;
+    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 }
