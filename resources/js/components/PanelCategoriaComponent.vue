@@ -1,13 +1,13 @@
 <template>
 <div id="panelcategoria">
-    <filtrocategoria-component ></filtrocategoria-component>
+    <filtrocategoria-component @jurisdiccion="get_codigo(...arguments)"></filtrocategoria-component>
     <div class="card shadow"> 
       <div class="card-header">
           <h5 class="card-title">Categorías</h5> 
       </div>
       <div class="card-body">
          
-          <categoria-component></categoria-component>
+          <categoria-component :categorias="categorias"></categoria-component>
       </div>  
     </div>  
 </div>
@@ -17,14 +17,18 @@
      export default {
         data: function() {
             return{
-                categorias : [],
+                // data: {
+                //     // cod_jurisdiccion: '',
+                // },
+                categorias:{}
             }
       },
       methods:{
-        //   get_categorias(categorias){
-        //       this.categorias = categorias;
-        //     //   console.log(codigo);
-        //   },
+          get_codigo(categorias){
+              // this.data.cod_jurisdiccion = cod_jurisdiccion;
+              this.categorias = categorias;
+              // console.log("panel Categoria: "+this.data);
+          },
       },
       mounted() {
            

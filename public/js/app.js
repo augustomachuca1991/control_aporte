@@ -2021,11 +2021,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['cat'],
+  props: ['categorias'],
   data: function data() {
     return {
-      categorias: [],
       feedback: "",
       origenes: [],
       origen: [],
@@ -2034,15 +2036,15 @@ __webpack_require__.r(__webpack_exports__);
       selectedJurisdiccion: "",
       jurisdicciones: [],
       jurisdiccion: [],
-      errors: [],
-      cat_: this.cat
+      errors: [] // categorias: this.data,
+
     };
   },
   methods: {
     // getCategorias(){
-    //   axios.get(`api/categoria/${}`).then((response)=>{
+    //   axios.get(`api/categoria/${jurisdiccion.cod_jurisdiccion}`).then((response)=>{
     //     this.categorias = response.data;
-    //     this.category=response.data
+    //     console.log(this.categorias);
     //   })
     //   .catch(function (error) {
     //       console.log(error);
@@ -2141,6 +2143,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     // this.getCategorias();
+    // console.log(this.cat);
     this.getOrigenes();
   }
 });
@@ -2548,6 +2551,9 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("api/categoria/".concat(id)).then(function (response) {
         _this.categorias = response.data;
+
+        _this.$emit('jurisdiccion', _this.categorias);
+
         console.log(_this.categorias);
       })["catch"](function (error) {
         console.log(error);
@@ -2566,8 +2572,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectedJurisdiccion: function selectedJurisdiccion() {
       var cod_jurisdiccion = this.selectedJurisdiccion;
-      this.getCategorias(cod_jurisdiccion);
-      this.$emit('categorias', categorias);
+      this.getCategorias(cod_jurisdiccion); // console.log("prueba"+categorias);
+      // this.$emit('jurisdiccion',this.categorias);
+      // this.$emit('jurisdiccion',cod_jurisdiccion);
     }
   },
   mounted: function mounted() {
@@ -3304,13 +3311,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      categorias: []
+      // data: {
+      //     // cod_jurisdiccion: '',
+      // },
+      categorias: {}
     };
   },
-  methods: {//   get_categorias(categorias){
-    //       this.categorias = categorias;
-    //     //   console.log(codigo);
-    //   },
+  methods: {
+    get_codigo: function get_codigo(categorias) {
+      // this.data.cod_jurisdiccion = cod_jurisdiccion;
+      this.categorias = categorias; // console.log("panel Categoria: "+this.data);
+    }
   },
   mounted: function mounted() {}
 });
@@ -38979,56 +38990,58 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.categorias, function(categoria, index) {
-            return _c("tr", { key: categoria.id }, [
-              _c("th", [_vm._v(_vm._s(categoria.cod_categoria))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(categoria.categoria))]),
-              _vm._v(" "),
-              _c("td", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-1" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-outline-warning border-0 btn-sm shadow text-dark",
-                      attrs: {
-                        "data-toggle": "modal",
-                        "data-target": "#edit_categoria"
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.editCategoria(categoria.id)
-                        }
-                      }
-                    },
-                    [_c("i", { staticClass: "far fa-edit" })]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-1" }, [
-                  _c(
-                    "form",
-                    {
-                      on: {
-                        submit: function($event) {
-                          $event.preventDefault()
-                          return _vm.deleteCategoria(categoria.id)
-                        }
-                      }
-                    },
-                    [_vm._m(1, true)]
-                  )
-                ])
-              ])
-            ])
-          }),
-          0
+          [
+            _vm.categorias.length === 0
+              ? _c("tr", [_vm._v("No hay datos para mostrar")])
+              : _vm._l(_vm.categorias, function(categoria, index) {
+                  return _c("tr", { key: categoria.id }, [
+                    _c("th", [_vm._v(_vm._s(categoria.cod_categoria))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(categoria.categoria))]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-1" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-outline-warning border-0 btn-sm shadow text-dark",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#edit_categoria"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.editCategoria(categoria.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "far fa-edit" })]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-1" }, [
+                        _c(
+                          "form",
+                          {
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                                return _vm.deleteCategoria(categoria.id)
+                              }
+                            }
+                          },
+                          [_vm._m(1, true)]
+                        )
+                      ])
+                    ])
+                  ])
+                })
+          ],
+          2
         )
       ]
     ),
-    _vm._v(" "),
-    _c("label"),
     _vm._v(" "),
     _vm._m(2),
     _vm._v(" "),
@@ -42264,12 +42277,25 @@ var render = function() {
     "div",
     { attrs: { id: "panelcategoria" } },
     [
-      _c("filtrocategoria-component"),
+      _c("filtrocategoria-component", {
+        on: {
+          jurisdiccion: function($event) {
+            return _vm.get_codigo.apply(void 0, arguments)
+          }
+        }
+      }),
       _vm._v(" "),
       _c("div", { staticClass: "card shadow" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [_c("categoria-component")], 1)
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c("categoria-component", { attrs: { categorias: _vm.categorias } })
+          ],
+          1
+        )
       ])
     ],
     1
