@@ -7,8 +7,10 @@
         </div>
     </div>
 
+    <div class="card-body">
+        <jurisdiccion-component></jurisdiccion-component>
+    </div>
 
-    <jurisdiccion-component></jurisdiccion-component>
 
 </div>
 
