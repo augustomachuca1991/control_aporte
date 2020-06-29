@@ -2873,11 +2873,13 @@ __webpack_require__.r(__webpack_exports__);
 
       if (confirm("¿Seguro que desea guardar los cambios?")) {
         var params = {
-          par_cod_jurisdiccion: p_jurisdiccion.cod_jurisdiccion,
-          par_jurisdiccion: p_jurisdiccion.jurisdiccion
+          cod_jurisdiccion: p_jurisdiccion.cod_jurisdiccion,
+          jurisdiccion: p_jurisdiccion.jurisdiccion,
+          origen_id: p_jurisdiccion.origen_id
         };
+        console.log(params);
         alert("api/jurisdiccion/update/" + p_jurisdiccion.id);
-        axios.put("api/jurisdiccion/update/" + p_jurisdiccion.id).then(function (response) {
+        axios.put("api/jurisdiccion/update/".concat(p_jurisdiccion.id), params).then(function (response) {
           _this3.getJurisdicciones();
 
           _this3.jur = [];
@@ -55221,15 +55223,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************************************!*\
   !*** ./resources/js/components/PanelCategoriaComponent.vue ***!
   \*************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PanelCategoriaComponent_vue_vue_type_template_id_6bbe0ada___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada& */ "./resources/js/components/PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada&");
 /* harmony import */ var _PanelCategoriaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PanelCategoriaComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PanelCategoriaComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _PanelCategoriaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _PanelCategoriaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -55259,7 +55260,7 @@ component.options.__file = "resources/js/components/PanelCategoriaComponent.vue"
 /*!**************************************************************************************!*\
   !*** ./resources/js/components/PanelCategoriaComponent.vue?vue&type=script&lang=js& ***!
   \**************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55374,18 +55375,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
 __webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
-=======
-<<<<<<< HEAD
-__webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\sass\app.scss */"./resources/sass/app.scss");
-=======
-__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
->>>>>>> 565ede045fb512c83a965b90caf31cd7d94912c1
->>>>>>> 933a0257d7da325ec390ec89aab6239f2e6ba328
 
 
 /***/ })

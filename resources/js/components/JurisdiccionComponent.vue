@@ -282,12 +282,14 @@
             updateJurisdiccion(p_jurisdiccion){
                 if(confirm("¿Seguro que desea guardar los cambios?")){
                     const params = {
-                        par_cod_jurisdiccion : p_jurisdiccion.cod_jurisdiccion,
-                        par_jurisdiccion : p_jurisdiccion.jurisdiccion
+                        cod_jurisdiccion : p_jurisdiccion.cod_jurisdiccion,
+                        jurisdiccion : p_jurisdiccion.jurisdiccion,
+                        origen_id : p_jurisdiccion.origen_id,
                     };
+                    console.log(params);
                     alert("api/jurisdiccion/update/"+ p_jurisdiccion.id);
 
-                    axios.put("api/jurisdiccion/update/"+ p_jurisdiccion.id)
+                    axios.put(`api/jurisdiccion/update/${p_jurisdiccion.id}` , params)
                         .then((response)=>{
                             this.getJurisdicciones();
                             this.jur = [];
