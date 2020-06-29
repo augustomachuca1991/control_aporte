@@ -38,8 +38,8 @@
     export default {
         data(){
           return{
-              periodo:{},
               filtro:{
+                data:[],
                 periodo:'',
                 tipo_liquidacion:'',
                 origen:'',
@@ -55,8 +55,10 @@
         },
         methods:{
             search(index,parm){
-                    //console.log(parm);
-                this.filtro.condition = true
+                //if (parm.length != 0 ) {
+                //    this.filtro.condition = true
+                //    this.filtro.data = parm
+                //}
                 switch (index) {
                   case 'periodo':
                     this.filtro.periodo = ""
@@ -78,7 +80,6 @@
                       this.filtro.organismo = ""
                       this.filtro.organismo = parm
                     break;
-
                 }
             },
         }

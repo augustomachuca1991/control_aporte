@@ -100,13 +100,30 @@ class LiquidacionController extends Controller
      */
     public function destroy(Liquidacion $liquidacion)
     {
-        //
+        
     }
 
     public function getliquidaciones()
     {
         
-        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->paginate(5);
+        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
+    }
+
+
+    public function filtro($origen,$jur,$organismo,$periodo,$tipo)
+    {
+        
+
+        return Liquidacion::whereHas('liquidacionOrganismo', function($query) use ($tipo){
+                $query->with('historia_laborales')->where('tipo_id',$tipo);
+        })->with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
+        //return Liquidacion::whereHas('liquidacionOrganismo', function($query) use ($periodo){
+        //        $query->with('historia_laborales')->where('periodo_id',$periodo);
+        //})->with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
+        
+        
+
+        
     }
 
 
