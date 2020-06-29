@@ -1,5 +1,5 @@
 <template>
-    <div id="jurisdicciones">
+    <div id="jurisdicciones" style="overflow-x:auto;">
 
         <div class="row">
             <div class="col">
@@ -9,8 +9,8 @@
 
         <br>
 
-    <table class="table border-rounded table-striped" v-model="jurisdicciones">
-        <thead class="thead-dark">
+    <table class="table table-borderless table-striped border" v-model="jurisdicciones">
+        <thead >
             <tr style="text-align: center;">
                 <th scope="col">Id.</th>
                 <th scope="col">cod.</th>
@@ -122,6 +122,7 @@
                             </div>
                             <br>
                             <div class="modal-footer">
+                                <button v-on:click="createJurisdiccion(jur)" data-dismiss="modal" id="nueva_jurisdiccion" class="btn btn-primary border-0">Guardar</button>
                                 <!--a href="" class="btn btn-danger" data-dismiss="modal">Volver</a-->
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
                                     <span class="btn btn-danger" aria-hidden="true">Volver</span>
@@ -146,7 +147,7 @@
                                 <div class="col">
                                     <div class="form-group" v-model="origen">
                                         <label class="required" for="editarOrigen" >Origen</label>
-                                        <select class="custom-select mr-sm-2" id="editarOrigen" name="origen" v-model="jur.origen_id" >
+                                        <select class="custom-select mr-sm-2" id="editarOrigen" name="origen" v-model="jur_aux.origen_id" >
                                             <option>Seleccione Orígenes</option>
                                             <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.cod_origen">{{origen.origen}}</option>
                                         </select>
@@ -157,18 +158,19 @@
                                 <div class="col">
                                     <label for="editarCodJurisdiccion" class="required">Cod. Jurisdicción</label>
                                     <input type="text" name="cod_jurisdiccion" id="editarCodJurisdiccion" value=""
-                                           class="form-control"  v-model="jur.cod_jurisdiccion">
+                                           class="form-control"  v-model="jur_aux.cod_jurisdiccion">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
                                     <label for="editarDescripcion" class="required">Jurisdicción</label>
                                     <input type="text" name="descripcion" id="editarDescripcion" value=""
-                                           class="form-control"  v-model="jur.jurisdiccion">
+                                           class="form-control"  v-model="jur_aux.jurisdiccion">
                                 </div>
                             </div>
                             <br>
                             <div class="modal-footer">
+                                <button v-on:click="updateJurisdiccion(jur_aux)" data-dismiss="modal" id="editar_jurisdiccion" class="btn btn-primary border-0">Guardar</button>
                                 <!--a href="" class="btn btn-danger" data-dismiss="modal">Volver</a-->
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
                                     <span class="btn btn-danger" aria-hidden="true">Volver</span>
@@ -212,6 +214,9 @@
                 jurisdicciones:[],
                 selectedOrigen: [],
                 origenes: [],
+                origen: [],
+                jur_aux: [],
+                jurisdiccion_id: "",
                 jur:{
                     id: null,
                     cod_jurisdiccion: null,
@@ -220,14 +225,14 @@
                     created_at: '',
                     updated_at: '',
                 },
-                jur_aux:{
-                    id: null,
-                    cod_jurisdiccion: null,
-                    jurisdiccion: '',
-                    origen_id: null,
-                    created_at: '',
-                    updated_at: '',
-                },
+                //jur_aux:{
+                    //id: null,
+                    //cod_jurisdiccion: null,
+                    //jurisdiccion: '',
+                    //origen_id: null,
+                    //created_at: '',
+                    //updated_at: '',
+                //},
                 form_editar: false,
                 encabezado: '',
                 resguardo: ''
@@ -269,10 +274,31 @@
             }.bind(this),
 
             editJurisdiccion(p_jurisdiccion){
-                this.jur = p_jurisdiccion;
-                this.jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion;
+                //this.jur = p_jurisdiccion;
+                //this.jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion;
+                this.jur_aux = _.cloneDeep(p_jurisdiccion);
                 this.encabezado = 'Editar Jurisdicción';
             },
+            updateJurisdiccion(p_jurisdiccion){
+                if(confirm("¿Seguro que desea guardar los cambios?")){
+                    const params = {
+                        par_cod_jurisdiccion : p_jurisdiccion.cod_jurisdiccion,
+                        par_jurisdiccion : p_jurisdiccion.jurisdiccion
+                    };
+                    alert("api/jurisdiccion/update/"+ p_jurisdiccion.id);
+
+                    axios.put("api/jurisdiccion/update/"+ p_jurisdiccion.id)
+                        .then((response)=>{
+                            this.getJurisdicciones();
+                            this.jur = [];
+                            alert('SI funciona');
+                        }).catch(function (error) {
+                        alert('NO funciona');
+                        console.log(error);
+                    });
+                }
+            },
+
             deleteJurisdiccion(p_jurisdiccion){
 
             },
