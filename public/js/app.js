@@ -2014,10 +2014,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['categorias'],
   data: function data() {
     return {
-      categorias: [],
       feedback: "",
       origenes: [],
       origen: [],
@@ -2026,33 +2036,33 @@ __webpack_require__.r(__webpack_exports__);
       selectedJurisdiccion: "",
       jurisdicciones: [],
       jurisdiccion: [],
-      errors: []
+      errors: [] // categorias: this.data,
+
     };
   },
   methods: {
-    getCategorias: function getCategorias() {
+    // getCategorias(){
+    //   axios.get(`api/categoria/${jurisdiccion.cod_jurisdiccion}`).then((response)=>{
+    //     this.categorias = response.data;
+    //     console.log(this.categorias);
+    //   })
+    //   .catch(function (error) {
+    //       console.log(error);
+    //   });
+    // }, 
+    getOrigenes: function getOrigenes() {
       var _this = this;
 
-      axios.get('api/categoria/1').then(function (response) {
-        _this.categorias = response.data;
-        _this.category = response.data;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    getOrigenes: function getOrigenes() {
-      var _this2 = this;
-
       axios.get('api/origen/').then(function (response) {
-        _this2.origenes = response.data;
+        _this.origenes = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
     },
     createCategoria: function createCategoria() {
-      var _this3 = this;
+      var _this2 = this;
 
-      if (confirm("¿Seguro que quieres crear este registro?")) {
+      if (confirm("¿Seguro que quieres crear esta categoria?")) {
         var params = {
           cod_jurisdiccion: this.selectedJurisdiccion,
           cod_categoria: this.categoria.cod_categoria,
@@ -2060,29 +2070,29 @@ __webpack_require__.r(__webpack_exports__);
         };
         axios.post('api/categoria/create', params).then(function (response) {
           console.log(response.data);
-          _this3.categorias = response.data;
+          _this2.categorias = response.data;
           $('#categorias').removeClass('modal-open');
           $("#nueva_categoria").modal('hide');
 
-          _this3.empty();
+          _this2.empty();
 
-          _this3.getCategorias();
+          _this2.getCategorias();
         })["catch"](function (error) {
-          _this3.feedback = error.response.data.errors;
+          _this2.feedback = error.response.data.errors;
         });
       }
     },
     editCategoria: function editCategoria(id) {
-      var _this4 = this;
+      var _this3 = this;
 
       axios.get("api/categoria/edit/".concat(id)).then(function (response) {
-        _this4.categoria = response.data;
+        _this3.categoria = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
     },
     updateCategoria: function updateCategoria(id) {
-      var _this5 = this;
+      var _this4 = this;
 
       if (confirm("¿Seguro que desea guardar los cambios?")) {
         var params = {
@@ -2090,22 +2100,22 @@ __webpack_require__.r(__webpack_exports__);
           categoria: this.categoria.categoria
         };
         axios.put("api/categoria/update/".concat(id), params).then(function (response) {
-          _this5.getCategorias();
+          _this4.getCategorias();
 
-          _this5.categoria = [];
+          _this4.categoria = [];
         })["catch"](function (error) {
           console.log(error);
         });
       }
     },
     deleteCategoria: function deleteCategoria(id) {
-      var _this6 = this;
+      var _this5 = this;
 
       if (confirm("¿Seguro que quieres eliminar este registro?")) {
         axios["delete"]("api/categoria/delete/".concat(id)).then(function (response) {
-          _this6.categorias = response.data;
+          _this5.categorias = response.data;
 
-          _this6.getCategorias();
+          _this5.getCategorias();
         })["catch"](function (error) {
           console.log(error);
         });
@@ -2132,7 +2142,8 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.getCategorias();
+    // this.getCategorias();
+    // console.log(this.cat);
     this.getOrigenes();
   }
 });
@@ -2533,52 +2544,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       origenes: [],
-      category: [],
-      selectedCategory: null,
       jurisdicciones: [],
       categorias: [],
       selectedOrigen: "",
-      selectedJurisdiccion: "",
-      selectedCategoria: ""
+      selectedJurisdiccion: ""
     };
+  },
+  methods: {
+    getCategorias: function getCategorias(id) {
+      var _this = this;
+
+      axios.get("api/categoria/".concat(id)).then(function (response) {
+        _this.categorias = response.data;
+
+        _this.$emit('jurisdiccion', _this.categorias);
+
+        console.log(_this.categorias);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
   },
   watch: {
     selectedOrigen: function selectedOrigen() {
       this.jurisdicciones = [];
       this.categorias = [];
       this.selectedJurisdiccion = "";
-      this.selectedCategoria = "";
 
       if (this.selectedOrigen > 0) {
-        this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones;
-        console.log(this.jurisdicciones);
+        this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones; // console.log(this.jurisdicciones);
       }
     },
     selectedJurisdiccion: function selectedJurisdiccion() {
-      this.categorias = [];
-      this.selectedCategoria = "";
-
-      if (this.selectedJurisdiccion > 0) {
-        this.categorias = this.origenes[this.selectedOrigen - 1].jurisdicciones[this.selectedJurisdiccion - 1].categorias;
-      }
+      var cod_jurisdiccion = this.selectedJurisdiccion;
+      this.getCategorias(cod_jurisdiccion); // console.log("prueba"+categorias);
+      // this.$emit('jurisdiccion',this.categorias);
+      // this.$emit('jurisdiccion',cod_jurisdiccion);
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     axios.get('api/origen').then(function (response) {
-      _this.origenes = response.data;
+      _this2.origenes = response.data;
       console.log(response.data);
     });
   }
@@ -2801,12 +2813,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       jurisdicciones: [],
       selectedOrigen: [],
       origenes: [],
+      origen: [],
+      jur_aux: [],
+      jurisdiccion_id: "",
       jur: {
         id: null,
         cod_jurisdiccion: null,
@@ -2815,14 +2832,14 @@ __webpack_require__.r(__webpack_exports__);
         created_at: '',
         updated_at: ''
       },
-      jur_aux: {
-        id: null,
-        cod_jurisdiccion: null,
-        jurisdiccion: '',
-        origen_id: null,
-        created_at: '',
-        updated_at: ''
-      },
+      //jur_aux:{
+      //id: null,
+      //cod_jurisdiccion: null,
+      //jurisdiccion: '',
+      //origen_id: null,
+      //created_at: '',
+      //updated_at: '',
+      //},
       form_editar: false,
       encabezado: '',
       resguardo: ''
@@ -2862,9 +2879,32 @@ __webpack_require__.r(__webpack_exports__);
       this.jur.updated_at = p_jurisdiccion.updated_at;
     }.bind(undefined),
     editJurisdiccion: function editJurisdiccion(p_jurisdiccion) {
-      this.jur = p_jurisdiccion;
-      this.jur_aux = Object.assign({}, jur_aux, jur), jur = jurisdiccion;
+      //this.jur = p_jurisdiccion;
+      //this.jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion;
+      this.jur_aux = _.cloneDeep(p_jurisdiccion);
       this.encabezado = 'Editar Jurisdicción';
+    },
+    updateJurisdiccion: function updateJurisdiccion(p_jurisdiccion) {
+      var _this3 = this;
+
+      if (confirm("¿Seguro que desea guardar los cambios?")) {
+        var params = {
+          cod_jurisdiccion: p_jurisdiccion.cod_jurisdiccion,
+          jurisdiccion: p_jurisdiccion.jurisdiccion,
+          origen_id: p_jurisdiccion.origen_id
+        };
+        console.log(params);
+        alert("api/jurisdiccion/update/" + p_jurisdiccion.id);
+        axios.put("api/jurisdiccion/update/".concat(p_jurisdiccion.id), params).then(function (response) {
+          _this3.getJurisdicciones();
+
+          _this3.jur = [];
+          alert('SI funciona');
+        })["catch"](function (error) {
+          alert('NO funciona');
+          console.log(error);
+        });
+      }
     },
     deleteJurisdiccion: function deleteJurisdiccion(p_jurisdiccion) {},
     empty: function empty() {
@@ -3250,6 +3290,50 @@ __webpack_require__.r(__webpack_exports__);
     //}
 
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PanelCategoriaComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PanelCategoriaComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      // data: {
+      //     // cod_jurisdiccion: '',
+      // },
+      categorias: {}
+    };
+  },
+  methods: {
+    get_codigo: function get_codigo(categorias) {
+      // this.data.cod_jurisdiccion = cod_jurisdiccion;
+      this.categorias = categorias; // console.log("panel Categoria: "+this.data);
+    }
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -38917,50 +39001,60 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.categorias, function(categoria, index) {
-            return _c("tr", { key: categoria.id }, [
-              _c("th", [_vm._v(_vm._s(categoria.cod_categoria))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(categoria.categoria))]),
-              _vm._v(" "),
-              _c("td", { staticClass: "row" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-outline-warning border-0 btn-sm shadow text-dark col-md-2",
-                    attrs: {
-                      "data-toggle": "modal",
-                      "data-target": "#edit_categoria"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.editCategoria(categoria.id)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "far fa-edit" })]
-                ),
-                _vm._v(" "),
-                _c(
-                  "form",
-                  {
-                    on: {
-                      submit: function($event) {
-                        $event.preventDefault()
-                        return _vm.deleteCategoria(categoria.id)
-                      }
-                    }
-                  },
-                  [_vm._m(1, true)]
-                )
-              ])
-            ])
-          }),
-          0
+          [
+            _vm.categorias.length === 0
+              ? _c("tr", [_vm._v("No hay datos para mostrar")])
+              : _vm._l(_vm.categorias, function(categoria, index) {
+                  return _c("tr", { key: categoria.id }, [
+                    _c("th", [_vm._v(_vm._s(categoria.cod_categoria))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(categoria.categoria))]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-1" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-outline-warning border-0 btn-sm shadow text-dark",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#edit_categoria"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.editCategoria(categoria.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "far fa-edit" })]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-1" }, [
+                        _c(
+                          "form",
+                          {
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                                return _vm.deleteCategoria(categoria.id)
+                              }
+                            }
+                          },
+                          [_vm._m(1, true)]
+                        )
+                      ])
+                    ])
+                  ])
+                })
+          ],
+          2
         )
       ]
     ),
+    _vm._v(" "),
+    _vm._m(2),
     _vm._v(" "),
     _c(
       "div",
@@ -39109,7 +39203,43 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog modal-md" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(2),
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "h5",
+                {
+                  staticClass: "modal-title",
+                  attrs: { id: "nueva_categoria" }
+                },
+                [_vm._v("Nueva categoría")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "modal",
+                    "aria-label": "Close"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.empty()
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { "aria-hidden": "true" }
+                    },
+                    [_vm._v("×")]
+                  )
+                ]
+              )
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
               _c(
@@ -39128,7 +39258,7 @@ var render = function() {
                       "label",
                       {
                         staticClass: "col-form-label",
-                        attrs: { for: "origen" }
+                        attrs: { for: "origen_new" }
                       },
                       [_vm._v("Origen")]
                     ),
@@ -39146,8 +39276,7 @@ var render = function() {
                         ],
                         staticClass: "custom-select mr-sm-2",
                         attrs: {
-                          id: _vm.origen,
-                          name: "origen",
+                          name: "origen_new",
                           placeholder: "Seleccione origen"
                         },
                         on: {
@@ -39205,7 +39334,7 @@ var render = function() {
                       "label",
                       {
                         staticClass: "col-form-label",
-                        attrs: { for: "origen" }
+                        attrs: { for: "jurisdiccion_new" }
                       },
                       [_vm._v("Jurisdicción")]
                     ),
@@ -39224,8 +39353,7 @@ var render = function() {
                         staticClass: "custom-select mr-sm-2",
                         attrs: {
                           disabled: _vm.selectedOrigen.length == 0,
-                          id: _vm.jurisdiccion,
-                          name: "jurisdiccion"
+                          name: "jurisdiccion_new"
                         },
                         on: {
                           change: function($event) {
@@ -39401,7 +39529,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Cod.")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Cod. Categoría")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Categoría")]),
         _vm._v(" "),
@@ -39416,8 +39544,7 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass:
-          "btn btn-outline-danger border-0 btn-sm shadow text-dark col-md-2",
+        staticClass: "btn btn-outline-danger border-0 btn-sm shadow text-dark",
         attrs: { type: "submit" }
       },
       [_c("i", { staticClass: "far fa-trash-alt" })]
@@ -39427,30 +39554,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
+    return _c("div", { staticClass: "m-2", attrs: { align: "right" } }, [
       _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "nueva_categoria" } },
-        [_vm._v("Nueva categoría")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
+        "a",
         {
-          staticClass: "close",
+          staticClass: "btn btn-primary btn-sm text-white",
           attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
+            href: "#",
+            "data-toggle": "modal",
+            "data-target": "#nueva_categoria"
           }
         },
-        [
-          _c(
-            "span",
-            { staticClass: "btn btn-danger", attrs: { "aria-hidden": "true" } },
-            [_vm._v("×")]
-          )
-        ]
+        [_c("i", { staticClass: "fas fa-plus" }), _vm._v(" Nueva")]
       )
     ])
   },
@@ -40255,11 +40370,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-row col mb-3" }, [
+  return _c("div", { staticClass: "form-row col mb-3 shadow p-3" }, [
     _c("div", { staticClass: "col-md-4" }, [
       _c(
         "label",
-        { staticClass: "mr-sm-2 sr-only", attrs: { for: "origen" } },
+        { staticClass: "mr-sm-2 sr-only", attrs: { for: "origen1" } },
         [_vm._v("Origen")]
       ),
       _vm._v(" "),
@@ -40275,7 +40390,7 @@ var render = function() {
             }
           ],
           staticClass: "custom-select mr-sm-2",
-          attrs: { id: "origen", name: "origen" },
+          attrs: { id: "origen1", name: "origen1" },
           on: {
             change: function($event) {
               var $$selectedVal = Array.prototype.filter
@@ -40295,10 +40410,7 @@ var render = function() {
         [
           _c(
             "option",
-            {
-              attrs: { disabled: "", selected: "" },
-              domProps: { value: null }
-            },
+            { attrs: { disabled: "", selected: "" }, domProps: { value: "" } },
             [_vm._v("Seleccione Origen")]
           ),
           _vm._v(" "),
@@ -40338,8 +40450,8 @@ var render = function() {
           staticClass: "custom-select mr-sm-2",
           attrs: {
             disabled: _vm.selectedOrigen.length == 0,
-            id: "jurisdiccion",
-            name: "jurisdiccion"
+            id: "jurisdiccion1",
+            name: "jurisdiccion1"
           },
           on: {
             change: function($event) {
@@ -40360,10 +40472,7 @@ var render = function() {
         [
           _c(
             "option",
-            {
-              attrs: { disabled: "", selected: "" },
-              domProps: { value: null }
-            },
+            { attrs: { disabled: "", selected: "" }, domProps: { value: "" } },
             [_vm._v("Seleccione Jurisdiccion")]
           ),
           _vm._v(" "),
@@ -40375,71 +40484,6 @@ var render = function() {
                 domProps: { value: jurisdiccion.cod_jurisdiccion }
               },
               [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
-            )
-          })
-        ],
-        2
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-md-4" }, [
-      _c(
-        "label",
-        { staticClass: "mr-sm-2 sr-only", attrs: { for: "categoria" } },
-        [_vm._v("Categoria")]
-      ),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.selectedCategoria,
-              expression: "selectedCategoria"
-            }
-          ],
-          staticClass: "custom-select mr-sm-2",
-          attrs: {
-            disabled: _vm.selectedJurisdiccion.length == 0,
-            id: "categoria",
-            name: "categoria"
-          },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.selectedCategoria = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        [
-          _c(
-            "option",
-            {
-              attrs: { disabled: "", selected: "" },
-              domProps: { value: null }
-            },
-            [_vm._v("Seleccione Categoria")]
-          ),
-          _vm._v(" "),
-          _vm._l(_vm.categorias, function(categoria, index) {
-            return _c(
-              "option",
-              {
-                key: categoria.cod_categoria,
-                domProps: { value: categoria.cod_categoria }
-              },
-              [_vm._v(_vm._s(categoria.categoria))]
             )
           })
         ],
@@ -40470,652 +40514,403 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "jurisdicciones" } }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col" }, [
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-success",
-            attrs: { "data-toggle": "modal", "data-target": "#altaModal" },
-            on: {
-              click: function($event) {
-                _vm.encabezado = "Crear Jurisdicción"
+  return _c(
+    "div",
+    { staticStyle: { "overflow-x": "auto" }, attrs: { id: "jurisdicciones" } },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-success",
+              attrs: { "data-toggle": "modal", "data-target": "#altaModal" },
+              on: {
+                click: function($event) {
+                  _vm.encabezado = "Crear Jurisdicción"
+                }
               }
-            }
-          },
-          [_vm._v("Crear nueva jurisdicción")]
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c(
-      "table",
-      {
-        staticClass: "table border-rounded table-striped",
-        model: {
-          value: _vm.jurisdicciones,
-          callback: function($$v) {
-            _vm.jurisdicciones = $$v
-          },
-          expression: "jurisdicciones"
-        }
-      },
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.jurisdicciones, function(jurisdiccion) {
-            return _c("tr", { staticStyle: { "text-align": "center" } }, [
-              _c("td", [_vm._v(_vm._s(jurisdiccion.id))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(jurisdiccion.cod_jurisdiccion))]),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    attrs: {
-                      "data-toggle": "modal",
-                      "data-target": "#mostrarModal"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.mostrar(jurisdiccion)
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
-                )
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(jurisdiccion.origen_id))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(jurisdiccion.created_at))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(jurisdiccion.updated_at))]),
-              _vm._v(" "),
-              _c("td", { staticClass: "td-button" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "btn btn-outline-warning border-0  btn-sm shadow",
-                    attrs: {
-                      "data-toggle": "modal",
-                      "data-target": "#editarModal"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.editJurisdiccion(jurisdiccion)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "far fa-edit" }, [_vm._v("Editar")])]
-                )
-              ]),
-              _vm._v(" "),
-              _c("td", { staticClass: "td-button" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "btn btn-outline-danger border-0 btn-sm shadow",
-                    attrs: {
-                      "data-toggle": "modal",
-                      "data-target": "#eliminarModal"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.deleteJurisdiccion(jurisdiccion)
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "far fa-trash-alt" }, [
-                      _vm._v("Eliminar")
-                    ])
-                  ]
-                )
-              ])
-            ])
-          }),
-          0
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "mostrarModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "mostrarModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "modal-content border-primary justify-content-center",
-                staticStyle: { "max-width": "40rem" }
-              },
-              [
-                _vm._m(1),
+            },
+            [_vm._v("Crear nueva jurisdicción")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "table",
+        {
+          staticClass: "table table-borderless table-striped border",
+          model: {
+            value: _vm.jurisdicciones,
+            callback: function($$v) {
+              _vm.jurisdicciones = $$v
+            },
+            expression: "jurisdicciones"
+          }
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.jurisdicciones, function(jurisdiccion) {
+              return _c("tr", { staticStyle: { "text-align": "center" } }, [
+                _c("td", [_vm._v(_vm._s(jurisdiccion.id))]),
                 _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
+                _c("td", [_vm._v(_vm._s(jurisdiccion.cod_jurisdiccion))]),
+                _vm._v(" "),
+                _c("td", [
                   _c(
-                    "form",
+                    "a",
                     {
-                      staticClass: "form-group",
-                      attrs: { action: "", method: "POST" }
+                      attrs: {
+                        "data-toggle": "modal",
+                        "data-target": "#mostrarModal"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.mostrar(jurisdiccion)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(jurisdiccion.origen_id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(jurisdiccion.created_at))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(jurisdiccion.updated_at))]),
+                _vm._v(" "),
+                _c("td", { staticClass: "td-button" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass:
+                        "btn btn-outline-warning border-0  btn-sm shadow",
+                      attrs: {
+                        "data-toggle": "modal",
+                        "data-target": "#editarModal"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.editJurisdiccion(jurisdiccion)
+                        }
+                      }
                     },
                     [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "required",
-                              attrs: { for: "mostrarCodJurisdiccion" }
-                            },
-                            [_vm._v("Origen")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.selectedOrigen.origen,
-                                expression: "selectedOrigen.origen"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              name: "cod_jurisdiccion",
-                              id: "mostrarCodJurisdiccion",
-                              value: "",
-                              readonly: ""
-                            },
-                            domProps: { value: _vm.selectedOrigen.origen },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.selectedOrigen,
-                                  "origen",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "required",
-                              attrs: { for: "mostrarDetalleOrigen" }
-                            },
-                            [_vm._v("Cod. Jurisdicción")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.jur.cod_jurisdiccion,
-                                expression: "jur.cod_jurisdiccion"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              name: "mostrarDetalleOrigen",
-                              id: "mostrarDetalleOrigen",
-                              value: "",
-                              readonly: ""
-                            },
-                            domProps: { value: _vm.jur.cod_jurisdiccion },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.jur,
-                                  "cod_jurisdiccion",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "required",
-                              attrs: { for: "mostrarDescripcion" }
-                            },
-                            [_vm._v("Jurisdicción")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.jur.jurisdiccion,
-                                expression: "jur.jurisdiccion"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              name: "descripcion",
-                              id: "mostrarDescripcion",
-                              value: "",
-                              readonly: ""
-                            },
-                            domProps: { value: _vm.jur.jurisdiccion },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.jur,
-                                  "jurisdiccion",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "modal-footer" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "close",
-                            attrs: {
-                              type: "button",
-                              "data-dismiss": "modal",
-                              "aria-label": "Close"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.empty()
-                              }
-                            }
-                          },
-                          [
-                            _c(
-                              "span",
-                              {
-                                staticClass: "btn btn-danger",
-                                attrs: { "aria-hidden": "true" }
-                              },
-                              [_vm._v("Volver")]
-                            )
-                          ]
-                        )
+                      _c("i", { staticClass: "far fa-edit" }, [
+                        _vm._v("Editar")
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "td-button" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass:
+                        "btn btn-outline-danger border-0 btn-sm shadow",
+                      attrs: {
+                        "data-toggle": "modal",
+                        "data-target": "#eliminarModal"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteJurisdiccion(jurisdiccion)
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "far fa-trash-alt" }, [
+                        _vm._v("Eliminar")
                       ])
                     ]
                   )
                 ])
-              ]
-            )
-          ]
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "altaModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "altaModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "modal-content border-primary justify-content-center",
-                staticStyle: { "max-width": "40rem" }
-              },
-              [
-                _c("div", { staticClass: "modal-header" }, [
-                  _c(
-                    "h1",
-                    {
-                      staticClass: "modal-title",
-                      model: {
-                        value: _vm.encabezado,
-                        callback: function($$v) {
-                          _vm.encabezado = $$v
-                        },
-                        expression: "encabezado"
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.encabezado))]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _c(
-                    "form",
-                    {
-                      staticClass: "form-group",
-                      attrs: { action: "", method: "POST" }
-                    },
-                    [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c("div", { staticClass: "form-group" }, [
+              ])
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "mostrarModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "mostrarModalLabel",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "modal-content border-primary justify-content-center",
+                  staticStyle: { "max-width": "40rem" }
+                },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "form",
+                      {
+                        staticClass: "form-group",
+                        attrs: { action: "", method: "POST" }
+                      },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
                             _c(
                               "label",
                               {
                                 staticClass: "required",
-                                attrs: { for: "mostrar_origen" }
+                                attrs: { for: "mostrarCodJurisdiccion" }
                               },
                               [_vm._v("Origen")]
                             ),
                             _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.origen,
-                                    expression: "origen"
-                                  }
-                                ],
-                                staticClass: "custom-select mr-sm-2",
-                                attrs: { id: "mostrar_origen", name: "origen" },
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.origen = $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  }
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.selectedOrigen.origen,
+                                  expression: "selectedOrigen.origen"
                                 }
-                              },
-                              [
-                                _c("option", [_vm._v("Seleccione Orígenes")]),
-                                _vm._v(" "),
-                                _vm._l(_vm.origenes, function(origen, index) {
-                                  return _c(
-                                    "option",
-                                    {
-                                      key: origen.cod_origen,
-                                      domProps: { value: origen.cod_origen }
-                                    },
-                                    [_vm._v(_vm._s(origen.origen))]
-                                  )
-                                })
                               ],
-                              2
-                            )
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "required",
-                              attrs: { for: "altaCodJurisdiccion" }
-                            },
-                            [_vm._v("Cod. Jurisdicción")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.jur.cod_jurisdiccion,
-                                expression: "jur.cod_jurisdiccion"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              name: "cod_jurisdiccion",
-                              id: "altaCodJurisdiccion",
-                              value: ""
-                            },
-                            domProps: { value: _vm.jur.cod_jurisdiccion },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.jur,
-                                  "cod_jurisdiccion",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "required",
-                              attrs: { for: "altaDescripcion" }
-                            },
-                            [_vm._v("Jurisdicción")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.jur.jurisdiccion,
-                                expression: "jur.jurisdiccion"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              name: "descripcion",
-                              id: "altaDescripcion",
-                              value: ""
-                            },
-                            domProps: { value: _vm.jur.jurisdiccion },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.jur,
-                                  "jurisdiccion",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "modal-footer" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "close",
-                            attrs: {
-                              type: "button",
-                              "data-dismiss": "modal",
-                              "aria-label": "Close"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.empty()
-                              }
-                            }
-                          },
-                          [
-                            _c(
-                              "span",
-                              {
-                                staticClass: "btn btn-danger",
-                                attrs: { "aria-hidden": "true" }
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "cod_jurisdiccion",
+                                id: "mostrarCodJurisdiccion",
+                                value: "",
+                                readonly: ""
                               },
-                              [_vm._v("Volver")]
-                            )
-                          ]
-                        )
-                      ])
-                    ]
-                  )
-                ])
-              ]
-            )
-          ]
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "editarModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "altaModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "modal-content border-primary justify-content-center",
-                staticStyle: { "max-width": "40rem" }
-              },
-              [
-                _c("div", { staticClass: "modal-header" }, [
-                  _c(
-                    "h1",
-                    {
-                      staticClass: "modal-title",
-                      model: {
-                        value: _vm.encabezado,
-                        callback: function($$v) {
-                          _vm.encabezado = $$v
-                        },
-                        expression: "encabezado"
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.encabezado))]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _c(
-                    "form",
-                    {
-                      staticClass: "form-group",
-                      attrs: { action: "", method: "POST" }
-                    },
-                    [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
+                              domProps: { value: _vm.selectedOrigen.origen },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.selectedOrigen,
+                                    "origen",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "required",
+                                attrs: { for: "mostrarDetalleOrigen" }
+                              },
+                              [_vm._v("Cod. Jurisdicción")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.jur.cod_jurisdiccion,
+                                  expression: "jur.cod_jurisdiccion"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "mostrarDetalleOrigen",
+                                id: "mostrarDetalleOrigen",
+                                value: "",
+                                readonly: ""
+                              },
+                              domProps: { value: _vm.jur.cod_jurisdiccion },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.jur,
+                                    "cod_jurisdiccion",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "required",
+                                attrs: { for: "mostrarDescripcion" }
+                              },
+                              [_vm._v("Jurisdicción")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.jur.jurisdiccion,
+                                  expression: "jur.jurisdiccion"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "descripcion",
+                                id: "mostrarDescripcion",
+                                value: "",
+                                readonly: ""
+                              },
+                              domProps: { value: _vm.jur.jurisdiccion },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.jur,
+                                    "jurisdiccion",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "modal-footer" }, [
                           _c(
-                            "div",
+                            "button",
                             {
-                              staticClass: "form-group",
-                              model: {
-                                value: _vm.origen,
-                                callback: function($$v) {
-                                  _vm.origen = $$v
-                                },
-                                expression: "origen"
+                              staticClass: "close",
+                              attrs: {
+                                type: "button",
+                                "data-dismiss": "modal",
+                                "aria-label": "Close"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.empty()
+                                }
                               }
                             },
                             [
                               _c(
+                                "span",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  attrs: { "aria-hidden": "true" }
+                                },
+                                [_vm._v("Volver")]
+                              )
+                            ]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "altaModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "altaModalLabel",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "modal-content border-primary justify-content-center",
+                  staticStyle: { "max-width": "40rem" }
+                },
+                [
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c(
+                      "h1",
+                      {
+                        staticClass: "modal-title",
+                        model: {
+                          value: _vm.encabezado,
+                          callback: function($$v) {
+                            _vm.encabezado = $$v
+                          },
+                          expression: "encabezado"
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.encabezado))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "form",
+                      {
+                        staticClass: "form-group",
+                        attrs: { action: "", method: "POST" }
+                      },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
                                 "label",
                                 {
                                   staticClass: "required",
-                                  attrs: { for: "editarOrigen" }
+                                  attrs: { for: "mostrar_origen" }
                                 },
                                 [_vm._v("Origen")]
                               ),
@@ -41127,12 +40922,15 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.jur.origen_id,
-                                      expression: "jur.origen_id"
+                                      value: _vm.origen,
+                                      expression: "origen"
                                     }
                                   ],
                                   staticClass: "custom-select mr-sm-2",
-                                  attrs: { id: "editarOrigen", name: "origen" },
+                                  attrs: {
+                                    id: "mostrar_origen",
+                                    name: "origen"
+                                  },
                                   on: {
                                     change: function($event) {
                                       var $$selectedVal = Array.prototype.filter
@@ -41146,13 +40944,9 @@ var render = function() {
                                             "_value" in o ? o._value : o.value
                                           return val
                                         })
-                                      _vm.$set(
-                                        _vm.jur,
-                                        "origen_id",
-                                        $event.target.multiple
-                                          ? $$selectedVal
-                                          : $$selectedVal[0]
-                                      )
+                                      _vm.origen = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
                                     }
                                   }
                                 },
@@ -41163,7 +40957,7 @@ var render = function() {
                                     return _c(
                                       "option",
                                       {
-                                        key: origen.id,
+                                        key: origen.cod_origen,
                                         domProps: { value: origen.cod_origen }
                                       },
                                       [_vm._v(_vm._s(origen.origen))]
@@ -41172,148 +40966,453 @@ var render = function() {
                                 ],
                                 2
                               )
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "required",
+                                attrs: { for: "altaCodJurisdiccion" }
+                              },
+                              [_vm._v("Cod. Jurisdicción")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.jur.cod_jurisdiccion,
+                                  expression: "jur.cod_jurisdiccion"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "cod_jurisdiccion",
+                                id: "altaCodJurisdiccion",
+                                value: ""
+                              },
+                              domProps: { value: _vm.jur.cod_jurisdiccion },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.jur,
+                                    "cod_jurisdiccion",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "required",
+                                attrs: { for: "altaDescripcion" }
+                              },
+                              [_vm._v("Jurisdicción")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.jur.jurisdiccion,
+                                  expression: "jur.jurisdiccion"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "descripcion",
+                                id: "altaDescripcion",
+                                value: ""
+                              },
+                              domProps: { value: _vm.jur.jurisdiccion },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.jur,
+                                    "jurisdiccion",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "modal-footer" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary border-0",
+                              attrs: {
+                                "data-dismiss": "modal",
+                                id: "nueva_jurisdiccion"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.createJurisdiccion(_vm.jur)
+                                }
+                              }
+                            },
+                            [_vm._v("Guardar")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "close",
+                              attrs: {
+                                type: "button",
+                                "data-dismiss": "modal",
+                                "aria-label": "Close"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.empty()
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  attrs: { "aria-hidden": "true" }
+                                },
+                                [_vm._v("Volver")]
+                              )
                             ]
                           )
                         ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "required",
-                              attrs: { for: "editarCodJurisdiccion" }
-                            },
-                            [_vm._v("Cod. Jurisdicción")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.jur.cod_jurisdiccion,
-                                expression: "jur.cod_jurisdiccion"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              name: "cod_jurisdiccion",
-                              id: "editarCodJurisdiccion",
-                              value: ""
-                            },
-                            domProps: { value: _vm.jur.cod_jurisdiccion },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.jur,
-                                  "cod_jurisdiccion",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "required",
-                              attrs: { for: "editarDescripcion" }
-                            },
-                            [_vm._v("Jurisdicción")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.jur.jurisdiccion,
-                                expression: "jur.jurisdiccion"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              name: "descripcion",
-                              id: "editarDescripcion",
-                              value: ""
-                            },
-                            domProps: { value: _vm.jur.jurisdiccion },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.jur,
-                                  "jurisdiccion",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "modal-footer" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "close",
-                            attrs: {
-                              type: "button",
-                              "data-dismiss": "modal",
-                              "aria-label": "Close"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.empty()
-                              }
-                            }
+                      ]
+                    )
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "editarModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "altaModalLabel",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "modal-content border-primary justify-content-center",
+                  staticStyle: { "max-width": "40rem" }
+                },
+                [
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c(
+                      "h1",
+                      {
+                        staticClass: "modal-title",
+                        model: {
+                          value: _vm.encabezado,
+                          callback: function($$v) {
+                            _vm.encabezado = $$v
                           },
-                          [
+                          expression: "encabezado"
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.encabezado))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "form",
+                      {
+                        staticClass: "form-group",
+                        attrs: { action: "", method: "POST" }
+                      },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
                             _c(
-                              "span",
+                              "div",
                               {
-                                staticClass: "btn btn-danger",
-                                attrs: { "aria-hidden": "true" }
+                                staticClass: "form-group",
+                                model: {
+                                  value: _vm.origen,
+                                  callback: function($$v) {
+                                    _vm.origen = $$v
+                                  },
+                                  expression: "origen"
+                                }
                               },
-                              [_vm._v("Volver")]
+                              [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass: "required",
+                                    attrs: { for: "editarOrigen" }
+                                  },
+                                  [_vm._v("Origen")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.jur_aux.origen_id,
+                                        expression: "jur_aux.origen_id"
+                                      }
+                                    ],
+                                    staticClass: "custom-select mr-sm-2",
+                                    attrs: {
+                                      id: "editarOrigen",
+                                      name: "origen"
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          _vm.jur_aux,
+                                          "origen_id",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("option", [
+                                      _vm._v("Seleccione Orígenes")
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.origenes, function(
+                                      origen,
+                                      index
+                                    ) {
+                                      return _c(
+                                        "option",
+                                        {
+                                          key: origen.id,
+                                          domProps: { value: origen.cod_origen }
+                                        },
+                                        [_vm._v(_vm._s(origen.origen))]
+                                      )
+                                    })
+                                  ],
+                                  2
+                                )
+                              ]
                             )
-                          ]
-                        )
-                      ])
-                    ]
-                  )
-                ])
-              ]
-            )
-          ]
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _vm._m(2)
-  ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "required",
+                                attrs: { for: "editarCodJurisdiccion" }
+                              },
+                              [_vm._v("Cod. Jurisdicción")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.jur_aux.cod_jurisdiccion,
+                                  expression: "jur_aux.cod_jurisdiccion"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "cod_jurisdiccion",
+                                id: "editarCodJurisdiccion",
+                                value: ""
+                              },
+                              domProps: { value: _vm.jur_aux.cod_jurisdiccion },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.jur_aux,
+                                    "cod_jurisdiccion",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "required",
+                                attrs: { for: "editarDescripcion" }
+                              },
+                              [_vm._v("Jurisdicción")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.jur_aux.jurisdiccion,
+                                  expression: "jur_aux.jurisdiccion"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "descripcion",
+                                id: "editarDescripcion",
+                                value: ""
+                              },
+                              domProps: { value: _vm.jur_aux.jurisdiccion },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.jur_aux,
+                                    "jurisdiccion",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "modal-footer" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary border-0",
+                              attrs: {
+                                "data-dismiss": "modal",
+                                id: "editar_jurisdiccion"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.updateJurisdiccion(_vm.jur_aux)
+                                }
+                              }
+                            },
+                            [_vm._v("Guardar")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "close",
+                              attrs: {
+                                type: "button",
+                                "data-dismiss": "modal",
+                                "aria-label": "Close"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.empty()
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  attrs: { "aria-hidden": "true" }
+                                },
+                                [_vm._v("Volver")]
+                              )
+                            ]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm._m(2)
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "thead-dark" }, [
+    return _c("thead", [
       _c("tr", { staticStyle: { "text-align": "center" } }, [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Id.")]),
         _vm._v(" "),
@@ -42144,6 +42243,65 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("th", { attrs: { scope: "row", colspan: "3" } }, [
       _c("small", [_vm._v("Subtotal")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "panelcategoria" } },
+    [
+      _c("filtrocategoria-component", {
+        on: {
+          jurisdiccion: function($event) {
+            return _vm.get_codigo.apply(void 0, arguments)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "card shadow" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c("categoria-component", { attrs: { categorias: _vm.categorias } })
+          ],
+          1
+        )
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h5", { staticClass: "card-title" }, [_vm._v("Categorías")])
     ])
   }
 ]
@@ -54470,6 +54628,7 @@ Vue.component('jurisdiccion-component', __webpack_require__(/*! ./components/Jur
 Vue.component('categoria-component', __webpack_require__(/*! ./components/CategoriaComponent.vue */ "./resources/js/components/CategoriaComponent.vue")["default"]);
 Vue.component('clase-component', __webpack_require__(/*! ./components/ClaseComponent.vue */ "./resources/js/components/ClaseComponent.vue")["default"]);
 Vue.component('filtrocategoria-component', __webpack_require__(/*! ./components/FiltroCategoriaComponent.vue */ "./resources/js/components/FiltroCategoriaComponent.vue")["default"]);
+Vue.component('panelcategoria-component', __webpack_require__(/*! ./components/PanelCategoriaComponent.vue */ "./resources/js/components/PanelCategoriaComponent.vue")["default"]);
 Vue.component('listaliquidaciones-component', __webpack_require__(/*! ./components/ListLiquidacionesCompnent.vue */ "./resources/js/components/ListLiquidacionesCompnent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -55075,6 +55234,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListLiquidacionesCompnent_vue_vue_type_template_id_3aff27ab___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListLiquidacionesCompnent_vue_vue_type_template_id_3aff27ab___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PanelCategoriaComponent.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/PanelCategoriaComponent.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PanelCategoriaComponent_vue_vue_type_template_id_6bbe0ada___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada& */ "./resources/js/components/PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada&");
+/* harmony import */ var _PanelCategoriaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PanelCategoriaComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PanelCategoriaComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PanelCategoriaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PanelCategoriaComponent_vue_vue_type_template_id_6bbe0ada___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PanelCategoriaComponent_vue_vue_type_template_id_6bbe0ada___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PanelCategoriaComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PanelCategoriaComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/PanelCategoriaComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PanelCategoriaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PanelCategoriaComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PanelCategoriaComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PanelCategoriaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PanelCategoriaComponent_vue_vue_type_template_id_6bbe0ada___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PanelCategoriaComponent.vue?vue&type=template&id=6bbe0ada&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PanelCategoriaComponent_vue_vue_type_template_id_6bbe0ada___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PanelCategoriaComponent_vue_vue_type_template_id_6bbe0ada___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

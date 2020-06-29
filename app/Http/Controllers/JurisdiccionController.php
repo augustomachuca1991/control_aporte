@@ -47,8 +47,10 @@ class JurisdiccionController extends Controller
     {
         //
         $date = Carbon::now()->toDateTimeString();
-        $request->validate([
-            'jurisdiccion'     =>  'required'
+        $validarDatos = $request->validate([
+            'cod_jurisdiccion'  =>  'required',
+            'origen_id'       =>    'required,',
+            'jurisdiccion'     =>  'required',
         ]);
 
         $form_data = array(
@@ -100,14 +102,17 @@ class JurisdiccionController extends Controller
      * @param  \App\Jurisdiccion  $jurisdiccion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Jurisdiccion $jurisdiccion)
+    public function update(Request $request, $id)
     {
         //
         $date = Carbon::now()->toDateTimeString();
-        $request->validate([
-            'jurisdiccion'     =>  'required'
+     
+        $validarDatos = $request->validate([
+            'cod_jurisdiccion'  =>  'required',
+            'origen_id'       =>    'required',
+            'jurisdiccion'     =>  'required',
         ]);
-
+     
         $form_data = array(
             'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
             'origen_id'       =>   $request->origen_id,
@@ -115,9 +120,9 @@ class JurisdiccionController extends Controller
             'created_at'    =>   $date,
             'updated_at'       =>   $date
         );
-
-        Jurisdiccion::whereId($jurisdiccion->id)->update($form_data);
-        return redirect()->route('jurisdicciones.show', $jurisdiccion)->with('message', 'Jurisdicción actualizado satisfactoriamente');
+        dd($request->all());
+        $jurisdiccion =Jurisdiccion::whereId($id)->update($form_data);
+        return redirect()->route('jurisdicciones.index', $jurisdiccion)->with('message', 'Jurisdicción actualizado satisfactoriamente');
     }
 
     /**

@@ -1,32 +1,42 @@
 <template>
   <div id="categorias">
-    <table class="table table-borderless table-striped border" v-model="categorias">
+    <table class="table table-borderless table-striped border" v-model="categorias" >
       <caption>Categorías</caption>
       <thead>
         <tr>
-          <th scope="col">Cod.</th>
+          <th scope="col">Cod. Categoría</th>
           <th scope="col">Categoría</th>
           <th>Acción</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(categoria, index) in categorias"  v-bind:key="categoria.id">
+       <tr v-if="categorias.length===0">No hay datos para mostrar</tr>
+        <tr v-for="(categoria, index) in categorias"  v-bind:key="categoria.id" v-else>
           <th>{{categoria.cod_categoria}}</th>
           <td>{{categoria.categoria}}</td>
           <td class="row">
-              <button @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark col-md-2" data-toggle="modal" data-target="#edit_categoria">
+              <div class="col-md-1">
+                <button @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark" data-toggle="modal" data-target="#edit_categoria">
                 <i class="far fa-edit"></i>
               </button>
-              <form @submit.prevent="deleteCategoria(categoria.id)">
-                <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark col-md-2">
+              </div>
+              <div class="col-md-1">
+               <form @submit.prevent="deleteCategoria(categoria.id)">
+                <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark">
                   <i class="far fa-trash-alt"></i>
                 </button>
               </form>
+              </div>
           </td>
         </tr>
+        
       </tbody>
     </table>
+ 
 
+    <div class="m-2" align="right">
+      <a href="#" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#nueva_categoria"><i class="fas fa-plus"></i> Nueva</a>    
+    </div>
     <!-- Modal Edit Categoría -->
     <div class="modal fade bd-example-modal-md edit" id="edit_categoria" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md edit">
@@ -60,23 +70,23 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="nueva_categoria">Nueva categoría</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" v-on:click="empty()" aria-label="Close">
               <span class="btn btn-danger" aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <form @submit.prevent="createCategoria()">
               <div class="form-group">
-                <label class="col-form-label" for="origen">Origen</label>
-                <select class="custom-select mr-sm-2" :id="origen" name="origen" v-model="selectedOrigen" placeholder="Seleccione origen">
+                <label class="col-form-label" for="origen_new">Origen</label>
+                <select class="custom-select mr-sm-2" name="origen_new" v-model="selectedOrigen" placeholder="Seleccione origen">
                 <option :value="''" disabled selected>Seleccione Origen</option>
                 <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
                 </select>
                 <span style="color:red" v-if="feedback.cod_origen" v-text="feedback.cod_origen[0]" ></span>
               </div>
               <div class="form-group">
-                <label class="col-form-label" for="origen">Jurisdicción</label>
-                <select :disabled="selectedOrigen.length == 0" class="custom-select mr-sm-2" :id="jurisdiccion" name="jurisdiccion" v-model="selectedJurisdiccion">
+                <label class="col-form-label" for="jurisdiccion_new">Jurisdicción</label>
+                <select :disabled="selectedOrigen.length == 0" class="custom-select mr-sm-2" name="jurisdiccion_new" v-model="selectedJurisdiccion">
                   <option :value="''" disabled selected> Seleccione Jurisdicción</option>
                   <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
                 </select>
@@ -109,9 +119,9 @@
 
 
     export default {
+        props:['categorias'],
         data: function(){
-            return{
-                categorias:[],
+            return{      
                 feedback: "",
                 origenes:[],
                 origen:[],
@@ -120,19 +130,21 @@
                 selectedJurisdiccion: "",
                 jurisdicciones:[],
                 jurisdiccion:[],
-                errors:[]
+                errors:[],
+                // categorias: this.data,
             }
         },
         methods:{
-            getCategorias(){
-              axios.get('api/categoria/1').then((response)=>{
-                this.categorias = response.data;
-                this.category=response.data
-              })
-              .catch(function (error) {
-                  console.log(error);
-              });
-            }, 
+            // getCategorias(){
+            //   axios.get(`api/categoria/${jurisdiccion.cod_jurisdiccion}`).then((response)=>{
+            //     this.categorias = response.data;
+            //     console.log(this.categorias);
+              
+            //   })
+            //   .catch(function (error) {
+            //       console.log(error);
+            //   });
+            // }, 
             getOrigenes(){
               axios.get('api/origen/')
               .then((response)=>{
@@ -143,7 +155,7 @@
               });
             },
             createCategoria() {
-              if(confirm("¿Seguro que quieres crear este registro?")){
+              if(confirm("¿Seguro que quieres crear esta categoria?")){
                 const params = {
                     cod_jurisdiccion : this.selectedJurisdiccion,
                     cod_categoria : this.categoria.cod_categoria,
@@ -216,8 +228,10 @@
                 },
         },
         mounted(){
-          this.getCategorias();
+          // this.getCategorias();
+          // console.log(this.cat);
           this.getOrigenes();
+        
         }
     }
 </script>
