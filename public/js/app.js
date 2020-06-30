@@ -2799,6 +2799,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2808,6 +2815,7 @@ __webpack_require__.r(__webpack_exports__);
       origen: [],
       jur_aux: [],
       jurisdiccion_id: "",
+      message: "",
       jur: {
         id: null,
         cod_jurisdiccion: null,
@@ -2880,10 +2888,17 @@ __webpack_require__.r(__webpack_exports__);
         console.log(params);
         alert("api/jurisdiccion/update/" + p_jurisdiccion.id);
         axios.put("api/jurisdiccion/update/".concat(p_jurisdiccion.id), params).then(function (response) {
+          if (response.data.isValid == true) {
+            _this3.message = response.errors;
+          }
+
           _this3.getJurisdicciones();
 
           _this3.jur = [];
+          console.log(response.data.isValid);
+          console.log(response.data.errors);
           alert('SI funciona');
+          alert(_this3.message);
         })["catch"](function (error) {
           alert('NO funciona');
           console.log(error);
@@ -40469,6 +40484,37 @@ var render = function() {
     "div",
     { staticStyle: { "overflow-x": "auto" }, attrs: { id: "jurisdicciones" } },
     [
+      _vm.message
+        ? _c("div", [
+            _c(
+              "div",
+              {
+                staticClass: "alert alert-danger alert-block",
+                attrs: { id: "mensaje" }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button", "data-dismiss": "alert" }
+                  },
+                  [_vm._v("×")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "strong",
+                  {
+                    staticStyle: { color: "darkred" },
+                    attrs: { align: "center" }
+                  },
+                  [_vm._v(_vm._s(_vm.message))]
+                )
+              ]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col" }, [
           _c(
@@ -55375,8 +55421,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\nuevo\control_aporte\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\nuevo\control_aporte\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

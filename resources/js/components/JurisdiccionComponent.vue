@@ -1,6 +1,13 @@
 <template>
     <div id="jurisdicciones" style="overflow-x:auto;">
 
+        <div v-if="message">
+            <div class="alert alert-danger alert-block" id="mensaje">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong style="color:darkred" align="center">{{message}}</strong>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <a class="btn btn-success" v-on:click="encabezado = 'Crear Jurisdicción'" data-toggle="modal" data-target="#altaModal">Crear nueva jurisdicción</a>
@@ -217,6 +224,7 @@
                 origen: [],
                 jur_aux: [],
                 jurisdiccion_id: "",
+                message: "",
                 jur:{
                     id: null,
                     cod_jurisdiccion: null,
@@ -290,10 +298,16 @@
                     alert("api/jurisdiccion/update/"+ p_jurisdiccion.id);
 
                     axios.put(`api/jurisdiccion/update/${p_jurisdiccion.id}` , params)
-                        .then((response)=>{
+                        .then(response => {
+                            if(response.data.isValid == true) {
+                                this.message = response.errors;
+                            }
                             this.getJurisdicciones();
                             this.jur = [];
+                            console.log(response.data.isValid);
+                            console.log(response.data.errors);
                             alert('SI funciona');
+                            alert(this.message);
                         }).catch(function (error) {
                         alert('NO funciona');
                         console.log(error);

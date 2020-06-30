@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jurisdiccion;
+use http\Message;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -106,13 +107,13 @@ class JurisdiccionController extends Controller
     {
         //
         $date = Carbon::now()->toDateTimeString();
-     
+
         $validarDatos = $request->validate([
             'cod_jurisdiccion'  =>  'required',
             'origen_id'       =>    'required',
             'jurisdiccion'     =>  'required',
         ]);
-     
+
         $form_data = array(
             'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
             'origen_id'       =>   $request->origen_id,
@@ -120,9 +121,11 @@ class JurisdiccionController extends Controller
             'created_at'    =>   $date,
             'updated_at'       =>   $date
         );
-        dd($request->all());
+
         $jurisdiccion =Jurisdiccion::whereId($id)->update($form_data);
-        return redirect()->route('jurisdicciones.index', $jurisdiccion)->with('message', 'Jurisdicción actualizado satisfactoriamente');
+
+        return response()->json(['isValid'=>true,'errors'=>'Jurisdicción actualizado satisfactoriamente']);
+
     }
 
     /**
