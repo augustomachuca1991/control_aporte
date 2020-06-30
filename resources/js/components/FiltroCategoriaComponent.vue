@@ -33,7 +33,8 @@
               getCategorias(id){
                 axios.get(`api/categoria/${id}`).then((response)=>{
                   this.categorias = response.data;
-                  console.log(this.categorias);
+                  this.$emit('jurisdiccion',this.categorias);
+                 console.log(this.categorias);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -52,9 +53,12 @@
                   
                 },
                 selectedJurisdiccion: function() {
-                  const cod_jurisdiccion = this.selectedJurisdiccion;
-                  this.getCategorias(cod_jurisdiccion);
-                  this.$emit('categorias',categorias);
+                    const cod_jurisdiccion = this.selectedJurisdiccion;
+                    this.getCategorias(cod_jurisdiccion);
+                    // console.log("prueba"+categorias);
+                    // this.$emit('jurisdiccion',this.categorias);
+                    
+                                        // this.$emit('jurisdiccion',cod_jurisdiccion);
                 }
       },
       mounted() {

@@ -2021,11 +2021,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['cat'],
+  props: ['categorias'],
   data: function data() {
     return {
-      categorias: [],
       feedback: "",
       origenes: [],
       origen: [],
@@ -2034,15 +2036,15 @@ __webpack_require__.r(__webpack_exports__);
       selectedJurisdiccion: "",
       jurisdicciones: [],
       jurisdiccion: [],
-      errors: [],
-      cat_: this.cat
+      errors: [] // categorias: this.data,
+
     };
   },
   methods: {
     // getCategorias(){
-    //   axios.get(`api/categoria/${}`).then((response)=>{
+    //   axios.get(`api/categoria/${jurisdiccion.cod_jurisdiccion}`).then((response)=>{
     //     this.categorias = response.data;
-    //     this.category=response.data
+    //     console.log(this.categorias);
     //   })
     //   .catch(function (error) {
     //       console.log(error);
@@ -2141,6 +2143,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     // this.getCategorias();
+    // console.log(this.cat);
     this.getOrigenes();
   }
 });
@@ -2357,8 +2360,16 @@ __webpack_require__.r(__webpack_exports__);
       selectedOrganismo: ''
     };
   },
-  watch: {
-    selectedOrigen: function selectedOrigen() {
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('api/origen').then(function (response) {
+      _this.origenes = response.data;
+      console.log(_this.origenes[0].jurisdicciones[0].organismos.length);
+    });
+  },
+  methods: {
+    cambioOrigen: function cambioOrigen() {
       this.jurisdicciones = [];
       this.organismos = [];
       this.selectedJurisdicion = "";
@@ -2370,7 +2381,7 @@ __webpack_require__.r(__webpack_exports__);
         this.$emit('sendOrigen', origen);
       }
     },
-    selectedJurisdicion: function selectedJurisdicion() {
+    cambioJurisdiccion: function cambioJurisdiccion() {
       this.organismos = [];
       this.selectedOrganismo = "";
 
@@ -2380,19 +2391,12 @@ __webpack_require__.r(__webpack_exports__);
         this.$emit('sendJur', jur);
       }
     },
-    selectedOrganismo: function selectedOrganismo() {
+    cambioOrganismo: function cambioOrganismo() {
       if (this.selectedOrganismo > 0) {
         var organismo = this.selectedOrganismo;
         this.$emit('sendOrganismo', organismo);
       }
     }
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    axios.get('api/origen').then(function (response) {
-      _this.origenes = response.data;
-    });
   }
 });
 
@@ -2438,13 +2442,11 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    change: function change() {
-      console.log('tipo liquidacion: ' + this.selected);
-    }
-  },
-  watch: {
-    selected: function selected() {
-      //console.log(this.selected);
+    cambio: function cambio() {
+      //axios.get(`api/liquidacion/origen/null/jurisdiccion/null/organismo/null/periodo/${this.selected}/tipo/null`).then((response)=>{
+      //  const periodo = response.data;
+      //  this.$emit('sendPeriodo',periodo);
+      //})
       var periodo = this.selected;
       this.$emit('sendPeriodo', periodo);
     }
@@ -2492,9 +2494,19 @@ __webpack_require__.r(__webpack_exports__);
       _this.tipoliquidaciones = response.data;
     });
   },
-  watch: {
-    selected: function selected() {
-      //console.log(this.selected);
+  //watch: {
+  //    selected: function() {
+  //        //console.log(this.selected);
+  //        const tipoLiquidacion = this.selected;
+  //        this.$emit('sendTipo',tipoLiquidacion);
+  //    }
+  //},
+  methods: {
+    cambio: function cambio() {
+      //axios.get(`api/liquidacion/origen/null/jurisdiccion/null/organismo/null/periodo/null/tipo/${this.selected}`).then((response)=>{
+      //  const tipoLiquidacion = response.data;
+      //  this.$emit('sendTipo',tipoLiquidacion);
+      //})
       var tipoLiquidacion = this.selected;
       this.$emit('sendTipo', tipoLiquidacion);
     }
@@ -2548,6 +2560,9 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("api/categoria/".concat(id)).then(function (response) {
         _this.categorias = response.data;
+
+        _this.$emit('jurisdiccion', _this.categorias);
+
         console.log(_this.categorias);
       })["catch"](function (error) {
         console.log(error);
@@ -2566,8 +2581,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectedJurisdiccion: function selectedJurisdiccion() {
       var cod_jurisdiccion = this.selectedJurisdiccion;
-      this.getCategorias(cod_jurisdiccion);
-      this.$emit('categorias', categorias);
+      this.getCategorias(cod_jurisdiccion); // console.log("prueba"+categorias);
+      // this.$emit('jurisdiccion',this.categorias);
+      // this.$emit('jurisdiccion',cod_jurisdiccion);
     }
   },
   mounted: function mounted() {
@@ -3222,71 +3238,72 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       liquidaciones: [],
-      liquidacion: [],
-      buscar: this.filtro,
-      pagination: {
-        current_page: '',
-        primero: '',
-        ultimo: '',
-        from: '',
-        last_page: '',
-        next_page_url: '',
-        path: '',
-        per_page: '',
-        to: '',
-        total: ''
-      }
+      liquidacion: [] //pagination:{
+      //  current_page:this.filtro.current_page,
+      //  primero:this.filtro.first_page_url,
+      //  ultimo:this.filtro.last_page_url,
+      //  from:this.filtro.from,
+      //  last_page:this.filtro.last_page,
+      //  next_page_url:this.filtro.next_page_url,
+      //  path:this.filtro.path,
+      //  per_page:this.filtro.per_page,
+      //  to:this.filtro.per_page,
+      //  total:this.filtro.total
+      //},
+
     };
   },
   mounted: function mounted() {
-    var _this = this;
-
-    axios.get('api/liquidacion').then(function (response) {
-      _this.liquidaciones = response.data.data;
-      _this.pagination.primero = response.data.first_page_url;
-      _this.pagination.ultimo = response.data.last_page_url;
-      _this.pagination.current_page = response.data.current_page;
-      _this.pagination.from = response.data.from;
-      _this.pagination.last_page = response.data.last_page;
-      _this.pagination.next_page_url = response.data.next_page_url;
-      _this.pagination.path = response.data.path;
-      _this.pagination.per_page = response.data.per_page;
-      _this.pagination.to = response.data.to;
-      _this.pagination.total = response.data.total;
-      console.log('tabla liquidacion component mounted'); //alert(JSON.stringify(this.pagination))
-    });
+    //axios.get('api/liquidacion').then((response)=>{
+    //   this.liquidaciones = response.data.data;
+    //   //this.pagination.primero = response.data.first_page_url
+    //   //this.pagination.ultimo = response.data.last_page_url
+    //   //this.pagination.current_page = response.data.current_page
+    //   //this.pagination.from = response.data.from
+    //   //this.pagination.last_page = response.data.last_page
+    //   //this.pagination.next_page_url = response.data.next_page_url
+    //   //this.pagination.path = response.data.path
+    //   //this.pagination.per_page = response.data.per_page
+    //   //this.pagination.to = response.data.to
+    //   //this.pagination.total = response.data.total
+    //   console.log('todas las liquidaciones: '+this.liquidaciones)
+    //   //alert(JSON.stringify(this.pagination))
+    //  })
+    //this.liquidaciones = [];
+    //this.liquidaciones.push(this.filtro.data.data)
+    console.log('tabla liquidacion component mounted');
   },
   methods: {
     show: function show(id) {
-      var _this2 = this;
+      var _this = this;
 
       axios.get("api/liquidacion/detalle/" + id).then(function (response) {
-        _this2.liquidacion = [];
-        _this2.liquidacion = response.data;
+        _this.liquidacion = [];
+        _this.liquidacion = response.data;
       });
     },
     empty: function empty() {
       this.liquidacion = [];
-    },
-    cargar: function cargar() {//if (this.buscar.condition) {
-      //  axios.get('api/liquidacion').then((response)=>{
-      //   this.loadMode = false
-      //   this.liquidaciones = response.data.data;
-      //   this.pagination.primero = response.data.first_page_url
-      //   this.pagination.ultimo = response.data.last_page_url
-      //   this.pagination.current_page = response.data.current_page
-      //   this.pagination.from = response.data.from
-      //   this.pagination.last_page = response.data.last_page
-      //   this.pagination.next_page_url = response.data.next_page_url
-      //   this.pagination.path = response.data.path
-      //   this.pagination.per_page = response.data.per_page
-      //   this.pagination.to = response.data.to
-      //   this.pagination.total = response.data.total
-      //   console.log('tabla liquidacion component mounted')
-      //   //alert(JSON.stringify(this.pagination))
-      //  })
-      //}
-    }
+    } //cargar(){
+    //    if (!this.buscar.condition) {
+    //      axios.get('api/liquidacion').then((response)=>{
+    //       this.liquidaciones = this.buscar.data.data;
+    //       this.pagination.primero = response.data.first_page_url
+    //       this.pagination.ultimo = response.data.last_page_url
+    //       this.pagination.current_page = response.data.current_page
+    //       this.pagination.from = response.data.from
+    //       this.pagination.last_page = response.data.last_page
+    //       this.pagination.next_page_url = response.data.next_page_url
+    //       this.pagination.path = response.data.path
+    //       this.pagination.per_page = response.data.per_page
+    //       this.pagination.to = response.data.to
+    //       this.pagination.total = response.data.total
+    //       console.log('tabla liquidacion component mounted')
+    //       //alert(JSON.stringify(this.pagination))
+    //      })
+    //    }
+    //}
+
   }
 });
 
@@ -3319,13 +3336,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      categorias: []
+      // data: {
+      //     // cod_jurisdiccion: '',
+      // },
+      categorias: {}
     };
   },
-  methods: {//   get_categorias(categorias){
-    //       this.categorias = categorias;
-    //     //   console.log(codigo);
-    //   },
+  methods: {
+    get_codigo: function get_codigo(categorias) {
+      // this.data.cod_jurisdiccion = cod_jurisdiccion;
+      this.categorias = categorias; // console.log("panel Categoria: "+this.data);
+    }
   },
   mounted: function mounted() {}
 });
@@ -3380,8 +3401,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      periodo: {},
       filtro: {
+        data: [],
         periodo: '',
         tipo_liquidacion: '',
         origen: '',
@@ -3396,9 +3417,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     search: function search(index, parm) {
-      //console.log(parm);
-      this.filtro.condition = true;
-
+      //if (parm.length != 0 ) {
+      //    this.filtro.condition = true
+      //    this.filtro.data = parm
+      //}
       switch (index) {
         case 'periodo':
           this.filtro.periodo = "";
@@ -38994,56 +39016,58 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.categorias, function(categoria, index) {
-            return _c("tr", { key: categoria.id }, [
-              _c("th", [_vm._v(_vm._s(categoria.cod_categoria))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(categoria.categoria))]),
-              _vm._v(" "),
-              _c("td", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-1" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-outline-warning border-0 btn-sm shadow text-dark",
-                      attrs: {
-                        "data-toggle": "modal",
-                        "data-target": "#edit_categoria"
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.editCategoria(categoria.id)
-                        }
-                      }
-                    },
-                    [_c("i", { staticClass: "far fa-edit" })]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-1" }, [
-                  _c(
-                    "form",
-                    {
-                      on: {
-                        submit: function($event) {
-                          $event.preventDefault()
-                          return _vm.deleteCategoria(categoria.id)
-                        }
-                      }
-                    },
-                    [_vm._m(1, true)]
-                  )
-                ])
-              ])
-            ])
-          }),
-          0
+          [
+            _vm.categorias.length === 0
+              ? _c("tr", [_vm._v("No hay datos para mostrar")])
+              : _vm._l(_vm.categorias, function(categoria, index) {
+                  return _c("tr", { key: categoria.id }, [
+                    _c("th", [_vm._v(_vm._s(categoria.cod_categoria))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(categoria.categoria))]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-1" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-outline-warning border-0 btn-sm shadow text-dark",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#edit_categoria"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.editCategoria(categoria.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "far fa-edit" })]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-1" }, [
+                        _c(
+                          "form",
+                          {
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                                return _vm.deleteCategoria(categoria.id)
+                              }
+                            }
+                          },
+                          [_vm._m(1, true)]
+                        )
+                      ])
+                    ])
+                  ])
+                })
+          ],
+          2
         )
       ]
     ),
-    _vm._v(" "),
-    _c("label"),
     _vm._v(" "),
     _vm._m(2),
     _vm._v(" "),
@@ -39899,19 +39923,24 @@ var render = function() {
             staticClass: "form-control form-control-sm",
             attrs: { id: "origen", name: "origen" },
             on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.selectedOrigen = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.selectedOrigen = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.cambioOrigen()
+                }
+              ]
             }
           },
           [
@@ -39959,19 +39988,24 @@ var render = function() {
               name: "jurisdiccion"
             },
             on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.selectedJurisdicion = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.selectedJurisdicion = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.cambioJurisdiccion()
+                }
+              ]
             }
           },
           [
@@ -40021,19 +40055,24 @@ var render = function() {
               name: "organismo"
             },
             on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.selectedOrganismo = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.selectedOrganismo = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.cambioOrganismo()
+                }
+              ]
             }
           },
           [
@@ -40148,19 +40187,24 @@ var render = function() {
               staticClass: "form-control form-control-sm",
               attrs: { id: "periodo" },
               on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.selected = $event.target.multiple
-                    ? $$selectedVal
-                    : $$selectedVal[0]
-                }
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.selected = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  },
+                  function($event) {
+                    return _vm.cambio()
+                  }
+                ]
               }
             },
             [
@@ -40259,19 +40303,24 @@ var render = function() {
               staticClass: "form-control form-control-sm",
               attrs: { id: "tipoLiquidacion" },
               on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.selected = $event.target.multiple
-                    ? $$selectedVal
-                    : $$selectedVal[0]
-                }
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.selected = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  },
+                  function($event) {
+                    return _vm.cambio()
+                  }
+                ]
               }
             },
             [
@@ -41536,16 +41585,18 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "table-responsive-lg" }, [
+    _c("label", [_vm._v("Liquidaciones " + _vm._s(_vm.filtro) + " ")]),
+    _vm._v(" "),
     _c(
       "table",
       {
         staticClass: "table table-sm table-hover table-bordeless",
         model: {
-          value: _vm.liquidaciones,
+          value: _vm.filtro.data.data,
           callback: function($$v) {
-            _vm.liquidaciones = $$v
+            _vm.$set(_vm.filtro.data, "data", $$v)
           },
-          expression: "liquidaciones"
+          expression: "filtro.data.data"
         }
       },
       [
@@ -41558,13 +41609,13 @@ var render = function() {
         _c(
           "tbody",
           [
-            _vm.buscar.condition == false
+            !_vm.filtro.condition
               ? _c("tr", { staticClass: "table-default text-center" }, [
                   _c("td", { attrs: { colspan: "6" } }, [
                     _vm._v("No hay datos")
                   ])
                 ])
-              : _vm._l(_vm.liquidaciones, function(liquidacion) {
+              : _vm._l(_vm.filtro.data.data, function(liquidacion) {
                   return _c(
                     "tr",
                     [
@@ -41630,63 +41681,7 @@ var render = function() {
           2
         ),
         _vm._v(" "),
-        _c(
-          "tfoot",
-          {
-            model: {
-              value: _vm.pagination,
-              callback: function($$v) {
-                _vm.pagination = $$v
-              },
-              expression: "pagination"
-            }
-          },
-          [
-            _c("tr", [
-              _c("th", { attrs: { scope: "row", colspan: "6" } }, [
-                _c(
-                  "nav",
-                  { attrs: { "aria-label": "Page navigation example" } },
-                  [
-                    _c(
-                      "ul",
-                      { staticClass: "pagination justify-content-end" },
-                      [
-                        _c("li", { staticClass: "page-item disabled" }, [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "page-link",
-                              attrs: { href: _vm.pagination.primero }
-                            },
-                            [_vm._v("Primero")]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _vm._m(1),
-                        _vm._v(" "),
-                        _vm._m(2),
-                        _vm._v(" "),
-                        _vm._m(3),
-                        _vm._v(" "),
-                        _c("li", { staticClass: "page-item" }, [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "page-link",
-                              attrs: { href: _vm.pagination.ultimo }
-                            },
-                            [_vm._v("Ultimo")]
-                          )
-                        ])
-                      ]
-                    )
-                  ]
-                )
-              ])
-            ])
-          ]
-        )
+        _vm._m(1)
       ]
     ),
     _vm._v(" "),
@@ -41760,11 +41755,11 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
-              _vm._m(4),
+              _vm._m(2),
               _vm._v(" "),
               _c("div", { staticClass: "row bg-light" }, [
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(5),
+                  _vm._m(3),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41787,7 +41782,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(6),
+                  _vm._m(4),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41805,10 +41800,10 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(7),
+                _vm._m(5),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(8),
+                  _vm._m(6),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41827,7 +41822,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(9),
+                  _vm._m(7),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "col" }, [
@@ -41849,7 +41844,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "row my-3 bg-light" }, [
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(10),
+                  _vm._m(8),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41871,7 +41866,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(11),
+                  _vm._m(9),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41890,7 +41885,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(12),
+                  _vm._m(10),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41913,7 +41908,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col" }, [
-                  _vm._m(13),
+                  _vm._m(11),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c(
@@ -41935,7 +41930,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(14)
+                _vm._m(12)
               ]),
               _vm._v(" "),
               _c(
@@ -41981,7 +41976,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(15),
+                      _vm._m(13),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -42042,7 +42037,7 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._m(16),
+                          _vm._m(14),
                           _vm._v(" "),
                           _c("td", [
                             _c("small", [
@@ -42114,24 +42109,36 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "page-item" }, [
-      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [_vm._v("1")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "page-item" }, [
-      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [_vm._v("2")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "page-item" }, [
-      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [_vm._v("3")])
+    return _c("tfoot", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "row", colspan: "6" } }, [
+          _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+            _c("ul", { staticClass: "pagination justify-content-end" }, [
+              _c("li", { staticClass: "page-item disabled" }),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" }, [
+                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+                  _vm._v("1")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" }, [
+                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+                  _vm._v("2")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" }, [
+                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+                  _vm._v("3")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" })
+            ])
+          ])
+        ])
+      ])
     ])
   },
   function() {
@@ -42310,12 +42317,25 @@ var render = function() {
     "div",
     { attrs: { id: "panelcategoria" } },
     [
-      _c("filtrocategoria-component"),
+      _c("filtrocategoria-component", {
+        on: {
+          jurisdiccion: function($event) {
+            return _vm.get_codigo.apply(void 0, arguments)
+          }
+        }
+      }),
       _vm._v(" "),
       _c("div", { staticClass: "card shadow" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [_c("categoria-component")], 1)
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c("categoria-component", { attrs: { categorias: _vm.categorias } })
+          ],
+          1
+        )
       ])
     ],
     1
@@ -55421,8 +55441,13 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\nuevo\control_aporte\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\nuevo\control_aporte\resources\sass\app.scss */"./resources/sass/app.scss");
+=======
+__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
+>>>>>>> 70b3563d2057c3daec00dcb94de5aafd50a7a709
 
 
 /***/ })
