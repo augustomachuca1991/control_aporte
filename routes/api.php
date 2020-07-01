@@ -23,6 +23,7 @@ Route::get('/organismo', 'OrganismoController@index')->name('organismo');
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
+Route::get('/liquidacion/origen/{origen?}/jurisdiccion/{jur?}/organismo/{organismo?}/periodo/{periodo?}/tipo/{tipo?}', 'LiquidacionController@filtro')->name('filtro');
 Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liquidacion');
 
 //puesto laborales
@@ -42,6 +43,7 @@ Route::get('/tipoliquidacion', 'TipoLiquidacionController@getTipoLiquidacion')->
 
 //periodos
 Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
+
 
 // Categoria
 

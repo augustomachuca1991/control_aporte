@@ -124,12 +124,19 @@ class JurisdiccionController extends Controller
             'jurisdiccion'       =>   $request->jurisdiccion,
             'updated_at'       =>   $date
         );
+
         try {
             $jurisdiccion = Jurisdiccion::whereId($id)->update($form_data);
             return response()->json(['isValid'=>true,'errors'=>'Jurisdicción actualizado satisfactoriamente']);
         }catch(\Exception $e) {
             return response()->json(['isValid'=>false,'errors'=>'Error al actualizar la Jurisdicción']);
         }
+
+        $jurisdiccion =Jurisdiccion::whereId($id)->update($form_data);
+
+        return response()->json(['isValid'=>true,'errors'=>'Jurisdicción actualizado satisfactoriamente']);
+
+
     }
 
     /**

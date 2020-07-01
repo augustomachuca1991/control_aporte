@@ -3,7 +3,7 @@
     <form>
       <div class="form-group border-0 shadow p-3" v-model="periodos">
         <label for="periodo" class="text-muted"><i class="fas fa-search"></i> Periodo Liquidacion</label>
-        <select class="form-control form-control-sm" id="periodo" v-model="selected">
+        <select class="form-control form-control-sm" id="periodo" v-model="selected" v-on:change="cambio()">
           <option class="text-muted" :value="''" selected disabled>Seleccione Periodo</option>
           <option v-for="periodo in periodos" :value="periodo.cod_periodo" :periodo="periodo">Liquidacion de {{periodo.periodo}}</option>
         </select>
@@ -29,16 +29,15 @@
             })
         },
         methods:{
-            change(){
-                console.log('tipo liquidacion: '+this.selected)
+            cambio(){
+                //axios.get(`api/liquidacion/origen/null/jurisdiccion/null/organismo/null/periodo/${this.selected}/tipo/null`).then((response)=>{
+                //  const periodo = response.data;
+                //  this.$emit('sendPeriodo',periodo);
+                //})
+                const periodo =this.selected;
+                this.$emit('sendPeriodo',periodo);
             },
         },
-        watch: {
-            selected: function() {
-                //console.log(this.selected);
-                const periodo = this.selected;
-                this.$emit('sendPeriodo',periodo);
-            }
-        }
   }
 </script>
+                

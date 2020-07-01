@@ -1,6 +1,6 @@
 <template>
   <div id="categorias">
-    <table class="table table-borderless table-striped border" v-model="categorias">
+    <table class="table table-borderless table-striped border" v-model="categorias" >
       <caption>Categorías</caption>
       <thead>
         <tr>
@@ -10,7 +10,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(categoria, index) in categorias"  v-bind:key="categoria.id">
+       <tr v-if="categorias.length===0">No hay datos para mostrar</tr>
+        <tr v-for="(categoria, index) in categorias"  v-bind:key="categoria.id" v-else>
           <th>{{categoria.cod_categoria}}</th>
           <td>{{categoria.categoria}}</td>
           <td class="row">
@@ -28,9 +29,11 @@
               </div>
           </td>
         </tr>
+        
       </tbody>
     </table>
-    <label></label>
+ 
+
     <div class="m-2" align="right">
       <a href="#" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#nueva_categoria"><i class="fas fa-plus"></i> Nueva</a>    
     </div>
@@ -116,10 +119,9 @@
 
 
     export default {
-        props:['cat'],
+        props:['categorias'],
         data: function(){
-            return{
-                categorias:[],
+            return{      
                 feedback: "",
                 origenes:[],
                 origen:[],
@@ -129,14 +131,14 @@
                 jurisdicciones:[],
                 jurisdiccion:[],
                 errors:[],
-                cat_: this.cat,
+                // categorias: this.data,
             }
         },
         methods:{
             // getCategorias(){
-            //   axios.get(`api/categoria/${}`).then((response)=>{
+            //   axios.get(`api/categoria/${jurisdiccion.cod_jurisdiccion}`).then((response)=>{
             //     this.categorias = response.data;
-            //     this.category=response.data
+            //     console.log(this.categorias);
               
             //   })
             //   .catch(function (error) {
@@ -227,6 +229,7 @@
         },
         mounted(){
           // this.getCategorias();
+          // console.log(this.cat);
           this.getOrigenes();
         
         }

@@ -1,9 +1,9 @@
 <template>
   <div class="table-responsive-lg">
-    <!--<label v-model="buscar">Filtro {{buscar}} </label>-->
+    <label>Liquidaciones {{filtro}} </label>
 
     <!--table-->
-    <table class="table table-sm table-hover table-bordeless" v-model="liquidaciones">
+    <table class="table table-sm table-hover table-bordeless" v-model="filtro.data.data">
       <caption>
           Instituto de Previsión Social de Corrientes
       </caption>
@@ -18,10 +18,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="buscar.condition == false" class="table-default text-center">
+        <tr v-if="!filtro.condition" class="table-default text-center">
           <td colspan="6">No hay datos</td>
         </tr>
-        <tr v-else v-for="liquidacion in liquidaciones">
+        <tr v-else v-for="liquidacion in filtro.data.data">
           <th scope="row">00{{liquidacion.id}}</th>
           <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
           <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
@@ -34,20 +34,20 @@
           </td>
         </tr>
       </tbody>
-      <tfoot v-model="pagination"> 
+      <tfoot> 
         <!--pagination-->
         <tr>
           <th scope="row" colspan="6">
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-end">
                 <li class="page-item disabled">
-                  <a class="page-link" :href="pagination.primero">Primero</a>
+                  <!--<a class="page-link" :href="pagination.primero">Primero</a>-->
                 </li>
                 <li class="page-item"><a class="page-link" href="#">1</a></li>
                 <li class="page-item"><a class="page-link" href="#">2</a></li>
                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item">
-                  <a class="page-link" :href="pagination.ultimo">Ultimo</a>
+                  <!--<a class="page-link" :href="pagination.ultimo">Ultimo</a>-->
                 </li>
               </ul>
             </nav>
@@ -290,39 +290,41 @@
             return{
                 liquidaciones:[],
                 liquidacion:[],
-                buscar: this.filtro,
-                pagination:{
-                  current_page:'',
-                  primero:'',
-                  ultimo:'',
-                  from:'',
-                  last_page:'',
-                  next_page_url:'',
-                  path:'',
-                  per_page:'',
-                  to:'',
-                  total:''
-                },
+                //pagination:{
+                //  current_page:this.filtro.current_page,
+                //  primero:this.filtro.first_page_url,
+                //  ultimo:this.filtro.last_page_url,
+                //  from:this.filtro.from,
+                //  last_page:this.filtro.last_page,
+                //  next_page_url:this.filtro.next_page_url,
+                //  path:this.filtro.path,
+                //  per_page:this.filtro.per_page,
+                //  to:this.filtro.per_page,
+                //  total:this.filtro.total
+                //},
             }
         
         },
         mounted() {
-                
-                axios.get('api/liquidacion').then((response)=>{
-                   this.liquidaciones = response.data.data;
-                   this.pagination.primero = response.data.first_page_url
-                   this.pagination.ultimo = response.data.last_page_url
-                   this.pagination.current_page = response.data.current_page
-                   this.pagination.from = response.data.from
-                   this.pagination.last_page = response.data.last_page
-                   this.pagination.next_page_url = response.data.next_page_url
-                   this.pagination.path = response.data.path
-                   this.pagination.per_page = response.data.per_page
-                   this.pagination.to = response.data.to
-                   this.pagination.total = response.data.total
-                   console.log('tabla liquidacion component mounted')
-                   //alert(JSON.stringify(this.pagination))
-                })
+
+                //axios.get('api/liquidacion').then((response)=>{
+                //   this.liquidaciones = response.data.data;
+                //   //this.pagination.primero = response.data.first_page_url
+                //   //this.pagination.ultimo = response.data.last_page_url
+                //   //this.pagination.current_page = response.data.current_page
+                //   //this.pagination.from = response.data.from
+                //   //this.pagination.last_page = response.data.last_page
+                //   //this.pagination.next_page_url = response.data.next_page_url
+                //   //this.pagination.path = response.data.path
+                //   //this.pagination.per_page = response.data.per_page
+                //   //this.pagination.to = response.data.to
+                //   //this.pagination.total = response.data.total
+                //   console.log('todas las liquidaciones: '+this.liquidaciones)
+                //   //alert(JSON.stringify(this.pagination))
+                //  })
+                //this.liquidaciones = [];
+                //this.liquidaciones.push(this.filtro.data.data)
+                console.log('tabla liquidacion component mounted')
         }, 
         methods:{
             show(id){
@@ -334,26 +336,25 @@
             empty(){
                 this.liquidacion = [];
             },
-            cargar(){
-                //if (this.buscar.condition) {
-                //  axios.get('api/liquidacion').then((response)=>{
-                //   this.loadMode = false
-                //   this.liquidaciones = response.data.data;
-                //   this.pagination.primero = response.data.first_page_url
-                //   this.pagination.ultimo = response.data.last_page_url
-                //   this.pagination.current_page = response.data.current_page
-                //   this.pagination.from = response.data.from
-                //   this.pagination.last_page = response.data.last_page
-                //   this.pagination.next_page_url = response.data.next_page_url
-                //   this.pagination.path = response.data.path
-                //   this.pagination.per_page = response.data.per_page
-                //   this.pagination.to = response.data.to
-                //   this.pagination.total = response.data.total
-                //   console.log('tabla liquidacion component mounted')
-                //   //alert(JSON.stringify(this.pagination))
-                //  })
-                //}
-            }
+            //cargar(){
+            //    if (!this.buscar.condition) {
+            //      axios.get('api/liquidacion').then((response)=>{
+            //       this.liquidaciones = this.buscar.data.data;
+            //       this.pagination.primero = response.data.first_page_url
+            //       this.pagination.ultimo = response.data.last_page_url
+            //       this.pagination.current_page = response.data.current_page
+            //       this.pagination.from = response.data.from
+            //       this.pagination.last_page = response.data.last_page
+            //       this.pagination.next_page_url = response.data.next_page_url
+            //       this.pagination.path = response.data.path
+            //       this.pagination.per_page = response.data.per_page
+            //       this.pagination.to = response.data.to
+            //       this.pagination.total = response.data.total
+            //       console.log('tabla liquidacion component mounted')
+            //       //alert(JSON.stringify(this.pagination))
+            //      })
+            //    }
+            //}
         },
     }
 </script>

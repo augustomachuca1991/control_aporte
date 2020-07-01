@@ -1,6 +1,7 @@
 <template>
     <div id="jurisdicciones" style="overflow-x:auto;">
 
+
         <div v-if="this.message != ''">
             <div class="alert alert-danger alert-block" role="alert" id="mensaje_error"  v-if="this.isValid == false">
                 <button type="button" class="close" data-dismiss="alert">×</button>
@@ -208,7 +209,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -227,6 +227,15 @@
                 jur_aux: [],
                 jur:[],
                 feedback: "",
+
+                jur:{
+                    id: null,
+                    cod_jurisdiccion: null,
+                    jurisdiccion: '',
+                    origen_id: null,
+                    created_at: '',
+                    updated_at: '',
+                },
                 form_editar: false,
                 encabezado: '',
                 error_descripcion: ''
@@ -317,6 +326,7 @@
                             console.log(response.data.error_descripcion);
                             alert('SI funciona');
                             //alert(this.message);
+
                         }).catch(function (error) {
                         alert('NO funciona');
                         console.log(error);
