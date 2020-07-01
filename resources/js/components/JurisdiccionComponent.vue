@@ -1,7 +1,12 @@
 <template>
     <div id="jurisdicciones" style="overflow-x:auto;">
 
-
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-success" v-on:click="encabezado = 'Crear Jurisdicción'" data-toggle="modal" data-target="#altaModal">Crear nueva jurisdicción</a>
+            </div>
+        </div>
+        <br>
         <div v-if="this.message != ''">
             <div class="alert alert-danger alert-block" role="alert" id="mensaje_error"  v-if="this.isValid == false">
                 <button type="button" class="close" data-dismiss="alert">×</button>
@@ -12,14 +17,6 @@
                 <strong style="color:darkgreen" align="center" >{{this.message}}</strong>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col">
-                <a class="btn btn-success" v-on:click="encabezado = 'Crear Jurisdicción'" data-toggle="modal" data-target="#altaModal">Crear nueva jurisdicción</a>
-            </div>
-        </div>
-
-        <br>
 
     <table class="table table-borderless table-striped border" v-model="jurisdicciones">
         <thead >
@@ -45,7 +42,12 @@
                     <a @click="editJurisdiccion(jurisdiccion)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#editarModal"><i class="far fa-edit"></i></a>
                 </td>
                 <td class="td-button">
-                    <a @click="deleteJurisdiccion(jurisdiccion)" class="btn btn-outline-danger border-0 btn-sm shadow" data-toggle="modal" data-target="#eliminarModal"><i class="far fa-trash-alt"></i></a>
+                    <!--a @click="deleteJurisdiccion(jurisdiccion.id)" class="btn btn-outline-danger border-0 btn-sm shadow" data-toggle="modal" data-target="#eliminarModal"><i class="far fa-trash-alt"></i></a-->
+                    <form @submit.prevent="deleteJurisdiccion(jurisdiccion.id)">
+                        <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         </tbody>
@@ -214,7 +216,9 @@
 
 <script>
     export default {
-
+        props: {
+            jurisdicciones: Array,
+        },
         data: function(){
             return{
                 jurisdicciones:[],
@@ -263,19 +267,6 @@
                     });
             },
 
-            restaurar: function(p_jurisdiccion){
-                console.log(p_jurisdiccion);
-                alert(p_jurisdiccion.jurisdiccion);
-                //this.jur = Object.assign({},p_jurisdiccion);
-                this.jur.id = p_jurisdiccion.id;
-                this.jur.cod_jurisdiccion = p_jurisdiccion.cod_jurisdiccion;
-                this.jur.jurisdiccion= p_jurisdiccion.jurisdiccion;
-                this.jur.origen_id= p_jurisdiccion.origen_id;
-                this.jur.created_at= p_jurisdiccion.created_at;
-                this.jur.updated_at= p_jurisdiccion.updated_at;
-
-            }.bind(this),
-
             editJurisdiccion(p_jurisdiccion){
                 //this.jur = p_jurisdiccion;
                 //this.jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion;
@@ -321,21 +312,27 @@
                             this.getJurisdicciones();
                             this.jur = [];
 
-                            console.log(response.data.isValid);
-                            console.log(response.data.errors);
-                            console.log(response.data.error_descripcion);
-                            alert('SI funciona');
-                            //alert(this.message);
-
                         }).catch(function (error) {
-                        alert('NO funciona');
                         console.log(error);
                     });
                 }
             },
 
-            deleteJurisdiccion(p_jurisdiccion){
+            deleteJurisdiccion(id){
+                if(confirm("¿Seguro que quieres eliminar esta Jurisdicción?")){
+                    console.log(id);
+                    axios.delete(`api/jurisdiccion/delete/${id}`)
+                        .then((response)=>{
+                            this.isValid = response.data.isValid;
+                            this.message = response.data.errors
+                            this.jurisdicciones = response.data;
+                            this.getJurisdicciones();
+                            this.jur = [];
 
+                        }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
             },
 
             empty(){
@@ -347,7 +344,8 @@
                 this.selectedOrigen = this.origenes.find(origen => origen.cod_origen === p_jurisdiccion.origen_id);
                 this.jur = p_jurisdiccion;
                 this.encabezado = 'Detalle Jurisdicción'
-            }
+            },
+
         },
     }
 </script>

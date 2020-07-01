@@ -2830,7 +2830,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    jurisdicciones: Array
+  },
   data: function data() {
     var _ref;
 
@@ -2876,17 +2881,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
-    restaurar: function (p_jurisdiccion) {
-      console.log(p_jurisdiccion);
-      alert(p_jurisdiccion.jurisdiccion); //this.jur = Object.assign({},p_jurisdiccion);
-
-      this.jur.id = p_jurisdiccion.id;
-      this.jur.cod_jurisdiccion = p_jurisdiccion.cod_jurisdiccion;
-      this.jur.jurisdiccion = p_jurisdiccion.jurisdiccion;
-      this.jur.origen_id = p_jurisdiccion.origen_id;
-      this.jur.created_at = p_jurisdiccion.created_at;
-      this.jur.updated_at = p_jurisdiccion.updated_at;
-    }.bind(undefined),
     editJurisdiccion: function editJurisdiccion(p_jurisdiccion) {
       //this.jur = p_jurisdiccion;
       //this.jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion;
@@ -2935,17 +2929,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this4.getJurisdicciones();
 
           _this4.jur = [];
-          console.log(response.data.isValid);
-          console.log(response.data.errors);
-          console.log(response.data.error_descripcion);
-          alert('SI funciona'); //alert(this.message);
         })["catch"](function (error) {
-          alert('NO funciona');
           console.log(error);
         });
       }
     },
-    deleteJurisdiccion: function deleteJurisdiccion(p_jurisdiccion) {},
+    deleteJurisdiccion: function deleteJurisdiccion(id) {
+      var _this5 = this;
+
+      if (confirm("¿Seguro que quieres eliminar esta Jurisdicción?")) {
+        console.log(id);
+        axios["delete"]("api/jurisdiccion/delete/".concat(id)).then(function (response) {
+          _this5.isValid = response.data.isValid;
+          _this5.message = response.data.errors;
+          _this5.jurisdicciones = response.data;
+
+          _this5.getJurisdicciones();
+
+          _this5.jur = [];
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
     empty: function empty() {
       this.jur = [];
     },
@@ -40591,6 +40597,26 @@ var render = function() {
     "div",
     { staticStyle: { "overflow-x": "auto" }, attrs: { id: "jurisdicciones" } },
     [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-success",
+              attrs: { "data-toggle": "modal", "data-target": "#altaModal" },
+              on: {
+                click: function($event) {
+                  _vm.encabezado = "Crear Jurisdicción"
+                }
+              }
+            },
+            [_vm._v("Crear nueva jurisdicción")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
       this.message != ""
         ? _c("div", [
             this.isValid == false
@@ -40652,26 +40678,6 @@ var render = function() {
               : _vm._e()
           ])
         : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col" }, [
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-success",
-              attrs: { "data-toggle": "modal", "data-target": "#altaModal" },
-              on: {
-                click: function($event) {
-                  _vm.encabezado = "Crear Jurisdicción"
-                }
-              }
-            },
-            [_vm._v("Crear nueva jurisdicción")]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("br"),
       _vm._v(" "),
       _c(
         "table",
@@ -40742,21 +40748,16 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", { staticClass: "td-button" }, [
                   _c(
-                    "a",
+                    "form",
                     {
-                      staticClass:
-                        "btn btn-outline-danger border-0 btn-sm shadow",
-                      attrs: {
-                        "data-toggle": "modal",
-                        "data-target": "#eliminarModal"
-                      },
                       on: {
-                        click: function($event) {
-                          return _vm.deleteJurisdiccion(jurisdiccion)
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.deleteJurisdiccion(jurisdiccion.id)
                         }
                       }
                     },
-                    [_c("i", { staticClass: "far fa-trash-alt" })]
+                    [_vm._m(1, true)]
                   )
                 ])
               ])
@@ -40791,7 +40792,7 @@ var render = function() {
                   staticStyle: { "max-width": "40rem" }
                 },
                 [
-                  _vm._m(1),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
                     _c(
@@ -41538,7 +41539,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _vm._m(2)
+      _vm._m(3)
     ]
   )
 }
@@ -41566,6 +41567,19 @@ var staticRenderFns = [
         ])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-outline-danger border-0 btn-sm shadow text-dark",
+        attrs: { type: "submit" }
+      },
+      [_c("i", { staticClass: "far fa-trash-alt" })]
+    )
   },
   function() {
     var _vm = this
@@ -55537,8 +55551,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\CONTROL_DE_APORTE\control_aporte\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
