@@ -54,7 +54,7 @@ class JurisdiccionController extends Controller
             'origen_id'       =>    'required',
             'jurisdiccion'     =>  'required',
         ]);
-
+        // dd($request->all());
         try {
             //$jur =Jurisdiccion::create($form_data);
             $jur = Jurisdiccion::create([
@@ -63,10 +63,12 @@ class JurisdiccionController extends Controller
                 'jurisdiccion'       =>   $request->jurisdiccion,
                 'created_at'    =>   $date,
             ]);
+
             //$origen_id = $request->origen_id;
             //$jur->origenes()->attach($origen_id);
             return response()->json(['isValid'=>true,'errors'=>'Jurisdicción creada satisfactoriamente']);
         }catch(\Exception $e) {
+            dd($e);
             return response()->json(['isValid'=>false,'errors'=>'Error al crear la Jurisdicción']);
         }
     }

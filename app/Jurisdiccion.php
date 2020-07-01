@@ -11,6 +11,7 @@ class Jurisdiccion extends Model
     use SoftDeletes;
 
     protected $table = 'jurisdiccions';
+    protected $fillable = ['cod_jurisdiccion', 'origen_id', 'jurisdiccion'];
     protected $dates = ['deleted_at'];
 
     public function origen()
