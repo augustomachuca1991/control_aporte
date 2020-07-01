@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class Jurisdiccion extends Model
 {
-    
+
     use SoftDeletes;
 
+    protected $table = 'jurisdiccions';
     protected $dates = ['deleted_at'];
 
     public function origen()

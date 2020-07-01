@@ -1,6 +1,17 @@
 <template>
     <div id="jurisdicciones" style="overflow-x:auto;">
 
+        <div v-if="this.message != ''">
+            <div class="alert alert-danger alert-block" role="alert" id="mensaje_error"  v-if="this.isValid == false">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong style="color:darkred" align="center">{{this.message}}</strong>
+            </div>
+            <div class="alert alert-success" role="alert" id="mensaje_exito" v-if="this.isValid == true">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong style="color:darkgreen" align="center" >{{this.message}}</strong>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <a class="btn btn-success" v-on:click="encabezado = 'Crear Jurisdicción'" data-toggle="modal" data-target="#altaModal">Crear nueva jurisdicción</a>
@@ -30,10 +41,10 @@
                 <td>{{ jurisdiccion.created_at }}</td>
                 <td>{{ jurisdiccion.updated_at }}</td>
                 <td class="td-button">
-                    <a @click="editJurisdiccion(jurisdiccion)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#editarModal"><i class="far fa-edit">Editar</i></a>
+                    <a @click="editJurisdiccion(jurisdiccion)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#editarModal"><i class="far fa-edit"></i></a>
                 </td>
                 <td class="td-button">
-                    <a @click="deleteJurisdiccion(jurisdiccion)" class="btn btn-outline-danger border-0 btn-sm shadow" data-toggle="modal" data-target="#eliminarModal"><i class="far fa-trash-alt">Eliminar</i></a>
+                    <a @click="deleteJurisdiccion(jurisdiccion)" class="btn btn-outline-danger border-0 btn-sm shadow" data-toggle="modal" data-target="#eliminarModal"><i class="far fa-trash-alt"></i></a>
                 </td>
             </tr>
         </tbody>
@@ -93,36 +104,31 @@
                     </div>
                     <div class="modal-body">
                         <form action="" class="form-group" method="POST">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label class="required" for="mostrar_origen" >Origen</label>
-                                        <select class="custom-select mr-sm-2" id="mostrar_origen" name="origen" v-model="origen">
-                                            <option>Seleccione Orígenes</option>
-                                            <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label class="col-form-label" for="origen_new">Origen</label>
+                                <select class="custom-select mr-sm-2" name="origen_new" v-model="selectedOrigen" placeholder="Seleccione origen">
+                                    <option :value="''" disabled selected>Seleccione Origen</option>
+                                    <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
+                                </select>
+                                <span style="color:red" v-if="feedback.cod_origen" v-text="feedback.cod_origen[0]" ></span>
                             </div>
-                            <br>
                             <div class="row">
                                 <div class="col">
                                     <label for="altaCodJurisdiccion" class="required">Cod. Jurisdicción</label>
                                     <input type="text" name="cod_jurisdiccion" id="altaCodJurisdiccion" value=""
-                                           class="form-control"  v-model="jur.cod_jurisdiccion">
+                                           class="form-control"  v-model="jur_aux.cod_jurisdiccion">
                                 </div>
                             </div>
-                            <br>
                             <div class="row">
                                 <div class="col">
                                     <label for="altaDescripcion" class="required">Jurisdicción</label>
                                     <input type="text" name="descripcion" id="altaDescripcion" value=""
-                                           class="form-control"  v-model="jur.jurisdiccion">
+                                           class="form-control"  v-model="jur_aux.jurisdiccion">
                                 </div>
                             </div>
                             <br>
                             <div class="modal-footer">
-                                <button v-on:click="createJurisdiccion(jur)" data-dismiss="modal" id="nueva_jurisdiccion" class="btn btn-primary border-0">Guardar</button>
+                                <button v-on:click="createJuristiccion()" data-dismiss="modal" id="alta_jurisdiccion" class="btn btn-primary border-0">Guardar</button>
                                 <!--a href="" class="btn btn-danger" data-dismiss="modal">Volver</a-->
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
                                     <span class="btn btn-danger" aria-hidden="true">Volver</span>
@@ -135,7 +141,7 @@
         </div>
 
         <!-- Modal editar -->
-        <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="altaModalLabel" aria-hidden="true" >
+        <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
                     <div class="modal-header">
@@ -215,27 +221,15 @@
                 selectedOrigen: [],
                 origenes: [],
                 origen: [],
-                jur_aux: [],
                 jurisdiccion_id: "",
-                jur:{
-                    id: null,
-                    cod_jurisdiccion: null,
-                    jurisdiccion: '',
-                    origen_id: null,
-                    created_at: '',
-                    updated_at: '',
-                },
-                //jur_aux:{
-                    //id: null,
-                    //cod_jurisdiccion: null,
-                    //jurisdiccion: '',
-                    //origen_id: null,
-                    //created_at: '',
-                    //updated_at: '',
-                //},
+                message: "",
+                isValid: false,
+                jur_aux: [],
+                jur:[],
+                feedback: "",
                 form_editar: false,
                 encabezado: '',
-                resguardo: ''
+                error_descripcion: ''
             }
         },
         mounted() {
@@ -286,14 +280,43 @@
                         jurisdiccion : p_jurisdiccion.jurisdiccion,
                         origen_id : p_jurisdiccion.origen_id,
                     };
-                    console.log(params);
-                    alert("api/jurisdiccion/update/"+ p_jurisdiccion.id);
-
                     axios.put(`api/jurisdiccion/update/${p_jurisdiccion.id}` , params)
-                        .then((response)=>{
+                        .then(response => {
+                            this.isValid = response.data.isValid;
+                            this.message = response.data.errors
                             this.getJurisdicciones();
                             this.jur = [];
+                            //console.log(response.data.isValid);
+                            //console.log(response.data.errors);
+                            //alert('SI funciona');
+                            //alert(this.message);
+                        }).catch(function (error) {
+                        alert('NO funciona');
+                        console.log(error);
+                    });
+                }
+            },
+
+            createJuristiccion(){
+                if(confirm("¿Seguro que desea crear la Jurisdicción?")){
+                    const params = {
+                        cod_jurisdiccion : this.jur_aux.cod_jurisdiccion,
+                        jurisdiccion : this.jur_aux.jurisdiccion,
+                        origen_id : this.selectedOrigen,
+                    };
+                    console.log(params);
+                    axios.post('api/jurisdiccion/create', params )
+                        .then(response => {
+                            this.isValid = response.data.isValid;
+                            this.message = response.data.errors
+                            this.getJurisdicciones();
+                            this.jur = [];
+
+                            console.log(response.data.isValid);
+                            console.log(response.data.errors);
+                            console.log(response.data.error_descripcion);
                             alert('SI funciona');
+                            //alert(this.message);
                         }).catch(function (error) {
                         alert('NO funciona');
                         console.log(error);
