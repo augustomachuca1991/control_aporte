@@ -6,8 +6,7 @@
           <h5 class="card-title">Categorías</h5> 
       </div>
       <div class="card-body">
-         
-          <categoria-component :categorias="categorias"></categoria-component>
+        <categoria-component :categorias="categorias" @actualizar="created(...arguments)"></categoria-component>
       </div>  
     </div>  
 </div>
@@ -20,7 +19,7 @@
                 // data: {
                 //     // cod_jurisdiccion: '',
                 // },
-                categorias:{}
+                categorias:[]
             }
       },
       methods:{

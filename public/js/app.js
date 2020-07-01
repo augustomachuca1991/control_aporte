@@ -2024,8 +2024,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+// var bus = new Vue();
+// import Vue from 'vue';
+// // const EventBus = new Vue();
+// export const eventBus = new Vue();
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['categorias'],
+  // props:['categorias'],
+  props: {
+    categorias: Array
+  },
   data: function data() {
     return {
       feedback: "",
@@ -2036,20 +2046,10 @@ __webpack_require__.r(__webpack_exports__);
       selectedJurisdiccion: "",
       jurisdicciones: [],
       jurisdiccion: [],
-      errors: [] // categorias: this.data,
-
+      errors: []
     };
   },
   methods: {
-    // getCategorias(){
-    //   axios.get(`api/categoria/${jurisdiccion.cod_jurisdiccion}`).then((response)=>{
-    //     this.categorias = response.data;
-    //     console.log(this.categorias);
-    //   })
-    //   .catch(function (error) {
-    //       console.log(error);
-    //   });
-    // }, 
     getOrigenes: function getOrigenes() {
       var _this = this;
 
@@ -2069,14 +2069,16 @@ __webpack_require__.r(__webpack_exports__);
           categoria: this.categoria.categoria
         };
         axios.post('api/categoria/create', params).then(function (response) {
-          console.log(response.data);
-          _this2.categorias = response.data;
+          // console.log(response.data);
+          // this.categorias = response.data;
           $('#categorias').removeClass('modal-open');
           $("#nueva_categoria").modal('hide');
 
-          _this2.empty();
+          _this2.empty(); // this.$emit('actualizar');
+          // const hola = "hola";
+          // eventBus.$emit('actualizar',200);
+          // this.getCategorias();
 
-          _this2.getCategorias();
         })["catch"](function (error) {
           _this2.feedback = error.response.data.errors;
         });
@@ -2100,9 +2102,10 @@ __webpack_require__.r(__webpack_exports__);
           categoria: this.categoria.categoria
         };
         axios.put("api/categoria/update/".concat(id), params).then(function (response) {
-          _this4.getCategorias();
-
+          // this.getCategorias(); 
           _this4.categoria = [];
+
+          _this4.empty();
         })["catch"](function (error) {
           console.log(error);
         });
@@ -2123,9 +2126,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     empty: function empty() {
       this.categoria = [];
-      this.selectedOrigen = "";
-      this.selectedJurisdiccion = "";
-      this.feedback = [];
+      this.selectedOrigen = [];
+      this.selectedJurisdiccion = [];
+      this.feedback = []; // this.categorias = [];
     },
     onFail: function onFail(errors) {
       this.errors.record(errors.errors);
@@ -2144,7 +2147,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     // this.getCategorias();
     // console.log(this.cat);
-    this.getOrigenes();
+    this.getOrigenes(); // let prueba = this.categorias;
   }
 });
 
@@ -2550,10 +2553,14 @@ __webpack_require__.r(__webpack_exports__);
       origenes: [],
       jurisdicciones: [],
       categorias: [],
+      cod_jurisdiccion: "",
       selectedOrigen: "",
       selectedJurisdiccion: ""
     };
   },
+  // created(){
+  //   eventBus.$on('actualizar', this.actualizar());  // 3.Listening
+  // },
   methods: {
     getCategorias: function getCategorias(id) {
       var _this = this;
@@ -2561,11 +2568,13 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("api/categoria/".concat(id)).then(function (response) {
         _this.categorias = response.data;
 
-        _this.$emit('jurisdiccion', _this.categorias);
+        _this.$emit('jurisdiccion', _this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
 
-        console.log(_this.categorias);
       })["catch"](function (error) {
-        console.log(error);
+        if (!id) {
+          _this.$emit('jurisdiccion', _this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
+
+        }
       });
     }
   },
@@ -2576,22 +2585,20 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedJurisdiccion = "";
 
       if (this.selectedOrigen > 0) {
-        this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones; // console.log(this.jurisdicciones);
+        this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones;
       }
     },
     selectedJurisdiccion: function selectedJurisdiccion() {
+      this.categorias = [];
       var cod_jurisdiccion = this.selectedJurisdiccion;
-      this.getCategorias(cod_jurisdiccion); // console.log("prueba"+categorias);
-      // this.$emit('jurisdiccion',this.categorias);
-      // this.$emit('jurisdiccion',cod_jurisdiccion);
+      this.getCategorias(cod_jurisdiccion);
     }
   },
   mounted: function mounted() {
     var _this2 = this;
 
     axios.get('api/origen').then(function (response) {
-      _this2.origenes = response.data;
-      console.log(response.data);
+      _this2.origenes = response.data; // console.log(response.data);
     });
   }
 });
@@ -3317,14 +3324,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       // data: {
       //     // cod_jurisdiccion: '',
       // },
-      categorias: {}
+      categorias: []
     };
   },
   methods: {
@@ -39003,7 +39009,11 @@ var render = function() {
           "tbody",
           [
             _vm.categorias.length === 0
-              ? _c("tr", [_vm._v("No hay datos para mostrar")])
+              ? _c("tr", [
+                  _c("td", { attrs: { colspan: "6" } }, [
+                    _vm._v("No hay datos")
+                  ])
+                ])
               : _vm._l(_vm.categorias, function(categoria, index) {
                   return _c("tr", { key: categoria.id }, [
                     _c("th", [_vm._v(_vm._s(categoria.cod_categoria))]),
@@ -39107,81 +39117,101 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { staticClass: "col-form-label" }, [
-                  _vm._v("Código categoría")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.categoria.cod_categoria,
-                      expression: "categoria.cod_categoria"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", name: "cod_categoria", disabled: 0 },
-                  domProps: { value: _vm.categoria.cod_categoria },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+              _c(
+                "form",
+                {
+                  staticClass: "form-group",
+                  attrs: { action: "", method: "POST" }
+                },
+                [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { staticClass: "col-form-label" }, [
+                      _vm._v("Código categoría")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.categoria.cod_categoria,
+                          expression: "categoria.cod_categoria"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "cod_categoria",
+                        disabled: 0
+                      },
+                      domProps: { value: _vm.categoria.cod_categoria },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.categoria,
+                            "cod_categoria",
+                            $event.target.value
+                          )
+                        }
                       }
-                      _vm.$set(
-                        _vm.categoria,
-                        "cod_categoria",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { staticClass: "col-form-label" }, [
-                  _vm._v("Nombre")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.categoria.categoria,
-                      expression: "categoria.categoria"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", name: "categoria" },
-                  domProps: { value: _vm.categoria.categoria },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { staticClass: "col-form-label" }, [
+                      _vm._v("Nombre")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.categoria.categoria,
+                          expression: "categoria.categoria"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", name: "categoria" },
+                      domProps: { value: _vm.categoria.categoria },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.categoria,
+                            "categoria",
+                            $event.target.value
+                          )
+                        }
                       }
-                      _vm.$set(_vm.categoria, "categoria", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-outline-danger border-0",
-                    attrs: { "data-dismiss": "modal", id: "editar_categoria" },
-                    on: {
-                      click: function($event) {
-                        return _vm.updateCategoria(_vm.categoria.id)
-                      }
-                    }
-                  },
-                  [_vm._v("Editar")]
-                )
-              ])
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-outline-danger border-0",
+                        attrs: {
+                          "data-dismiss": "modal",
+                          id: "editar_categoria"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.updateCategoria(_vm.categoria.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Editar")]
+                    )
+                  ])
+                ]
+              )
             ])
           ])
         ])
@@ -39245,6 +39275,7 @@ var render = function() {
               _c(
                 "form",
                 {
+                  attrs: { method: "POST" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -39576,10 +39607,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "modal-footer" }, [
       _c(
         "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: { id: "crear_categoria", type: "submit" }
-        },
+        { staticClass: "btn btn-primary", attrs: { id: "crear_categoria" } },
         [_vm._v("Crear")]
       )
     ])
@@ -40371,12 +40399,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-row col mb-3 shadow p-3" }, [
-    _c("div", { staticClass: "col-md-4" }, [
-      _c(
-        "label",
-        { staticClass: "mr-sm-2 sr-only", attrs: { for: "origen1" } },
-        [_vm._v("Origen")]
-      ),
+    _c("div", { staticClass: "form-group col-md-4 border-0 shadow p-3" }, [
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "select",
@@ -40429,12 +40453,8 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-md-4" }, [
-      _c(
-        "label",
-        { staticClass: "mr-sm-2 sr-only", attrs: { for: "jurisdiccion" } },
-        [_vm._v("Jurisdiccion")]
-      ),
+    _c("div", { staticClass: "form-group col-md-4 border-0 shadow p-3" }, [
+      _vm._m(1),
       _vm._v(" "),
       _c(
         "select",
@@ -40492,7 +40512,28 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "text-muted", attrs: { for: "origen1" } },
+      [_c("i", { staticClass: "fas fa-search" }), _vm._v(" Origen")]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "text-muted", attrs: { for: "jurisdiccion" } },
+      [_c("i", { staticClass: "fas fa-search" }), _vm._v(" Jurisdiccion")]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -42286,7 +42327,14 @@ var render = function() {
           "div",
           { staticClass: "card-body" },
           [
-            _c("categoria-component", { attrs: { categorias: _vm.categorias } })
+            _c("categoria-component", {
+              attrs: { categorias: _vm.categorias },
+              on: {
+                actualizar: function($event) {
+                  return _vm.created.apply(void 0, arguments)
+                }
+              }
+            })
           ],
           1
         )
@@ -55395,8 +55443,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
