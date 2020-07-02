@@ -1,12 +1,12 @@
 <template>
 <div id="panelcategoria">
-    <filtrocategoria-component @jurisdiccion="get_codigo(...arguments)"></filtrocategoria-component>
+    <filtrocategoria-component @jurisdiccion="get_codigo(...arguments)" :actualizarCategoria="msg"></filtrocategoria-component>
     <div class="card shadow"> 
       <div class="card-header">
           <h5 class="card-title">Categorías</h5> 
       </div>
       <div class="card-body">
-        <categoria-component :categorias="categorias" @actualizar="created(...arguments)"></categoria-component>
+        <categoria-component :categorias="categorias"></categoria-component>
       </div>  
     </div>  
 </div>

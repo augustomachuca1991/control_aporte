@@ -37,6 +37,7 @@
               getCategorias(id){
                   axios.get(`api/categoria/${id}`).then((response)=>{
                     this.categorias = response.data;
+                    console.log(this.categorias);
                     this.$emit('jurisdiccion',this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
                   })
                   .catch( error => {
@@ -60,6 +61,9 @@
                   const cod_jurisdiccion = this.selectedJurisdiccion;
                   this.getCategorias(cod_jurisdiccion);
                 },
+                categorias: function(){
+                  this.categorias = this.getCategorias(this.selectedJurisdiccion);
+                }
       },
       mounted() {
             axios.get('api/origen').then((response)=>{

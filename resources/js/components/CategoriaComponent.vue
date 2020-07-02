@@ -6,6 +6,7 @@
         <tr>
           <th scope="col">Cod. Categoría</th>
           <th scope="col">Categoría</th>
+           <!--<th scope="col">Jurisdiccion</th>-->
           <th>Acción</th>
         </tr>
       </thead>
@@ -16,9 +17,10 @@
         <tr v-for="(categoria, index) in categorias"  v-bind:key="categoria.id" v-else>
           <th>{{categoria.cod_categoria}}</th>
           <td>{{categoria.categoria}}</td>
+           <!--<td v-for="jurisdiccion in categoria.jurisdicciones">{{jurisdiccion.jurisdiccion}}</td>-->
           <td class="row">
               <div class="col-md-1">
-                <button @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark" data-toggle="modal" data-target="#edit_categoria">
+                <button @click="editCategoria(categoria)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark" data-toggle="modal" data-target="#edit_categoria">
                 <i class="far fa-edit"></i>
               </button>
               </div>
@@ -50,13 +52,25 @@
           </div>
           <div class="modal-body">
             <form action="" class="form-group" method="POST">
+              <div class="form-group" v-model="categoria.jurisdicciones">
+                <label class="col-form-label" for="jurisdiccion_edit">Jurisdicción</label>
+                <select class="custom-select mr-sm-2 form-control" name="jurisdiccion" v-model="selected" placeholder="Seleccione Jurisdicción">
+               
+                <option v-for="jur in jurisdicciones" :key="jur.id" :value="jur.id" >{{jur.jurisdiccion}}</option>
+              
+                </select>
+              </div>
               <div class="form-group">
                 <label class="col-form-label">Código categoría</label>
-                <input type="text" class="form-control" name="cod_categoria" v-model="categoria.cod_categoria" :disabled="0">
+                <input type="text" class="form-control" name="cod_categoria" v-model="cat_aux.cod_categoria" :disabled="0">
+              </div>
+               <div class="form-group">
+                <label class="col-form-label">jur</label>
+                <input type="text" class="form-control" name="jurisdiccion_id" v-model="cat_aux.jurisdicciones.id" :disabled="0">
               </div>
               <div class="form-group">
                 <label class="col-form-label">Nombre</label>
-                <input type="text"class="form-control" name="categoria" v-model="categoria.categoria">
+                <input type="text"class="form-control" name="categoria" v-model="cat_aux.categoria">
               </div>
               <div class="modal-footer">
                 <button v-on:click="updateCategoria(categoria.id)" data-dismiss="modal" id="editar_categoria" class="btn btn-outline-danger border-0">Editar</button>
@@ -132,7 +146,22 @@
                 feedback: "",
                 origenes:[],
                 origen:[],
+                selected:'',
                 categoria:[],
+                cat_aux:{
+                    categoria:'',
+                    cod_categoria: null,
+                    jurisdicciones: {},
+                    created_at: '',
+                    updated_at: '',
+                },
+                categoria:{
+                    categoria:'',
+                    cod_categoria: null,
+                    jurisdicciones: {},
+                    created_at: '',
+                    updated_at: '',
+                },
                 selectedOrigen: "",
                 selectedJurisdiccion: "",
                 jurisdicciones:[],
@@ -145,6 +174,15 @@
               axios.get('api/origen/')
               .then((response)=>{
                 this.origenes = response.data;
+              })
+              .catch(function (error) {
+                  console.log(error);
+              });
+            },
+            getJurisdicciones(){
+              axios.get('api/jurisdiccion/')
+              .then((response)=>{
+                this.jurisdicciones = response.data;
               })
               .catch(function (error) {
                   console.log(error);
@@ -168,29 +206,29 @@
                     // const hola = "hola";
                     // eventBus.$emit('actualizar',200);
                     // this.getCategorias();
+                    // this.$emit('actualizar');
                   }).catch(error => {
                     this.feedback = error.response.data.errors;
                   });
               }
             },
-            editCategoria(id){
-              axios.get(`api/categoria/edit/${id}`)
-              .then((response)=>{
-                this.categoria = response.data;
-              }).catch(function (error) {
-                  console.log(error);
-              });
+            editCategoria(categoria){
+              this.cat_aux = _.cloneDeep(categoria);
+              this.getJurisdicciones();
+              console.log(this.categoria);
             },
             updateCategoria(id){
               if(confirm("¿Seguro que desea guardar los cambios?")){
                 const params = {
+                  cod_jurisdiccion : this.selectedJurisdiccion,
                   cod_categoria : this.categoria.cod_categoria,
                   categoria : this.categoria.categoria
                 };
                 axios.put(`api/categoria/update/${id}`, params)
                 .then((response)=>{
                   // this.getCategorias(); 
-                  this.categoria = [];   
+                  // this.categoria = [];   
+                  this.$emit('actualizarCategorias');
                   this.empty();   
                 }).catch(function (error) {
                   console.log(error);
@@ -232,6 +270,7 @@
           // this.getCategorias();
           // console.log(this.cat);
           this.getOrigenes();
+          this.categorias;
           // let prueba = this.categorias;
         
         }
