@@ -7,7 +7,7 @@
             <option :value="''" disabled selected>Seleccione Origen</option>
             <option v-for="origen in origenes" :value="origen.cod_origen">{{origen.origen}}</option>
           </select>
-          <label class="text-muted">Cod Origen:&nbsp;{{selectedOrigen}}</label>
+          <!--<label class="text-muted">Cod Origen:&nbsp;{{selectedOrigen}}</label>-->
         </div>
         <div class="col-12 col-lg">
            <label for="jurisdiccion" class="text-muted"><i class="fas fa-search"></i> Jurisdiccion</label>
@@ -15,7 +15,7 @@
                <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
                <option v-for="jurisdiccion in jurisdicciones" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
             </select>
-            <label class="text-muted">Cod Jurisdiccion:&nbsp;{{selectedJurisdicion}}</label>
+            <!--<label class="text-muted">Cod Jurisdiccion:&nbsp;{{selectedJurisdicion}}</label>-->
         </div>
         <div class="col-12 col-lg">
           <label for="organismo" class="text-muted"><i class="fas fa-search"></i> Organismo</label>
@@ -23,14 +23,11 @@
               <option :value="''" disabled selected>Seleccione Organismo</option>
               <option v-for="organismo in organismos" :value="organismo.cod_organismo">{{organismo.organismo}}</option>
             </select>
-          <label class="text-muted">Cod Organismo:&nbsp;{{selectedOrganismo}}</label>
+          <!--<label class="text-muted">Cod Organismo:&nbsp;{{selectedOrganismo}}</label>-->
         </div>
       </div>
 
     <!--aca termina-->
-
-
-    
   </div>
 </template>
 
@@ -49,7 +46,7 @@
         mounted() {
               axios.get('api/origen').then((response)=>{
                   this.origenes = response.data;
-                  console.log(this.origenes[0].jurisdicciones[0].organismos.length)
+                  //console.log(this.origenes[0].jurisdicciones[0].organismos.length)
               });
         },
         methods:{
@@ -84,4 +81,7 @@
 
     }
 </script>
+
+
+    
                         

@@ -14,12 +14,14 @@
           <th scope="col">Agente</th>
           <th scope="col">Puesto Laboral</th>
           <th scope="col">Periodo</th>
+          <th scope="col">Jurisdiccion</th>
+          <th scope="col">Organismo</th>
           <th scope="col">Detalle</th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="!filtro.condition" class="table-default text-center">
-          <td colspan="6">No hay datos</td>
+          <td colspan="8">No hay datos</td>
         </tr>
         <tr v-else v-for="liquidacion in filtro.data.data">
           <th scope="row">00{{liquidacion.id}}</th>
@@ -27,6 +29,8 @@
           <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
           <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.cod_laboral}}</td>
           <td v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.periodo}}</td>
+          <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
+          <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</td>
           <td>
               <a :href="'#detalle'" class="btn btn-outline-success border-0 btn-sm shadow text-muteds" data-toggle="modal" v-on:click="show(liquidacion.id)">
               <i class="fas fa-dollar-sign"></i>
@@ -34,20 +38,20 @@
           </td>
         </tr>
       </tbody>
-      <tfoot> 
+      <tfoot v-if="filtro.condition"> 
         <!--pagination-->
         <tr>
-          <th scope="row" colspan="6">
+          <th scope="row" colspan="8">
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-end">
                 <li class="page-item disabled">
-                  <!--<a class="page-link" :href="pagination.primero">Primero</a>-->
+                  <a class="page-link" :href="'#'">Primero</a>
                 </li>
                 <li class="page-item"><a class="page-link" href="#">1</a></li>
                 <li class="page-item"><a class="page-link" href="#">2</a></li>
                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item">
-                  <!--<a class="page-link" :href="pagination.ultimo">Ultimo</a>-->
+                  <a class="page-link" :href="'#'">Ultimo</a>
                 </li>
               </ul>
             </nav>
@@ -288,7 +292,7 @@
         props:['filtro'],
         data: function(){
             return{
-                liquidaciones:[],
+                liquidaciones:this.filtro.data.data,
                 liquidacion:[],
                 //pagination:{
                 //  current_page:this.filtro.current_page,
@@ -336,25 +340,6 @@
             empty(){
                 this.liquidacion = [];
             },
-            //cargar(){
-            //    if (!this.buscar.condition) {
-            //      axios.get('api/liquidacion').then((response)=>{
-            //       this.liquidaciones = this.buscar.data.data;
-            //       this.pagination.primero = response.data.first_page_url
-            //       this.pagination.ultimo = response.data.last_page_url
-            //       this.pagination.current_page = response.data.current_page
-            //       this.pagination.from = response.data.from
-            //       this.pagination.last_page = response.data.last_page
-            //       this.pagination.next_page_url = response.data.next_page_url
-            //       this.pagination.path = response.data.path
-            //       this.pagination.per_page = response.data.per_page
-            //       this.pagination.to = response.data.to
-            //       this.pagination.total = response.data.total
-            //       console.log('tabla liquidacion component mounted')
-            //       //alert(JSON.stringify(this.pagination))
-            //      })
-            //    }
-            //}
         },
     }
 </script>
