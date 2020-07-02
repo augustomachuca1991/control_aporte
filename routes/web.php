@@ -28,7 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //middleware admin
 Route::middleware('admin')->group(function(){
-	
+
 	Route::get('/dashboard', function(){
 		return view('admin.index');
 	})->name('admin');
@@ -39,7 +39,7 @@ Route::middleware('admin')->group(function(){
 	Route::get('/categoria', 'CategoriaController@index')->name('categoria');
 
 	//-------- Clase Controller------------
-	
+
 	Route::get('/clase', 'ClaseController@index')->name('clase');
 
 	//-------- Jurisdicciones Controller------------
@@ -48,7 +48,13 @@ Route::middleware('admin')->group(function(){
     ->names('jurisdicciones')
 	->parameters(['jurisdicciones' => 'jurisdicciones']);
 
+    //-------- Organismos Controller------------
+    Route::resource('/organismos', 'OrganismoController')
+        ->names('organismos')
+        ->parameters(['organismos' => 'organismos']);
+
+
 });
 
 
-	
+

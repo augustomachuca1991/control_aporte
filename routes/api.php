@@ -75,3 +75,11 @@ Route::get('/jurisdiccion/edit/{id}', 'JurisdiccionController@edit')->name('edit
 Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('update_jurisdiccion');
 Route::post('/jurisdiccion/create', 'JurisdiccionController@store')->name('create_jurisdiccion');
 Route::delete('/jurisdiccion/delete/{id}', 'JurisdiccionController@destroy')->name('delete_jurisdiccion');
+
+// Organismos
+Route::get('/organismo', 'OrganismoController@getOrganismos')->name('organismo');
+Route::get('/organismo/{id}', 'OrganismoController@getJurisdiccionesSelected')->name('organismo');
+Route::get('/organismo/edit/{id}', 'OrganismoController@edit')->name('edit_organismo');
+Route::put('/organismo/update/{id}', 'OrganismoController@update')->name('update_organismo');
+Route::post('/organismo/create', 'OrganismoController@store')->name('create_organismo');
+Route::delete('/organismo/delete/{id}', 'OrganismoController@destroy')->name('delete_organismo');
