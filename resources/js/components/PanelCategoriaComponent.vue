@@ -6,9 +6,15 @@
           <h5 class="card-title">Categorías</h5>
       </div>
       <div class="card-body">
+<<<<<<< HEAD
+        <categoria-component :categorias="categorias"></categoria-component>
+      </div>  
+    </div>  
+=======
         <categoria-component :categorias="categorias" @actualizar="created(...arguments)"></categoria-component>
       </div>
     </div>
+>>>>>>> b01a58520c69b9a26ba482658c3437bbac073948
 </div>
 </template>
 
@@ -16,18 +22,13 @@
      export default {
         data: function() {
             return{
-                // data: {
-                //     // cod_jurisdiccion: '',
-                // },
                 categorias:[]
             }
       },
       methods:{
           get_codigo(categorias){
-              // this.data.cod_jurisdiccion = cod_jurisdiccion;
-              this.categorias = categorias;
-              // console.log("panel Categoria: "+this.data);
-          },
+            this.categorias = categorias;
+          }
       },
       mounted() {
 

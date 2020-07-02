@@ -1970,6 +1970,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
 //
 //
 //
@@ -2099,17 +2105,22 @@ __webpack_require__.r(__webpack_exports__);
     categorias: Array
   },
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       feedback: "",
       origenes: [],
-      origen: [],
-      categoria: [],
-      selectedOrigen: "",
-      selectedJurisdiccion: "",
-      jurisdicciones: [],
-      jurisdiccion: [],
-      errors: []
-    };
+      // origen:[],
+      // selected:'',
+      categoria: {}
+    }, _defineProperty(_ref, "categoria", {
+      id: '',
+      categoria: '',
+      cod_categoria: null,
+      jurisdicciones: {},
+      created_at: '',
+      updated_at: ''
+    }), _defineProperty(_ref, "selectedOrigen", ""), _defineProperty(_ref, "selectedJurisdiccion", ""), _defineProperty(_ref, "jurisdicciones", []), _defineProperty(_ref, "errors", []), _ref;
   },
   methods: {
     getOrigenes: function getOrigenes() {
@@ -2121,6 +2132,15 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
+    // getJurisdicciones(){
+    //   axios.get('api/jurisdiccion/')
+    //   .then((response)=>{
+    //     this.jurisdicciones = response.data;
+    //   })
+    //   .catch(function (error) {
+    //       console.log(error);
+    //   });
+    // },
     createCategoria: function createCategoria() {
       var _this2 = this;
 
@@ -2131,32 +2151,20 @@ __webpack_require__.r(__webpack_exports__);
           categoria: this.categoria.categoria
         };
         axios.post('api/categoria/create', params).then(function (response) {
-          // console.log(response.data);
-          // this.categorias = response.data;
           $('#categorias').removeClass('modal-open');
           $("#nueva_categoria").modal('hide');
 
-          _this2.empty(); // this.$emit('actualizar');
-          // const hola = "hola";
-          // eventBus.$emit('actualizar',200);
-          // this.getCategorias();
-
+          _this2.empty();
         })["catch"](function (error) {
           _this2.feedback = error.response.data.errors;
         });
       }
     },
-    editCategoria: function editCategoria(id) {
-      var _this3 = this;
-
-      axios.get("api/categoria/edit/".concat(id)).then(function (response) {
-        _this3.categoria = response.data;
-      })["catch"](function (error) {
-        console.log(error);
-      });
+    editCategoria: function editCategoria(categoria) {
+      this.categoria = categoria; // this.getJurisdicciones();
     },
     updateCategoria: function updateCategoria(id) {
-      var _this4 = this;
+      var _this3 = this;
 
       if (confirm("¿Seguro que desea guardar los cambios?")) {
         var params = {
@@ -2164,32 +2172,28 @@ __webpack_require__.r(__webpack_exports__);
           categoria: this.categoria.categoria
         };
         axios.put("api/categoria/update/".concat(id), params).then(function (response) {
-          // this.getCategorias(); 
-          _this4.categoria = [];
-
-          _this4.empty();
+          _this3.categorias = response.data;
         })["catch"](function (error) {
           console.log(error);
         });
       }
     },
     deleteCategoria: function deleteCategoria(id) {
-      var _this5 = this;
+      var _this4 = this;
 
       if (confirm("¿Seguro que quieres eliminar este registro?")) {
         axios["delete"]("api/categoria/delete/".concat(id)).then(function (response) {
-          _this5.categorias = response.data;
-
-          _this5.getCategorias();
+          _this4.categorias = response.data; // this.getCategorias();
         })["catch"](function (error) {
           console.log(error);
         });
       }
     },
     empty: function empty() {
-      this.categoria = [];
-      this.selectedOrigen = [];
-      this.selectedJurisdiccion = [];
+      // this.categoria = [];
+      // this.cat_aux = [];
+      this.selectedOrigen = "";
+      this.selectedJurisdiccion = "";
       this.feedback = []; // this.categorias = [];
     },
     onFail: function onFail(errors) {
@@ -2207,9 +2211,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    // this.getCategorias();
-    // console.log(this.cat);
-    this.getOrigenes(); // let prueba = this.categorias;
+    this.getOrigenes();
   }
 });
 
@@ -2610,7 +2612,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       origenes: [],
       jurisdicciones: [],
-      categorias: [],
+      categorias: {},
       cod_jurisdiccion: "",
       selectedOrigen: "",
       selectedJurisdiccion: ""
@@ -2629,17 +2631,14 @@ __webpack_require__.r(__webpack_exports__);
         _this.$emit('jurisdiccion', _this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
 
       })["catch"](function (error) {
-        if (!id) {
-          _this.$emit('jurisdiccion', _this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
-
-        }
+        console.log(error);
       });
     }
   },
   watch: {
     selectedOrigen: function selectedOrigen() {
       this.jurisdicciones = [];
-      this.categorias = [];
+      this.categorias = {};
       this.selectedJurisdiccion = "";
 
       if (this.selectedOrigen > 0) {
@@ -2647,17 +2646,23 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     selectedJurisdiccion: function selectedJurisdiccion() {
-      this.categorias = [];
-      var cod_jurisdiccion = this.selectedJurisdiccion;
-      this.getCategorias(cod_jurisdiccion);
-    }
+      this.categorias = {}; // const cod_jurisdiccion = this.selectedJurisdiccion;
+
+      this.getCategorias(this.selectedJurisdiccion);
+    } // categorias: function(){
+    //   // console.log(this.selectedJurisdiccion);
+    //   if(this.selectedJurisdiccion){
+    //     this.getCategorias(this.selectedJurisdiccion);
+    //   }
+    // }
+
   },
   mounted: function mounted() {
     var _this2 = this;
 
     axios.get('api/origen').then(function (response) {
       _this2.origenes = response.data; // console.log(response.data);
-    });
+    }); // this.selectedJurisdiccion = "";
   }
 });
 
@@ -3455,16 +3460,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      // data: {
-      //     // cod_jurisdiccion: '',
-      // },
       categorias: []
     };
   },
   methods: {
     get_codigo: function get_codigo(categorias) {
-      // this.data.cod_jurisdiccion = cod_jurisdiccion;
-      this.categorias = categorias; // console.log("panel Categoria: "+this.data);
+      this.categorias = categorias;
     }
   },
   mounted: function mounted() {}
@@ -39401,7 +39402,7 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
-                                return _vm.editCategoria(categoria.id)
+                                return _vm.editCategoria(categoria)
                               }
                             }
                           },
@@ -42938,14 +42939,7 @@ var render = function() {
           "div",
           { staticClass: "card-body" },
           [
-            _c("categoria-component", {
-              attrs: { categorias: _vm.categorias },
-              on: {
-                actualizar: function($event) {
-                  return _vm.created.apply(void 0, arguments)
-                }
-              }
-            })
+            _c("categoria-component", { attrs: { categorias: _vm.categorias } })
           ],
           1
         )
