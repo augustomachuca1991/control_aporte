@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Liquidacion;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,15 @@ Route::get('/organismo', 'OrganismoController@index')->name('organismo');
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
-Route::get('/liquidacion/origen/{origen?}/jurisdiccion/{jur?}/organismo/{organismo?}/periodo/{periodo?}/tipo/{tipo?}', 'LiquidacionController@filtro')->name('filtro');
+Route::get('/liquidacion/filtro/{periodo?}/{tipo?}/{origanismo?}/{jur?}/{origen?}','LiquidacionController@filtro');
+//Route::get('/liquidacion/filtro/{periodo?}/{tipo?}','LiquidacionController@filtro');
+//Route::post('/liquidacion/buscar','LiquidacionController@porOrigen');
+Route::get('/liquidacion/nombre/{nombre}','LiquidacionController@agente');
+//Route::post('/liquidacion/filtro','LiquidacionController@filtro');
+//laravel.test/api/liquidacion/filtro/21520/1/5
+//laravel.test/api/liquidacion/filtro/25616/1/5
+//laravel.test/api/liquidacion/filtro/25616/2/5
+
 Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liquidacion');
 
 //puesto laborales
@@ -61,6 +70,7 @@ Route::delete('/clase/delete/{id}', 'ClaseController@destroy')->name('delete_cla
 
 // Jurisdicciones
 Route::get('/jurisdiccion', 'JurisdiccionController@jurisdiccion_json')->name('jurisdiccion');
+Route::get('/jurisdiccion/{id}', 'JurisdiccionController@jurisdiccion_json')->name('jurisdiccion');
 Route::get('/jurisdiccion/edit/{id}', 'JurisdiccionController@edit')->name('edit_jurisdiccion');
 Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('update_jurisdiccion');
 Route::post('/jurisdiccion/create', 'JurisdiccionController@store')->name('create_jurisdiccion');

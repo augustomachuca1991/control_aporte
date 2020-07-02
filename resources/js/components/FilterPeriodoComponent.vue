@@ -38,6 +38,7 @@
                 this.$emit('sendPeriodo',periodo);
             },
         },
+        
   }
 </script>
                 
