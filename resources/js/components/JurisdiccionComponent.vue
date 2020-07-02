@@ -6,8 +6,17 @@
                 <a class="btn btn-success" v-on:click="encabezado = 'Crear Jurisdicción'" data-toggle="modal" data-target="#altaModal">Crear nueva jurisdicción</a>
             </div>
         </div>
-
         <br>
+        <div v-if="this.message != ''">
+            <div class="alert alert-danger alert-block" role="alert" id="mensaje_error"  v-if="this.isValid == false">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong style="color:darkred" align="center">{{this.message}}</strong>
+            </div>
+            <div class="alert alert-success" role="alert" id="mensaje_exito" v-if="this.isValid == true">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong style="color:darkgreen" align="center" >{{this.message}}</strong>
+            </div>
+        </div>
 
     <table class="table table-borderless table-striped border" v-model="jurisdicciones">
         <thead >
@@ -30,10 +39,15 @@
                 <td>{{ jurisdiccion.created_at }}</td>
                 <td>{{ jurisdiccion.updated_at }}</td>
                 <td class="td-button">
-                    <a @click="editJurisdiccion(jurisdiccion)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#editarModal"><i class="far fa-edit">Editar</i></a>
+                    <a @click="editJurisdiccion(jurisdiccion)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#editarModal"><i class="far fa-edit"></i></a>
                 </td>
                 <td class="td-button">
-                    <a @click="deleteJurisdiccion(jurisdiccion)" class="btn btn-outline-danger border-0 btn-sm shadow" data-toggle="modal" data-target="#eliminarModal"><i class="far fa-trash-alt">Eliminar</i></a>
+                    <!--a @click="deleteJurisdiccion(jurisdiccion.id)" class="btn btn-outline-danger border-0 btn-sm shadow" data-toggle="modal" data-target="#eliminarModal"><i class="far fa-trash-alt"></i></a-->
+                    <form @submit.prevent="deleteJurisdiccion(jurisdiccion.id)">
+                        <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         </tbody>
@@ -93,36 +107,31 @@
                     </div>
                     <div class="modal-body">
                         <form action="" class="form-group" method="POST">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label class="required" for="mostrar_origen" >Origen</label>
-                                        <select class="custom-select mr-sm-2" id="mostrar_origen" name="origen" v-model="origen">
-                                            <option>Seleccione Orígenes</option>
-                                            <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label class="col-form-label" for="origen_new">Origen</label>
+                                <select class="custom-select mr-sm-2" name="origen_new" v-model="selectedOrigen" placeholder="Seleccione origen">
+                                    <option :value="''" disabled selected>Seleccione Origen</option>
+                                    <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
+                                </select>
+                                <span style="color:red" v-if="feedback.cod_origen" v-text="feedback.cod_origen[0]" ></span>
                             </div>
-                            <br>
                             <div class="row">
                                 <div class="col">
                                     <label for="altaCodJurisdiccion" class="required">Cod. Jurisdicción</label>
                                     <input type="text" name="cod_jurisdiccion" id="altaCodJurisdiccion" value=""
-                                           class="form-control"  v-model="jur.cod_jurisdiccion">
+                                           class="form-control"  v-model="jur_aux.cod_jurisdiccion">
                                 </div>
                             </div>
-                            <br>
                             <div class="row">
                                 <div class="col">
                                     <label for="altaDescripcion" class="required">Jurisdicción</label>
                                     <input type="text" name="descripcion" id="altaDescripcion" value=""
-                                           class="form-control"  v-model="jur.jurisdiccion">
+                                           class="form-control"  v-model="jur_aux.jurisdiccion">
                                 </div>
                             </div>
                             <br>
                             <div class="modal-footer">
-                                <button v-on:click="createJurisdiccion(jur)" data-dismiss="modal" id="nueva_jurisdiccion" class="btn btn-primary border-0">Guardar</button>
+                                <button v-on:click="createJuristiccion()" data-dismiss="modal" id="alta_jurisdiccion" class="btn btn-primary border-0">Guardar</button>
                                 <!--a href="" class="btn btn-danger" data-dismiss="modal">Volver</a-->
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
                                     <span class="btn btn-danger" aria-hidden="true">Volver</span>
@@ -135,7 +144,7 @@
         </div>
 
         <!-- Modal editar -->
-        <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="altaModalLabel" aria-hidden="true" >
+        <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
                     <div class="modal-header">
@@ -202,21 +211,27 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
     export default {
-
+        props: {
+            jurisdicciones: Array,
+        },
         data: function(){
             return{
                 jurisdicciones:[],
                 selectedOrigen: [],
                 origenes: [],
                 origen: [],
-                jur_aux: [],
                 jurisdiccion_id: "",
+                message: "",
+                isValid: false,
+                jur_aux: [],
+                jur:[],
+                feedback: "",
+
                 jur:{
                     id: null,
                     cod_jurisdiccion: null,
@@ -225,17 +240,9 @@
                     created_at: '',
                     updated_at: '',
                 },
-                //jur_aux:{
-                    //id: null,
-                    //cod_jurisdiccion: null,
-                    //jurisdiccion: '',
-                    //origen_id: null,
-                    //created_at: '',
-                    //updated_at: '',
-                //},
                 form_editar: false,
                 encabezado: '',
-                resguardo: ''
+                error_descripcion: ''
             }
         },
         mounted() {
@@ -260,19 +267,6 @@
                     });
             },
 
-            restaurar: function(p_jurisdiccion){
-                console.log(p_jurisdiccion);
-                alert(p_jurisdiccion.jurisdiccion);
-                //this.jur = Object.assign({},p_jurisdiccion);
-                this.jur.id = p_jurisdiccion.id;
-                this.jur.cod_jurisdiccion = p_jurisdiccion.cod_jurisdiccion;
-                this.jur.jurisdiccion= p_jurisdiccion.jurisdiccion;
-                this.jur.origen_id= p_jurisdiccion.origen_id;
-                this.jur.created_at= p_jurisdiccion.created_at;
-                this.jur.updated_at= p_jurisdiccion.updated_at;
-
-            }.bind(this),
-
             editJurisdiccion(p_jurisdiccion){
                 //this.jur = p_jurisdiccion;
                 //this.jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion;
@@ -286,14 +280,16 @@
                         jurisdiccion : p_jurisdiccion.jurisdiccion,
                         origen_id : p_jurisdiccion.origen_id,
                     };
-                    console.log(params);
-                    alert("api/jurisdiccion/update/"+ p_jurisdiccion.id);
-
                     axios.put(`api/jurisdiccion/update/${p_jurisdiccion.id}` , params)
-                        .then((response)=>{
+                        .then(response => {
+                            this.isValid = response.data.isValid;
+                            this.message = response.data.errors
                             this.getJurisdicciones();
                             this.jur = [];
-                            alert('SI funciona');
+                            //console.log(response.data.isValid);
+                            //console.log(response.data.errors);
+                            //alert('SI funciona');
+                            //alert(this.message);
                         }).catch(function (error) {
                         alert('NO funciona');
                         console.log(error);
@@ -301,8 +297,42 @@
                 }
             },
 
-            deleteJurisdiccion(p_jurisdiccion){
+            createJuristiccion(){
+                if(confirm("¿Seguro que desea crear la Jurisdicción?")){
+                    const params = {
+                        cod_jurisdiccion : this.jur_aux.cod_jurisdiccion,
+                        jurisdiccion : this.jur_aux.jurisdiccion,
+                        origen_id : this.selectedOrigen,
+                    };
+                    console.log(params);
+                    axios.post('api/jurisdiccion/create', params )
+                        .then(response => {
+                            this.isValid = response.data.isValid;
+                            this.message = response.data.errors
+                            this.getJurisdicciones();
+                            this.jur = [];
 
+                        }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
+            },
+
+            deleteJurisdiccion(id){
+                if(confirm("¿Seguro que quieres eliminar esta Jurisdicción?")){
+                    console.log(id);
+                    axios.delete(`api/jurisdiccion/delete/${id}`)
+                        .then((response)=>{
+                            this.isValid = response.data.isValid;
+                            this.message = response.data.errors
+                            this.jurisdicciones = response.data;
+                            this.getJurisdicciones();
+                            this.jur = [];
+
+                        }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
             },
 
             empty(){
@@ -314,7 +344,8 @@
                 this.selectedOrigen = this.origenes.find(origen => origen.cod_origen === p_jurisdiccion.origen_id);
                 this.jur = p_jurisdiccion;
                 this.encabezado = 'Detalle Jurisdicción'
-            }
+            },
+
         },
     }
 </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jurisdiccion;
+use http\Message;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -32,9 +33,9 @@ class JurisdiccionController extends Controller
     public function create()
     {
         //
-        return view('jurisdicciones.create', [
-            'jurisdiccion' => new Jurisdiccion()
-        ]);
+        //return view('jurisdicciones.create', [
+            //'jurisdiccion' => new Jurisdiccion()
+        //]);
     }
 
     /**
@@ -47,23 +48,25 @@ class JurisdiccionController extends Controller
     {
         //
         $date = Carbon::now()->toDateTimeString();
+
         $validarDatos = $request->validate([
             'cod_jurisdiccion'  =>  'required',
-            'origen_id'       =>    'required,',
+            'origen_id'       =>    'required',
             'jurisdiccion'     =>  'required',
         ]);
+        // dd($request->all());
+        try {
 
-        $form_data = array(
-            'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
-            'origen_id'       =>   $request->origen_id,
-            'jurisdiccion'       =>   $request->jurisdiccion,
-            'created_at'    =>   $date,
-            'updated_at'       =>   $date
-        );
-
-        Jurisdiccion::create($form_data);
-
-        return redirect()->route('jurisdicciones.index')->with('message', 'Jurisdicción creado satisfactoriamente');
+            $jur = Jurisdiccion::create([
+                'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
+                'origen_id'       =>   $request->origen_id,
+                'jurisdiccion'       =>   $request->jurisdiccion,
+                'created_at'    =>   $date,
+            ]);
+            return response()->json(['isValid'=>true,'errors'=>'Jurisdicción creada satisfactoriamente']);
+        }catch(\Exception $e) {
+            return response()->json(['isValid'=>false,'errors'=>'Error al crear la Jurisdicción']);
+        }
     }
 
     /**
@@ -106,23 +109,26 @@ class JurisdiccionController extends Controller
     {
         //
         $date = Carbon::now()->toDateTimeString();
-     
+
         $validarDatos = $request->validate([
             'cod_jurisdiccion'  =>  'required',
             'origen_id'       =>    'required',
             'jurisdiccion'     =>  'required',
         ]);
-     
+
         $form_data = array(
             'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
             'origen_id'       =>   $request->origen_id,
             'jurisdiccion'       =>   $request->jurisdiccion,
-            'created_at'    =>   $date,
             'updated_at'       =>   $date
         );
-        dd($request->all());
-        $jurisdiccion =Jurisdiccion::whereId($id)->update($form_data);
-        return redirect()->route('jurisdicciones.index', $jurisdiccion)->with('message', 'Jurisdicción actualizado satisfactoriamente');
+
+        try {
+            $jurisdiccion = Jurisdiccion::whereId($id)->update($form_data);
+            return response()->json(['isValid'=>true,'errors'=>'Jurisdicción actualizado satisfactoriamente']);
+        }catch(\Exception $e) {
+            return response()->json(['isValid'=>false,'errors'=>'Error al actualizar la Jurisdicción']);
+        }
     }
 
     /**
@@ -131,16 +137,27 @@ class JurisdiccionController extends Controller
      * @param  \App\Jurisdiccion  $jurisdiccion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Jurisdiccion $jurisdiccion)
+    public function destroy($id)
     {
         //
-        $jurisdiccion->delete();
-
-        return redirect()->route('jurisdicciones.index')->with('message', 'Jurisdicción eliminada satisfactoriamente');
+        try {
+            $jurisdiccion = Jurisdiccion::find($id);
+            $jurisdiccion->delete();
+            return response()->json(['isValid'=>true,'errors'=>'Jurisdicción eliminada satisfactoriamente']);
+        }catch(\Exception $e) {
+            return response()->json(['isValid'=>false,'errors'=>'Error al eliminar la Jurisdicción']);
+        }
     }
 
     public function jurisdiccion_json(Jurisdiccion $jurisdiccion)
     {
         return Jurisdiccion::with('categorias')->get();
+    }
+
+    public function getJurisdicciones($id){
+        // dd((int)$id);
+        return Jurisdiccion::whereHas('jurisdicciones', function ($query) use ($id) {
+            $query->where('origen_id',(int)$id);
+        })->get();
     }
 }

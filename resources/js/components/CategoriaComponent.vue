@@ -10,7 +10,9 @@
         </tr>
       </thead>
       <tbody>
-       <tr v-if="categorias.length===0">No hay datos para mostrar</tr>
+       <tr v-if="categorias.length===0">
+          <td colspan="6">No hay datos</td>
+       </tr>
         <tr v-for="(categoria, index) in categorias"  v-bind:key="categoria.id" v-else>
           <th>{{categoria.cod_categoria}}</th>
           <td>{{categoria.categoria}}</td>
@@ -32,7 +34,6 @@
         
       </tbody>
     </table>
- 
 
     <div class="m-2" align="right">
       <a href="#" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#nueva_categoria"><i class="fas fa-plus"></i> Nueva</a>    
@@ -48,17 +49,19 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="form-group">
-              <label class="col-form-label">Código categoría</label>
-              <input type="text" class="form-control" name="cod_categoria" v-model="categoria.cod_categoria" :disabled="0">
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Nombre</label>
-              <input type="text"class="form-control" name="categoria" v-model="categoria.categoria">
-            </div>
-            <div class="modal-footer">
-              <button v-on:click="updateCategoria(categoria.id)" data-dismiss="modal" id="editar_categoria" class="btn btn-outline-danger border-0">Editar</button>
-            </div>
+            <form action="" class="form-group" method="POST">
+              <div class="form-group">
+                <label class="col-form-label">Código categoría</label>
+                <input type="text" class="form-control" name="cod_categoria" v-model="categoria.cod_categoria" :disabled="0">
+              </div>
+              <div class="form-group">
+                <label class="col-form-label">Nombre</label>
+                <input type="text"class="form-control" name="categoria" v-model="categoria.categoria">
+              </div>
+              <div class="modal-footer">
+                <button v-on:click="updateCategoria(categoria.id)" data-dismiss="modal" id="editar_categoria" class="btn btn-outline-danger border-0">Editar</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -75,7 +78,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form @submit.prevent="createCategoria()">
+            <form @submit.prevent="createCategoria()" method="POST">
               <div class="form-group">
                 <label class="col-form-label" for="origen_new">Origen</label>
                 <select class="custom-select mr-sm-2" name="origen_new" v-model="selectedOrigen" placeholder="Seleccione origen">
@@ -103,7 +106,7 @@
                 <span style="color:red" v-if="feedback.categoria" v-text="feedback.categoria[0]" ></span>
               </div>
               <div class="modal-footer">
-                <button id="crear_categoria" type="submit" class="btn btn-primary">Crear</button>
+                <button id="crear_categoria" class="btn btn-primary">Crear</button>
               </div>
             </form>
           </div>
@@ -115,11 +118,15 @@
 </template>
 
 <script>
-
-
-
+    // var bus = new Vue();
+    // import Vue from 'vue';
+    // // const EventBus = new Vue();
+    // export const eventBus = new Vue();
     export default {
-        props:['categorias'],
+        // props:['categorias'],
+        props: {
+          categorias: Array,
+        },
         data: function(){
             return{      
                 feedback: "",
@@ -131,20 +138,9 @@
                 jurisdicciones:[],
                 jurisdiccion:[],
                 errors:[],
-                // categorias: this.data,
             }
         },
-        methods:{
-            // getCategorias(){
-            //   axios.get(`api/categoria/${jurisdiccion.cod_jurisdiccion}`).then((response)=>{
-            //     this.categorias = response.data;
-            //     console.log(this.categorias);
-              
-            //   })
-            //   .catch(function (error) {
-            //       console.log(error);
-            //   });
-            // }, 
+        methods:{ 
             getOrigenes(){
               axios.get('api/origen/')
               .then((response)=>{
@@ -163,12 +159,15 @@
                   }
                   axios.post('api/categoria/create', params )
                   .then(response => {
-                    console.log(response.data);
-                    this.categorias = response.data;
+                    // console.log(response.data);
+                    // this.categorias = response.data;
                     $('#categorias').removeClass('modal-open');
                     $("#nueva_categoria").modal('hide');
                     this.empty();
-                    this.getCategorias();
+                    // this.$emit('actualizar');
+                    // const hola = "hola";
+                    // eventBus.$emit('actualizar',200);
+                    // this.getCategorias();
                   }).catch(error => {
                     this.feedback = error.response.data.errors;
                   });
@@ -190,8 +189,9 @@
                 };
                 axios.put(`api/categoria/update/${id}`, params)
                 .then((response)=>{
-                  this.getCategorias(); 
-                  this.categoria = [];      
+                  // this.getCategorias(); 
+                  this.categoria = [];   
+                  this.empty();   
                 }).catch(function (error) {
                   console.log(error);
                 });
@@ -210,9 +210,10 @@
             },
             empty(){
               this.categoria = [];
-              this.selectedOrigen = "";
-              this.selectedJurisdiccion = "";
+              this.selectedOrigen = [];
+              this.selectedJurisdiccion = [];
               this.feedback = [];
+              // this.categorias = [];
             },
             onFail(errors) {
               this.errors.record(errors.errors);
@@ -231,6 +232,7 @@
           // this.getCategorias();
           // console.log(this.cat);
           this.getOrigenes();
+          // let prueba = this.categorias;
         
         }
     }

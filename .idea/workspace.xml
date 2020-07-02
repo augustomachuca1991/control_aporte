@@ -2,14 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b5a9edd-e8f3-4f42-9027-f795061770bb" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/control_aporte.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/control_aporte.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/JurisdiccionController.php" afterDir="false" />
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/app/Jurisdiccion.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jurisdiccion.php" afterDir="false" />
+=======
+>>>>>>> ca5c65e7e35b23591aebdaf8cc077b25736a27e4
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/JurisdiccionComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/JurisdiccionComponent.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/jurisdicciones/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/jurisdicciones/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -135,13 +141,19 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
       <path value="$PROJECT_DIR$/vendor/doctrine/instantiator" />
       <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/vendor/askedio/laravel-soft-cascade" />
+      <path value="$PROJECT_DIR$/vendor/iatstuti/laravel-cascade-soft-deletes" />
     </include_path>
   </component>
   <component name="ProjectId" id="1dlVjkXD1Wc7cGHr5anWPxh2eDM" />
   <component name="PropertiesComponent">
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../VUE-PROBANDO/ipsliquidacionesweb" />
+<<<<<<< HEAD
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+=======
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../control_aporte" />
+>>>>>>> ca5c65e7e35b23591aebdaf8cc077b25736a27e4
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="web.server" />
@@ -206,6 +218,13 @@
       <workItem from="1593000337645" duration="27000" />
       <workItem from="1593000620389" duration="12800000" />
       <workItem from="1593084166961" duration="44936000" />
+      <workItem from="1593441599150" duration="58000" />
+      <workItem from="1593442489817" duration="7796000" />
+<<<<<<< HEAD
+      <workItem from="1593518109492" duration="14097000" />
+=======
+      <workItem from="1593518092497" duration="24000" />
+>>>>>>> ca5c65e7e35b23591aebdaf8cc077b25736a27e4
     </task>
     <servers />
   </component>

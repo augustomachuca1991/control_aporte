@@ -70,6 +70,7 @@ Route::delete('/clase/delete/{id}', 'ClaseController@destroy')->name('delete_cla
 
 // Jurisdicciones
 Route::get('/jurisdiccion', 'JurisdiccionController@jurisdiccion_json')->name('jurisdiccion');
+Route::get('/jurisdiccion/{id}', 'JurisdiccionController@jurisdiccion_json')->name('jurisdiccion');
 Route::get('/jurisdiccion/edit/{id}', 'JurisdiccionController@edit')->name('edit_jurisdiccion');
 Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('update_jurisdiccion');
 Route::post('/jurisdiccion/create', 'JurisdiccionController@store')->name('create_jurisdiccion');
