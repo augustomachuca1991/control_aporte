@@ -24,7 +24,7 @@
               return {
                   origenes: [],
                   jurisdicciones: [],
-                  categorias: [],
+                  categorias: {},
                   cod_jurisdiccion: "",
                   selectedOrigen: "",
                   selectedJurisdiccion: "",    
@@ -37,39 +37,42 @@
               getCategorias(id){
                   axios.get(`api/categoria/${id}`).then((response)=>{
                     this.categorias = response.data;
-                    console.log(this.categorias);
                     this.$emit('jurisdiccion',this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
                   })
                   .catch( error => {
-                    if(!id){
-                      this.$emit('jurisdiccion',this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
-                    }
+                    console.log(error);
                   });
               },
             },
             watch: {
                 selectedOrigen: function() {
                   this.jurisdicciones = [];
-                  this.categorias = [];
+                  this.categorias = {};
                   this.selectedJurisdiccion = "";
                   if (this.selectedOrigen > 0) {
                     this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
                   }
                 },
                 selectedJurisdiccion: function() {
-                  this.categorias = [];
-                  const cod_jurisdiccion = this.selectedJurisdiccion;
-                  this.getCategorias(cod_jurisdiccion);
+                  this.categorias = {};
+               
+                  // const cod_jurisdiccion = this.selectedJurisdiccion;
+                  this.getCategorias(this.selectedJurisdiccion);
                 },
-                categorias: function(){
-                  this.categorias = this.getCategorias(this.selectedJurisdiccion);
-                }
+                // categorias: function(){
+                //   // console.log(this.selectedJurisdiccion);
+                //   if(this.selectedJurisdiccion){
+                //     this.getCategorias(this.selectedJurisdiccion);
+                //   }
+                // }
       },
       mounted() {
             axios.get('api/origen').then((response)=>{
                 this.origenes = response.data;
                 // console.log(response.data);
+                   
             }); 
+            // this.selectedJurisdiccion = "";
       }
     }
 </script>

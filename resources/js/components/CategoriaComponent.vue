@@ -52,25 +52,15 @@
           </div>
           <div class="modal-body">
             <form action="" class="form-group" method="POST">
-              <div class="form-group" v-model="categoria.jurisdicciones">
-                <label class="col-form-label" for="jurisdiccion_edit">Jurisdicción</label>
-                <select class="custom-select mr-sm-2 form-control" name="jurisdiccion" v-model="selected" placeholder="Seleccione Jurisdicción">
-               
-                <option v-for="jur in jurisdicciones" :key="jur.id" :value="jur.id" >{{jur.jurisdiccion}}</option>
               
-                </select>
-              </div>
               <div class="form-group">
                 <label class="col-form-label">Código categoría</label>
-                <input type="text" class="form-control" name="cod_categoria" v-model="cat_aux.cod_categoria" :disabled="0">
+                <input type="text" class="form-control" name="cod_categoria" v-model="categoria.cod_categoria" :disabled="0">
               </div>
-               <div class="form-group">
-                <label class="col-form-label">jur</label>
-                <input type="text" class="form-control" name="jurisdiccion_id" v-model="cat_aux.jurisdicciones.id" :disabled="0">
-              </div>
+              
               <div class="form-group">
                 <label class="col-form-label">Nombre</label>
-                <input type="text"class="form-control" name="categoria" v-model="cat_aux.categoria">
+                <input type="text"class="form-control" name="categoria" v-model="categoria.categoria">
               </div>
               <div class="modal-footer">
                 <button v-on:click="updateCategoria(categoria.id)" data-dismiss="modal" id="editar_categoria" class="btn btn-outline-danger border-0">Editar</button>
@@ -145,17 +135,19 @@
             return{      
                 feedback: "",
                 origenes:[],
-                origen:[],
-                selected:'',
-                categoria:[],
-                cat_aux:{
-                    categoria:'',
-                    cod_categoria: null,
-                    jurisdicciones: {},
-                    created_at: '',
-                    updated_at: '',
-                },
+                // origen:[],
+                // selected:'',
+                categoria:{},
+                // cat_aux:{
+                //     id: '',
+                //     categoria:'',
+                //     cod_categoria: null,
+                //     jurisdicciones: {},
+                //     created_at: '',
+                //     updated_at: '',
+                // },
                 categoria:{
+                    id: '',
                     categoria:'',
                     cod_categoria: null,
                     jurisdicciones: {},
@@ -165,7 +157,7 @@
                 selectedOrigen: "",
                 selectedJurisdiccion: "",
                 jurisdicciones:[],
-                jurisdiccion:[],
+                // jurisdiccion:[],
                 errors:[],
             }
         },
@@ -179,15 +171,15 @@
                   console.log(error);
               });
             },
-            getJurisdicciones(){
-              axios.get('api/jurisdiccion/')
-              .then((response)=>{
-                this.jurisdicciones = response.data;
-              })
-              .catch(function (error) {
-                  console.log(error);
-              });
-            },
+            // getJurisdicciones(){
+            //   axios.get('api/jurisdiccion/')
+            //   .then((response)=>{
+            //     this.jurisdicciones = response.data;
+            //   })
+            //   .catch(function (error) {
+            //       console.log(error);
+            //   });
+            // },
             createCategoria() {
               if(confirm("¿Seguro que quieres crear esta categoria?")){
                 const params = {
@@ -197,39 +189,27 @@
                   }
                   axios.post('api/categoria/create', params )
                   .then(response => {
-                    // console.log(response.data);
-                    // this.categorias = response.data;
                     $('#categorias').removeClass('modal-open');
                     $("#nueva_categoria").modal('hide');
                     this.empty();
-                    // this.$emit('actualizar');
-                    // const hola = "hola";
-                    // eventBus.$emit('actualizar',200);
-                    // this.getCategorias();
-                    // this.$emit('actualizar');
                   }).catch(error => {
                     this.feedback = error.response.data.errors;
                   });
               }
             },
             editCategoria(categoria){
-              this.cat_aux = _.cloneDeep(categoria);
-              this.getJurisdicciones();
-              console.log(this.categoria);
+              this.categoria = categoria;
+              // this.getJurisdicciones();
             },
             updateCategoria(id){
               if(confirm("¿Seguro que desea guardar los cambios?")){
                 const params = {
-                  cod_jurisdiccion : this.selectedJurisdiccion,
                   cod_categoria : this.categoria.cod_categoria,
                   categoria : this.categoria.categoria
-                };
+                }
                 axios.put(`api/categoria/update/${id}`, params)
                 .then((response)=>{
-                  // this.getCategorias(); 
-                  // this.categoria = [];   
-                  this.$emit('actualizarCategorias');
-                  this.empty();   
+                  this.categorias = response.data;
                 }).catch(function (error) {
                   console.log(error);
                 });
@@ -240,16 +220,17 @@
                 axios.delete(`api/categoria/delete/${id}`)
                 .then((response)=>{
                   this.categorias = response.data;
-                  this.getCategorias();
+                  // this.getCategorias();
                 }).catch(function (error) {
                   console.log(error);
                 });
               }
             },
             empty(){
-              this.categoria = [];
-              this.selectedOrigen = [];
-              this.selectedJurisdiccion = [];
+              // this.categoria = [];
+              // this.cat_aux = [];
+              this.selectedOrigen = "";
+              this.selectedJurisdiccion = "";
               this.feedback = [];
               // this.categorias = [];
             },
@@ -267,12 +248,7 @@
                 },
         },
         mounted(){
-          // this.getCategorias();
-          // console.log(this.cat);
           this.getOrigenes();
-          this.categorias;
-          // let prueba = this.categorias;
-        
         }
     }
 </script>

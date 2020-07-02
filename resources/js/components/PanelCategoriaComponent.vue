@@ -1,6 +1,6 @@
 <template>
 <div id="panelcategoria">
-    <filtrocategoria-component @jurisdiccion="get_codigo(...arguments)" :actualizarCategoria="msg"></filtrocategoria-component>
+    <filtrocategoria-component @jurisdiccion="get_codigo(...arguments)"></filtrocategoria-component>
     <div class="card shadow"> 
       <div class="card-header">
           <h5 class="card-title">Categorías</h5> 
@@ -16,18 +16,13 @@
      export default {
         data: function() {
             return{
-                // data: {
-                //     // cod_jurisdiccion: '',
-                // },
                 categorias:[]
             }
       },
       methods:{
           get_codigo(categorias){
-              // this.data.cod_jurisdiccion = cod_jurisdiccion;
-              this.categorias = categorias;
-              // console.log("panel Categoria: "+this.data);
-          },
+            this.categorias = categorias;
+          }
       },
       mounted() {
            

@@ -91,8 +91,8 @@ class CategoriaController extends Controller
         $categoria->categoria = $request['categoria'];
         $categoria->updated_at = now();
         $categoria->save();
-
-        return $categoria;
+        $jur_id = $categoria->jurisdicciones->id;
+        return $this->getCategorias($jur_id);
        
       
     }
