@@ -19,11 +19,11 @@
         <br>
         <div v-if="this.message != ''">
             <div class="alert alert-danger alert-block" role="alert" id="mensaje_error"  v-if="this.isValid == false">
-                <button type="button" class="close" data-dismiss="alert">×</button>
+                <button type="button" class="close" data-dismiss="alert">x</button>
                 <strong style="color:darkred" align="center">{{this.message}}</strong>
             </div>
             <div class="alert alert-success" role="alert" id="mensaje_exito" v-if="this.isValid == true">
-                <button type="button" class="close" data-dismiss="alert">×</button>
+                <button type="button" class="close" data-dismiss="alert">x</button>
                 <strong style="color:darkgreen" align="center" >{{this.message}}</strong>
             </div>
         </div>
@@ -47,7 +47,7 @@
             <tr style="text-align: center;" v-for="jurisdiccion in jurisdicciones">
                 <td>{{ jurisdiccion.id }}</td>
                 <td>{{ jurisdiccion.cod_jurisdiccion }}</td>
-                <td><a data-toggle="modal" data-target="#mostrarModal" v-on:click="mostrar(jurisdiccion)" >{{ jurisdiccion.jurisdiccion }}</a></td>
+                <td><a data-toggle="modal" data-target="#mostrarModal" @click="mostrarJurisdiccion(jurisdiccion)" >{{ jurisdiccion.jurisdiccion }}</a></td>
                 <td>{{ jurisdiccion.origen_id }}</td>
                 <td>{{ jurisdiccion.created_at }}</td>
                 <td>{{ jurisdiccion.updated_at }}</td>
@@ -67,7 +67,52 @@
     </table>
 
         <!-- Modal mostrar -->
-        <div class="modal fade" id="mostrarModal" tabindex="-1" role="dialog" aria-labelledby="mostrarModalLabel" aria-hidden="true" >
+        <div class="modal fade" id="mostrarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true" >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
+                    <div class="modal-header">
+                        <h1 class="modal-title" v-model="encabezado">Detalle Jurisdicción</h1>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="form-group" method="POST">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group" v-model="origen">
+                                        <label class="required" for="mostrarOrigen" >Origen</label>
+                                        <select class="custom-select mr-sm-2" id="mostrarOrigen" name="origen" v-model="jur_aux.origen_id" disabled>
+                                            <option>Seleccione Orígenes</option>
+                                            <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.cod_origen">{{origen.origen}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="editarCodJurisdiccion" class="required">Cod. Jurisdicción</label>
+                                    <input type="text" name="cod_jurisdiccion" id="mostrarCodJurisdiccion" value=""
+                                           class="form-control"  v-model="jur_aux.cod_jurisdiccion" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="editarDescripcion" class="required">Jurisdicción</label>
+                                    <input type="text" name="descripcion" id="mostrarDescripcion" value=""
+                                           class="form-control"  v-model="jur_aux.jurisdiccion" readonly>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="modal-footer">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
+                                    <span class="btn btn-danger" aria-hidden="true">Volver</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--AQUI-->
+        <!--div class="modal fade" id="mostrarModal" tabindex="-1" role="dialog" aria-labelledby="mostrarModalLabel" aria-hidden="true" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
                     <div class="modal-header">
@@ -100,7 +145,7 @@
                             </div>
                             <br>
                             <div class="modal-footer">
-                                <!--a href="" class="btn btn-danger" data-dismiss="modal">Volver</a-->
+
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
                                     <span class="btn btn-danger" aria-hidden="true">Volver</span>
                                 </button>
@@ -109,7 +154,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div-->
 
         <!-- Modal alta -->
         <div class="modal fade" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="altaModalLabel" aria-hidden="true" >
@@ -240,17 +285,9 @@
                 message: "",
                 isValid: false,
                 jur_aux: [],
-                jur:[],
                 feedback: "",
 
-                jur:{
-                    id: null,
-                    cod_jurisdiccion: null,
-                    jurisdiccion: '',
-                    origen_id: null,
-                    created_at: '',
-                    updated_at: '',
-                },
+
                 form_editar: false,
                 encabezado: '',
                 error_descripcion: ''
@@ -277,33 +314,21 @@
                         console.log(error);
                     });
             },
-            getJurisdiccionesSelected($id){
-                this.isValid = true;
-                if(this.selectedOrigen === '1'){
-                    this.message = "Sisper";
-                }
-                if(this.selectedOrigen === '2'){
-                    this.message = "Municipalidad";
-                }
-                if(this.selectedOrigen === '3'){
-                    this.message = "Entidad Autonoma";
-                }
-
-                axios.get(`api/jurisdiccion/{$id}`, $id).then((response)=>{
+            getJurisdiccionesSelected(){
+                axios.get(`api/jurisdiccion/${this.selectedOrigen}`).then((response)=>{
                     console.log(response.data)
                     this.jurisdicciones = response.data;
                 })
-                console.log($id);
-                console.log(this.jurisdicciones);
-                //alert("Anda la osa");
             },
 
             editJurisdiccion(p_jurisdiccion){
-                //this.jur = p_jurisdiccion;
-                //this.jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion;
                 this.jur_aux = _.cloneDeep(p_jurisdiccion);
                 this.encabezado = 'Editar Jurisdicción';
             },
+            mostrarJurisdiccion(p_jurisdiccion){
+                this.jur_aux = _.cloneDeep(p_jurisdiccion);
+            },
+
             updateJurisdiccion(p_jurisdiccion){
                 if(confirm("¿Seguro que desea guardar los cambios?")){
                     const params = {
@@ -315,8 +340,7 @@
                         .then(response => {
                             this.isValid = response.data.isValid;
                             this.message = response.data.errors;
-                            this.getJurisdicciones();
-                            this.jur = [];
+                            this.empty();
                             //console.log(response.data.isValid);
                             //console.log(response.data.errors);
                             //alert('SI funciona');
@@ -340,8 +364,8 @@
                         .then(response => {
                             this.isValid = response.data.isValid;
                             this.message = response.data.errors;
-                            this.getJurisdicciones();
-                            this.jur = [];
+                            this.empty();
+
 
                         }).catch(function (error) {
                         console.log(error);
@@ -357,8 +381,7 @@
                             this.isValid = response.data.isValid;
                             this.message = response.data.errors
                             this.jurisdicciones = response.data;
-                            this.getJurisdicciones();
-                            this.jur = [];
+                            this.empty();
 
                         }).catch(function (error) {
                         console.log(error);
@@ -367,20 +390,14 @@
             },
 
             empty(){
-                this.jur = [];
-            },
-            mostrar: function(p_jurisdiccion) {
-                console.log(p_jurisdiccion);
-                //alert(p_jurisdiccion.origen_id);
-                this.selectedOrigen = this.origenes.find(origen => origen.cod_origen === p_jurisdiccion.origen_id);
-                this.jur = p_jurisdiccion;
-                this.encabezado = 'Detalle Jurisdicción'
+                this.getJurisdiccionesSelected();
+                this.jur_aux = [];
             },
 
         },
         watch:{
             selectedOrigen: function () {
-                this.getJurisdiccionesSelected(this.selectedOrigen)
+                this.getJurisdiccionesSelected()
             }
         }
     }
