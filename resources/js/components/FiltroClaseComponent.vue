@@ -14,6 +14,13 @@
            <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
         </select>
       </div>
+       <div class="form-group col-md-4 border-0 shadow p-3">
+        <label class="text-muted" for="categoria"><i class="fas fa-search"></i> Categoria</label>
+        <select  :disabled="selectedCategoria.length == 0" class="custom-select mr-sm-2" id="categoria1" name="jurisdiccion1" v-model="selectedJurisdiccion">
+           <option :value="''" disabled selected>Seleccione Categoria</option>
+           <option v-for="(categoria, index) in categorias" :key="categoria.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
+        </select>
+      </div>
     </div>
 </template>
 

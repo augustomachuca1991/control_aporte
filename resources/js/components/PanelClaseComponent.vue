@@ -1,12 +1,12 @@
 <template>
 <div id="panelcategoria">
-    <filtrocategoria-component @jurisdiccion="get_codigo(...arguments)"></filtrocategoria-component>
+    <filtroclase-component></filtroclase-component>
     <div class="card shadow">
       <div class="card-header">
-          <h5 class="card-title">Categorías</h5>
+          <h5 class="card-title">Clases</h5>
       </div>
       <div class="card-body">
-        <categoria-component :categorias="categorias"></categoria-component>
+        <clase-component></clase-component>
       </div>  
     </div>  
 </div>
@@ -16,13 +16,11 @@
      export default {
         data: function() {
             return{
-                categorias:''
+                clases:''
             }
       },
       methods:{
-          get_codigo(categorias){
-            this.categorias = categorias;
-          }
+        
       },
       mounted() {
 

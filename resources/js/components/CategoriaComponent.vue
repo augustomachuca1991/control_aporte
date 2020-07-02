@@ -127,25 +127,16 @@
     // // const EventBus = new Vue();
     // export const eventBus = new Vue();
     export default {
-        // props:['categorias'],
-        props: {
-          categorias: Array,
-        },
+        props:['categorias'],
+        // props: {
+        //   categorias: '',
+        // },
         data: function(){
             return{      
                 feedback: "",
                 origenes:[],
                 // origen:[],
                 // selected:'',
-                categoria:{},
-                // cat_aux:{
-                //     id: '',
-                //     categoria:'',
-                //     cod_categoria: null,
-                //     jurisdicciones: {},
-                //     created_at: '',
-                //     updated_at: '',
-                // },
                 categoria:{
                     id: '',
                     categoria:'',

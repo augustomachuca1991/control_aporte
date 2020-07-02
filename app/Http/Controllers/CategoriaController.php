@@ -48,6 +48,7 @@ class CategoriaController extends Controller
                                         ]);
         $cod_jurisdiccion = $request->cod_jurisdiccion;
         $categoria->jurisdicciones()->attach($cod_jurisdiccion);
+
         return $categoria;
     }
 
@@ -92,7 +93,9 @@ class CategoriaController extends Controller
         $categoria->updated_at = now();
         $categoria->save();
         $jur_id = $categoria->jurisdicciones->id;
-        return $this->getCategorias($jur_id);
+
+        $categorias = $this->getCategorias($jur_id);
+        return $categorias;
        
       
     }

@@ -1,6 +1,5 @@
 <template>
     <div id="clases">
-        <filtrocategoria-component></filtrocategoria-component>
         <table class="table table-borderless table-striped border" v-model="clases">
             <caption>Clases</caption>
             <thead>
