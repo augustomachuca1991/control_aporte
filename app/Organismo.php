@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class Organismo extends Model
 {
-    
-	use SoftDeletes;
 
+	use SoftDeletes;
+    protected $table = 'organismos';
+    protected $fillable = ['cod_organismo', 'jurisdiccion_id', 'organismo'];
     protected $dates = ['deleted_at'];
 
     public function jurisdiccion()
@@ -27,7 +28,7 @@ class Organismo extends Model
     	return $this->belongsToMany('App\Periodo');
     }
 
-	
+
 	 public function tipoLiquidaciones()
     {
     	return $this->belongsToMany('App\TipoLiquidacion');
@@ -46,5 +47,5 @@ class Organismo extends Model
     public function liquidacionOrganismo()
     {
         return $this->hasMany('App\LiquidacionOrganismo')->with(['liquidacion','periodo','tipoLiquidacion']);
-    } 
+    }
 }

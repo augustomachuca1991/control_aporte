@@ -48,6 +48,7 @@ class CategoriaController extends Controller
                                         ]);
         $cod_jurisdiccion = $request->cod_jurisdiccion;
         $categoria->jurisdicciones()->attach($cod_jurisdiccion);
+
         return $categoria;
     }
 
@@ -91,8 +92,10 @@ class CategoriaController extends Controller
         $categoria->categoria = $request['categoria'];
         $categoria->updated_at = now();
         $categoria->save();
+        $jur_id = $categoria->jurisdicciones->id;
 
-        return $categoria;
+        $categorias = $this->getCategorias($jur_id);
+        return $categorias;
        
       
     }
@@ -114,7 +117,7 @@ class CategoriaController extends Controller
     public function getCategorias($id){
         // dd((int)$id);
         return Categoria::whereHas('jurisdicciones', function ($query) use ($id) {
-            $query->where('jurisdiccion_id',(int)$id);
-        })->get();
+            $query->where('jurisdiccion_id',$id);
+        })->with('jurisdicciones')->get();
     }
 }

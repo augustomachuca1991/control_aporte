@@ -41,10 +41,11 @@ class ClaseController extends Controller
         ]);
 
         $clase = Clase::create([
-                                        'categoria_id' => $request['categoria_id'],
-                                        'clase'     => $request['clase']
-                                        ]);
-        return back()->withSuccess('Clase creada con éxito');
+                                'categoria_id' => $request['categoria_id'],
+                                'clase'     => $request['clase']
+                                ]);
+        // return back()->withSuccess('Clase creada con éxito');
+        return $clase;
     }
 
     /**

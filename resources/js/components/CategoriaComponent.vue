@@ -6,6 +6,7 @@
         <tr>
           <th scope="col">Cod. Categoría</th>
           <th scope="col">Categoría</th>
+           <!--<th scope="col">Jurisdiccion</th>-->
           <th>Acción</th>
         </tr>
       </thead>
@@ -16,9 +17,10 @@
         <tr v-for="(categoria, index) in categorias"  v-bind:key="categoria.id" v-else>
           <th>{{categoria.cod_categoria}}</th>
           <td>{{categoria.categoria}}</td>
+           <!--<td v-for="jurisdiccion in categoria.jurisdicciones">{{jurisdiccion.jurisdiccion}}</td>-->
           <td class="row">
               <div class="col-md-1">
-                <button @click="editCategoria(categoria.id)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark" data-toggle="modal" data-target="#edit_categoria">
+                <button @click="editCategoria(categoria)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark" data-toggle="modal" data-target="#edit_categoria">
                 <i class="far fa-edit"></i>
               </button>
               </div>
@@ -50,10 +52,12 @@
           </div>
           <div class="modal-body">
             <form action="" class="form-group" method="POST">
+              
               <div class="form-group">
                 <label class="col-form-label">Código categoría</label>
                 <input type="text" class="form-control" name="cod_categoria" v-model="categoria.cod_categoria" :disabled="0">
               </div>
+              
               <div class="form-group">
                 <label class="col-form-label">Nombre</label>
                 <input type="text"class="form-control" name="categoria" v-model="categoria.categoria">
@@ -123,20 +127,28 @@
     // // const EventBus = new Vue();
     // export const eventBus = new Vue();
     export default {
-        // props:['categorias'],
-        props: {
-          categorias: Array,
-        },
+        props:['categorias'],
+        // props: {
+        //   categorias: '',
+        // },
         data: function(){
             return{      
                 feedback: "",
                 origenes:[],
-                origen:[],
-                categoria:[],
+                // origen:[],
+                // selected:'',
+                categoria:{
+                    id: '',
+                    categoria:'',
+                    cod_categoria: null,
+                    jurisdicciones: {},
+                    created_at: '',
+                    updated_at: '',
+                },
                 selectedOrigen: "",
                 selectedJurisdiccion: "",
                 jurisdicciones:[],
-                jurisdiccion:[],
+                // jurisdiccion:[],
                 errors:[],
             }
         },
@@ -150,6 +162,15 @@
                   console.log(error);
               });
             },
+            // getJurisdicciones(){
+            //   axios.get('api/jurisdiccion/')
+            //   .then((response)=>{
+            //     this.jurisdicciones = response.data;
+            //   })
+            //   .catch(function (error) {
+            //       console.log(error);
+            //   });
+            // },
             createCategoria() {
               if(confirm("¿Seguro que quieres crear esta categoria?")){
                 const params = {
@@ -159,39 +180,27 @@
                   }
                   axios.post('api/categoria/create', params )
                   .then(response => {
-                    // console.log(response.data);
-                    // this.categorias = response.data;
                     $('#categorias').removeClass('modal-open');
                     $("#nueva_categoria").modal('hide');
                     this.empty();
-                    // this.$emit('actualizar');
-                    // const hola = "hola";
-                    // eventBus.$emit('actualizar',200);
-                    // this.getCategorias();
                   }).catch(error => {
                     this.feedback = error.response.data.errors;
                   });
               }
             },
-            editCategoria(id){
-              axios.get(`api/categoria/edit/${id}`)
-              .then((response)=>{
-                this.categoria = response.data;
-              }).catch(function (error) {
-                  console.log(error);
-              });
+            editCategoria(categoria){
+              this.categoria = categoria;
+              // this.getJurisdicciones();
             },
             updateCategoria(id){
               if(confirm("¿Seguro que desea guardar los cambios?")){
                 const params = {
                   cod_categoria : this.categoria.cod_categoria,
                   categoria : this.categoria.categoria
-                };
+                }
                 axios.put(`api/categoria/update/${id}`, params)
                 .then((response)=>{
-                  // this.getCategorias(); 
-                  this.categoria = [];   
-                  this.empty();   
+                  this.categorias = response.data;
                 }).catch(function (error) {
                   console.log(error);
                 });
@@ -202,16 +211,17 @@
                 axios.delete(`api/categoria/delete/${id}`)
                 .then((response)=>{
                   this.categorias = response.data;
-                  this.getCategorias();
+                  // this.getCategorias();
                 }).catch(function (error) {
                   console.log(error);
                 });
               }
             },
             empty(){
-              this.categoria = [];
-              this.selectedOrigen = [];
-              this.selectedJurisdiccion = [];
+              // this.categoria = [];
+              // this.cat_aux = [];
+              this.selectedOrigen = "";
+              this.selectedJurisdiccion = "";
               this.feedback = [];
               // this.categorias = [];
             },
@@ -229,11 +239,7 @@
                 },
         },
         mounted(){
-          // this.getCategorias();
-          // console.log(this.cat);
           this.getOrigenes();
-          // let prueba = this.categorias;
-        
         }
     }
 </script>

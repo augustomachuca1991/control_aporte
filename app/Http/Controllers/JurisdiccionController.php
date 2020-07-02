@@ -78,9 +78,6 @@ class JurisdiccionController extends Controller
     public function show(Jurisdiccion $jurisdiccion)
     {
         //
-        return view('jurisdicciones.show', [
-            'jurisdiccion' => $jurisdiccion
-        ]);
     }
 
     /**
@@ -92,10 +89,6 @@ class JurisdiccionController extends Controller
     public function edit(Request $request, Jurisdiccion $jurisdiccion)
     {
         //
-        dd($request);
-        return view('jurisdicciones.edit', [
-            'jurisdiccion' => $jurisdiccion
-        ]);
     }
 
     /**
@@ -150,14 +143,20 @@ class JurisdiccionController extends Controller
     }
 
     public function jurisdiccion_json(Jurisdiccion $jurisdiccion)
-    {
-        return Jurisdiccion::with('categorias')->get();
-    }
+{
+    return Jurisdiccion::with('categorias')->get();
+}
 
-    public function getJurisdicciones($id){
-        // dd((int)$id);
-        return Jurisdiccion::whereHas('jurisdicciones', function ($query) use ($id) {
-            $query->where('origen_id',(int)$id);
-        })->get();
+    public function getJurisdiccionesSelected($id){
+
+        try{
+            //return $jur = Jurisdiccion::whereHas('origenes', function ($query) use ($id) {
+                //$query->where('origen_id',(int)$id);
+            ////})->get();
+            return Jurisdiccion::where('origen_id',$id)->get();
+        }catch (\Exception $e){
+            return [];
+        }
+
     }
 }
