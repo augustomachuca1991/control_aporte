@@ -157,9 +157,10 @@ class JurisdiccionController extends Controller
     public function getJurisdiccionesSelected($id){
 
         try{
-            return $jur = Jurisdiccion::whereHas('origenes', function ($query) use ($id) {
-                $query->where('origen_id',(int)$id);
-                })->get();
+            //return $jur = Jurisdiccion::whereHas('origenes', function ($query) use ($id) {
+                //$query->where('origen_id',(int)$id);
+            ////})->get();
+            return Jurisdiccion::where('origen_id',$id)->get();
         }catch (\Exception $e){
             return [];
         }
