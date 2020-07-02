@@ -1,6 +1,16 @@
 <template>
     <div id="jurisdicciones" style="overflow-x:auto;">
 
+        <div class="form-row col mb-3 shadow p-3">
+            <div class="form-group col-md-12 border-0 shadow p-3">
+                <label class="text-muted" for="origen1"><i class="fas fa-search"></i> Origen</label>
+                <select class="custom-select mr-sm-2" id="origen1" name="origen1"  v-model="selectedOrigen">
+                    <option :value="''" disabled selected>Seleccione Origen</option>
+                    <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
+                </select>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <a class="btn btn-success" v-on:click="encabezado = 'Crear Jurisdicción'" data-toggle="modal" data-target="#altaModal">Crear nueva jurisdicción</a>
@@ -31,6 +41,9 @@
             </tr>
         </thead>
         <tbody>
+            <tr v-if="jurisdicciones.length===0">
+                <td colspan="6">No hay datos</td>
+            </tr>
             <tr style="text-align: center;" v-for="jurisdiccion in jurisdicciones">
                 <td>{{ jurisdiccion.id }}</td>
                 <td>{{ jurisdiccion.cod_jurisdiccion }}</td>
@@ -216,9 +229,7 @@
 
 <script>
     export default {
-        props: {
-            jurisdicciones: Array,
-        },
+
         data: function(){
             return{
                 jurisdicciones:[],
@@ -266,6 +277,26 @@
                         console.log(error);
                     });
             },
+            getJurisdiccionesSelected($id){
+                this.isValid = true;
+                if(this.selectedOrigen === '1'){
+                    this.message = "Sisper";
+                }
+                if(this.selectedOrigen === '2'){
+                    this.message = "Municipalidad";
+                }
+                if(this.selectedOrigen === '3'){
+                    this.message = "Entidad Autonoma";
+                }
+
+                axios.get(`api/jurisdiccion/{$id}`, $id).then((response)=>{
+                    console.log(response.data)
+                    this.jurisdicciones = response.data;
+                })
+                console.log($id);
+                console.log(this.jurisdicciones);
+                //alert("Anda la osa");
+            },
 
             editJurisdiccion(p_jurisdiccion){
                 //this.jur = p_jurisdiccion;
@@ -283,7 +314,7 @@
                     axios.put(`api/jurisdiccion/update/${p_jurisdiccion.id}` , params)
                         .then(response => {
                             this.isValid = response.data.isValid;
-                            this.message = response.data.errors
+                            this.message = response.data.errors;
                             this.getJurisdicciones();
                             this.jur = [];
                             //console.log(response.data.isValid);
@@ -308,7 +339,7 @@
                     axios.post('api/jurisdiccion/create', params )
                         .then(response => {
                             this.isValid = response.data.isValid;
-                            this.message = response.data.errors
+                            this.message = response.data.errors;
                             this.getJurisdicciones();
                             this.jur = [];
 
@@ -347,5 +378,10 @@
             },
 
         },
+        watch:{
+            selectedOrigen: function () {
+                this.getJurisdiccionesSelected(this.selectedOrigen)
+            }
+        }
     }
 </script>
