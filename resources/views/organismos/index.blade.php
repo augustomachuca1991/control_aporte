@@ -13,9 +13,3 @@
     </div>
 
 @endsection
-<script>
-    import OrganismosComponent from "../../js/components/OrganismosComponent";
-    export default {
-        components: {OrganismosComponent}
-    }
-</script>

@@ -243,6 +243,7 @@
 
 <script>
     export default {
+        name: "OrganismosComponent",
 
         data: function(){
             return{
