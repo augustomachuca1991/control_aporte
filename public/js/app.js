@@ -2295,48 +2295,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['clases'],
   data: function data() {
     return {
-      clases: [],
       clase: [],
       categorias: [],
       selectedCategorias: []
     };
   },
   methods: {
-    getClases: function getClases() {
-      var _this = this;
-
-      axios.get('api/clase/').then(function (response) {
-        _this.clases = response.data;
-        console.log(response.data);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
+    // getClases(){
+    //   axios.get(`api/clase/`).then((response)=>{
+    //   this.clases = response.data;
+    //   console.log(response.data);
+    //   })
+    //   .catch(function (error) {
+    //       console.log(error);
+    //     });
+    // }, 
     createClase: function createClase() {
-      var _this2 = this;
+      var _this = this;
 
       var params = {
         categoria_id: this.clase.categoria_id,
         clase: this.clase.clase
       };
       this.axios.post('api/clase/create', params).then(function (response) {
-        _this2.clases = response.data;
+        _this.clases = response.data;
       });
     },
     editClase: function editClase(id) {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.get("api/clase/edit/".concat(id)).then(function (response) {
-        _this3.clase = response.data;
+        _this2.clase = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
     },
     updateClase: function updateClase(id) {
-      var _this4 = this;
+      var _this3 = this;
 
       var params = {
         categoria_id: this.clase.categoria_id,
@@ -2347,25 +2349,24 @@ __webpack_require__.r(__webpack_exports__);
         $('modal-backdrop').remove();
         $('. close').click();
 
-        _this4.getClases();
+        _this3.getClases();
       })["catch"](function (error) {
         // handle error
         console.log(error);
       });
     },
     deleteClase: function deleteClase(id) {
-      var _this5 = this;
+      var _this4 = this;
 
       axios["delete"]("api/clase/delete/".concat(id)).then(function (response) {
-        _this5.getClases();
+        _this4.getClases();
       })["catch"](function (error) {
         // handle error
         console.log(error);
       });
     }
   },
-  mounted: function mounted() {
-    this.getClases();
+  mounted: function mounted() {//   this.getClases();
   }
 });
 
@@ -2677,54 +2678,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-<<<<<<< HEAD
-=======
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
 //
 //
 //
@@ -2756,8 +2709,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       origenes: [],
+      selectedCategoria: '',
+      jurisdiccion: '',
       jurisdicciones: [],
       categorias: '',
+      clases: '',
       cod_jurisdiccion: "",
       selectedOrigen: "",
       selectedJurisdiccion: ""
@@ -2767,13 +2723,14 @@ __webpack_require__.r(__webpack_exports__);
   //   eventBus.$on('actualizar', this.actualizar());  // 3.Listening
   // },
   methods: {
-    getCategorias: function getCategorias(id) {
+    getClases: function getClases(id) {
       var _this = this;
 
-      axios.get("api/categoria/".concat(id)).then(function (response) {
-        _this.categorias = response.data;
+      axios.get("api/clase/".concat(id)).then(function (response) {
+        _this.clases = response.data;
+        console.log(_this.clases);
 
-        _this.$emit('jurisdiccion', _this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
+        _this.$emit('categoria', _this.clases); //evento para obtener las categorias segun la jurisdicción seleccionada
 
       })["catch"](function (error) {
         console.log(error);
@@ -2784,16 +2741,24 @@ __webpack_require__.r(__webpack_exports__);
     selectedOrigen: function selectedOrigen() {
       this.jurisdicciones = [];
       this.categorias = '';
-      this.selectedJurisdiccion = "";
-      this.$emit('jurisdiccion', this.categorias);
+      this.clases = '';
+      this.selectedJurisdiccion = ""; //   this.$emit('jurisdiccion',this.categorias);
 
       if (this.selectedOrigen > 0) {
         this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones;
       }
     },
     selectedJurisdiccion: function selectedJurisdiccion() {
+      this.categorias = [];
+      this.selectedCategoria = "";
+
+      if (this.selectedJurisdiccion > 0) {
+        this.categorias = this.origenes[this.selectedOrigen - 1].jurisdicciones[this.selectedJurisdiccion - 1].categorias;
+      }
+    },
+    selectedCategoria: function selectedCategoria() {
       // const cod_jurisdiccion = this.selectedJurisdiccion
-      this.getCategorias(this.selectedJurisdiccion);
+      this.getClases(this.selectedCategoria);
     } // categorias: function(){
     //   // console.log(this.selectedJurisdiccion);
     //   if(this.selectedJurisdiccion){
@@ -2822,8 +2787,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -3026,7 +2989,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-<<<<<<< HEAD
 //
 //
 //
@@ -3054,16 +3016,54 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    var _ref;
-
-    return _ref = {
-=======
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
       jurisdicciones: [],
       selectedOrigen: [],
       origenes: [],
@@ -3072,24 +3072,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       message: "",
       isValid: false,
       jur_aux: [],
-<<<<<<< HEAD
-      jur: [],
-      feedback: ""
-    }, _defineProperty(_ref, "jur", {
-      id: null,
-      cod_jurisdiccion: null,
-      jurisdiccion: '',
-      origen_id: null,
-      created_at: '',
-      updated_at: ''
-    }), _defineProperty(_ref, "form_editar", false), _defineProperty(_ref, "encabezado", ''), _defineProperty(_ref, "error_descripcion", ''), _ref;
-=======
       feedback: "",
       form_editar: false,
       encabezado: '',
       error_descripcion: ''
     };
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
   },
   mounted: function mounted() {
     this.getOrigenes();
@@ -3113,38 +3100,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
-<<<<<<< HEAD
-    getJurisdiccionesSelected: function getJurisdiccionesSelected($id) {
-      var _this3 = this;
-
-      this.isValid = true;
-
-      if (this.selectedOrigen === '1') {
-        this.message = "Sisper";
-      }
-
-      if (this.selectedOrigen === '2') {
-        this.message = "Municipalidad";
-      }
-
-      if (this.selectedOrigen === '3') {
-        this.message = "Entidad Autonoma";
-      }
-
-      axios.get("api/jurisdiccion/{$id}", $id).then(function (response) {
-        console.log(response.data);
-        _this3.jurisdicciones = response.data;
-      });
-      console.log($id);
-      console.log(this.jurisdicciones); //alert("Anda la osa");
-    },
-    editJurisdiccion: function editJurisdiccion(p_jurisdiccion) {
-      //this.jur = p_jurisdiccion;
-      //this.jur_aux = Object.assign({}, jur_aux, jur),jur = jurisdiccion;
-      this.jur_aux = _.cloneDeep(p_jurisdiccion);
-      this.encabezado = 'Editar Jurisdicción';
-    },
-=======
     getJurisdiccionesSelected: function getJurisdiccionesSelected() {
       var _this3 = this;
 
@@ -3160,7 +3115,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     mostrarJurisdiccion: function mostrarJurisdiccion(p_jurisdiccion) {
       this.jur_aux = _.cloneDeep(p_jurisdiccion);
     },
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
     updateJurisdiccion: function updateJurisdiccion(p_jurisdiccion) {
       var _this4 = this;
 
@@ -3174,20 +3128,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this4.isValid = response.data.isValid;
           _this4.message = response.data.errors;
 
-<<<<<<< HEAD
-          _this4.getJurisdicciones();
-
-          _this4.jur = []; //console.log(response.data.isValid);
-          //console.log(response.data.errors);
-          //alert('SI funciona');
-          //alert(this.message);
-=======
           _this4.empty(); //console.log(response.data.isValid);
           //console.log(response.data.errors);
           //alert('SI funciona');
           //alert(this.message);
 
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
         })["catch"](function (error) {
           alert('NO funciona');
           console.log(error);
@@ -3208,13 +3153,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this5.isValid = response.data.isValid;
           _this5.message = response.data.errors;
 
-<<<<<<< HEAD
-          _this5.getJurisdicciones();
-
-          _this5.jur = [];
-=======
           _this5.empty();
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
         })["catch"](function (error) {
           console.log(error);
         });
@@ -3230,43 +3169,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this6.message = response.data.errors;
           _this6.jurisdicciones = response.data;
 
-<<<<<<< HEAD
-          _this6.getJurisdicciones();
-
-          _this6.jur = [];
-=======
           _this6.empty();
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
         })["catch"](function (error) {
           console.log(error);
         });
       }
     },
     empty: function empty() {
-<<<<<<< HEAD
-      this.jur = [];
-    },
-    mostrar: function mostrar(p_jurisdiccion) {
-      console.log(p_jurisdiccion); //alert(p_jurisdiccion.origen_id);
-
-      this.selectedOrigen = this.origenes.find(function (origen) {
-        return origen.cod_origen === p_jurisdiccion.origen_id;
-      });
-      this.jur = p_jurisdiccion;
-      this.encabezado = 'Detalle Jurisdicción';
-=======
       this.getJurisdiccionesSelected();
       this.jur_aux = [];
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
     }
   },
   watch: {
     selectedOrigen: function selectedOrigen() {
-<<<<<<< HEAD
-      this.getJurisdiccionesSelected(this.selectedOrigen);
-=======
       this.getJurisdiccionesSelected();
->>>>>>> 68c599e1c8b7d846ad4e3224c6287b8b4860c43f
     }
   }
 });
@@ -3696,7 +3612,11 @@ __webpack_require__.r(__webpack_exports__);
       clases: ''
     };
   },
-  methods: {},
+  methods: {
+    get_codigo: function get_codigo(clases) {
+      this.clases = clases;
+    }
+  },
   mounted: function mounted() {}
 });
 
@@ -40252,46 +40172,54 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.clases, function(clase, index) {
-            return _c("tr", { key: clase.id }, [
-              _c("th", [_vm._v(_vm._s(clase.id))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(clase.clase))]),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-primary btn-sm text-white",
-                    attrs: {
-                      "data-toggle": "modal",
-                      "data-target": "#edit_clase"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.editClase(clase.id)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "far fa-edit" })]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-primary btn-sm text-white",
-                    on: {
-                      click: function($event) {
-                        return _vm.deleteClase(clase.id)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "far fa-trash-alt" })]
-                )
-              ])
-            ])
-          }),
-          0
+          [
+            _vm.clases.length === 0
+              ? _c("tr", [
+                  _c("td", { attrs: { colspan: "6" } }, [
+                    _vm._v("No hay datos")
+                  ])
+                ])
+              : _vm._l(_vm.clases, function(clase, index) {
+                  return _c("tr", { key: clase.id }, [
+                    _c("th", [_vm._v(_vm._s(clase.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(clase.clase))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-primary btn-sm text-white",
+                          attrs: {
+                            "data-toggle": "modal",
+                            "data-target": "#edit_clase"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.editClase(clase.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-edit" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-primary btn-sm text-white",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteClase(clase.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-trash-alt" })]
+                      )
+                    ])
+                  ])
+                })
+          ],
+          2
         )
       ]
     ),
@@ -41177,10 +41105,7 @@ var render = function() {
           _vm._l(_vm.origenes, function(origen, index) {
             return _c(
               "option",
-              {
-                key: origen.cod_origen,
-                domProps: { value: origen.cod_origen }
-              },
+              { key: origen.id, domProps: { value: origen.id } },
               [_vm._v(_vm._s(origen.origen))]
             )
           })
@@ -41235,10 +41160,7 @@ var render = function() {
           _vm._l(_vm.jurisdicciones, function(jurisdiccion, index) {
             return _c(
               "option",
-              {
-                key: jurisdiccion.cod_jurisdiccion,
-                domProps: { value: jurisdiccion.cod_jurisdiccion }
-              },
+              { key: jurisdiccion.id, domProps: { value: jurisdiccion.id } },
               [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
             )
           })
@@ -41257,15 +41179,15 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.selectedJurisdiccion,
-              expression: "selectedJurisdiccion"
+              value: _vm.selectedCategoria,
+              expression: "selectedCategoria"
             }
           ],
           staticClass: "custom-select mr-sm-2",
           attrs: {
-            disabled: _vm.selectedCategoria.length == 0,
+            disabled: _vm.selectedJurisdiccion.length == 0,
             id: "categoria1",
-            name: "jurisdiccion1"
+            name: "categoria1"
           },
           on: {
             change: function($event) {
@@ -41277,7 +41199,7 @@ var render = function() {
                   var val = "_value" in o ? o._value : o.value
                   return val
                 })
-              _vm.selectedJurisdiccion = $event.target.multiple
+              _vm.selectedCategoria = $event.target.multiple
                 ? $$selectedVal
                 : $$selectedVal[0]
             }
@@ -41293,11 +41215,8 @@ var render = function() {
           _vm._l(_vm.categorias, function(categoria, index) {
             return _c(
               "option",
-              {
-                key: categoria.cod_jurisdiccion,
-                domProps: { value: _vm.jurisdiccion.cod_jurisdiccion }
-              },
-              [_vm._v(_vm._s(_vm.jurisdiccion.jurisdiccion))]
+              { key: categoria.id, domProps: { value: categoria.id } },
+              [_vm._v(_vm._s(categoria.categoria))]
             )
           })
         ],
@@ -43430,12 +43349,23 @@ var render = function() {
     "div",
     { attrs: { id: "panelcategoria" } },
     [
-      _c("filtroclase-component"),
+      _c("filtroclase-component", {
+        on: {
+          categoria: function($event) {
+            return _vm.get_codigo.apply(void 0, arguments)
+          }
+        }
+      }),
       _vm._v(" "),
       _c("div", { staticClass: "card shadow" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [_c("clase-component")], 1)
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [_c("clase-component", { attrs: { clases: _vm.clases } })],
+          1
+        )
       ])
     ],
     1

@@ -109,7 +109,7 @@ class ClaseController extends Controller
         return back()->withSuccess('Clase eliminada con éxito');
     }
 
-    public function getClases(){
-       return Clase::all();
+    public function getClases($id){
+        return Clase::where('categoria_id','=',$id)->get();
     }
 }

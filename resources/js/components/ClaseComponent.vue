@@ -10,7 +10,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(clase, index) in clases"  v-bind:key="clase.id">
+                <tr v-if="clases.length===0">
+                    <td colspan="6">No hay datos</td>
+                </tr>
+                <tr v-for="(clase, index) in clases" v-bind:key="clase.id" v-else>
                     <th>{{clase.id}}</th>
                     <td>{{clase.clase}}</td>
                     <td>
@@ -68,25 +71,24 @@
 
 <script>
     export default {
+        props:['clases'],
         data: function(){
             return{
-                clases:[],
                 clase:[],
                 categorias:[],
                 selectedCategorias:[]
             }
-        
         },
         methods:{
-            getClases(){
-              axios.get('api/clase/').then((response)=>{
-              this.clases = response.data;
-              console.log(response.data);
-              })
-              .catch(function (error) {
-                  console.log(error);
-                });
-            }, 
+            // getClases(){
+            //   axios.get(`api/clase/`).then((response)=>{
+            //   this.clases = response.data;
+            //   console.log(response.data);
+            //   })
+            //   .catch(function (error) {
+            //       console.log(error);
+            //     });
+            // }, 
             createClase() {
             const params = {
                   categoria_id : this.clase.categoria_id,
@@ -133,7 +135,7 @@
             }
         },
         mounted(){
-          this.getClases();
+        //   this.getClases();
         }
 
     }

@@ -4,21 +4,21 @@
         <label class="text-muted" for="origen1"><i class="fas fa-search"></i> Origen</label>
         <select class="custom-select mr-sm-2" id="origen1" name="origen1"  v-model="selectedOrigen">
           <option :value="''" disabled selected>Seleccione Origen</option>
-          <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
+          <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.id">{{origen.origen}}</option>
         </select>
       </div>
       <div class="form-group col-md-4 border-0 shadow p-3">
         <label class="text-muted" for="jurisdiccion"><i class="fas fa-search"></i> Jurisdiccion</label>
         <select  :disabled="selectedOrigen.length == 0" class="custom-select mr-sm-2" id="jurisdiccion1" name="jurisdiccion1" v-model="selectedJurisdiccion">
            <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
-           <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
+           <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.id">{{jurisdiccion.jurisdiccion}}</option>
         </select>
       </div>
        <div class="form-group col-md-4 border-0 shadow p-3">
         <label class="text-muted" for="categoria"><i class="fas fa-search"></i> Categoria</label>
-        <select  :disabled="selectedCategoria.length == 0" class="custom-select mr-sm-2" id="categoria1" name="jurisdiccion1" v-model="selectedJurisdiccion">
+        <select  :disabled="selectedJurisdiccion.length == 0" class="custom-select mr-sm-2" id="categoria1" name="categoria1" v-model="selectedCategoria">
            <option :value="''" disabled selected>Seleccione Categoria</option>
-           <option v-for="(categoria, index) in categorias" :key="categoria.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
+           <option v-for="(categoria, index) in categorias" :key="categoria.id" :value="categoria.id">{{categoria.categoria}}</option>
         </select>
       </div>
     </div>
@@ -30,8 +30,11 @@
             data: function() {
               return {
                   origenes: [],
+                  selectedCategoria:'',
+                  jurisdiccion:'',
                   jurisdicciones: [],
                   categorias: '',
+                  clases:'',
                   cod_jurisdiccion: "",
                   selectedOrigen: "",
                   selectedJurisdiccion: "",    
@@ -41,10 +44,11 @@
             //   eventBus.$on('actualizar', this.actualizar());  // 3.Listening
             // },
             methods:{
-              getCategorias(id){
-                  axios.get(`api/categoria/${id}`).then((response)=>{
-                    this.categorias = response.data;
-                    this.$emit('jurisdiccion',this.categorias); //evento para obtener las categorias segun la jurisdicción seleccionada
+              getClases(id){
+                  axios.get(`api/clase/${id}`).then((response)=>{
+                    this.clases = response.data;
+                    console.log(this.clases);
+                    this.$emit('categoria',this.clases); //evento para obtener las categorias segun la jurisdicción seleccionada
                   })
                   .catch( error => {
                     console.log(error);
@@ -55,15 +59,23 @@
                 selectedOrigen: function() {
                   this.jurisdicciones = [];
                   this.categorias ='';
+                  this.clases = '';
                   this.selectedJurisdiccion = "";
-                  this.$emit('jurisdiccion',this.categorias);
+                //   this.$emit('jurisdiccion',this.categorias);
                   if (this.selectedOrigen > 0) {
                     this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
                   }
                 },
                 selectedJurisdiccion: function() {
+                    this.categorias = [];
+                    this.selectedCategoria = "";
+                    if (this.selectedJurisdiccion > 0) {
+                    this.categorias = this.origenes[this.selectedOrigen-1].jurisdicciones[this.selectedJurisdiccion-1].categorias
+                    }
+                },
+                selectedCategoria: function() {
                   // const cod_jurisdiccion = this.selectedJurisdiccion
-                  this.getCategorias(this.selectedJurisdiccion);
+                  this.getClases(this.selectedCategoria);
                 },
                 // categorias: function(){
                 //   // console.log(this.selectedJurisdiccion);
