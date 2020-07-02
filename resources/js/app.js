@@ -25,6 +25,7 @@ Vue.component('panel-component', require('./components/PanelComponent.vue').defa
 Vue.component('filter-component', require('./components/FilterComponent.vue').default);
 Vue.component('filtroperiodo-component', require('./components/FilterPeriodoComponent.vue').default);
 Vue.component('filtertipoliquidacion-component', require('./components/FilterTipoLiquidacionComponent.vue').default);
+Vue.component('buscaragente-component', require('./components/BuscarAgenteComponent.vue').default);
 //Vue.component('footer-component', require('./components/FooterComponent.vue').default);
 Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
 Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
