@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Organismo;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class OrganismoController extends Controller
 {
@@ -15,6 +16,7 @@ class OrganismoController extends Controller
     public function index()
     {
         //
+        return view('organismos.index');
     }
 
     /**
@@ -36,6 +38,26 @@ class OrganismoController extends Controller
     public function store(Request $request)
     {
         //
+        $date = Carbon::now()->toDateTimeString();
+
+        $validarDatos = $request->validate([
+            'cod_organismo'  =>  'required',
+            'jurisdiccion_id'       =>    'required',
+            'organismo'     =>  'required',
+        ]);
+
+        try {
+
+            $org = Organismo::create([
+                'cod_ordanismo'       =>   $request->cod_organismo,
+                'jurisdiccion_id'       =>   $request->jurisdiccion_id,
+                'organismo'       =>   $request->organismo,
+                'created_at'    =>   $date,
+            ]);
+            return response()->json(['isValid'=>true,'errors'=>'Organismo creado satisfactoriamente']);
+        }catch(\Exception $e) {
+            return response()->json(['isValid'=>false,'errors'=>'Error al crear la Organismo']);
+        }
     }
 
     /**
@@ -67,9 +89,30 @@ class OrganismoController extends Controller
      * @param  \App\Organismo  $organismo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Organismo $organismo)
+    public function update(Request $request, $id)
     {
         //
+        $date = Carbon::now()->toDateTimeString();
+
+        $validarDatos = $request->validate([
+            'cod_organismo'  =>  'required',
+            'jurisdiccion_id'       =>    'required',
+            'organismo'     =>  'required',
+        ]);
+
+        $form_data = array(
+            'cod_organismo'       =>   $request->cod_organismo,
+            'jurisdiccion_id'       =>   $request->jurisdiccion_id,
+            'organismo'       =>   $request->organismo,
+            'updated_at'       =>   $date
+        );
+
+        try {
+            $organismo = Organismo::whereId($id)->update($form_data);
+            return response()->json(['isValid'=>true,'errors'=>'Organismo actualizado satisfactoriamente']);
+        }catch(\Exception $e) {
+            return response()->json(['isValid'=>false,'errors'=>'Error al actualizar el Organismo']);
+        }
     }
 
     /**
@@ -78,8 +121,40 @@ class OrganismoController extends Controller
      * @param  \App\Organismo  $organismo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Organismo $organismo)
+    public function destroy($id)
     {
         //
+        try {
+            $organismo = Organismo::find($id);
+            $organismo->delete();
+            return response()->json(['isValid'=>true,'errors'=>'Organismo eliminado satisfactoriamente']);
+        }catch(\Exception $e) {
+            return response()->json(['isValid'=>false,'errors'=>'Error al eliminar el Organismo']);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Organismo  $organismo
+     * @return \Illuminate\Http\Response
+     */
+    public function getOrganismos(Organismo $organismo)
+    {
+        return Organismo::with('jurisdiccion')->get();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Organismo  $organismo
+     * @return \Illuminate\Http\Response
+     */
+    public function getJurisdiccionesSelected($id){
+        try{
+            return Organismo::where('jurisdiccion_id',$id)->get();
+        }catch (\Exception $e){
+            return [];
+        }
     }
 }

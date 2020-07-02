@@ -8,8 +8,14 @@
         </div>
 
         <div class="card-body">
-            <jurisdiccion-component></jurisdiccion-component>
+            <organismos-component></organismos-component>
         </div>
     </div>
 
 @endsection
+<script>
+    import OrganismosComponent from "../../js/components/OrganismosComponent";
+    export default {
+        components: {OrganismosComponent}
+    }
+</script>
