@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive-lg">
-    <label>Liquidaciones {{filtro}} </label>
+    <!--<label>Liquidaciones {{liquidaciones}} </label>-->
 
     <!--table-->
     <table class="table table-sm table-hover table-bordeless" v-model="filtro.data.data">
@@ -42,19 +42,7 @@
         <!--pagination-->
         <tr>
           <th scope="row" colspan="8">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-end">
-                <li class="page-item disabled">
-                  <a class="page-link" :href="'#'">Primero</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" :href="'#'">Ultimo</a>
-                </li>
-              </ul>
-            </nav>
+            <paginate-links for="filtro.data.data" :classes="{'ul': 'pagination', 'li': 'page-item', 'a': 'page-link'}"></paginate-links>
           </th>
         </tr>
       </tfoot>
@@ -292,8 +280,9 @@
         props:['filtro'],
         data: function(){
             return{
-                liquidaciones:this.filtro.data.data,
+                liquidaciones:[],
                 liquidacion:[],
+                paginate:this.liquidaciones,
                 //pagination:{
                 //  current_page:this.filtro.current_page,
                 //  primero:this.filtro.first_page_url,
@@ -311,33 +300,19 @@
         },
         mounted() {
 
-                //axios.get('api/liquidacion').then((response)=>{
-                //   this.liquidaciones = response.data.data;
-                //   //this.pagination.primero = response.data.first_page_url
-                //   //this.pagination.ultimo = response.data.last_page_url
-                //   //this.pagination.current_page = response.data.current_page
-                //   //this.pagination.from = response.data.from
-                //   //this.pagination.last_page = response.data.last_page
-                //   //this.pagination.next_page_url = response.data.next_page_url
-                //   //this.pagination.path = response.data.path
-                //   //this.pagination.per_page = response.data.per_page
-                //   //this.pagination.to = response.data.to
-                //   //this.pagination.total = response.data.total
-                //   console.log('todas las liquidaciones: '+this.liquidaciones)
-                //   //alert(JSON.stringify(this.pagination))
-                //  })
-                //this.liquidaciones = [];
-                //this.liquidaciones.push(this.filtro.data.data)
+                this.liquidaciones = this.filtros.data.data
                 console.log('tabla liquidacion component mounted')
         }, 
         methods:{
             show(id){
+
                 axios.get(`api/liquidacion/detalle/`+id).then((response)=>{
                    this.liquidacion = [];
                    this.liquidacion = response.data;
                 })
             },
             empty(){
+                //this.liquidaciones = this.filtros.data.data
                 this.liquidacion = [];
             },
         },

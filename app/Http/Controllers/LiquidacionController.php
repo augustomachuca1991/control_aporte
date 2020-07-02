@@ -121,9 +121,15 @@ class LiquidacionController extends Controller
      * buscar por periodo de liquidacion, por tipo de liquidacion
      * @param  \App\Liquidacion  $liquidacion
      * @return \Illuminate\Http\Response
+     * $periodo=null, $tipo=null, $organismo=null, $jur=null, $origen=null
      */
-    public function filtro($periodo=null, $tipo=null, $organismo=null, $jur=null, $origen=null)
+    public function filtro(Request $request)
     {
+        $periodo = $request->periodo;
+        $tipo = $request->tipo_liquidacion;
+        $organismo = $request->organismo;
+        $jur = $request->jurisdiccion;
+        $origen = $request->origen;
         return Liquidacion::whereHas('liquidacionOrganismo',function($query) use($periodo, $tipo, $organismo, $jur, $origen){
 
             if ($origen) {
@@ -237,12 +243,18 @@ class LiquidacionController extends Controller
      * @param  \App\Liquidacion  $liquidacion
      * @return \Illuminate\Http\Response
      */
-    public function agente($nombre)
+    public function agente(Request $request)
     {
-        return Liquidacion::whereHas('historia_laborales', function($query) use ($nombre){
-            $query->whereHas('puesto', function($query2) use ($nombre){
-                $query2->whereHas('agente', function($query3) use ($nombre){
-                    $query3->where('nombre','like',"%".$nombre."%");
+        $nombre = $request->nombre;
+        $cuil = $request->cuil;
+        return Liquidacion::whereHas('historia_laborales', function($query) use ($nombre,$cuil){
+            $query->whereHas('puesto', function($query2) use ($nombre,$cuil){
+                $query2->whereHas('agente', function($query3) use ($nombre,$cuil){
+                    if ($nombre != '') {
+                        $query3->where('nombre','like',"%".$nombre."%");
+                    } else if ($cuil != ''){
+                        $query3->where('cuil','like',"%".$cuil."%");
+                    }
                 });
             });
         })->with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
