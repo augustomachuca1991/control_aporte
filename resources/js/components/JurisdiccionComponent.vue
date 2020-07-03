@@ -281,12 +281,10 @@
                 selectedOrigen: [],
                 origenes: [],
                 origen: [],
-                jurisdiccion_id: "",
                 message: "",
                 isValid: false,
                 jur_aux: [],
                 feedback: "",
-
 
                 form_editar: false,
                 encabezado: '',
