@@ -11,6 +11,8 @@ class Clase extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $fillable = ['categoria_id', 'clase'];
+
     public function categoria()
     {
     	return $this->belongsTo('App\Categoria');

@@ -11,19 +11,28 @@
 			  <input class="form-check-input" type="radio" name="buscar" id="inlineRadio2" value="2" v-model="checked">
 			  <label class="form-check-label" for="inlineRadio2">Por Cuil</label>
 			</div>
-			<form class="form-row" @submit.prevent="buscar()" method="POST">
-				<div class="col-10">
-	           		<input type="text" class="form-control" id="nombre" placeholder="Por Nombre" required v-model="nombre">
-				</div>
-				<div class="col-2">
-	           		<button type="submit" class="btn btn-outline-success btn-block"><i class="fas fa-search"></i></button>
-				</div>
-			</form>
-           <input type="text" class="form-control" id="cuil" placeholder="Por Cuil" required hidden v-model="cuil">
-          <!--<label class="text-muted">nombre:&nbsp;{{nombre}}</label>-->
-        </div>
+			<form class="form-row" @submit.prevent="buscar()" method="POST" v-model="checked">
+            <div class="col" v-if="checked == ''">
+         		  <label class="text-muted">Seleccione un metodo de busqueda</label>
+            </div>
+            <div v-else class="col">
+              <div class="row">
+                <div class="col-10">
+                  <input :hidden="checked != 1" type="text" class="form-control" name="nombre" id="nombre" placeholder="Por Nombre" required v-model="nombre">
+                  <input :hidden="checked != 2" type="text" class="form-control" name="cuil" id="cuil" placeholder="Por Cuil" required v-model="cuil">
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-outline-success btn-block">
+                      <i class="fas fa-search"></i>
+                    </button>
+                </div>
+              </div>
+            </div>
+      </form>
+        <!--<label class="text-muted">{{input}}</label>-->
       </div>
-  	</div>
+    </div>
+	</div>
 					
 					
            
@@ -45,8 +54,12 @@
         },
         methods:{
         	buscar:function(){
-        		const input = this.nombre;
-        		this.$emit('buscarAgente',input);
+        		const params = {
+              nombre: this.nombre,
+              cuil: this.cuil,
+            };
+            //alert(JSON.stringify(params))
+        		this.$emit('buscarAgente',params);
         	}
         },
 

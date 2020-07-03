@@ -24,11 +24,11 @@ Route::get('/organismo', 'OrganismoController@index')->name('organismo');
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
-Route::get('/liquidacion/filtro/{periodo?}/{tipo?}/{origanismo?}/{jur?}/{origen?}','LiquidacionController@filtro');
+//Route::get('/liquidacion/filtro/{periodo?}/{tipo?}/{origanismo?}/{jur?}/{origen?}','LiquidacionController@filtro');
 //Route::get('/liquidacion/filtro/{periodo?}/{tipo?}','LiquidacionController@filtro');
 //Route::post('/liquidacion/buscar','LiquidacionController@porOrigen');
-Route::get('/liquidacion/nombre/{nombre}','LiquidacionController@agente');
-//Route::post('/liquidacion/filtro','LiquidacionController@filtro');
+Route::post('/liquidacion/agente/filtro','LiquidacionController@agente');
+Route::post('/liquidacion/filtro','LiquidacionController@filtro');
 //laravel.test/api/liquidacion/filtro/21520/1/5
 //laravel.test/api/liquidacion/filtro/25616/1/5
 //laravel.test/api/liquidacion/filtro/25616/2/5
@@ -75,3 +75,11 @@ Route::get('/jurisdiccion/edit/{id}', 'JurisdiccionController@edit')->name('edit
 Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('update_jurisdiccion');
 Route::post('/jurisdiccion/create', 'JurisdiccionController@store')->name('create_jurisdiccion');
 Route::delete('/jurisdiccion/delete/{id}', 'JurisdiccionController@destroy')->name('delete_jurisdiccion');
+
+// Organismos
+Route::get('/organismo', 'OrganismoController@getOrganismos')->name('organismo');
+Route::get('/organismo/{id}', 'OrganismoController@getJurisdiccionesSelected')->name('organismo');
+Route::get('/organismo/edit/{id}', 'OrganismoController@edit')->name('edit_organismo');
+Route::put('/organismo/update/{id}', 'OrganismoController@update')->name('update_organismo');
+Route::post('/organismo/create', 'OrganismoController@store')->name('create_organismo');
+Route::delete('/organismo/delete/{id}', 'OrganismoController@destroy')->name('delete_organismo');

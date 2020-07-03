@@ -85,19 +85,18 @@
             <form @submit.prevent="createCategoria()" method="POST">
               <div class="form-group">
                 <label class="col-form-label" for="origen_new">Origen</label>
-                <select class="custom-select mr-sm-2" name="origen_new" v-model="selectedOrigen" placeholder="Seleccione origen">
+                <select class="custom-select mr-sm-2" name="origen_new" v-model="selectedOrigen" required>
                 <option :value="''" disabled selected>Seleccione Origen</option>
-                <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
+                <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.id">{{origen.origen}}</option>
                 </select>
-                <span style="color:red" v-if="feedback.cod_origen" v-text="feedback.cod_origen[0]" ></span>
               </div>
               <div class="form-group">
                 <label class="col-form-label" for="jurisdiccion_new">Jurisdicción</label>
-                <select :disabled="selectedOrigen.length == 0" class="custom-select mr-sm-2" name="jurisdiccion_new" v-model="selectedJurisdiccion">
+                <select :disabled="selectedOrigen.length == 0" class="custom-select mr-sm-2" name="jurisdiccion_new" v-model="selectedJurisdiccion" required>
                   <option :value="''" disabled selected> Seleccione Jurisdicción</option>
-                  <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
+                  <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.id">{{jurisdiccion.jurisdiccion}}</option>
+                  <span  style="color:red" v-if="feedback.id_jurisdiccion" v-text="feedback.id_jurisdiccion[0]" ></span>
                 </select>
-                <span style="color:red" v-if="feedback.cod_jurisdiccion" v-text="feedback.cod_jurisdiccion[0]" ></span>
               </div>
               <div class="form-group has-feedback">
                 <label for="cod_categoria" class="col-form-label">Código Categoría</label>
@@ -174,10 +173,11 @@
             createCategoria() {
               if(confirm("¿Seguro que quieres crear esta categoria?")){
                 const params = {
-                    cod_jurisdiccion : this.selectedJurisdiccion,
+                    id_jurisdiccion : this.selectedJurisdiccion,
                     cod_categoria : this.categoria.cod_categoria,
                     categoria : this.categoria.categoria
                   }
+                  console.log(params);
                   axios.post('api/categoria/create', params )
                   .then(response => {
                     $('#categorias').removeClass('modal-open');

@@ -82,26 +82,26 @@
                       this.filtro.origen = parm
                     break;
                   case 'jurisdiccion':
+                      this.filtro.origen = ''
                       this.filtro.jurisdiccion = ''
                       this.filtro.organismo = ''
                       this.filtro.jurisdiccion = parm
                     break;
                   case 'organismo':
+                      this.filtro.origen = ''
+                      this.filtro.jurisdiccion = ''
                       this.filtro.organismo = ''
                       this.filtro.organismo = parm
                     break;
                 }
-                if (this.filtro.organismo.length != 0 ) {
-                    this.filtro.origen = null
-                    this.filtro.jurisdiccion = null
-                } else if (this.filtro.jurisdiccion.length != 0) {
-                    this.filtro.origen = null
-                    this.filtro.organismo = null
-                } else if (this.filtro.origen.length != 0 ){
-                    this.filtro.organismo = null
-                    this.filtro.jurisdiccion = null
+                const params = {
+                    periodo:this.filtro.periodo,
+                    tipo_liquidacion:this.filtro.tipo_liquidacion,
+                    organismo:this.filtro.organismo,
+                    jurisdiccion:this.filtro.jurisdiccion,
+                    origen:this.filtro.origen,
                 }
-                axios.get(`api/liquidacion/filtro/${this.filtro.periodo}/${this.filtro.tipo_liquidacion}${this.filtro.organismo}/${this.filtro.jurisdiccion}/${this.filtro.origen}`).then((response)=>{
+                axios.post('api/liquidacion/filtro', params).then((response)=>{
                     this.filtro.data = [];
                     this.filtro.condition = false
                     if (response.data.data.length != 0 ) {
@@ -111,7 +111,7 @@
                 })
             },
             like(input){
-                axios.get(`api/liquidacion/nombre/`+input).then((response)=>{
+                axios.post(`api/liquidacion/agente/filtro` , input).then((response)=>{
                     this.filtro.data = [];
                     this.filtro.condition = false
                     if (response.data.data.length != 0 ) {

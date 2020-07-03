@@ -45,7 +45,7 @@ class ClaseController extends Controller
                                 'clase'     => $request['clase']
                                 ]);
         // return back()->withSuccess('Clase creada con éxito');
-        return $clase;
+        return Clase::where('categoria_id','=',$request->categoria_id)->get();
     }
 
     /**
@@ -104,9 +104,12 @@ class ClaseController extends Controller
     public function destroy($id)
     {
         $clase = Clase::find($id);
-        $clase->delete();
 
-        return back()->withSuccess('Clase eliminada con éxito');
+        $categoria_id = $clase->categoria->id;
+
+        $clase->delete();
+        // $categoria_id = $
+        return $this->getClases($categoria_id);
     }
 
     public function getClases($id){

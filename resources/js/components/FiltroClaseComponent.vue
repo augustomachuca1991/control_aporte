@@ -33,8 +33,8 @@
                   selectedCategoria:'',
                   jurisdiccion:'',
                   jurisdicciones: [],
-                  categorias: '',
-                  clases:'',
+                  categorias: [],
+                  clases:[],
                   cod_jurisdiccion: "",
                   selectedOrigen: "",
                   selectedJurisdiccion: "",    
@@ -58,18 +58,21 @@
             watch: {
                 selectedOrigen: function() {
                   this.jurisdicciones = [];
-                  this.categorias ='';
-                  this.clases = '';
-                  this.selectedJurisdiccion = "";
+                  this.categorias =[];
+                  this.clases = [];
+                  // this.selectedJurisdiccion = "";
                 //   this.$emit('jurisdiccion',this.categorias);
                   if (this.selectedOrigen > 0) {
+                    console.log(this.origenes[this.selectedOrigen-1].jurisdicciones);
                     this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
                   }
                 },
                 selectedJurisdiccion: function() {
                     this.categorias = [];
-                    this.selectedCategoria = "";
+                    this.clases = [];
+                    // this.selectedCategoria = "";
                     if (this.selectedJurisdiccion > 0) {
+                    console.log(this.origenes[this.selectedOrigen-1].jurisdicciones[this.selectedJurisdiccion-1].categorias);
                     this.categorias = this.origenes[this.selectedOrigen-1].jurisdicciones[this.selectedJurisdiccion-1].categorias
                     }
                 },
