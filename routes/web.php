@@ -33,9 +33,13 @@ Route::middleware('admin')->group(function(){
 		return view('admin.index');
 	})->name('admin');
 
+	//-------- Liquidacion Controller------------
 	Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidacion');
 
+	//-------- Computo Controller------------
+	Route::get('/computo', 'LiquidacionOrganismoController@index')->name('computo');
 
+	//-------- Categoria Controller------------
 	Route::get('/categoria', 'CategoriaController@index')->name('categoria');
 
 	//-------- Clase Controller------------

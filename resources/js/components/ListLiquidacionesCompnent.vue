@@ -300,7 +300,7 @@
         },
         mounted() {
 
-                this.liquidaciones = this.filtros.data.data
+                
                 console.log('tabla liquidacion component mounted')
         }, 
         methods:{

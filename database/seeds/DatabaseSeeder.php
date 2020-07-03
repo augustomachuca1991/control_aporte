@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ClaseTableSeeder::class);
         $this->call(PuestoLaboralTableSeeder::class);
         $this->call(LiquidacionTableSeeder::class);
-
+        $this->call(DetalleTableSeeder::class);
 
     }
 }

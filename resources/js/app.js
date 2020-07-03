@@ -11,6 +11,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 var Paginate = require('vue-paginate')
+//var adminLTE = require('startbootstrap-sb-admin-2')
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -38,6 +39,7 @@ Vue.component('filtrocategoria-component', require('./components/FiltroCategoria
 Vue.component('panelcategoria-component', require('./components/PanelCategoriaComponent.vue').default);
 
 Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesCompnent.vue').default);
+Vue.component('origen-component', require('./components/ComputoOrigenComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
