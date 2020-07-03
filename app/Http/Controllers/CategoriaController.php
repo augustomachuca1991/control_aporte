@@ -37,17 +37,19 @@ class CategoriaController extends Controller
     {
         // dd($request->all());
         $validarDatos = $request->validate([
-            'cod_jurisdiccion'  => 'required',
+            'id_jurisdiccion'   => 'required',
             'cod_categoria'     => 'required|unique:categorias',
             'categoria'         => 'required|string',
         ]);
-
+        // dd($validarDatos);
         $categoria = Categoria::create([
-                                        'cod_categoria' => $request['cod_categoria'],
-                                        'categoria'     => $request['categoria']
+                                        'cod_categoria' => $request->cod_categoria,
+                                        'categoria'     => $request->categoria
                                         ]);
-        $cod_jurisdiccion = $request->cod_jurisdiccion;
-        $categoria->jurisdicciones()->attach($cod_jurisdiccion);
+        // dd($categoria);
+        $id_jurisdiccion = $request->id_jurisdiccion;
+        // dd($cod_jurisdiccion);
+        $categoria->jurisdicciones()->attach($id_jurisdiccion);
 
         return $categoria;
     }
