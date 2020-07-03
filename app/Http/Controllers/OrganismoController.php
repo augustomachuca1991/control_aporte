@@ -49,11 +49,12 @@ class OrganismoController extends Controller
         try {
 
             $org = Organismo::create([
-                'cod_ordanismo'       =>   $request->cod_organismo,
+                'cod_organismo'       =>   $request->cod_organismo,
                 'jurisdiccion_id'       =>   $request->jurisdiccion_id,
                 'organismo'       =>   $request->organismo,
                 'created_at'    =>   $date,
             ]);
+
             return response()->json(['isValid'=>true,'errors'=>'Organismo creado satisfactoriamente']);
         }catch(\Exception $e) {
             return response()->json(['isValid'=>false,'errors'=>'Error al crear la Organismo']);
@@ -139,10 +140,10 @@ class OrganismoController extends Controller
      * @param  \App\Organismo  $organismo
      * @return \Illuminate\Http\Response
      */
-    public function getOrganismos(Organismo $organismo)
-    {
-        return Organismo::with('jurisdiccion')->get();
-    }
+    //public function getOrganismos(Organismo $organismo)
+    //{
+        //return Organismo::with('jurisdiccion')->get();
+    //}
 
     /**
      * Remove the specified resource from storage.
@@ -152,7 +153,7 @@ class OrganismoController extends Controller
      */
     public function getJurisdiccionesSelected($id){
         try{
-            return Organismo::where('jurisdiccion_id',$id)->get();
+            return Organismo::with('jurisdiccion')->where('jurisdiccion_id',$id)->get();
         }catch (\Exception $e){
             return [];
         }

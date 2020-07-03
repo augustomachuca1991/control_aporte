@@ -8,8 +8,10 @@
         </div>
 
         <div class="card-body">
-            <organismos-component></organismos-component>
+            <organismo-component></organismo-component>
+
         </div>
     </div>
 
 @endsection
+

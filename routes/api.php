@@ -58,7 +58,7 @@ Route::put('/categoria/update/{id}', 'CategoriaController@update')->name('update
 Route::post('/categoria/create', 'CategoriaController@store')->name('create_categoria');
 Route::delete('/categoria/delete/{id}', 'CategoriaController@destroy')->name('delete_categoria');
 
-Route::get('/clase', 'ClaseController@getClases')->name('clases');
+Route::get('/clase/{id}', 'ClaseController@getClases')->name('clases');
 Route::get('/clase/edit/{id}', 'ClaseController@edit')->name('edit_clase');
 Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase');
 Route::post('/clase/create', 'ClaseController@store')->name('create_clase');

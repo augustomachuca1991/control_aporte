@@ -10,9 +10,9 @@
                 </select>
             </div>
             <div class="form-group col-md-6 border-0 shadow p-3">
-                <label class="text-muted" for="jurisdiccion1"><i class="fas fa-search"></i> Jurisdicción</label>
-                <select class="custom-select mr-sm-2" id="jurisdiccion1" name="jurisdiccion1"  v-model="selectedJurisdiccion">
-                    <option :value="''" disabled selected>Seleccione Origen</option>
+                <label class="text-muted" for="jurisdiccion_1"><i class="fas fa-search"></i> Jurisdicción</label>
+                <select class="custom-select mr-sm-2" id="jurisdiccion_1" name="jurisdiccion_1"  v-model="selectedJurisdiccion">
+                    <option :value="''" disabled selected>Seleccione Jurisdicción</option>
                     <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
                 </select>
             </div>
@@ -97,7 +97,7 @@
                                     <div class="form-group" v-model="jurisdiccion">
                                         <label class="required" for="mostrarJurisdiccion" >Jurisdicción</label>
                                         <select class="custom-select mr-sm-2" id="mostrarJurisdiccion" name="jurisdiccion" v-model="org_aux.jurisdiccion_id" disabled>
-                                            <option>Seleccione Orígenes</option>
+                                            <option>Seleccione Jurisdicción</option>
                                             <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
                                         </select>
                                     </div>
@@ -192,7 +192,7 @@
                         <form action="" class="form-group" method="POST">
                             <div class="row">
                                 <div class="col">
-                                    <div class="form-group" v-model="origen">
+                                    <div class="form-group" v-model="origenes">
                                         <label class="required" for="editarOrigen" >Origen</label>
                                         <select class="custom-select mr-sm-2" id="editarOrigen" name="origen" v-model="jur_aux.origen_id" >
                                             <option>Seleccione Orígenes</option>
@@ -203,9 +203,9 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <div class="form-group" v-model="origen">
-                                        <label class="required" for="editarJurisdiccion" >Origen</label>
-                                        <select class="custom-select mr-sm-2" id="editarJurisdiccion" name="origen" v-model="org_aux.origen_id" >
+                                    <div class="form-group" v-model="jurisdicciones">
+                                        <label class="required" for="editarJurisdiccion" >Jurisdicción</label>
+                                        <select class="custom-select mr-sm-2" id="editarJurisdiccion" name="origen" v-model="org_aux.jurisdiccion_id" >
                                             <option>Seleccione Jurisdicción</option>
                                             <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
                                         </select>
@@ -243,42 +243,38 @@
 
 <script>
     export default {
-        name: "OrganismosComponent",
-
+        name: "OrganismoComponent",
         data: function(){
             return{
                 jurisdicciones:[],
+                jurisdiccion: [],
                 organismos:[],
                 selectedOrigen: [],
                 selectedJurisdiccion: [],
                 origenes: [],
                 origen: [],
-                jurisdiccion_id: "",
                 message: "",
                 isValid: false,
                 jur_aux: [],
                 org_aux: [],
                 feedback: "",
-
-
                 form_editar: false,
                 encabezado: '',
                 error_descripcion: ''
             }
         },
         mounted() {
-            this.getOrganismos();
+            //this.getOrganismos();
             this.getOrigenes();
-            this.getJurisdicciones();
+            //this.getJurisdicciones();
         },
 
         methods: {
-            getJurisdicciones(){
-                axios.get('api/jurisdiccion').then((response)=>{
-                    console.log(response.data)
-                    this.jurisdicciones = response.data;
-                })
-            },
+            //getJurisdicciones(){
+                //axios.get('api/jurisdiccion').then((response)=>{
+                    //this.jurisdicciones = response.data;
+                //})
+            //},
             getOrigenes(){
                 axios.get('api/origen/')
                     .then((response)=>{
@@ -296,30 +292,37 @@
             },
             getOrigenSelected(){
                 axios.get(`api/jurisdiccion/${this.selectedOrigen}`).then((response)=>{
-                    console.log(response.data)
+                    console.log(response.data);
                     this.jurisdicciones = response.data;
                 })
             },
-            getJurisdiccionesSelected(){
-                axios.get(`api/organismo/${this.selectedJurisdiccion}`).then((response)=>{
-                    console.log(response.data)
+            getJurisdiccionesSelected(p){
+                this.selectedJurisdicion = p;
+                //alert('en el get:');
+                //alert(this.selectedJurisdicion);
+                axios.get(`api/organismo/${this.selectedJurisdicion}`).then((response)=>{
+                    console.log(this.selectedJurisdicion);
+                    //console.log(response.data);
                     this.organismos = response.data;
                 })
             },
 
             editOrganismo(p_organismo){
+                console.log(p_organismo);
                 this.org_aux = _.cloneDeep(p_organismo);
+                this.jur_aux = _.cloneDeep(p_organismo.jurisdiccion);
                 this.encabezado = 'Editar Organismo';
             },
             mostrarOrganismo(p_organismo){
                 this.org_aux = _.cloneDeep(p_organismo);
+                this.jur_aux = _.cloneDeep(p_organismo.jurisdiccion);
             },
 
             updateOrganismo(p_organismo){
                 if(confirm("¿Seguro que desea guardar los cambios?")){
                     const params = {
                         cod_organismo : p_organismo.cod_organismo,
-                        organismo : p_organismo.jurisdiccion,
+                        organismo : p_organismo.organismo,
                         jurisdiccion_id : p_organismo.jurisdiccion_id,
                     };
                     axios.put(`api/organismo/update/${p_organismo.id}` , params)
@@ -338,9 +341,9 @@
                     const params = {
                         cod_organismo : this.org_aux.cod_organismo,
                         organismo : this.org_aux.organismo,
-                        organismo_id : this.selectedOrganismo,
+                        jurisdiccion_id : this.selectedJurisdicion,
                     };
-
+                    console.log(params);
                     axios.post('api/organismo/create', params )
                         .then(response => {
                             this.isValid = response.data.isValid;
@@ -369,19 +372,25 @@
             },
 
             empty(){
-                this.getJurisdiccionesSelected();
                 this.jur_aux = [];
+                this.org_aux = [];
+                this.getOrigenSelected();
+                this.getJurisdiccionesSelected(this.selectedJurisdiccion);
             },
 
         },
         watch:{
             selectedOrigen: function () {
-                this.getOrigenSelected()
+                this.getOrigenSelected();
+                this.organismos = [];
             },
             selectedJurisdiccion: function () {
-                this.getJurisdiccionesSelected()
+                this.getJurisdiccionesSelected(this.selectedJurisdiccion);
             }
         }
     }
 </script>
 
+<style scoped>
+
+</style>

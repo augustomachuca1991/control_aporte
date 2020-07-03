@@ -37,6 +37,7 @@ Vue.component('filtroclase-component', require('./components/FiltroClaseComponen
 Vue.component('panelclase-component', require('./components/PanelClaseComponent.vue').default);
 Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);
 Vue.component('panelcategoria-component', require('./components/PanelCategoriaComponent.vue').default);
+Vue.component('organismo-component', require('./components/OrganismoComponent.vue').default);
 
 Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesCompnent.vue').default);
 Vue.component('origen-component', require('./components/ComputoOrigenComponent.vue').default);
