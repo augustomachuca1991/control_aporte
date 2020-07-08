@@ -12,12 +12,16 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 var Paginate = require('vue-paginate')
+<<<<<<< HEAD
 
 
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 import 'sweetalert2/src/sweetalert2.scss'
   
+=======
+//var adminLTE = require('startbootstrap-sb-admin-2')
+>>>>>>> d9944b4bdef8203e4e764e2c4961622e88a955cd
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -42,8 +46,10 @@ Vue.component('filtroclase-component', require('./components/FiltroClaseComponen
 Vue.component('panelclase-component', require('./components/PanelClaseComponent.vue').default);
 Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);
 Vue.component('panelcategoria-component', require('./components/PanelCategoriaComponent.vue').default);
+Vue.component('organismo-component', require('./components/OrganismoComponent.vue').default);
 
 Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesCompnent.vue').default);
+Vue.component('origen-component', require('./components/ComputoOrigenComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

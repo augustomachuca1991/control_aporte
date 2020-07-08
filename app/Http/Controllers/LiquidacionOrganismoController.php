@@ -14,7 +14,7 @@ class LiquidacionOrganismoController extends Controller
      */
     public function index()
     {
-        //
+        return view('computos.index');
     }
 
     /**
