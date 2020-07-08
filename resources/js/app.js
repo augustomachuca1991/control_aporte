@@ -10,7 +10,14 @@ require('./bootstrap');
 
 
 window.Vue = require('vue');
+
 var Paginate = require('vue-paginate')
+
+
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+
+import 'sweetalert2/src/sweetalert2.scss'
+  
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,8 +28,7 @@ var Paginate = require('vue-paginate')
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
-Vue.component('paginate', Paginate)
+// Vue.component('paginate', Paginate)
 Vue.component('panel-component', require('./components/PanelComponent.vue').default);
 Vue.component('filter-component', require('./components/FilterComponent.vue').default);
 Vue.component('filtroperiodo-component', require('./components/FilterPeriodoComponent.vue').default);

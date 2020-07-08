@@ -104,8 +104,10 @@ class ClaseController extends Controller
     public function destroy($id)
     {
         $clase = Clase::find($id);
+        // dd($clase);
 
-        $categoria_id = $clase->categoria->id;
+        $categoria_id = $clase->categoria_id;
+        // dd($categoria_id);
 
         $clase->delete();
         // $categoria_id = $

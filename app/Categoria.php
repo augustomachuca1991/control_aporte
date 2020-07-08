@@ -12,7 +12,7 @@ class Categoria extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at']; 
-
+    protected $primaryKey = 'id';
     protected $fillable = ['cod_categoria', 'categoria'];
 
     public function Clases()

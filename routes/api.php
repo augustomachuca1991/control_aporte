@@ -51,7 +51,7 @@ Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
 
 
 // Categoria
-
+Route::get('/categoria/find/{id}', 'CategoriaController@getCategoria')->name('find_categoria');
 Route::get('/categoria/{id}', 'CategoriaController@getCategorias')->name('categoria');
 Route::get('/categoria/edit/{id}', 'CategoriaController@edit')->name('edit_categoria');
 Route::put('/categoria/update/{id}', 'CategoriaController@update')->name('update_categoria');
