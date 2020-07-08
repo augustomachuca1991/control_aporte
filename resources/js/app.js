@@ -12,16 +12,12 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 var Paginate = require('vue-paginate')
-<<<<<<< HEAD
 
 
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 import 'sweetalert2/src/sweetalert2.scss'
   
-=======
-//var adminLTE = require('startbootstrap-sb-admin-2')
->>>>>>> d9944b4bdef8203e4e764e2c4961622e88a955cd
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
