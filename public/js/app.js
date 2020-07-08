@@ -3842,40 +3842,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-<<<<<<< HEAD
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      categorias: '',
-      selectO: '',
-      selectJ: ''
-    };
-  },
-  methods: {
-    get_codigo: function get_codigo(categorias) {
-      this.categorias = categorias;
-    },
-    selectOrigen: function selectOrigen(selectO) {
-      this.selectO = selectO;
-    }
-  },
-  mounted: function mounted() {}
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PanelClaseComponent.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PanelClaseComponent.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-=======
->>>>>>> d9944b4bdef8203e4e764e2c4961622e88a955cd
 //
 //
 //
@@ -4279,15 +4245,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      categorias: ''
+      categorias: '',
+      selectO: '',
+      selectJ: ''
     };
   },
   methods: {
     get_codigo: function get_codigo(categorias) {
       this.categorias = categorias;
+    },
+    selectOrigen: function selectOrigen(selectO) {
+      this.selectO = selectO;
     }
   },
   mounted: function mounted() {}
@@ -66167,13 +66139,9 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-<<<<<<< HEAD
 var Paginate = __webpack_require__(/*! vue-paginate */ "./node_modules/vue-paginate/dist/vue-paginate.js");
 
 
-=======
-var Paginate = __webpack_require__(/*! vue-paginate */ "./node_modules/vue-paginate/dist/vue-paginate.js"); //var adminLTE = require('startbootstrap-sb-admin-2')
->>>>>>> d9944b4bdef8203e4e764e2c4961622e88a955cd
 
 /**
  * The following block of code may be used to automatically register your
@@ -67313,13 +67281,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
 __webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
-=======
-__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
->>>>>>> d9944b4bdef8203e4e764e2c4961622e88a955cd
 
 
 /***/ })

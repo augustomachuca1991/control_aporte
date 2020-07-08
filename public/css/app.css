@@ -10901,7 +10901,6 @@ a.text-dark:focus {
   }
 }
 
-<<<<<<< HEAD
 .swal2-popup.swal2-toast {
   flex-direction: row;
   align-items: center;
@@ -12529,7 +12528,8 @@ body.swal2-toast-column .swal2-toast .swal2-input {
 
 body.swal2-toast-column .swal2-toast .swal2-validation-message {
   font-size: 1em;
-=======
+}
+
 /*!
  * Start Bootstrap - SB Admin 2 v4.0.7 (https://startbootstrap.com/template-overviews/sb-admin-2)
  * Copyright 2013-2019 Start Bootstrap
@@ -24816,6 +24816,5 @@ footer.sticky-footer .copyright {
 
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
->>>>>>> d9944b4bdef8203e4e764e2c4961622e88a955cd
 }
 
