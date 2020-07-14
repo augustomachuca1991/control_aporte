@@ -3,16 +3,15 @@
 <div id="app">
     <div class="row">
         <div class="col">
-            <h1>Jurisdicciones</h1>
+            <h1>Historias Laborales</h1>
         </div>
     </div>
 
     <div class="card-body">
-        <jurisdiccion-component></jurisdiccion-component>
+        <historialaborales-component></historialaborales-component>
     </div>
 
 
 </div>
 
 @endsection
-

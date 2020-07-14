@@ -140,10 +140,14 @@ class OrganismoController extends Controller
      * @param  \App\Organismo  $organismo
      * @return \Illuminate\Http\Response
      */
-    //public function getOrganismos(Organismo $organismo)
-    //{
-        //return Organismo::with('jurisdiccion')->get();
-    //}
+    public function getOrganismos(Organismo $organismo)
+    {
+        try{
+        return Organismo::with('jurisdiccion')->get();
+        }catch (\Exception $e) {
+            return [];
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

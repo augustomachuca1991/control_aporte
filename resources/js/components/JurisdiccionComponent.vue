@@ -111,50 +111,6 @@
                 </div>
             </div>
         </div>
-        <!--AQUI-->
-        <!--div class="modal fade" id="mostrarModal" tabindex="-1" role="dialog" aria-labelledby="mostrarModalLabel" aria-hidden="true" >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
-                    <div class="modal-header">
-                        <h1 class="modal-title">Detalle Jurisdicción</h1>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" class="form-group" method="POST">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="mostrarCodJurisdiccion" class="required">Origen</label>
-                                    <input type="text" name="cod_jurisdiccion" id="mostrarCodJurisdiccion" value=""
-                                           class="form-control"  v-model="selectedOrigen.origen" readonly>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="mostrarDetalleOrigen" class="required">Cod. Jurisdicción</label>
-                                    <input type="text" name="mostrarDetalleOrigen" id="mostrarDetalleOrigen" value=""
-                                           class="form-control"  v-model="jur.cod_jurisdiccion" readonly>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="mostrarDescripcion" class="required">Jurisdicción</label>
-                                    <input type="text" name="descripcion" id="mostrarDescripcion" value=""
-                                           class="form-control"  v-model="jur.jurisdiccion" readonly>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="modal-footer">
-
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
-                                    <span class="btn btn-danger" aria-hidden="true">Volver</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div-->
 
         <!-- Modal alta -->
         <div class="modal fade" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="altaModalLabel" aria-hidden="true" >
@@ -269,7 +225,19 @@
                 </div>
             </div>
         </div>
+
+        <paginate v-if="shown"
+                  name="items"
+                  :list="items"
+        >
+            <li v-for="item in paginated('items')">
+                {{ item }}
+            </li>
+        </paginate>
+        <paginate-links for="items"></paginate-links>
+
     </div>
+
 </template>
 
 <script>
@@ -288,12 +256,20 @@
 
                 form_editar: false,
                 encabezado: '',
-                error_descripcion: ''
+                error_descripcion: '',
+
+
+                langs: ['JavaScript', 'PHP', 'HTML', 'CSS', 'Ruby', 'Python', 'Erlang'],
+                paginate: ['languages'],
+                shown: true
             }
         },
         mounted() {
             this.getOrigenes();
             this.getJurisdicciones();
+            setTimeout(() => {
+                this.shown = true
+            }, 1000)
         },
 
         methods: {

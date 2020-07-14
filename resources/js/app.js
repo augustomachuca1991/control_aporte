@@ -11,7 +11,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-var Paginate = require('vue-paginate')
+import VuePaginate from 'vue-paginate'
+Vue.use(VuePaginate)
+var Paginate = require('vue-paginate');
 
 
 import Swal from 'sweetalert2/dist/sweetalert2.js'
@@ -23,7 +25,7 @@ import 'sweetalert2/src/sweetalert2.scss'
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".
  *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Eg. ./components/HistoriaLaboralesComponent.vue -> <example-component></example-component>
  */
 
 // const files = require.context('./', true, /\.vue$/i)

@@ -22,7 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/origen', 'OrigenController@index')->name('origen');
 
 //organismo
-Route::get('/organismo', 'OrganismoController@index')->name('organismo');
+//Route::get('/organismo', 'OrganismoController@index')->name('organismo');
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
@@ -79,3 +79,11 @@ Route::get('/organismo/edit/{id}', 'OrganismoController@edit')->name('edit_organ
 Route::put('/organismo/update/{id}', 'OrganismoController@update')->name('update_organismo');
 Route::post('/organismo/create', 'OrganismoController@store')->name('create_organismo');
 Route::delete('/organismo/delete/{id}', 'OrganismoController@destroy')->name('delete_organismo');
+
+// Historias Laborales
+Route::get('/hlaborales', 'HistoriaLaboralController@getHistoriaLaborales')->name('historialaboral');
+Route::get('/hlaborales/{id}', 'HistoriaLaboralController@getHistoriaLaboralSelected')->name('historialaboral');
+Route::get('/hlaborales/edit/{id}', 'HistoriaLaboralController@edit')->name('edit_historialaboral');
+Route::put('/hlaborales/update/{id}', 'HistoriaLaboralController@update')->name('update_historialaboral');
+Route::post('/hlaborales/create', 'HistoriaLaboralController@store')->name('create_historialaboral');
+Route::delete('/hlaborales/delete/{id}', 'HistoriaLaboralController@destroy')->name('delete_historialaboral');
