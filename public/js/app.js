@@ -68448,10 +68448,9 @@ Vue.component('panel-component', __webpack_require__(/*! ./components/PanelLiqui
 Vue.component('filter-component', __webpack_require__(/*! ./components/FiltroComponent.vue */ "./resources/js/components/FiltroComponent.vue")["default"]);
 Vue.component('filtroperiodo-component', __webpack_require__(/*! ./components/FiltroPeriodoComponent.vue */ "./resources/js/components/FiltroPeriodoComponent.vue")["default"]);
 Vue.component('filtertipoliquidacion-component', __webpack_require__(/*! ./components/FiltroTipoLiquidacionComponent.vue */ "./resources/js/components/FiltroTipoLiquidacionComponent.vue")["default"]);
-Vue.component('panel-component', __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './components/PanelComponent.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))["default"]);
-Vue.component('filter-component', __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './components/FilterComponent.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))["default"]);
-Vue.component('filtroperiodo-component', __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './components/FilterPeriodoComponent.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))["default"]);
-Vue.component('filtertipoliquidacion-component', __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './components/FilterTipoLiquidacionComponent.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))["default"]);
+Vue.component('filter-component', __webpack_require__(/*! ./components/FiltroComponent.vue */ "./resources/js/components/FiltroComponent.vue")["default"]);
+Vue.component('filtroperiodo-component', __webpack_require__(/*! ./components/FiltroPeriodoComponent.vue */ "./resources/js/components/FiltroPeriodoComponent.vue")["default"]);
+Vue.component('filtertipoliquidacion-component', __webpack_require__(/*! ./components/FiltroTipoLiquidacionComponent.vue */ "./resources/js/components/FiltroTipoLiquidacionComponent.vue")["default"]);
 Vue.component('buscaragente-component', __webpack_require__(/*! ./components/BuscarAgenteComponent.vue */ "./resources/js/components/BuscarAgenteComponent.vue")["default"]);
 Vue.component('jurisdiccion-component', __webpack_require__(/*! ./components/JurisdiccionComponent.vue */ "./resources/js/components/JurisdiccionComponent.vue")["default"]);
 Vue.component('categoria-component', __webpack_require__(/*! ./components/CategoriaComponent.vue */ "./resources/js/components/CategoriaComponent.vue")["default"]);

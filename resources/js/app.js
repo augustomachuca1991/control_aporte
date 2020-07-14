@@ -33,10 +33,9 @@ Vue.component('panel-component', require('./components/PanelLiquidacionComponent
 Vue.component('filter-component', require('./components/FiltroComponent.vue').default);
 Vue.component('filtroperiodo-component', require('./components/FiltroPeriodoComponent.vue').default);
 Vue.component('filtertipoliquidacion-component', require('./components/FiltroTipoLiquidacionComponent.vue').default);
-Vue.component('panel-component', require('./components/PanelComponent.vue').default);
-Vue.component('filter-component', require('./components/FilterComponent.vue').default);
-Vue.component('filtroperiodo-component', require('./components/FilterPeriodoComponent.vue').default);
-Vue.component('filtertipoliquidacion-component', require('./components/FilterTipoLiquidacionComponent.vue').default);
+Vue.component('filter-component', require('./components/FiltroComponent.vue').default);
+Vue.component('filtroperiodo-component', require('./components/FiltroPeriodoComponent.vue').default);
+Vue.component('filtertipoliquidacion-component', require('./components/FiltroTipoLiquidacionComponent.vue').default);
 Vue.component('buscaragente-component', require('./components/BuscarAgenteComponent.vue').default);
 Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
 Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
