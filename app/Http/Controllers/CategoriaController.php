@@ -88,13 +88,14 @@ class CategoriaController extends Controller
         $request->validate([
             'categoria'     => 'required'
         ]);
-
+        // dd($request->all());
         $categoria =  Categoria::find($id);
+        // dd($categoria);
 
         $categoria->categoria = $request['categoria'];
         $categoria->updated_at = now();
         $categoria->save();
-        $jur_id = $categoria->jurisdicciones->id;
+        $jur_id = $categoria->jurisdicciones->first()->id;
 
         $categorias = $this->getCategorias($jur_id);
         return $categorias;
@@ -111,15 +112,25 @@ class CategoriaController extends Controller
     public function destroy($id)
     {
         $categoria = Categoria::find($id);
+        $j_id = $categoria->jurisdicciones->first()->pivot->jurisdiccion_id;
         $categoria->delete();
 
-        return $this->getCategorias();
+        return $this->getCategorias($j_id);
     }
 
     public function getCategorias($id){
-        // dd((int)$id);
         return Categoria::whereHas('jurisdicciones', function ($query) use ($id) {
             $query->where('jurisdiccion_id',$id);
         })->with('jurisdicciones')->get();
+    }
+    public function getCategoria($id){
+        $categoria =  Categoria::find($id);
+        $j_id = $categoria->jurisdicciones->first()->pivot->jurisdiccion_id;
+        $o_id = $categoria->jurisdicciones->first()->origen_id;
+
+        return [
+            'jurisdiccion_id' => $j_id,
+            'origen_id' => $o_id
+        ];
     }
 }

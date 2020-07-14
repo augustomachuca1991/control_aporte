@@ -11,10 +11,10 @@
 
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  
+
   <title>I.P.S Corrientes</title>
 
- 
+
   <!-- Custom styles for this template-->
   <link href="admin/css/sb-admin-2.min.css" rel="stylesheet">
 
@@ -134,7 +134,7 @@
           <i class="fas fa-fw fa-table"></i>
           <span>Categorias</span></a>
       </li>
-      
+
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <a class="nav-link" href="{{ route('liquidacion')}}">
@@ -142,7 +142,7 @@
           <span>Liquidaciones</span></a>
       </li>
 
-    
+
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -403,9 +403,15 @@
   <!-- Bootstrap core JavaScript-->
   <script src="admin/vendor/jquery/jquery.min.js"></script>
   <script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<<<<<<< HEAD
   
   
  
+=======
+
+
+
+>>>>>>> e2424db68a10d25fe0a37be192427e6299e12ad6
   <!-- Custom scripts for all pages-->
   <script src="admin/js/sb-admin-2.min.js"></script>
   <script src="{{ asset('js/app.js') }}" defer></script>

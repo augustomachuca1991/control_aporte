@@ -62,6 +62,10 @@ Route::middleware('admin')->group(function(){
         ->names('organismos')
         ->parameters(['organismos' => 'organismos']);
 
+    //-------- Historia Laborales Controller------------
+    Route::resource('/hlaborales', 'HistoriaLaboralController')
+        ->names('hlaborales')
+        ->parameters(['hlaborales' => 'hlaborales']);
 
 });
 

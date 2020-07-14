@@ -15,6 +15,7 @@ class HistoriaLaboralController extends Controller
     public function index()
     {
         //
+        return view('historia_laborales.index');
     }
 
     /**
@@ -82,4 +83,22 @@ class HistoriaLaboralController extends Controller
     {
         //
     }
+
+    public function getHistoriaLaborales(HistoriaLaboral $historiaLaboral)
+    {
+        try{
+            return HistoriaLaboral::with('agente')->get();
+        }catch (\Exception $e){
+            return [];
+        }
+    }
+
+    public function getHistoriaLaboralSelected($id){
+        try{
+            return HistoriaLaboral::with('agente')->where('agente_id',$id)->get();
+        }catch (\Exception $e){
+            return [];
+        }
+    }
+
 }

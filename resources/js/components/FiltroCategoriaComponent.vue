@@ -1,15 +1,15 @@
 <template>
     <div class="form-row col mb-3 shadow p-3">
-      <div class="form-group col-md-4 border-0 shadow p-3">
+      <div class="form-group col-md-4 border-0">
         <label class="text-muted" for="origen1"><i class="fas fa-search"></i> Origen</label>
-        <select class="custom-select mr-sm-2" id="origen1" name="origen1"  v-model="selectedOrigen">
+        <select class="form-control form-control-md" id="origen1" name="origen1"  v-model="selectedOrigen">
           <option :value="''" disabled selected>Seleccione Origen</option>
           <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
         </select>
       </div>
-      <div class="form-group col-md-4 border-0 shadow p-3">
+      <div class="form-group col-md-4 border-0">
         <label class="text-muted" for="jurisdiccion"><i class="fas fa-search"></i> Jurisdiccion</label>
-        <select  :disabled="selectedOrigen.length == 0" class="custom-select mr-sm-2" id="jurisdiccion1" name="jurisdiccion1" v-model="selectedJurisdiccion">
+        <select  :disabled="selectedOrigen.length == 0" class="form-control form-control-md" id="jurisdiccion1" name="jurisdiccion1" v-model="selectedJurisdiccion">
            <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
            <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
         </select>
@@ -20,19 +20,17 @@
 
 <script>
     export default {
+            props:['selectO'],
             data: function() {
               return {
                   origenes: [],
-                  jurisdicciones: [],
+                  jurisdicciones: '',
                   categorias: '',
                   cod_jurisdiccion: "",
                   selectedOrigen: "",
                   selectedJurisdiccion: "",    
               }
             },
-            // created(){
-            //   eventBus.$on('actualizar', this.actualizar());  // 3.Listening
-            // },
             methods:{
               getCategorias(id){
                   axios.get(`api/categoria/${id}`).then((response)=>{
@@ -46,8 +44,8 @@
             },
             watch: {
                 selectedOrigen: function() {
-                  this.jurisdicciones = [];
-                  this.categorias ='';
+                  this.jurisdicciones = '';
+                  this.categorias = '';
                   this.selectedJurisdiccion = "";
                   this.$emit('jurisdiccion',this.categorias);
                   if (this.selectedOrigen > 0) {
@@ -55,23 +53,15 @@
                   }
                 },
                 selectedJurisdiccion: function() {
-                  // const cod_jurisdiccion = this.selectedJurisdiccion
-                  this.getCategorias(this.selectedJurisdiccion);
+                  if (this.selectedJurisdiccion > 0) {
+                    this.getCategorias(this.selectedJurisdiccion);
+                  }
                 },
-                // categorias: function(){
-                //   // console.log(this.selectedJurisdiccion);
-                //   if(this.selectedJurisdiccion){
-                //     this.getCategorias(this.selectedJurisdiccion);
-                //   }
-                // }
       },
       mounted() {
             axios.get('api/origen').then((response)=>{
-                this.origenes = response.data;
-                // console.log(response.data);
-                   
+              this.origenes = response.data;   
             }); 
-            // this.selectedJurisdiccion = "";
       }
     }
 </script>
