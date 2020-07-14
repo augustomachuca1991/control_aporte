@@ -14,7 +14,7 @@ class DeclaracionJuradaController extends Controller
      */
     public function index()
     {
-        //
+        return 
     }
 
     /**

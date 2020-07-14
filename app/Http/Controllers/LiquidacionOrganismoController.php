@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\LiquidacionOrganismo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LiquidacionOrganismoController extends Controller
 {
@@ -81,5 +82,37 @@ class LiquidacionOrganismoController extends Controller
     public function destroy(LiquidacionOrganismo $liquidacionOrganismo)
     {
         //
+    }
+
+    public function ComputoOrigenes($periodo){
+        
+        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)->whereHas('organismo', function($query){
+            $query->whereHas('jurisdiccion',function($query2){
+                $query2->whereHas('origen',function($query3){
+                    $query3;
+                });
+            });
+        })->with(['organismo','periodo'])
+        ->get()
+        ->groupBy('organismo.jurisdiccion.origen.origen');
+        return $computos;
+    }
+
+    public function ComputoJurisdicciones($periodo){
+        
+        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)->whereHas('organismo', function($query){
+            $query->whereHas('jurisdiccion',function($query2){
+                $query2;
+            });
+        })->with('organismo')->get()->groupBy('organismo.jurisdiccion.jurisdiccion');
+        return $computos;
+    }
+
+    public function ComputoOrganismos($periodo){
+        
+        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)->whereHas('organismo', function($query){
+            $query;
+        })->with('organismo')->get()->groupBy('organismo.organismo');
+        return $computos;
     }
 }

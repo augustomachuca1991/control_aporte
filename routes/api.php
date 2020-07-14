@@ -18,46 +18,51 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//origen
+//Origenes
 Route::get('/origen', 'OrigenController@index')->name('origen');
 
-//organismo
-Route::get('/organismo', 'OrganismoController@index')->name('organismo');
-
-//liquidaciones
+//Computos
+Route::get('/computo/origen/{periodo}', 'LiquidacionOrganismoController@computoOrigenes');
+Route::get('/computo/jurisdiccion/{periodo}', 'LiquidacionOrganismoController@ComputoJurisdicciones');
+Route::get('/computo/organismo/{periodo}', 'LiquidacionOrganismoController@ComputoOrganismos');
+//Liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
 Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liquidacion_detalle');
 Route::post('/liquidacion/agente/filtro','LiquidacionController@agente')->name('filtros');
 Route::post('/liquidacion/filtro','LiquidacionController@filtro')->name('buscar');
 
+//File
+Route::post('/import', 'ExcelController@import')->name('import');
+Route::post('/export', 'ExcelController@export')->name('export');
 
-//puesto laborales
+
+//Puestos Laborales
 Route::get('/puesto', 'PuestoLaboralController@getpuestoLaboral')->name('puesto_laboral');
 
-//conceptos
+//Conceptos
 Route::get('/concepto', 'ConceptoLiquidacionController@getConcepto')->name('concepto');
 
 //subtipos codigos
 Route::get('/subtipo', 'SubtipoCodigoController@getSubtipo')->name('subtipo');
 
-//tipos de codigos
+//Tipos de codigos
 Route::get('/tipocodigo', 'TipoCodigoController@getTipo')->name('tipocodigo');
 
-//tipos de liquidaciones
+//Tipos de liquidaciones
 Route::get('/tipoliquidacion', 'TipoLiquidacionController@getTipoLiquidacion')->name('tipoliquidacion');
 
-//periodos
+//Periodos
 Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
 
 
-// Categoria
-
+// Categorias
 Route::get('/categoria/{id}', 'CategoriaController@getCategorias')->name('categoria');
 Route::get('/categoria/edit/{id}', 'CategoriaController@edit')->name('edit_categoria');
 Route::put('/categoria/update/{id}', 'CategoriaController@update')->name('update_categoria');
 Route::post('/categoria/create', 'CategoriaController@store')->name('create_categoria');
 Route::delete('/categoria/delete/{id}', 'CategoriaController@destroy')->name('delete_categoria');
 
+// Clases
 Route::get('/clase/{id}', 'ClaseController@getClases')->name('clases');
 Route::get('/clase/edit/{id}', 'ClaseController@edit')->name('edit_clase');
 Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase');

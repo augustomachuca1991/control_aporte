@@ -1,9 +1,9 @@
 <template>
   <div class="table-responsive-lg">
-    <!--<label>Liquidaciones {{liquidaciones}} </label>-->
+    <!--<label>Liquidaciones {{filtro.data}} </label>-->
 
     <!--table-->
-    <table class="table table-sm table-hover table-bordeless" v-model="filtro.data.data">
+    <table class="table table-sm table-hover table-bordeless" v-model="filtro.data">
       <caption>
           Instituto de Previsión Social de Corrientes
       </caption>
@@ -23,7 +23,7 @@
         <tr v-if="!filtro.condition" class="table-default text-center">
           <td colspan="8">No hay datos</td>
         </tr>
-        <tr v-else v-for="liquidacion in filtro.data.data">
+        <tr v-else v-for="liquidacion in filtro.data">
           <th scope="row">00{{liquidacion.id}}</th>
           <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
           <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
@@ -32,20 +32,13 @@
           <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
           <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</td>
           <td>
-              <a :href="'#detalle'" class="btn btn-outline-success border-0 btn-sm shadow text-muteds" data-toggle="modal" v-on:click="show(liquidacion.id)">
+              <a :href="'#detalle'" class="btn btn-outline-success border-0 btn-block shadow text-muteds" data-toggle="modal" v-on:click="show(liquidacion.id)">
               <i class="fas fa-dollar-sign"></i>
               </a>  
           </td>
         </tr>
       </tbody>
-      <tfoot v-if="filtro.condition"> 
-        <!--pagination-->
-        <tr>
-          <th scope="row" colspan="8">
-            <paginate-links for="filtro.data.data" :classes="{'ul': 'pagination', 'li': 'page-item', 'a': 'page-link'}"></paginate-links>
-          </th>
-        </tr>
-      </tfoot>
+      
     </table>
 
     <!--modal-->
@@ -126,9 +119,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small>
                              <small v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.anio}}</small>
-                          </small> 
                       </div> 
                     </div>
                 </div>      
@@ -196,10 +187,27 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small>Activo</small>
+                          <small v-for="historia_laboral in liquidacion.historia_laborales">
+                            {{historia_laboral.historialiquidaciones[0].estado.estado}}
+                          </small> 
                       </div> 
                     </div>
-                </div>      
+                </div>
+                <div class="col">
+                    <div class="row"> 
+                      <div class="col">
+                           <small>Función</small>  
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                          <small v-for="historia_laboral in liquidacion.historia_laborales">
+                            <p v-if="historia_laboral.historialiquidaciones[0].funcion === null">-</p>
+                            <p v-else>{{historia_laboral.historialiquidaciones[0].funcion.funcion}}</p>
+                          </small> 
+                      </div> 
+                    </div>
+                </div>       
             </div>
             <!--table-->
             <div class="table-responsive shadow p-3 mb-5 bg-white rounded">
@@ -309,7 +317,9 @@
                 axios.get(`api/liquidacion/detalle/`+id).then((response)=>{
                    this.liquidacion = [];
                    this.liquidacion = response.data;
-                })
+                }).catch(function (error) {
+                  console.log(error);
+                });
             },
             empty(){
                 //this.liquidaciones = this.filtros.data.data

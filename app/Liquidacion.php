@@ -18,7 +18,7 @@ class Liquidacion extends Model
      */
     public function historia_laborales()
     {
-    	return $this->belongsToMany( 'App\HistoriaLaboral','historia_liquidacion', 'h_laboral_id', 'liquidacion_id')->with(['puesto','clase']);
+    	return $this->belongsToMany( 'App\HistoriaLaboral','historia_liquidacion', 'h_laboral_id', 'liquidacion_id')->with(['puesto','clase','historialiquidaciones']);
     }
 
     /**
@@ -28,7 +28,7 @@ class Liquidacion extends Model
      */
     public function estados()
     {
-        return $this->belongsToMany( 'App\Estado','historia_liquidacion','estado_id','liquidacion_id');
+        return $this->belongsToMany( 'App\Estado','historia_liquidacion','estado_id','liquidacion_id')->with('organismo');
     }
 
     /**
@@ -38,7 +38,7 @@ class Liquidacion extends Model
      */
     public function funciones()
     {
-        return $this->belongsToMany('App\Funcion','historia_liquidacion','id','liquidacion_id');
+        return $this->belongsToMany('App\Funcion','historia_liquidacion','id','liquidacion_id')->with('organismo');
     }
 
     /**
@@ -85,6 +85,14 @@ class Liquidacion extends Model
     public function liquidacionOrganismo()
     {
         return $this->hasMany('App\LiquidacionOrganismo')->with(['organismo','periodo','tipoliquidacion']);
+    }
+
+
+
+    public function scopeName($query, $name){
+
+      if($name)
+        return $query->where(\DB::raw("CONCAT(apellido,'',name)"),'LIKE', '%'.str_replace(' ','',$name).'%');
     }
 
 

@@ -51,20 +51,6 @@ class LiquidacionController extends Controller
                        ->with(['liquidacionOrganismo','historia_laborales','detalles'])
                        ->first();
             foreach ($liquidacion->detalles as $detalle) {
-                //if ($detalle->concepto->subtipo->tipocodigo->id == 1) {
-                //    $liquidacion->bruto += $detalle->importe;
-                //}elseif ($detalle->concepto->subtipo->tipocodigo->id == 2) {
-                //    $liquidacion->bonificable += $detalle->importe;
-                //}elseif ($detalle->concepto->subtipo->tipocodigo->id == 3) {
-                //    $liquidacion->no_bonificable += $detalle->importe;
-                //}elseif ($detalle->concepto->subtipo->tipocodigo->id == 4) {
-                //    $liquidacion->no_remunerativo += $detalle->importe;
-                //}elseif ($detalle->concepto->subtipo->tipocodigo->id == 5) {
-                //    $liquidacion->familiar += $detalle->importe;
-                //}else{
-                //    $liquidacion->descuento += $detalle->importe;
-                //}
-
                 switch ($detalle->concepto->subtipo->tipocodigo->id) {
                     case 1:
                         $liquidacion->bruto += $detalle->importe;
@@ -89,7 +75,6 @@ class LiquidacionController extends Controller
                         break;
                 }
             }
-        $liquidacion->save();
         return $liquidacion;
     }
 
@@ -136,7 +121,7 @@ class LiquidacionController extends Controller
     public function getliquidaciones()
     {
         
-        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
+        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->get();
     }
 
 
@@ -246,7 +231,7 @@ class LiquidacionController extends Controller
                 }
             }
 
-        })->with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
+        })->with(['liquidacionOrganismo','historia_laborales'])->get();
         
     }
 
@@ -271,13 +256,9 @@ class LiquidacionController extends Controller
                                ->orWhere('cuil','like',"%".$buscar."%");
                 });
             });
-        })->with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
+        })->with(['liquidacionOrganismo','historia_laborales'])->get();
                     
     }
-
-
-
-    
 
 }
         

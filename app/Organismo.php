@@ -48,4 +48,14 @@ class Organismo extends Model
     {
         return $this->hasMany('App\LiquidacionOrganismo')->with(['liquidacion','periodo','tipoLiquidacion']);
     }
+
+    public function estados()
+    {
+        return $this->hasMany('App\Estado');
+    }
+
+    public function funciones()
+    {
+        return $this->hasMany('App\Funcion');
+    }
 }

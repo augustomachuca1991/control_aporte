@@ -30,10 +30,6 @@
         },
         methods:{
             cambio(){
-                //axios.get(`api/liquidacion/origen/null/jurisdiccion/null/organismo/null/periodo/${this.selected}/tipo/null`).then((response)=>{
-                //  const periodo = response.data;
-                //  this.$emit('sendPeriodo',periodo);
-                //})
                 const periodo =this.selected;
                 this.$emit('sendPeriodo',periodo);
             },

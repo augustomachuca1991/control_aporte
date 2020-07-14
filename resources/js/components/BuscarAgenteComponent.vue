@@ -7,10 +7,10 @@
     			<form class="form-row mt-1" @submit.prevent="buscar()" method="POST">
                 
             <div class="col-10">
-              <input type="text" class="form-control" name="search" id="search" placeholder="Buscar" required v-model="search">
+              <input type="text" class="form-control  form-control-sm" name="search" id="search" placeholder="Buscar" required v-model="search">
             </div>
             <div class="col-2">
-                <button type="submit" class="btn btn-outline-success btn-block">
+                <button type="submit" class="btn btn-outline-success btn-sm">
                   <i class="fas fa-search"></i>
                 </button>
             </div>

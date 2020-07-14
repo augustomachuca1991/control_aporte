@@ -39,6 +39,11 @@ Route::middleware('admin')->group(function(){
 	//-------- Computo Controller------------
 	Route::get('/computo', 'LiquidacionOrganismoController@index')->name('computo');
 
+	//-------- import/export Controller------------
+	Route::get('/import', 'ExcelController@indexImport')->name('csv_import');
+	Route::get('/export', 'ExcelController@indexExport')->name('csv_export');
+
+	
 	//-------- Categoria Controller------------
 	Route::get('/categoria', 'CategoriaController@index')->name('categoria');
 

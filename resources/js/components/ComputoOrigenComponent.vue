@@ -1,7 +1,7 @@
 <template>
-	<div class="tab-pane fade show active mh-100" id="origen" role="tabpanel" aria-labelledby="origen-tab">
+	<div class="tab-pane fade show active mh-100" id="origen" role="tabpanel" aria-labelledby="origen-tab" v-model="origenes" >
 		<h5 class="card-title">Origen</h5>
-		
+		<!--<label>{{origenes}}</label>-->
 		<div class="table-responsive">
 			<table class="table table-sm table-hover table-bordeless">
 			  <thead>
@@ -18,55 +18,134 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr class="table-default text-center">
-			      <th scope="row" class="table-secondary text-white">SISPER</th>
-			      <td><small>$ 2300000</small></td>
-			      <td><small>$ 150000.05</small></td>
-			      <td><small>$ 23000000.5</small></td>
-			      <td><small>$ 478246144</small></td>
-			      <td><small>$ 465131344.25</small></td>
-			      <td><small>$ 75527522.36</small></td>
-			      <td><small>$ 27775.25</small></td>
-			      <td><small>$ 14141414.36</small></td>
+			  	<tr v-if="origenes.length == 0"  class="table-default text-center">
+			  		<th colspan="9">No Data</th>
+			  	</tr>
+				<tr v-for="(computo, llave) in origenes"  v-else>
+			      <th scope="row">
+			      	{{ llave }}
+			      </th>
+			      <td>
+			      	<tr>
+			      		<small>$ {{total.a}}</small>
+			      	</tr>
+			      </td>
+			      <td>
+			      	<tr>
+			      		<small>$ {{total.b}}</small>
+			      	</tr>
+			      </td>
+			      <td>
+			      	<tr>
+			      		<small>$ {{total.c}}</small>
+			      	</tr>
+			      </td>
+			      <td>
+			      	<tr>
+			      		<small>$ {{total.d}}</small>
+			      	</tr>
+			      </td>
+			      <td>
+			      	<tr>
+			      		<small>$ {{total.e}}</small>
+			      	</tr>
+			      </td>
+			      <td>
+			      	<tr>
+			      		<small>$ {{total.f}}</small>
+			      	</tr>
+			      </td>
+			      <td>
+			      	<tr>
+			      		<small>$ {{total.g}}</small>
+			      	</tr>
+			      </td>
+			      <td>
+			      	<tr>
+			      		<small>$ {{total.h}}</small>
+			      	</tr>
+			      </td>
 			    </tr>
-			    <tr>
-			      <th scope="row" class="table-secondary text-white">MUNICIPIO</th>
-			      <td><small>$ 2752754171</small></td>
-			      <td><small>$ 172727272</small></td>
-			      <td><small>$ 75275272</small></td>
-			      <td><small>$ 1275202.22</small></td>
-			      <td><small>$ 752752727.88</small></td>
-			      <td><small>$ 75585852.356</small></td>
-			      <td><small>$ 655254</small></td>
-			      <td><small>$ 242142224.6</small></td>
-			    </tr>
-			    <tr>
-			      <th scope="row" class="table-secondary text-white">ENTIDADES AUTONOMAS</th>
-			      <td><small>$ 95444242.2</small></td>
-			      <td><small>$ 532442458</small></td>
-			      <td><small>$ 7523752</small></td>
-			      <td><small>$ 5275272</small></td>
-			      <td><small>$ 693333333</small></td>
-			      <td><small>$ 2544141</small></td>
-			      <td><small>$ 4152258</small></td>
-			      <td><small>$ 5575375375</small></td>
-			    </tr>
-			  </tbody>
+			  </tbody> 
 			</table>
-		</div>	    	
+		</div>
+
 	</div>	
 </template>
 
 <script>
 	export default {
+		props:['origenes'],
         data: function() {
                 return {
-                }
-            },
-        mounted() {
-              
-                  console.log('origen-component mounted')
-        }
+                	//origeness:[],
+                	total:{
+                		a:0,
+                		b:0,
+                		c:0,
+                		d:0,
+                		e:0,
+                		f:0,
+                		g:0,
+                		h:0,
+                	},
+				    //editMode:true,
 
-    }
+				    //total:{
+				    //	sisper:{
+				    //		total_haber_bruto: 0, 
+					//	    total_aporte_personal: 0,
+					//	    total_sueldo_basico:0,
+					//	    total_antiguedad: 0,
+					//	    total_familiar: 0,
+					//	    total_hijo: 0,
+					//	    total_esposa: 0,
+				    //	},
+				    //	municipio:{
+				    //		total_haber_bruto: 0, 
+					//	    total_aporte_personal: 0,
+					//	    total_sueldo_basico:0,
+					//	    total_antiguedad: 0,
+					//	    total_familiar: 0,
+					//	    total_hijo: 0,
+					//	    total_esposa: 0,
+				    //	},
+				    //	autonomos:{
+				    //		total_haber_bruto: 0, 
+					//	    total_aporte_personal: 0,
+					//	    total_sueldo_basico:0,
+					//	    total_antiguedad: 0,
+					//	    total_familiar: 0,
+					//	    total_hijo: 0,
+					//	    total_esposa: 0,
+				    //	},
+				    //}
+				}
+            },
+        computed: {
+		  suma: function(){
+		      this.total.a = 0;
+		      this.total.b = 0;
+		      this.total.c = 0;
+		      this.total.d = 0;
+		      this.total.e = 0;
+		      this.total.f = 0;
+		      this.total.g = 0;
+		      this.total.h = 0;
+		      for(let i = 0; i < this.origenes.length; i++){
+		        this.total.a += parseFloat(this.origenes[i].haber_bruto);
+		        this.total.b += parseFloat(this.origenes[i].total_aporte_personal);
+		        this.total.c += parseFloat(this.origenes[i].total_sueldo_basico);
+		        this.total.d += parseFloat(this.origenes[i].total_antiguedad);
+		        this.total.e += parseFloat(this.origenes[i].total_adicional);
+		        this.total.f += parseFloat(this.origenes[i].total_familiar);
+		        this.total.g += parseFloat(this.origenes[i].total_hijo);
+		        this.total.h += parseFloat(this.origenes[i].total_esposa);
+		      }
+
+		     return this.total;
+		   }
+		},
+	}
 </script>
+			    

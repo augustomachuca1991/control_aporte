@@ -104,21 +104,25 @@
                 axios.post('api/liquidacion/filtro', params).then((response)=>{
                     this.filtro.data = [];
                     this.filtro.condition = false
-                    if (response.data.data.length != 0 ) {
+                    if (response.data.length != 0 ) {
                         this.filtro.data = response.data
                         this.filtro.condition = true
                     }
-                })
+                }).catch(function (error) {
+                  console.log(error);
+                });
             },
             like(input){
                 axios.post(`api/liquidacion/agente/filtro` , input).then((response)=>{
                     this.filtro.data = [];
                     this.filtro.condition = false
-                    if (response.data.data.length != 0 ) {
+                    if (response.data.length != 0 ) {
                         this.filtro.data = response.data
                         this.filtro.condition = true
                     }
-                })
+                }).catch(function (error) {
+                  console.log(error);
+                });
             }
         },
 

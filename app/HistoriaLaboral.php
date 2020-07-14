@@ -25,4 +25,11 @@ class HistoriaLaboral extends Model
     {
         return $this->belongsTo('App\Clase')->with('Categoria');
     }
+
+    public function historialiquidaciones()
+    {
+        return $this->hasMany('App\HistoriaLiquidacion', 'h_laboral_id', 'id')->with('estado')->with('funcion');
+    }
+
+
 }

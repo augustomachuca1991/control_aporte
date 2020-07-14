@@ -10,7 +10,8 @@ require('./bootstrap');
 
 
 window.Vue = require('vue');
-var Paginate = require('vue-paginate')
+var VuePaginate = require('vue-paginate')
+
 //var adminLTE = require('startbootstrap-sb-admin-2')
 /**
  * The following block of code may be used to automatically register your
@@ -23,11 +24,11 @@ var Paginate = require('vue-paginate')
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('paginate', Paginate)
-Vue.component('panel-component', require('./components/PanelComponent.vue').default);
-Vue.component('filter-component', require('./components/FilterComponent.vue').default);
-Vue.component('filtroperiodo-component', require('./components/FilterPeriodoComponent.vue').default);
-Vue.component('filtertipoliquidacion-component', require('./components/FilterTipoLiquidacionComponent.vue').default);
+Vue.use(VuePaginate);
+Vue.component('panel-component', require('./components/PanelLiquidacionComponent.vue').default);
+Vue.component('filter-component', require('./components/FiltroComponent.vue').default);
+Vue.component('filtroperiodo-component', require('./components/FiltroPeriodoComponent.vue').default);
+Vue.component('filtertipoliquidacion-component', require('./components/FiltroTipoLiquidacionComponent.vue').default);
 Vue.component('buscaragente-component', require('./components/BuscarAgenteComponent.vue').default);
 //Vue.component('footer-component', require('./components/FooterComponent.vue').default);
 Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
@@ -37,10 +38,19 @@ Vue.component('filtroclase-component', require('./components/FiltroClaseComponen
 Vue.component('panelclase-component', require('./components/PanelClaseComponent.vue').default);
 Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);
 Vue.component('panelcategoria-component', require('./components/PanelCategoriaComponent.vue').default);
+Vue.component('panelcomputo-component', require('./components/PanelComputoComponent.vue').default);
 Vue.component('organismo-component', require('./components/OrganismoComponent.vue').default);
 
 Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesCompnent.vue').default);
-Vue.component('origen-component', require('./components/ComputoOrigenComponent.vue').default);
+
+//computos
+Vue.component('computoorigen-component', require('./components/ComputoOrigenComponent.vue').default);
+Vue.component('computojur-component', require('./components/ComputoJurisdiccionComponent.vue').default);
+Vue.component('computoorganismo-component', require('./components/ComputoOrganismoComponent.vue').default);
+
+//csv
+Vue.component('import-component', require('./components/ImportComponent.vue').default);
+Vue.component('export-component', require('./components/ExportComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

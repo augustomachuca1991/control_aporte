@@ -1,0 +1,60 @@
+<template>
+	<div class="card mb-3">
+      <!--<img class="card-img-top" src="banner" alt="Card image cap">-->
+      <div class="card-body">
+        <h5 class="card-title">Subir Archivo</h5>
+        <form @submit.prevent="submitFile()">
+          <div class="form-group row">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Importar Archivo</label>
+            <div class="col-sm-8 d-flex align-items-start">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="file" name="file" lang="es" ref="file" v-on:change="handleFileUpload()">
+                <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <button type="submit" name="import" id="import" class="btn btn-success btn-block">
+                <i class="fas fa-file-upload"></i>&nbsp;
+                <span class="small">Importar</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</template>
+
+<script>
+	export default {
+        data: function(){
+            return{      
+              file:'',
+              meta:{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+              },
+            }
+        },
+        mounted(){
+          console.log('import-component mounted')
+        },
+        methods:{ 
+            submitFile () {
+		        let formData = new FormData()
+		        formData.append('file', this.file)
+		        axios.post('api/import', formData,this.meta).then((response)=>{
+	               if (response.data.status === 200) {
+	               	alert('Todo ok!!!');
+	               }else{
+	               	alert(response.data.message);
+	               }
+	          })
+		    },
+		    handleFileUpload(){
+		    	this.file = '';
+				this.file = this.$refs.file.files[0];
+			}
+        },
+    }	
+</script>

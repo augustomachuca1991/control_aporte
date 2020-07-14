@@ -15,4 +15,9 @@ class Estado extends Model
     {
     	return $this->belongsToMany('App\Liquidacion','historia_liquidacion','cod_estado','estado_id');
     }
+
+    public function organismo()
+    {
+        return $this->belongsTo('App\Organismo' ,'organismo_id' , 'cod_organismo');
+    }
 }

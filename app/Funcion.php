@@ -15,4 +15,9 @@ class Funcion extends Model
     {
     	return $this->belongsToMany('App\Liquidacion');
     }
+
+    public function organismo()
+    {
+        return $this->belongsTo('App\Organismo' ,'organismo_id' , 'cod_organismo');
+    }
 }
