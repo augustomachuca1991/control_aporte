@@ -10,22 +10,12 @@ require('./bootstrap');
 
 
 window.Vue = require('vue');
-<<<<<<< HEAD
-var VuePaginate = require('vue-paginate')
-
-//var adminLTE = require('startbootstrap-sb-admin-2')
-=======
-
-import VuePaginate from 'vue-paginate'
-Vue.use(VuePaginate)
-var Paginate = require('vue-paginate');
+var VuePaginate = require('vue-paginate');
 
 
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 import 'sweetalert2/src/sweetalert2.scss'
-
->>>>>>> e2424db68a10d25fe0a37be192427e6299e12ad6
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -36,22 +26,18 @@ import 'sweetalert2/src/sweetalert2.scss'
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-<<<<<<< HEAD
+
 
 Vue.use(VuePaginate);
 Vue.component('panel-component', require('./components/PanelLiquidacionComponent.vue').default);
 Vue.component('filter-component', require('./components/FiltroComponent.vue').default);
 Vue.component('filtroperiodo-component', require('./components/FiltroPeriodoComponent.vue').default);
 Vue.component('filtertipoliquidacion-component', require('./components/FiltroTipoLiquidacionComponent.vue').default);
-=======
-// Vue.component('paginate', Paginate)
 Vue.component('panel-component', require('./components/PanelComponent.vue').default);
 Vue.component('filter-component', require('./components/FilterComponent.vue').default);
 Vue.component('filtroperiodo-component', require('./components/FilterPeriodoComponent.vue').default);
 Vue.component('filtertipoliquidacion-component', require('./components/FilterTipoLiquidacionComponent.vue').default);
->>>>>>> e2424db68a10d25fe0a37be192427e6299e12ad6
 Vue.component('buscaragente-component', require('./components/BuscarAgenteComponent.vue').default);
-//Vue.component('footer-component', require('./components/FooterComponent.vue').default);
 Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
 Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
 Vue.component('clase-component', require('./components/ClaseComponent.vue').default);

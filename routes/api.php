@@ -21,18 +21,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Origenes
 Route::get('/origen', 'OrigenController@index')->name('origen');
 
-<<<<<<< HEAD
+
 //Computos
 Route::get('/computo/origen/{periodo}', 'LiquidacionOrganismoController@computoOrigenes');
 Route::get('/computo/jurisdiccion/{periodo}', 'LiquidacionOrganismoController@ComputoJurisdicciones');
 Route::get('/computo/organismo/{periodo}', 'LiquidacionOrganismoController@ComputoOrganismos');
-//Liquidaciones
-=======
-//organismo
-//Route::get('/organismo', 'OrganismoController@index')->name('organismo');
+
+
 
 //liquidaciones
->>>>>>> e2424db68a10d25fe0a37be192427e6299e12ad6
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
 Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liquidacion_detalle');
 Route::post('/liquidacion/agente/filtro','LiquidacionController@agente')->name('filtros');
@@ -62,12 +59,8 @@ Route::get('/tipoliquidacion', 'TipoLiquidacionController@getTipoLiquidacion')->
 Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
 
 
-<<<<<<< HEAD
-// Categorias
-=======
 // Categoria
 Route::get('/categoria/find/{id}', 'CategoriaController@getCategoria')->name('find_categoria');
->>>>>>> e2424db68a10d25fe0a37be192427e6299e12ad6
 Route::get('/categoria/{id}', 'CategoriaController@getCategorias')->name('categoria');
 Route::get('/categoria/edit/{id}', 'CategoriaController@edit')->name('edit_categoria');
 Route::put('/categoria/update/{id}', 'CategoriaController@update')->name('update_categoria');
