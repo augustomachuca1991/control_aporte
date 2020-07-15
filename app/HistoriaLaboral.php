@@ -10,7 +10,9 @@ class HistoriaLaboral extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    
+    protected $fillable = ['puesto_id', 'clase_id', 'fecha_inicio','fecha_fin'];
+
+
     public function liquidaciones()
     {
     	return $this->belongsToMany('App\Liquidacion','historia_liquidacion', 'h_laboral_id', 'liquidacion_id');

@@ -14,7 +14,7 @@ class AgenteTableSeeder extends Seeder
     {
         factory(App\Agente::class , 1000)->create()
         ->each(function (App\Agente  $agente){
-            $agente->organismos()->attach( rand(1,19) , ['cod_laboral' => rand(500, 10000)]);
+            $agente->organismos()->attach( rand(1,19) , ['cod_laboral' => rand(500, 520), 'fecha_ingreso' => now()->subMinutes(rand(1, 55))]);
         });
     }
 }

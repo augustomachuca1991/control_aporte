@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\HistoriaLaboral;
+use Illuminate\Support\Carbon;
 
 class HistoriaLaboralTableSeeder extends Seeder
 {
@@ -12,10 +13,10 @@ class HistoriaLaboralTableSeeder extends Seeder
      */
     public function run()
     {
-        $hl = [
-	        	['puesto_id' => 4647 , 'clase_id' => 1, 'fecha_ingreso' => now()->subMinutes(rand(1, 55)),'fecha_egreso' => now(), 'created_at' => now()],
-	        	['puesto_id' => 3957 , 'clase_id' => 2, 'fecha_ingreso' => now()->subMinutes(rand(1, 55)),'fecha_egreso' => now(), 'created_at' => now()],
-	    	];
-    	HistoriaLaboral::insert($hl);
+        //$hl = [
+	    //    	['puesto_id' => 516 , 'clase_id' => 1, 'fecha_inicio' => now()->subMinutes(rand(1, 55)),'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(), 'created_at' => now()],
+	    //    	['puesto_id' => 515 , 'clase_id' => 2, 'fecha_inicio' => now()->subMinutes(rand(1, 55)),'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(), 'created_at' => now()],
+	    //	];
+    	//HistoriaLaboral::insert($hl);
     }
 }

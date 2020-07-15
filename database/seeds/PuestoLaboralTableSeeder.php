@@ -14,7 +14,7 @@ class PuestoLaboralTableSeeder extends Seeder
     {
         $puestosLaborales = PuestoLaboral::all();
         foreach ($puestosLaborales as $puestolaboral) {
-        	$puestolaboral->clases()->attach(rand(1,4),['fecha_ingreso' => now()->subMinutes(rand(1, 55)),]);
+        	$puestolaboral->clases()->attach(rand(1,4),['fecha_inicio' => now()->firstOfMonth(),'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString()]);
         }
     }
 }
