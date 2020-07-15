@@ -19,9 +19,8 @@ class CreateHistoriaLaboralsTable extends Migration
             $table->foreign('puesto_id')->references('id')->on('agente_organismo');
             $table->bigInteger('clase_id')->unsigned();
             $table->foreign('clase_id')->references('id')->on('clases');
-            $table->date('fecha_ingreso');
-            $table->date('fecha_egreso')->nullable();
-
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
             $table->softDeletes(); 
             $table->timestamps();
         });

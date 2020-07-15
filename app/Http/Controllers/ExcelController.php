@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Exports\LiquidacionsExport;
+use App\Imports\LiquidacionsImport;
+use App\DeclaracionJurada;
 use Validator;
 
 class ExcelController extends Controller
 {
     
+    
+    
+
     public function indexImport(){
     	return view('file.import');
     }
@@ -30,6 +36,11 @@ class ExcelController extends Controller
 	        if (!$validator->fails()) {
 	        	$message = 'El archivo esta siendo importado';
 	        	$status = 200;
+                $ddjj_id = DeclaracionJurada::insertGetId([
+                                'user_id' => 1,
+                                'organismo_id' => 15,
+                            ]);
+                (new LiquidacionsImport($ddjj_id))->queue($file,null,\Maatwebsite\Excel\Excel::CSV);
 	        } else {
 	            $message = 'Tipo de Archivo selecciona es invalido. Debe ser extension .csv o .txt';
 	            $status = 300;

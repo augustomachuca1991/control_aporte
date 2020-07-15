@@ -3769,6 +3769,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+var Toast = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  background: 'rgb(175, 175, 175)',
+  timer: 4000,
+  showConfirmButton: false,
+  onOpen: function onOpen(toast) {
+    toast.addEventListener('mouseenter', swal.stopTimer);
+    toast.addEventListener('mouseleave', swal.resumeTimer);
+  }
+});
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3789,9 +3800,15 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('file', this.file);
       axios.post('api/import', formData, this.meta).then(function (response) {
         if (response.data.status === 200) {
-          alert('Todo ok!!!');
+          Toast.fire({
+            icon: 'success',
+            title: 'El archivo esta siendo importado'
+          });
         } else {
-          alert(response.data.message);
+          Toast.fire({
+            icon: 'error',
+            title: response.data.message
+          });
         }
       });
     },

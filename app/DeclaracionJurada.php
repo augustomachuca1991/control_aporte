@@ -10,4 +10,5 @@ class DeclaracionJurada extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+    protected $fillable = ['user_id', 'organismo_id', 'secuencia'];
 }

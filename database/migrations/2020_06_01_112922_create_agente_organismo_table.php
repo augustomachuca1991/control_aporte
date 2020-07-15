@@ -20,6 +20,8 @@ class CreateAgenteOrganismoTable extends Migration
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
             $table->bigInteger('agente_id')->unsigned();
             $table->foreign('agente_id')->references('id')->on('agentes');
+            $table->date('fecha_ingreso');
+            $table->date('fecha_egreso')->nullable();
             $table->softDeletes(); 
             $table->timestamps();
         });
