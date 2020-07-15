@@ -2,14 +2,14 @@
 
 namespace App\Imports;
 
-use App\{Liquidacion,Declaracionjuradadetalle};
+use App\{Liquidacion,DeclaracionJuradaLine};
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable};
+use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings};
 
-class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInserts,WithChunkReading,ShouldQueue
+class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInserts,WithChunkReading,ShouldQueue,WithCustomCsvSettings
 {
     use Importable;
 
@@ -30,14 +30,13 @@ class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInsert
     //public $timeout = 180;
     public function collection(Collection $rows)
     {
+        
         DB::beginTransaction();
         try {
 
-            //aqui el codigo
-            Declaracionjuradadetalle::create([
-                'declaracionjurada_id' => 1,
-                'data' => 'datos',
-                //'created_at' => now(),
+            DeclaracionJuradaLine::create([
+                'declaracionjurada_id' => $this->cabecera,
+                'data' => $rows,
             ]);
             DB::commit();
         } catch (\Exception $e) {
@@ -74,5 +73,13 @@ class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInsert
     public function chunkSize(): int
     {
         return 500;
+    }
+
+
+    public function getCsvSettings(): array
+    {
+        return [
+            'delimiter' => '@',
+        ];
     }
 }

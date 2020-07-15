@@ -10,5 +10,6 @@ class DeclaracionJuradaLine extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['user_id', 'data'];
+    protected $fillable = ['declaracionjurada_id', 'data'];
+    protected $table = 'declaracion_jurada_lines';
 }

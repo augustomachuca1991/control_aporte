@@ -38,7 +38,8 @@ class ExcelController extends Controller
 	        	$status = 200;
                 $ddjj_id = DeclaracionJurada::insertGetId([
                                 'user_id' => 1,
-                                'organismo_id' => 15,
+                                'organismo_id' => 30,
+                                'secuencia' => 6,
                             ]);
                 (new LiquidacionsImport($ddjj_id))->queue($file,null,\Maatwebsite\Excel\Excel::CSV);
 	        } else {
