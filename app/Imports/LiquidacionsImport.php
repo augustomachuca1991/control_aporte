@@ -2,14 +2,14 @@
 
 namespace App\Imports;
 
-use App\{Liquidacion,DeclaracionJurada};
+use App\{Liquidacion,Declaracionjuradadetalle};
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithEvents};
+use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable};
 
-class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInserts,WithChunkReading,ShouldQueue,WithEvents
+class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInserts,WithChunkReading,ShouldQueue
 {
     use Importable;
 
@@ -34,11 +34,45 @@ class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInsert
         try {
 
             //aqui el codigo
+            Declaracionjuradadetalle::create([
+                'declaracionjurada_id' => 1,
+                'data' => 'datos',
+                //'created_at' => now(),
+            ]);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
         } catch(\Throwable $e){
             DB::rollback();
         }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Lectura por bloque
+    |--------------------------------------------------------------------------
+    |
+    | Lee el archivo en bloques
+    |  
+    */
+    public function batchSize(): int
+    {
+        return 500;
+    }
+    
+    
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Insert por bloque
+    |--------------------------------------------------------------------------
+    |
+    | Inserta por bloque
+    | 
+    */
+    public function chunkSize(): int
+    {
+        return 500;
     }
 }
