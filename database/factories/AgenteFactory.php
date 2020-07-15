@@ -10,6 +10,6 @@ $factory->define(Agente::class, function (Faker $faker) {
         'cuil' => $faker->unique()->numberBetween($min = 20000000000, $max = 27000000000),
         'nombre' => $faker->name,
         'fecha_nac' => now(),
-        'sexo' => $faker->randomElement(['male', 'female']),
+        'sexo' => $faker->randomElement(['male', 'female'])
     ];
 });
