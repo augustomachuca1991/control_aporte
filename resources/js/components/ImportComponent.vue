@@ -1,6 +1,6 @@
 <template>
 	<div class="card mb-3">
-      <!--<img class="card-img-top" src="banner" alt="Card image cap">-->
+      <img class="card-img-top" src="/image/bannerExcel.jpg" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">Subir Archivo</h5>
         <form @submit.prevent="submitFile()">
@@ -23,7 +23,6 @@
       </div>
     </div>
 </template>
-
 <script>
   const Toast = swal.mixin({
                   toast: true,
@@ -37,41 +36,41 @@
                   }
                 });
 	export default {
-        data: function(){
-            return{      
-              file:'',
-              meta:{
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-              },
+      data: function(){
+          return{      
+            file:'',
+            meta:{
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
+            },
+          }
+      },
+      mounted(){
+        console.log('import-component mounted')
+      },
+      methods:{ 
+        submitFile () {
+        let formData = new FormData()
+        formData.append('file', this.file)
+        axios.post('api/import', formData, this.meta).then((response)=>{
+            if (response.data.status === 200) {
+            	Toast.fire({
+                icon: 'success',
+                title: 'El archivo esta siendo importado'
+              })
+            }else{
+              Toast.fire({
+                icon: 'error',
+                title: response.data.message,
+              })
             }
-        },
-        mounted(){
-          console.log('import-component mounted')
-        },
-        methods:{ 
-            submitFile () {
-		        let formData = new FormData()
-		        formData.append('file', this.file)
-		        axios.post('api/import', formData, this.meta).then((response)=>{
-	               if (response.data.status === 200) {
-	               	Toast.fire({
-                    icon: 'success',
-                    title: 'El archivo esta siendo importado'
-                  })
-	               }else{
-                  Toast.fire({
-                    icon: 'error',
-                    title: response.data.message,
-                  })
-	               }
-	          })
-		    },
-		    handleFileUpload(){
-		    	this.file = '';
-				this.file = this.$refs.file.files[0];
-			}
-        },
+          })
+  	    },
+        handleFileUpload(){
+          this.file = '';
+      		this.file = this.$refs.file.files[0];
+      	}
+      },
     }	
 </script>

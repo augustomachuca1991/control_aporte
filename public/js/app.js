@@ -3768,7 +3768,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 var Toast = swal.mixin({
   toast: true,
   position: 'top-end',
@@ -51869,6 +51868,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card mb-3" }, [
+    _c("img", {
+      staticClass: "card-img-top",
+      attrs: { src: "/image/bannerExcel.jpg", alt: "Card image cap" }
+    }),
+    _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
       _c("h5", { staticClass: "card-title" }, [_vm._v("Subir Archivo")]),
       _vm._v(" "),
@@ -70198,8 +70202,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

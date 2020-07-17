@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\LiquidacionsExport;
 use App\Imports\LiquidacionsImport;
+use App\Jobs\CompletedImport;
 use App\DeclaracionJurada;
 use Validator;
 
@@ -41,7 +42,8 @@ class ExcelController extends Controller
                                 'organismo_id' => 30,
                                 'secuencia' => 6,
                             ]);
-                (new LiquidacionsImport($ddjj_id))->queue($file,null,\Maatwebsite\Excel\Excel::CSV);
+                (new LiquidacionsImport($ddjj_id))->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
+                ->chain([new CompletedImport]);
 	        } else {
 	            $message = 'Tipo de Archivo selecciona es invalido. Debe ser extension .csv o .txt';
 	            $status = 300;

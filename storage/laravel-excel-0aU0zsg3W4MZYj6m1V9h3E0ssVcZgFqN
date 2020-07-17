@@ -1,0 +1,127 @@
+if($origen && $jur && $organismo && $periodo && $tipo){//1,1,1,1,1
+
+            //$filtro = $query->where();
+
+        }else if($origen && $jur && $organismo && $periodo && !$tipo){ //1,1,1,1,0
+
+            //$filtro = $query->where();
+
+        }else if($origen && $jur && $organismo && !$periodo && $tipo){ //1,1,1,0,1
+
+            //$filtro = $query->where();
+
+        }else if($origen && $jur && $organismo && !$periodo && !$tipo){//1,1,1,0,0
+
+            //$filtro = $query->where();
+
+        }else if($origen && $jur && !$organismo && $periodo && $tipo){ //1,1,0,1,1
+
+            //$filtro = $query->where();
+
+        }else if($origen && $jur && !$organismo && $periodo && !$tipo){//1,1,0,1,0
+
+            //$filtro = $query->where();
+
+        }else if($origen && $jur && !$organismo && !$periodo && $tipo){//1,1,0,0,1
+
+            //$filtro = $query->where();
+
+        }else if($origen && $jur && !$organismo && !$periodo && !$tipo){//1,1,0,0,0
+
+            //$filtro = $query->where();
+
+        }else if($origen && !$jur && $organismo && $periodo && $tipo){ //1,0,1,1,1
+
+            //$filtro = $query->where();
+
+        }else if($origen && !$jur && $organismo && $periodo && !$tipo){ //1,0,1,1,0
+
+            //$filtro = $query->where();
+
+        }else if($origen && !$jur && $organismo && !$periodo && $tipo){ //1,0,1,0,1
+
+            //$filtro = $query->where();
+
+        }else if($origen && !$jur && $organismo && !$periodo && !$tipo){ //1,0,1,0,0
+
+            //$filtro = $query->where();
+
+        }else if($origen && !$jur && !$organismo && $periodo && $tipo){ //1,0,0,1,1
+
+            //$filtro = $query->where();
+
+        }else if($origen && !$jur && !$organismo && $periodo && !$tipo){ //1,0,0,1,0
+
+            //$filtro = $query->where();
+
+        }else if($origen && !$jur && !$organismo && !$periodo && $tipo){ //1,0,0,0,1
+
+            //$filtro = $query->where();
+
+        }else if($origen && !$jur && !$organismo && !$periodo && !$tipo){ //1,0,0,0,0
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && $jur && $organismo && $periodo && $tipo){   //0,1,1,1,1
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && $jur && $organismo && $periodo && !$tipo){ //0,1,1,1,0
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && $jur && $organismo && !$periodo && $tipo){ //0,1,1,0,0
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && $jur && $organismo && !$periodo && !$tipo){ //0,1,0,1,1
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && $jur && !$organismo && $periodo && $tipo){ //0,1,0,1,0
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && $jur && !$organismo && $periodo && !$tipo){ //0,1,0,0,1
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && $jur && !$organismo && !$periodo && $tipo){ //0,1,0,0,0
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && $jur && !$organismo && !$periodo && !$tipo){ //0,0,1,1,1
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && !$jur && $organismo && $periodo && $tipo){ //0,0,1,1,0
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && !$jur && $organismo && $periodo && !$tipo){ //0,0,1,0,1
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && !$jur && $organismo && !$periodo && $tipo){ //0,0,1,0,0
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && !$jur && $organismo && !$periodo && !$tipo){ //0,0,0,1,1
+
+            //$filtro = $query->where();
+
+        }else if(!$origen && !$jur && !$organismo && $periodo && $tipo){ //0,0,0,1,0
+
+            $filtro = $query->where('periodo_id', $periodo)->where('tipo_id', $tipo);
+
+        }else if(!$origen && !$jur && !$organismo && $periodo && !$tipo){ //0,0,0,0,1
+
+            $filtro = $query->where('periodo_id',$periodo);
+
+        }else if(!$origen && !$jur && !$organismo && !$periodo && $tipo){ //0,0,0,0,1
+
+            $filtro = $query->where('tipo_id', $tipo);
+
+        }else{
+            return "no data";
+        }
