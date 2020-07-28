@@ -3626,6 +3626,7 @@ __webpack_require__.r(__webpack_exports__);
       selectedJurisdiccion: [],
       selectedOrganismo: [],
       selectedAgente: [],
+      agentes_organismos: [],
       agentes: [],
       agente: [],
       puestos: [],
@@ -3684,9 +3685,7 @@ __webpack_require__.r(__webpack_exports__);
     getJurisdiccionesSelected: function getJurisdiccionesSelected(p) {
       var _this5 = this;
 
-      this.selectedJurisdicion = p; //alert('en el get:');
-      //alert(this.selectedJurisdicion);
-
+      this.selectedJurisdicion = p;
       axios.get("api/organismo/".concat(this.selectedJurisdicion)).then(function (response) {
         console.log(_this5.selectedJurisdicion); //console.log(response.data);
 
@@ -3697,15 +3696,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this6 = this;
 
       this.selectedOrganismo = p;
-      axios.get("api/agente/".concat(this.selectedOrganismo)).then(function (response) {
+      axios.get("api/agente_organismo/".concat(this.selectedOrganismo)).then(function (response) {
         console.log(response.data);
-        _this6.agentes = response.data;
+        _this6.agentes_organismos = response.data;
+        alert(_this6.selectedOrganismo);
       });
     },
-    getAgentesSelected: function getAgentesSelected() {
+    getAgentesOrganismosSelected: function getAgentesOrganismosSelected() {
       var _this7 = this;
 
-      axios.get("api/hlaborales/".concat(this.selectedAgente())).then(function (response) {
+      axios.get("api/hlaborales/".concat(this.selectedAgente)).then(function (response) {
         console.log(response.data);
         _this7.hlaborales = response.data;
       });
@@ -3717,17 +3717,29 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     selectedOrigen: function selectedOrigen() {
+      this.organismos = '';
+      this.jurisdicciones = '';
+      this.selectedJurisdiccion = "";
+      this.selectedOrganismo = "";
       this.getOrigenSelected();
-      this.organismos = [];
+
+      if (this.selectedOrigen > 0) {
+        this.jurisdicciones = this.origenes[this.selectedOrigen - 1].jurisdicciones;
+      }
     },
     selectedJurisdiccion: function selectedJurisdiccion() {
-      this.getJurisdiccionesSelected(this.selectedJurisdiccion); //this.jurisdicciones = [];
+      this.organismos = '';
+      this.selectedOrganismo = "";
+
+      if (this.selectedJurisdiccion > 0) {
+        this.getJurisdiccionesSelected(this.selectedJurisdiccion);
+      }
     },
     selectedOrganismo: function selectedOrganismo() {
       this.getOrganismosSelected(this.selectedJurisdiccion); //this.agentes = [];
     },
     selectedAgente: function selectedAgente() {
-      this.getAgentesSelected(this.selectedAgente); //this.hlaborales = [];
+      this.getAgentesOrganismosSelected(this.selectedAgente);
     }
   }
 });
@@ -51042,7 +51054,7 @@ var render = function() {
                   expression: "selectedOrigen"
                 }
               ],
-              staticClass: "custom-select mr-sm-2",
+              staticClass: "form-control form-control-md",
               attrs: { id: "origen1", name: "origen1" },
               on: {
                 change: function($event) {
@@ -51073,10 +51085,7 @@ var render = function() {
               _vm._l(_vm.origenes, function(origen, index) {
                 return _c(
                   "option",
-                  {
-                    key: origen.cod_origen,
-                    domProps: { value: origen.cod_origen }
-                  },
+                  { key: origen.id, domProps: { value: origen.id } },
                   [_vm._v(_vm._s(origen.origen))]
                 )
               })
@@ -51099,8 +51108,12 @@ var render = function() {
                   expression: "selectedJurisdiccion"
                 }
               ],
-              staticClass: "custom-select mr-sm-2",
-              attrs: { id: "jurisdiccion_1", name: "jurisdiccion_1" },
+              staticClass: "form-control form-control-md",
+              attrs: {
+                disabled: _vm.selectedOrigen.length == 0,
+                id: "jurisdiccion1",
+                name: "jurisdiccion1"
+              },
               on: {
                 change: function($event) {
                   var $$selectedVal = Array.prototype.filter
@@ -51124,15 +51137,15 @@ var render = function() {
                   attrs: { disabled: "", selected: "" },
                   domProps: { value: "" }
                 },
-                [_vm._v("Seleccione Jurisdicción")]
+                [_vm._v("Seleccione Jurisdiccion")]
               ),
               _vm._v(" "),
               _vm._l(_vm.jurisdicciones, function(jurisdiccion, index) {
                 return _c(
                   "option",
                   {
-                    key: jurisdiccion.cod_jurisdiccion,
-                    domProps: { value: jurisdiccion.cod_jurisdiccion }
+                    key: jurisdiccion.id,
+                    domProps: { value: jurisdiccion.id }
                   },
                   [_vm._v(_vm._s(jurisdiccion.jurisdiccion))]
                 )
@@ -51241,11 +51254,17 @@ var render = function() {
                 [_vm._v("Seleccione Agente")]
               ),
               _vm._v(" "),
-              _vm._l(_vm.agentes, function(agente, index) {
+              _vm._l(_vm.agentes_organismos, function(agente, index) {
                 return _c(
                   "option",
                   { key: agente.id, domProps: { value: agente.id } },
-                  [_vm._v(_vm._s(agente.nombre) + ", " + _vm._s(agente.cuil))]
+                  [
+                    _vm._v(
+                      _vm._s(agente.agente_id) +
+                        ", " +
+                        _vm._s(agente.fecha_ingreso)
+                    )
+                  ]
                 )
               })
             ],
@@ -51776,8 +51795,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "label",
-      { staticClass: "text-muted", attrs: { for: "jurisdiccion_1" } },
-      [_c("i", { staticClass: "fas fa-search" }), _vm._v(" Jurisdicción")]
+      { staticClass: "text-muted", attrs: { for: "jurisdiccion1" } },
+      [_c("i", { staticClass: "fas fa-search" }), _vm._v(" Jurisdiccion")]
     )
   },
   function() {
@@ -70202,8 +70221,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/blog/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/blog/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/control_aporte/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/control_aporte/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

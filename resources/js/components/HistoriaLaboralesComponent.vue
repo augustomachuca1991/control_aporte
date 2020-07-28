@@ -4,16 +4,16 @@
         <div class="form-row col mb-3 shadow p-3">
             <div class="form-group col-md-4 border-0 shadow p-3">
                 <label class="text-muted" for="origen1"><i class="fas fa-search"></i> Origen</label>
-                <select class="custom-select mr-sm-2" id="origen1" name="origen1"  v-model="selectedOrigen">
+                <select class="form-control form-control-md" id="origen1" name="origen1"  v-model="selectedOrigen">
                     <option :value="''" disabled selected>Seleccione Origen</option>
-                    <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
+                    <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.id">{{origen.origen}}</option>
                 </select>
             </div>
             <div class="form-group col-md-4 border-0 shadow p-3">
-                <label class="text-muted" for="jurisdiccion_1"><i class="fas fa-search"></i> Jurisdicción</label>
-                <select class="custom-select mr-sm-2" id="jurisdiccion_1" name="jurisdiccion_1"  v-model="selectedJurisdiccion">
-                    <option :value="''" disabled selected>Seleccione Jurisdicción</option>
-                    <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
+                <label class="text-muted" for="jurisdiccion1"><i class="fas fa-search"></i> Jurisdiccion</label>
+                <select  :disabled="selectedOrigen.length == 0" class="form-control form-control-md" id="jurisdiccion1" name="jurisdiccion1" v-model="selectedJurisdiccion">
+                    <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
+                    <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.id">{{jurisdiccion.jurisdiccion}}</option>
                 </select>
             </div>
             <div class="form-group col-md-4 border-0 shadow p-3">
@@ -27,7 +27,7 @@
                 <label class="text-muted" for="agente_1"><i class="fas fa-search"></i> Agentes</label>
                 <select class="custom-select mr-sm-2" id="agente_1" name="agente_1"  v-model="selectedAgente">
                     <option :value="''" disabled selected>Seleccione Agente</option>
-                    <option v-for="(agente, index) in agentes" :key="agente.id" :value="agente.id">{{agente.nombre}}, {{agente.cuil}}</option>
+                    <option v-for="(agente, index) in agentes_organismos" :key="agente.id" :value="agente.id">{{agente.agente_id}}, {{agente.fecha_ingreso}}</option>
                 </select>
             </div>
         </div>
@@ -153,6 +153,7 @@
                 selectedJurisdiccion: [],
                 selectedOrganismo: [],
                 selectedAgente:[],
+                agentes_organismos:[],
                 agentes: [],
                 agente: [],
                 puestos: [],
@@ -211,8 +212,6 @@
             },
             getJurisdiccionesSelected(p){
                 this.selectedJurisdicion = p;
-                //alert('en el get:');
-                //alert(this.selectedJurisdicion);
                 axios.get(`api/organismo/${this.selectedJurisdicion}`).then((response)=>{
                     console.log(this.selectedJurisdicion);
                     //console.log(response.data);
@@ -221,14 +220,15 @@
             },
             getOrganismosSelected(p){
                 this.selectedOrganismo = p;
-                axios.get(`api/agente/${this.selectedOrganismo}`).then((response)=>{
+                axios.get(`api/agente_organismo/${this.selectedOrganismo}`).then((response)=>{
                     console.log(response.data);
-                    this.agentes = response.data;
+                    this.agentes_organismos = response.data;
+                    alert(this.selectedOrganismo);
                 })
             },
 
-            getAgentesSelected(){
-                axios.get(`api/hlaborales/${this.selectedAgente()}`).then((response)=>{
+            getAgentesOrganismosSelected(){
+                axios.get(`api/hlaborales/${this.selectedAgente}`).then((response)=>{
                     console.log(response.data);
                     this.hlaborales = response.data;
                 })
@@ -240,21 +240,34 @@
             },
         },
         watch:{
+
             selectedOrigen: function () {
+                this.organismos = '';
+                this.jurisdicciones = '';
+                this.selectedJurisdiccion = "";
+                this.selectedOrganismo = "";
                 this.getOrigenSelected();
-                this.organismos = [];
+                if (this.selectedOrigen > 0) {
+                    this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
+                }
             },
+
             selectedJurisdiccion: function () {
-                this.getJurisdiccionesSelected(this.selectedJurisdiccion);
-                //this.jurisdicciones = [];
+                this.organismos = '';
+                this.selectedOrganismo = "";
+
+                if (this.selectedJurisdiccion > 0) {
+                    this.getJurisdiccionesSelected(this.selectedJurisdiccion);
+                }
             },
+
             selectedOrganismo: function () {
                 this.getOrganismosSelected(this.selectedJurisdiccion);
                 //this.agentes = [];
             },
+
             selectedAgente: function () {
-                this.getAgentesSelected(this.selectedAgente);
-                //this.hlaborales = [];
+                this.getAgentesOrganismosSelected(this.selectedAgente);
             },
         }
     }
