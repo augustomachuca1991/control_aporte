@@ -3609,16 +3609,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3711,6 +3701,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data);
         _this7.hlaborales = response.data;
       });
+    },
+    mostrarHistoria: function mostrarHistoria(p_historia) {
+      this.hlaboral = p_historia;
     },
     empty: function empty() {
       this.getHistoriaLaborales();
@@ -51455,30 +51448,15 @@ var render = function() {
                           "btn btn-outline-warning border-0  btn-sm shadow",
                         attrs: {
                           "data-toggle": "modal",
-                          "data-target": "#editarModal"
+                          "data-target": "#verrModal"
                         },
                         on: {
                           click: function($event) {
-                            return _vm.editOrganismo(_vm.organismo)
+                            return _vm.mostrarHistoria(hlaboral)
                           }
                         }
                       },
                       [_c("i", { staticClass: "far fa-edit" })]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "td-button" }, [
-                    _c(
-                      "form",
-                      {
-                        on: {
-                          submit: function($event) {
-                            $event.preventDefault()
-                            return _vm.deleteOrganismo(_vm.organismo.id)
-                          }
-                        }
-                      },
-                      [_vm._m(5, true)]
                     )
                   ])
                 ])
@@ -51514,7 +51492,7 @@ var render = function() {
                   staticStyle: { "max-width": "40rem" }
                 },
                 [
-                  _vm._m(6),
+                  _vm._m(5),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
                     _c(
@@ -51527,90 +51505,45 @@ var render = function() {
                         _c("div", { staticClass: "row" }, [
                           _c("div", { staticClass: "col" }, [
                             _c(
-                              "div",
+                              "label",
                               {
-                                staticClass: "form-group",
-                                model: {
-                                  value: _vm.agente,
-                                  callback: function($$v) {
-                                    _vm.agente = $$v
-                                  },
-                                  expression: "agente"
-                                }
+                                staticClass: "required",
+                                attrs: { for: "mostrarOrganismo" }
                               },
-                              [
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "required",
-                                    attrs: { for: "mostrarAgentes" }
-                                  },
-                                  [_vm._v("Origen")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "select",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.hlaboral.agente_id,
-                                        expression: "hlaboral.agente_id"
-                                      }
-                                    ],
-                                    staticClass: "custom-select mr-sm-2",
-                                    attrs: {
-                                      id: "mostrarAgentes",
-                                      name: "agente",
-                                      disabled: ""
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.hlaboral,
-                                          "agente_id",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("option", [
-                                      _vm._v("Seleccione Agentes")
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm._l(_vm.agentes, function(
-                                      agente,
-                                      index
-                                    ) {
-                                      return _c(
-                                        "option",
-                                        {
-                                          key: agente.id,
-                                          domProps: { value: agente.id }
-                                        },
-                                        [_vm._v(_vm._s(agente.nombre))]
-                                      )
-                                    })
-                                  ],
-                                  2
-                                )
-                              ]
-                            )
+                              [_vm._v("Organismo")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.hlaboral.puesto_id,
+                                  expression: "hlaboral.puesto_id"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "puesto",
+                                id: "mostrarOrganismo",
+                                value: "",
+                                readonly: ""
+                              },
+                              domProps: { value: _vm.hlaboral.puesto_id },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.hlaboral,
+                                    "puesto_id",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
                           ])
                         ]),
                         _vm._v(" "),
@@ -51755,9 +51688,9 @@ var render = function() {
                               "label",
                               {
                                 staticClass: "required",
-                                attrs: { for: "mostrarFechaEgreso" }
+                                attrs: { for: "mostrarFechaFin" }
                               },
-                              [_vm._v("Fecha Egreso")]
+                              [_vm._v("Fecha Fin")]
                             ),
                             _vm._v(" "),
                             _c("input", {
@@ -51765,19 +51698,19 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.hlaboral.fecha_egreso,
-                                  expression: "hlaboral.fecha_egreso"
+                                  value: _vm.hlaboral.fecha_fin,
+                                  expression: "hlaboral.fecha_fin"
                                 }
                               ],
                               staticClass: "form-control",
                               attrs: {
                                 type: "text",
                                 name: "clase",
-                                id: "mostrarFechaEgreso",
+                                id: "mostrarFechaFin",
                                 value: "",
                                 readonly: ""
                               },
-                              domProps: { value: _vm.hlaboral.fecha_egreso },
+                              domProps: { value: _vm.hlaboral.fecha_fin },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
@@ -51785,7 +51718,7 @@ var render = function() {
                                   }
                                   _vm.$set(
                                     _vm.hlaboral,
-                                    "fecha_egreso",
+                                    "fecha_fin",
                                     $event.target.value
                                   )
                                 }
@@ -51900,19 +51833,6 @@ var staticRenderFns = [
         ])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-outline-danger border-0 btn-sm shadow text-dark",
-        attrs: { type: "submit" }
-      },
-      [_c("i", { staticClass: "far fa-trash-alt" })]
-    )
   },
   function() {
     var _vm = this

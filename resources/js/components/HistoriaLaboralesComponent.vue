@@ -68,14 +68,7 @@
                 <td>{{ hlaboral.fecha_inicio }}</td>
                 <td>{{ hlaboral.fecha_fin }}</td>
                 <td class="td-button">
-                    <a @click="editOrganismo(organismo)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#editarModal"><i class="far fa-edit"></i></a>
-                </td>
-                <td class="td-button">
-                    <form @submit.prevent="deleteOrganismo(organismo.id)">
-                        <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </form>
+                    <a @click="mostrarHistoria(hlaboral)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#verrModal"><i class="far fa-edit"></i></a>
                 </td>
             </tr>
             </tbody>
@@ -92,13 +85,9 @@
                         <form action="" class="form-group" method="POST">
                             <div class="row">
                                 <div class="col">
-                                    <div class="form-group" v-model="agente">
-                                        <label class="required" for="mostrarAgentes" >Origen</label>
-                                        <select class="custom-select mr-sm-2" id="mostrarAgentes" name="agente" v-model="hlaboral.agente_id" disabled>
-                                            <option>Seleccione Agentes</option>
-                                            <option v-for="(agente, index) in agentes" :key="agente.id" :value="agente.id">{{agente.nombre}}</option>
-                                        </select>
-                                    </div>
+                                    <label for="mostrarOrganismo" class="required">Organismo</label>
+                                    <input type="text" name="puesto" id="mostrarOrganismo" value=""
+                                           class="form-control"  v-model="hlaboral.puesto_id" readonly>
                                 </div>
                             </div>
                             <div class="row">
@@ -115,6 +104,7 @@
                                            class="form-control"  v-model="hlaboral.clase_id" readonly>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col">
                                     <label for="mostrarFechaInicio" class="required">Fecha Inicio</label>
@@ -124,9 +114,9 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <label for="mostrarFechaEgreso" class="required">Fecha Egreso</label>
-                                    <input type="text" name="clase" id="mostrarFechaEgreso" value=""
-                                           class="form-control"  v-model="hlaboral.fecha_egreso" readonly>
+                                    <label for="mostrarFechaFin" class="required">Fecha Fin</label>
+                                    <input type="text" name="clase" id="mostrarFechaFin" value=""
+                                           class="form-control"  v-model="hlaboral.fecha_fin" readonly>
                                 </div>
                             </div>
                             <br>
@@ -235,6 +225,10 @@
                     console.log(response.data);
                     this.hlaborales = response.data;
                 })
+            },
+
+            mostrarHistoria(p_historia){
+                this.hlaboral = p_historia;
             },
 
             empty(){
