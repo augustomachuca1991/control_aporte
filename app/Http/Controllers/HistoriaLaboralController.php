@@ -93,9 +93,9 @@ class HistoriaLaboralController extends Controller
         }
     }
 
-    public function getHistoriaLaboralSelected($id){
+    public function puestoHistoriaLaboralSelected($id){
         try{
-            return HistoriaLaboral::where('organismo_id',$id)->get();
+            return HistoriaLaboral::with('clase')->where('puesto_id',$id)->get();
         }catch (\Exception $e){
             return [];
         }

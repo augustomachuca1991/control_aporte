@@ -100,7 +100,7 @@ Route::delete('/organismo/delete/{id}', 'OrganismoController@destroy')->name('de
 
 // Historias Laborales
 Route::get('/hlaborales', 'HistoriaLaboralController@getHistoriaLaborales')->name('historialaboral');
-Route::get('/hlaborales/{id}', 'HistoriaLaboralController@getHistoriaLaboralSelected')->name('historialaboral');
+Route::get('/hlaborales_puesto/{id}', 'HistoriaLaboralController@puestoHistoriaLaboralSelected')->name('puesto_historialaboral');
 Route::get('/hlaborales/edit/{id}', 'HistoriaLaboralController@edit')->name('edit_historialaboral');
 Route::put('/hlaborales/update/{id}', 'HistoriaLaboralController@update')->name('update_historialaboral');
 Route::post('/hlaborales/create', 'HistoriaLaboralController@store')->name('create_historialaboral');
