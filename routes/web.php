@@ -33,6 +33,9 @@ Route::middleware('admin')->group(function(){
 		return view('admin.index');
 	})->name('admin');
 
+	//-------- Declaraciones Juradas------------
+	Route::get('/declaraciones_juradas', 'DeclaracionJuradaController@index')->name('ddjj');
+
 	//-------- Liquidacion Controller------------
 	Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidacion');
 

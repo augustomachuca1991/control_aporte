@@ -44,9 +44,10 @@ class PeriodoController extends Controller
      * @param  \App\Periodo  $periodo
      * @return \Illuminate\Http\Response
      */
-    public function show(Periodo $periodo)
+    public function show($id)
     {
-        //
+        
+       return Periodo::where('cod_periodo',$id)->first();
     }
 
     /**

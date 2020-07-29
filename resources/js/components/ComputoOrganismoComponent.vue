@@ -1,117 +1,82 @@
 <template>
-	<div class="tab-pane fade mh-100" id="organismo" role="tabpanel" aria-labelledby="organismo-tab">
-		<h5 class="card-title">Organismo</h5>
-    	
-    	<div class="table-responsive">
-    		<table class="table table-sm table-hover table-bordeless">
-			  <thead>
-			    <tr class="table-dark">
-			      <th scope="col">#</th>
-			      <th scope="col">TOTAL HABER BRUTO</th>
-			      <th scope="col">TOTAL APORTE PERSONAL</th>
-			      <th scope="col">TOTAL BASICO</th>
-			      <th scope="col">TOTAL ANTIGÜEDAD</th>
-			      <th scope="col">TOTAL ADICIONAL</th>
-			      <th scope="col">TOTAL FAMILIAR</th>
-			      <th scope="col">TOTAL HIJO</th>
-			      <th scope="col">TOTAL ESPOSA</th>
-			    </tr>
-			  </thead>
-			   <tbody>
-			   	<tr v-if="organismos.length == 0" class="table-default text-center">
-			  		<th colspan="9">No Data</th>
-			  	</tr>
-			    <tr v-for="(computo,llave) in organismos" v-else>
-			      <th scope="row">
-			      	<div class="row align-items-center">
-			      		<div class="col">
-			      			<small>{{ llave }}</small>
-			      		</div>
-			      		<div class="col">
-			      			<div class="row" v-for="(value, key) in computo">
-			      				<div class="col">
-			      					<small>{{value.organismo.jurisdiccion.jurisdiccion}}</small>	
-			      				</div>
-			      				<div class="col">
-			      					<div class="row">
-			      						<div class="col">
-			      							<small>{{value.organismo.organismo}}</small>	
-			      						</div>
-			      					</div>	
-			      				</div>
-			      			</div>
-			      		</div> 
-			      	</div>
-				 </th>
-			      <td>
-			      	<tr v-for="(value, key) in computo">
-			      		$ {{value.haber_bruto }}
-			      	</tr>
-			      </td>
-			      <td>
-			      	<tr v-for="(value, key) in computo">
-			      		<small>$ {{value.total_aporte_personal }}</small>
-			      	</tr>
-			      </td>
-			      <td>
-			      	<tr v-for="(value, key) in computo">
-			      		<small>$ {{value.total_sueldo_basico }}</small>
-			      	</tr>
-			      </td>
-			      <td>
-			      	<tr v-for="(value, key) in computo">
-			      		<small>$ {{value.total_antiguedad }}</small>
-			      	</tr>
-			      </td>
-			      <td>
-			      	<tr v-for="(value, key) in computo">
-			      		<small>$ {{value.total_adicional }}</small>
-			      	</tr>
-			      </td>
-			      <td>
-			      	<tr v-for="(value, key) in computo">
-			      		<small>$ {{value.total_familiar }}</small>
-			      	</tr>
-			      </td>
-			      <td>
-			      	<tr v-for="(value, key) in computo">
-			      		<small>$ {{value.total_hijo }}</small>
-			      	</tr>
-			      </td>
-			      <td>
-			      	<tr v-for="(value, key) in computo">
-			      		<small>$ {{value.total_esposa }}</small>
-			      	</tr>
-			      </td>
-			    </tr>
-			  </tbody>
-			</table>
-		</div>	    
+	<div class="tab-pane fade show active mh-100" id="organismo" role="tabpanel" aria-labelledby="organismo-tab" >
+		<div class="card">
+			<div class="card-body">
+				<div class="card-title" v-if="organismos.length !== 0">Liquidacion de {{organismos[0].periodo.periodo}}</div>
+				   <ejs-grid locale='es-ES' :dataSource="organismos" :allowPaging="true" :allowSorting='true' :allowFiltering='true' :allowGrouping='true' :pageSettings='pageSettings'>
+		          <e-columns>
+		          	<e-column field='organismo.jurisdiccion.origen.origen' headerText='Origen' textAlign='left' width=100></e-column>
+		            <e-column field='organismo.jurisdiccion.jurisdiccion' headerText='Jurisdiccion' textAlign='left' width=120></e-column>
+		            <e-column field='organismo.organismo' headerText='Organismo' textAlign='left' width=120></e-column>
+		            <e-column field='tipoliquidacion.descripcion' headerText='Tipo Sueldo' textAlign='left' width=120></e-column>
+		            <e-column field='haber_bruto' headerText='Haber Bruto' textAlign='Right' format='C2' width=90></e-column>
+		            <e-column field='total_aporte_personal' headerText='Aporte Personal' textAlign='Right' format='C2' width=90></e-column>
+		            <e-column field='total_sueldo_basico' headerText='Sueldo Basico' textAlign='Right' format='C2' width=90></e-column>
+		            <e-column field='total_antiguedad' headerText='Antiguedad' textAlign='Right' format='C2' width=90></e-column>
+		            <e-column field='total_adicional' headerText='Adicional' textAlign='Right' format='C2' width=90></e-column>
+		          </e-columns>
+		          <e-aggregates>
+		            <e-aggregate>
+		                <e-columns>
+		                    <e-column type="Sum" field="haber_bruto" format="C2" :footerTemplate='footerSum'></e-column>
+		                    <e-column type="Sum" field="total_aporte_personal" format="C2" :footerTemplate='footerSum'></e-column>
+		                    <e-column type="Sum" field="total_sueldo_basico" format="C2" :footerTemplate='footerSum'></e-column>
+		                    <e-column type="Sum" field="total_antiguedad" format="C2" :footerTemplate='footerSum'></e-column>
+		                    <e-column type="Sum" field="total_adicional" format="C2" :footerTemplate='footerSum'></e-column>
+		                </e-columns>
+		            </e-aggregate>
+		          </e-aggregates>
+		        </ejs-grid>
+			</div>
+		</div>
 	</div>
 </template>
-<script>
-	export default {
-		props:['organismos'],
-        data: function() {
-                return {
-                	computos_organismos:{},
-                }
-            },
-        mounted() {
-              
-                console.log('oganismo-computo-component mounted')
-                //axios.get('api/computo/organismo/25616').then((response)=>{
-                //   this.computos_organismos = response.data
-                //   console.log('computos: '+this.computos_organismos);
-                //})
-        },
-        methods:{
-            sumar(integer){
-            	//var suma = 0
-                //suma += integer;
-                //return this.haber_bruto;
-            },
-        },
 
-    }
+<script>
+	import { L10n, setCulture } from '@syncfusion/ej2-base';
+ 	import {Page, Sort, Filter, Group, Aggregate } from "@syncfusion/ej2-vue-grids";
+ 	//import '@syncfusion/ej2-vue-grids/styles/material.css'
+
+ 	setCulture('es-ES');
+
+	L10n.load({
+	    'es-ES': {
+	        'grid': {
+	            'EmptyRecord': 'Sin Registros',
+	            'EmptyDataSourceError': 'DataSource must not be empty at initial load since columns are generated from dataSource in AutoGenerate Column Grid',
+	            'GroupDropArea': 'Arrastre el encabezado de una columna aquí para agrupar su columna',
+	        },
+	        'pager':{
+	            'currentPageInfo': '{0} de {1} Paginas',
+	            'totalItemsInfo': '	({0} Registros)',
+	            'firstPageTooltip': 'Primer Pagina',
+	            'lastPageTooltip': 'Fin Pagina',
+	            'nextPageTooltip': 'Siguente',
+	            'previousPageTooltip': 'Anterior',
+	            'nextPagerTooltip': 'Go to next pager',
+	            'previousPagerTooltip': 'Go to previous pager'
+	        }
+	    }
+	});
+
+	export default {
+	  props:['organismos'],
+	  data() {
+	    return {
+	      data: this.organismos,
+	      pageSettings: { pageSize: 10 },
+	      toolbar: ['Print', 'Search'],
+	      footerSum: function () {
+	        return  { template : Vue.component('sumTemplate', {
+	            template: `<span>Suma: {{data.Sum}}</span>`,
+	            data () {return { data: {data: {}}};}
+	            })
+	          }
+	      }
+	    };
+	  },
+	  provide: {
+	    grid: [Page, Sort, Filter, Group, Aggregate]
+	  }
+	}
 </script>

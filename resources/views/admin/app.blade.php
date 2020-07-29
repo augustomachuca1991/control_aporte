@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" type="image/png" href="{{asset('image/ips.png')}}">
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -86,10 +87,10 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Panel:</h6>
-            <a class="collapse-item" href="{{route('csv_import')}}">Importar</a>
-            <a class="collapse-item" href="{{route('csv_export')}}">Exportar</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+            <a class="collapse-item" href="{{route('csv_import')}}"><i class="fas fa-upload"></i>&nbsp;Importar</a>
+            <a class="collapse-item" href="{{route('csv_export')}}"><i class="fas fa-download"></i>&nbsp;Exportar</a>
+           <!--<a class="collapse-item" href="utilities-animation.html">Animations</a>
+            <a class="collapse-item" href="utilities-other.html">Other</a>-->
           </div>
         </div>
       </li>

@@ -14,7 +14,7 @@ class DeclaracionJuradaController extends Controller
      */
     public function index()
     {
-        return 
+        return view('declaraciones_juradas.index');
     }
 
     /**
@@ -82,4 +82,15 @@ class DeclaracionJuradaController extends Controller
     {
         //
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\DeclaracionJurada  $declaracionJurada
+     * @return \Illuminate\Http\Response
+     */
+    public function getDeclaracionesJuradas(){
+        return DeclaracionJurada::all();
+    }
+
 }
