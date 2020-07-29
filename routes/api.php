@@ -108,8 +108,6 @@ Route::put('/hlaborales/update/{id}', 'HistoriaLaboralController@update')->name(
 Route::post('/hlaborales/create', 'HistoriaLaboralController@store')->name('create_historialaboral');
 Route::delete('/hlaborales/delete/{id}', 'HistoriaLaboralController@destroy')->name('delete_historialaboral');
 
-<<<<<<< HEAD
+
 //Origenes
 Route::get('/origen', 'OrigenController@index')->name('origen');
-=======
->>>>>>> c46368a9ed537647a44a8cb6cbefe7d660bbcafd
