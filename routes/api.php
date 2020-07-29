@@ -18,8 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Origenes
-Route::get('/origen', 'OrigenController@index')->name('origen');
+
+
+//Declaraciones Juradas
+Route::get('declaracion_jurada' , 'DeclaracionJuradaController@getDeclaracionesJuradas');
 
 
 //Computos
@@ -35,7 +37,7 @@ Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liq
 Route::post('/liquidacion/agente/filtro','LiquidacionController@agente')->name('filtros');
 Route::post('/liquidacion/filtro','LiquidacionController@filtro')->name('buscar');
 
-//File
+//Files Routes
 Route::post('/import', 'ExcelController@import')->name('import');
 Route::post('/export', 'ExcelController@export')->name('export');
 
@@ -46,18 +48,18 @@ Route::get('/puesto', 'PuestoLaboralController@getpuestoLaboral')->name('puesto_
 //Conceptos
 Route::get('/concepto', 'ConceptoLiquidacionController@getConcepto')->name('concepto');
 
-//subtipos codigos
+//Subtipos Codigos
 Route::get('/subtipo', 'SubtipoCodigoController@getSubtipo')->name('subtipo');
 
-//Tipos de codigos
+//Tipos  Codigos
 Route::get('/tipocodigo', 'TipoCodigoController@getTipo')->name('tipocodigo');
 
-//Tipos de liquidaciones
+//Tipos Liquidaciones
 Route::get('/tipoliquidacion', 'TipoLiquidacionController@getTipoLiquidacion')->name('tipoliquidacion');
 
 //Periodos
 Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
-
+Route::get('/periodo/{id}', 'PeriodoController@show');
 
 // Categoria
 Route::get('/categoria/find/{id}', 'CategoriaController@getCategoria')->name('find_categoria');
@@ -97,3 +99,6 @@ Route::get('/hlaborales/edit/{id}', 'HistoriaLaboralController@edit')->name('edi
 Route::put('/hlaborales/update/{id}', 'HistoriaLaboralController@update')->name('update_historialaboral');
 Route::post('/hlaborales/create', 'HistoriaLaboralController@store')->name('create_historialaboral');
 Route::delete('/hlaborales/delete/{id}', 'HistoriaLaboralController@destroy')->name('delete_historialaboral');
+
+//Origenes
+Route::get('/origen', 'OrigenController@index')->name('origen');

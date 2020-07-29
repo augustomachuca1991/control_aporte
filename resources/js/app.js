@@ -14,8 +14,13 @@ var VuePaginate = require('vue-paginate');
 
 
 import Swal from 'sweetalert2/dist/sweetalert2.js'
-
 import 'sweetalert2/src/sweetalert2.scss'
+
+import { GridPlugin } from "@syncfusion/ej2-vue-grids";
+//import '@syncfusion/ej2-vue-grids/styles/material.css'
+
+	
+	
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,7 +32,7 @@ import 'sweetalert2/src/sweetalert2.scss'
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-
+Vue.use(GridPlugin);
 Vue.use(VuePaginate);
 Vue.component('panel-component', require('./components/PanelLiquidacionComponent.vue').default);
 Vue.component('filter-component', require('./components/FiltroComponent.vue').default);
@@ -58,6 +63,9 @@ Vue.component('computoorganismo-component', require('./components/ComputoOrganis
 //csv
 Vue.component('import-component', require('./components/ImportComponent.vue').default);
 Vue.component('export-component', require('./components/ExportComponent.vue').default);
+
+//declaraciones juradas
+Vue.component('ddjj-component', require('./components/DeclaracionJuradaComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

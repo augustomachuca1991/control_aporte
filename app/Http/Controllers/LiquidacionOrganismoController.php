@@ -92,9 +92,8 @@ class LiquidacionOrganismoController extends Controller
                     $query3;
                 });
             });
-        })->with(['organismo','periodo'])
-        ->get()
-        ->groupBy('organismo.jurisdiccion.origen.origen');
+        })->with(['organismo','periodo','tipoliquidacion'])
+        ->get();
         return $computos;
     }
 

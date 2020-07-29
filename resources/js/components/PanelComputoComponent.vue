@@ -7,21 +7,21 @@
 		  		obtenedido mostrará de forma global el total en $ (pesos argentinos), agrupados por origenes, por jurisdicciones o bien por organismos.
 		  	</p>
 		    <ul class="nav nav-tabs card-header-tabs">
-		      <li class="nav-item">
-		        <a class="nav-link active" id="origen-tab" data-toggle="tab" href="#origen" role="tab" aria-controls="origen" aria-selected="false">Por Origenes</a>
+		      <!--<li class="nav-item">
+		        <a class="nav-link " id="origen-tab" data-toggle="tab" href="#origen" role="tab" aria-controls="origen" aria-selected="false">Por Origenes</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" id="jurisdiccion-tab" data-toggle="tab" href="#jurisdiccion" role="tab" aria-controls="jurisdiccion" >Por Jurisdicciones</a>
-		      </li>
+		      </li>-->
 		      <li class="nav-item">
-		        <a class="nav-link" id="organismo-tab" data-toggle="tab" href="#organismo" role="tab" aria-controls="organismo"  tabindex="-1" aria-disabled="true" >Por Organismos</a>
+		        <a class="nav-link active" id="organismo-tab" data-toggle="tab" href="#organismo" role="tab" aria-controls="organismo">Por Organismos</a>
 		      </li>
 		    </ul>
 		  </div>
 		  <div class="card-body">
 		  	<div class="tab-content" id="myTabContent">
-	        	<computoorigen-component :origenes="origenes"></computoorigen-component>
-		    	<computojur-component :jurisdicciones="jurisdicciones"></computojur-component>
+	        	<!--<computoorigen-component :origenes="origenes"></computoorigen-component>
+		    	<computojur-component :jurisdicciones="jurisdicciones"></computojur-component>-->
 		    	<computoorganismo-component :organismos="organismos"></computoorganismo-component>
 	      	</div>
 		  </div>
@@ -33,8 +33,8 @@
   export default {
         data: function(){
             return{
-                origenes:[],
-                jurisdicciones:[],
+                //origenes:[],
+                //jurisdicciones:[],
                 organismos:[],
                 periodo:'',
             }
@@ -45,22 +45,18 @@
         },
         methods:{
             getPeriodo: function(id){
-            	this.periodo = id
-                if (periodo != '') {
+            	if (id) {
+            		this.periodo = id	
 					axios.get(`api/computo/origen/${this.periodo}`).then((response)=>{
-						this.origenes = response.data
-						this.jurisdicciones = response.data
+						//this.origenes = response.data
+						//this.jurisdicciones = response.data
 						this.organismos = response.data
 					}).catch(function (error) {
-	                  console.log(error);
-	                });
-					//axios.get(`api/computo/jurisdiccion/${this.periodo}`).then((response)=>{
-					//	this.jurisdicciones = response.data
-					//})
-					//axios.get(`api/computo/organismo/${this.periodo}`).then((response)=>{
-					//	this.organismos = response.data
-					//})
-				}
+						console.log(error);
+					});
+            	}
+					
+                
 			},
         },
   }

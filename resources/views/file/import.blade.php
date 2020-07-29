@@ -1,8 +1,7 @@
 @extends('admin.app')
 
 @section('body')
-<div id="app">
-	<h1>Importar Archivos de Liquidaciones</h1>
+<div id="app" class="container-fluid">
 	<import-component></import-component> 
 </div>
 @endsection
@@ -17,8 +16,11 @@
     });
   var channel = pusher.subscribe('canal-import');
     channel.bind('event-import', function(data) {
-    	//const swal = require('sweetalert2')
-    	alert(JSON.stringify(data.message));
+    	swal.fire(
+          data.message,
+          'click para continuar',
+          'success'
+      )
     });
 </script>
 @endsection
