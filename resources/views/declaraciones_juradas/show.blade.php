@@ -2,7 +2,6 @@
 
 @section('body')
 <div id="app" class="container-fluid">
-<!--aqui va el codigo-->
-  <ddjj-component></ddjj-component>
+     <h6>detalle</h6>
 </div>
 @endsection

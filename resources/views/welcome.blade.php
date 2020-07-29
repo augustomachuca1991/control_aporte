@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>IPS - Instituto de Previsión Social</title>
+        <link rel="icon" type="image/png" href="{{asset('image/ips.png')}}">
+        <title>I.P.S Corrientes</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -12,14 +12,7 @@
         <!-- Styles -->
         <style>
             html, body {
-                background: rgba(162,197,125,1);
-                background: -moz-linear-gradient(left, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
-                background: -webkit-gradient(left top, right top, color-stop(0%, rgba(162,197,125,1)), color-stop(100%, rgba(92,164,14,1)));
-                background: -webkit-linear-gradient(left, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
-                background: -o-linear-gradient(left, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
-                background: -ms-linear-gradient(left, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
-                background: linear-gradient(to right, rgba(162,197,125,1) 0%, rgba(92,164,14,1) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2c57d', endColorstr='#5ca40e', GradientType=1 );
+                background-color:#92bf56; 
                 font-family: 'Cairo', sans-serif;
                 font-weight: 200;
                 height: 100vh;

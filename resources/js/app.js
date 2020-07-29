@@ -11,7 +11,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 var VuePaginate = require('vue-paginate');
-
+var moment = require('moment'); // require 
 
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
@@ -19,7 +19,16 @@ import 'sweetalert2/src/sweetalert2.scss'
 import { GridPlugin } from "@syncfusion/ej2-vue-grids";
 //import '@syncfusion/ej2-vue-grids/styles/material.css'
 
-	
+//filtro general
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
+// filtro moment
+Vue.filter('moment', function (date) {
+   return moment(date ,"YYYYMMDD").locale('es').fromNow();
+})		
 	
 /**
  * The following block of code may be used to automatically register your
@@ -34,6 +43,7 @@ import { GridPlugin } from "@syncfusion/ej2-vue-grids";
 
 Vue.use(GridPlugin);
 Vue.use(VuePaginate);
+//Vue.use(moment);
 Vue.component('panel-component', require('./components/PanelLiquidacionComponent.vue').default);
 Vue.component('filter-component', require('./components/FiltroComponent.vue').default);
 Vue.component('filtroperiodo-component', require('./components/FiltroPeriodoComponent.vue').default);

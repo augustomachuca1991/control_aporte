@@ -21,7 +21,7 @@
 
 
   <!-- Fonts -->
-  <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
   @yield('css')
   <!-- Styles -->
@@ -40,7 +40,7 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('admin')}}">
         <div class="sidebar-brand-icon">
-          <img class="img-profile p-3" src="image/logo-ips.png">
+          <img class="img-profile p-3" src="{{asset('image/logo-ips.png')}}">
         </div>
         <div class="sidebar-brand-text mx-2"><sup>Corrientes</sup></div>
       </a>
@@ -111,8 +111,8 @@
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
+            <h6 class="collapse-header">Declaraciones Juradas:</h6>
+            <a class="collapse-item" href="{{route('ddjj')}}">Declaraciones Juradas</a>
             <a class="collapse-item" href="register.html">Register</a>
             <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
             <div class="collapse-divider"></div>
@@ -419,10 +419,10 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="admin/vendor/jquery/jquery.min.js"></script>
+  <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
   <!--<script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
   <!-- Custom scripts for all pages-->
-  <script src="admin/js/sb-admin-2.min.js"></script>
+  <script src="{{asset('admin/js/sb-admin-2.min.js')}}"></script>
   <script src="{{ asset('js/app.js') }}" defer></script>
   @yield('js')
 

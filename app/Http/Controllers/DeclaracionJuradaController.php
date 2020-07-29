@@ -90,7 +90,7 @@ class DeclaracionJuradaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getDeclaracionesJuradas(){
-        return DeclaracionJurada::all();
+        return DeclaracionJurada::whereHas('ddjj_lines')->with(['organismo', 'user'])->orderBy('id', 'desc')->get();
     }
 
 }
