@@ -44,6 +44,14 @@ Route::post('/export', 'ExcelController@export')->name('export');
 
 //Puestos Laborales
 Route::get('/puesto', 'PuestoLaboralController@getpuestoLaboral')->name('puesto_laboral');
+// agente_organismo
+Route::get('/agente_organismo', 'PuestoLaboralController@index')->name('puesto_laboral');
+Route::get('/agente_organismo/{id}', 'PuestoLaboralController@getPuestoLaboralSelected')->name('puesto_laboral');
+Route::get('/agente_organismo/edit/{id}', 'PuestoLaboralController@edit')->name('edit_puesto_laboral');
+Route::put('/agente_organismo/update/{id}', 'PuestoLaboralController@update')->name('update_puesto_laboral');
+Route::post('/agente_organismo/create', 'PuestoLaboralController@store')->name('create_puesto_laboral');
+Route::delete('/agente_organismo/delete/{id}', 'PuestoLaboralController@destroy')->name('delete_puesto_laboral');
+
 
 //Conceptos
 Route::get('/concepto', 'ConceptoLiquidacionController@getConcepto')->name('concepto');
@@ -100,5 +108,8 @@ Route::put('/hlaborales/update/{id}', 'HistoriaLaboralController@update')->name(
 Route::post('/hlaborales/create', 'HistoriaLaboralController@store')->name('create_historialaboral');
 Route::delete('/hlaborales/delete/{id}', 'HistoriaLaboralController@destroy')->name('delete_historialaboral');
 
+<<<<<<< HEAD
 //Origenes
 Route::get('/origen', 'OrigenController@index')->name('origen');
+=======
+>>>>>>> c46368a9ed537647a44a8cb6cbefe7d660bbcafd

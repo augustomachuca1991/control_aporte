@@ -87,4 +87,13 @@ class PuestoLaboralController extends Controller
     {
          return PuestoLaboral::with('clases')->get();
     }
+
+    public function getPuestoLaboralSelected($id)
+    {
+        try{
+            return PuestoLaboral::with('agente')->where('organismo_id',$id)->get();
+        }catch (\Exception $e){
+            return [];
+        }
+    }
 }

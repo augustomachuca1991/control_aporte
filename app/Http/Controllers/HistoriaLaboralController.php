@@ -95,7 +95,7 @@ class HistoriaLaboralController extends Controller
 
     public function getHistoriaLaboralSelected($id){
         try{
-            return HistoriaLaboral::with('agente')->where('agente_id',$id)->get();
+            return HistoriaLaboral::where('organismo_id',$id)->get();
         }catch (\Exception $e){
             return [];
         }

@@ -131,9 +131,27 @@
       </li>
 
       <li class="nav-item">
+        <a class="nav-link" href="/jurisdicciones">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Jurisdicciones</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/organismos">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Organismos</span></a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link" href="{{ route('categoria')}}">
           <i class="fas fa-fw fa-table"></i>
           <span>Categorias</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/hlaborales">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Historias Lab.</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
