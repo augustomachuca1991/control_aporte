@@ -223,11 +223,10 @@
             },
 
             mostrarHistoria(p_historia){
-                this.hlaboral = p_historia
 
-                axios.get(`api/hlaborales/${this.hlaboral.id}`).then((response)=>{
+                axios.get(`api/hlaborales_id/${p_historia.id}`).then((response)=>{
                     console.log(response.data);
-                    this.hlaborales = response.data;
+                    this.hlaboral = response.data;
                 })
             },
 

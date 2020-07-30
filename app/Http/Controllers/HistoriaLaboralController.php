@@ -96,7 +96,8 @@ class HistoriaLaboralController extends Controller
     {
         try{
             //return HistoriaLaboral::with('agente')->where('id',$id)->get();
-            return HistoriaLaboral::findOrFail('id',$id)->get();
+            //return HistoriaLaboral::all();
+            return HistoriaLaboral::find($id);
         }catch (\Exception $e){
             return [];
         }
@@ -104,6 +105,7 @@ class HistoriaLaboralController extends Controller
 
     public function puestoHistoriaLaboralSelected($id){
         try{
+
             return HistoriaLaboral::with('clase','puesto')->where('puesto_id',$id)->get();
             //return HistoriaLaboral::find('puesto_id',$id)->get();
         }catch (\Exception $e){
