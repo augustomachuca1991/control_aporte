@@ -58,4 +58,9 @@ class Organismo extends Model
     {
         return $this->hasMany('App\Funcion');
     }
+
+    public function puestolaborales()
+    {
+        return $this->hasMany('App\PuestoLaborales');
+    }
 }

@@ -22,6 +22,9 @@ class PuestoLaboral extends Model
         return $this->belongsTo('App\Agente');
     }
 
-
+    public function organismo()
+    {
+        return $this->belongsTo('App\Organismo')->with('Jurisdiccion');
+    }
 
 }

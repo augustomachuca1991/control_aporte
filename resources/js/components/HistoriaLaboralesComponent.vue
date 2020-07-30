@@ -64,11 +64,11 @@
                 <td>{{ hlaboral.id }}</td>
                 <td>{{ hlaboral.puesto_id }}</td>
                 <td>{{ hlaboral.clase_id }}</td>
-                <td><a data-toggle="modal" data-target="#mostrarModal" @click="mostrarHistoria(hlaboral)" >{{ hlaboral.clase.clase }}</a></td>
+                <td><a data-toggle="modal" data-target="#mostrarModal" @click="mostrarHistoria(hlaboral.id)" >{{ hlaboral.clase.clase }}</a></td>
                 <td>{{ hlaboral.fecha_inicio }}</td>
                 <td>{{ hlaboral.fecha_fin }}</td>
                 <td class="td-button">
-                    <a @click="mostrarHistoria(hlaboral)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#verrModal"><i class="far fa-edit"></i></a>
+                    <a @click="mostrarHistoria(hlaboral.id)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#mostrarModal"><i class="fa fa-list-alt"></i></a>
                 </td>
             </tr>
             </tbody>
@@ -79,17 +79,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
                     <div class="modal-header">
-                        <h1 class="modal-title">Detalle Historia Laboral</h1>
+                        <h1 class="modal-title">Historia Laboral </h1>
                     </div>
                     <div class="modal-body">
                         <form action="" class="form-group" method="POST">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="mostrarOrganismo" class="required">Organismo</label>
-                                    <input type="text" name="puesto" id="mostrarOrganismo" value=""
-                                           class="form-control"  v-model="hlaboral.puesto_id" readonly>
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col">
                                     <label for="mostrarPuesto" class="required">Puesto Laboral</label>
@@ -227,13 +220,16 @@
                 })
             },
 
-            mostrarHistoria(p_historia){
-                this.hlaboral = p_historia;
+            mostrarHistoria(id){
+                axios.get(`api/hlaborales/${id}`).then((response)=>{
+                    console.log(response.data);
+                    this.hlaborales = response.data;
+                    alert(id);
+                })
             },
 
             empty(){
-                this.getHistoriaLaborales();
-                this.getOrganismos()
+                this.hlaboral = "";
             },
         },
         watch:{
