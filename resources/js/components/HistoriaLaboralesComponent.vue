@@ -62,13 +62,13 @@
             </tr>
             <tr style="text-align: center;" v-for="hlaboral in hlaborales">
                 <td>{{ hlaboral.id }}</td>
-                <td>{{ hlaboral.puesto_id }}</td>
+                <td>{{ hlaboral.puesto.cod_laboral}}</td>
                 <td>{{ hlaboral.clase_id }}</td>
-                <td><a data-toggle="modal" data-target="#mostrarModal" @click="mostrarHistoria(hlaboral.id)" >{{ hlaboral.clase.clase }}</a></td>
+                <td><a data-toggle="modal" data-target="#mostrarModal" @click="mostrarHistoria(hlaboral)" >{{ hlaboral.clase.clase }}</a></td>
                 <td>{{ hlaboral.fecha_inicio }}</td>
                 <td>{{ hlaboral.fecha_fin }}</td>
                 <td class="td-button">
-                    <a @click="mostrarHistoria(hlaboral.id)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#mostrarModal"><i class="fa fa-list-alt"></i></a>
+                    <a @click="mostrarHistoria(hlaboral)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#mostrarModal"><i class="fa fa-list-alt"></i></a>
                 </td>
             </tr>
             </tbody>
@@ -81,11 +81,13 @@
                     <div class="modal-header">
                         <h1 class="modal-title">Historia Laboral </h1>
                     </div>
+
                     <div class="modal-body">
                         <form action="" class="form-group" method="POST">
+
                             <div class="row">
                                 <div class="col">
-                                    <label for="mostrarPuesto" class="required">Puesto Laboral</label>
+                                    <label for="mostrarPuesto" class="required">Puesto Laboral </label>
                                     <input type="text" name="puesto" id="mostrarPuesto" value=""
                                            class="form-control"  v-model="hlaboral.puesto_id" readonly>
                                 </div>
@@ -220,11 +222,12 @@
                 })
             },
 
-            mostrarHistoria(id){
-                axios.get(`api/hlaborales/${id}`).then((response)=>{
+            mostrarHistoria(p_historia){
+                this.hlaboral = p_historia
+
+                axios.get(`api/hlaborales/${this.hlaboral.id}`).then((response)=>{
                     console.log(response.data);
                     this.hlaborales = response.data;
-                    alert(id);
                 })
             },
 

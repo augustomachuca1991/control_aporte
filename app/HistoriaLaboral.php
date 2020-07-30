@@ -20,7 +20,7 @@ class HistoriaLaboral extends Model
 
     public function puesto()
     {
-        return $this->belongsTo('App\PuestoLaboral')->with('agente');
+        return $this->belongsTo('App\PuestoLaboral')->with('agente')->with("organismo");
     }
 
     public function clase()

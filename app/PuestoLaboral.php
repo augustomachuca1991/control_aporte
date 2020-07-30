@@ -14,7 +14,7 @@ class PuestoLaboral extends Model
 
     public function clases(){
 
-        return $this->belongsToMany( 'App\Clase', 'historia_laborals','puesto_id','clase_id');
+        return $this->belongsToMany( 'App\Clase', 'historia_laborals','puesto_id','clase_id')->with('Categoria');
     }
 
     public function agente()
