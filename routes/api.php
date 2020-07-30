@@ -23,6 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Declaraciones Juradas
 Route::get('declaracion_jurada' , 'DeclaracionJuradaController@getDeclaracionesJuradas');
 
+//Declaraciones Juradas detalle
+Route::get('declaracion_jurada/detalle/{id}' , 'DeclaracionJuradaLineController@show');
 
 //Computos
 Route::get('/computo/origen/{periodo}', 'LiquidacionOrganismoController@computoOrigenes');

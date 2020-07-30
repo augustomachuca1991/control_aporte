@@ -45,6 +45,7 @@ class ExcelController extends Controller
                                 'user_id' => 1,
                                 'organismo_id' => 1,
                                 'secuencia' => 2,
+                                'created_at' => now(),
                             ]);
                 (new LiquidacionsImport($ddjj_id))
                 ->queue($file,null,\Maatwebsite\Excel\Excel::CSV)

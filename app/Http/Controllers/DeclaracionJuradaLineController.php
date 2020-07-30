@@ -44,9 +44,10 @@ class DeclaracionJuradaLineController extends Controller
      * @param  \App\DeclaracionJuradaLine  $declaracionJuradaLine
      * @return \Illuminate\Http\Response
      */
-    public function show(DeclaracionJuradaLine $declaracionJuradaLine)
+    public function show($cabecera_id)
     {
-        //
+    
+        return DeclaracionJuradaLine::where('declaracionjurada_id', $cabecera_id)->get();
     }
 
     /**

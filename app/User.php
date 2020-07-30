@@ -46,4 +46,9 @@ class User extends Authenticatable
 
         return $this->belongsToMany( 'App\Role');
     }
+
+    public function declaracionesJuradas()
+    {
+        return $this->hasMany('App\DeclaracionJurada');
+    }
 }

@@ -32,6 +32,7 @@
         "datatables.net-bs4": "^1.10.21",
         "datatables.net-dt": "^1.10.21",
         "datatables.net-responsive-bs4": "^2.2.5",
+        "moment": "^2.27.0",
         "startbootstrap-sb-admin-2": "^4.1.1",
         "sweetalert2": "^9.17.1",
         "vue-paginate": "^3.6.0",
