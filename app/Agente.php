@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\softDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agente extends Model
 {
@@ -20,4 +20,4 @@ class Agente extends Model
     {
         return $this->hasMany('App\PuestoLaborales');
     } 
-}
+} 
