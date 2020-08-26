@@ -17,6 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/name/{name}', function ($name) {
+    //dd($name);
+    //dd(pathinfo($name, PATHINFO_FILENAME));
+    $explode_name   = explode( '_', pathinfo($name, PATHINFO_FILENAME));
+    dd($explode_name);
+});
+
 Route::get('/info', function () {
     echo phpinfo();
 });

@@ -33,16 +33,35 @@ class ExcelController extends Controller
 
     public function import(Request $request){
         //dd($request);
-    	if ($request->hasFile('file')) {
-        	$file = $request->file('file');
-        	$rules = ['file' => 'file|mimes:csv,txt'];
-        	$validator = Validator::make($request->all(), $rules);
+    	//if ($request->hasFile('file')) {
+            $file = $request->file('file');
+        	$name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));//obtiene nombre de archivo sin extension
+            $validar = ['file' => $file, 
+                        'name' => $name,
+                        'organismo' => $name[0],
+                        'periodo' => $name[1],
+                        'tipo_liquidacion' => $name[2],
+                        'secuencia' => $name[3],
+                        ];
+            $rules = ['file' => 'requied|file|mimes:csv,txt',
+                      'name' => 'array|max:4|min:3',
+                      'organismo' => 'string|exists:organismos,organismo',
+                      'periodo' => 'integer|exists:periodos,cod_periodo|digits:6',
+                      'tipo_liquidacion' => 'string|exists:tipo_liquidacions,descripcion',
+                      'secuencia' => 'integer',
+                     ];
+            //$messages = [
+            //                'array' => 'Nombre de Archivo no tiene el formato correcto',
+            //            ];
+        	$validator = Validator::make($validar, $rules);
 	        if (!$validator->fails()) {
-	        	$message = 'El archivo esta siendo importado';
+	        	$message = 'Importando Archivo';
 	        	$status = 200;
-                $name = $file->getClientOriginalName();
+                //$name = $file->getClientOriginalName();
                 $ddjj_id = DeclaracionJurada::insertGetId([
                                 'user_id' => 1,
+                                'periodo_id' => 202005,
+                                'tipoliquidacion_id' => 1,
                                 'organismo_id' => 1,
                                 'secuencia' => 2,
                                 'created_at' => now(),
@@ -51,13 +70,13 @@ class ExcelController extends Controller
                 ->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
                 ->chain([new CompletedImport]);
 	        } else {
-	            $message = 'Tipo de Archivo selecciona es invalido. Debe ser extension .csv o .txt';
+	            $message = $validator->errors()->first();
 	            $status = 300;
 	        }
-	    } else {
-	        $message = 'Debe Seleccionar un archivo';
-	        $status = 301;
-	    }
+	    //} else {
+	        //$message = 'Debe Seleccionar un archivo';
+	        //$status = 301;
+	    //}
     	return response()->json(['message'=> $message, 'status' => $status, ]);
     }
 

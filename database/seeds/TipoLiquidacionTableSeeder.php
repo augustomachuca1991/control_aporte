@@ -13,9 +13,9 @@ class TipoLiquidacionTableSeeder extends Seeder
     public function run()
     {
         $tipo = [
-        	['descripcion' => 'Sueldo', 'created_at' => now() ],
-        	['descripcion' => 'SAC', 'created_at' => now()],
-        ];
+                	['descripcion' => 'Sueldo', 'created_at' => now() ],
+                	['descripcion' => 'SAC', 'created_at' => now()],
+                ];
     	TipoLiquidacion::insert($tipo);
     }
 }

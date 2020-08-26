@@ -17,6 +17,10 @@ class CreateDeclaracionJuradasTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->bigInteger('periodo_id')->unsigned();
+            $table->foreign('periodo_id')->references('cod_periodo')->on('periodos');
+            $table->bigInteger('tipoliquidacion_id')->unsigned();
+            $table->foreign('tipoliquidacion_id')->references('id')->on('tipo_liquidacions');
             $table->bigInteger('organismo_id')->unsigned();
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
             $table->unsignedInteger('secuencia')->nullable();
