@@ -33,7 +33,7 @@ class ExcelController extends Controller
 
     public function import(Request $request){
         //dd($request);
-    	//if ($request->hasFile('file')) {
+    	if ($request->hasFile('file')) {
             $file = $request->file('file');
         	$name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));//obtiene nombre de archivo sin extension
             $validar = ['file' => $file, 
@@ -43,7 +43,7 @@ class ExcelController extends Controller
                         'tipo_liquidacion' => $name[2],
                         'secuencia' => $name[3],
                         ];
-            $rules = ['file' => 'requied|file|mimes:csv,txt',
+            $rules = ['file' => 'file|mimes:csv,txt',
                       'name' => 'array|max:4|min:3',
                       'organismo' => 'string|exists:organismos,organismo',
                       'periodo' => 'integer|exists:periodos,cod_periodo|digits:6',
@@ -73,10 +73,10 @@ class ExcelController extends Controller
 	            $message = $validator->errors()->first();
 	            $status = 300;
 	        }
-	    //} else {
-	        //$message = 'Debe Seleccionar un archivo';
-	        //$status = 301;
-	    //}
+	    } else {
+	        $message = 'Debe Seleccionar un archivo';
+	        $status = 301;
+	    }
     	return response()->json(['message'=> $message, 'status' => $status, ]);
     }
 
