@@ -26,4 +26,14 @@ class DeclaracionJurada extends Model
     {
         return $this->belongsTo('App\Organismo')->with('jurisdiccion');
     }
+
+    public function periodo()
+    {
+        return $this->belongsTo('App\Periodo', 'periodo_id' , 'cod_periodo');
+    }
+
+    public function tipoliquidacion()
+    {
+        return $this->belongsTo('App\TipoLiquidacion');
+    }
 }

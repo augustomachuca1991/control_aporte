@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Role;
 
 class IsAdmin
 {
@@ -21,6 +20,7 @@ class IsAdmin
             $user   = auth()->user();
             foreach ($user->roles as $role){
                 if ($role->pivot->role_id == 1) {
+                    $request->user = $user;
                     return $next($request);
                 }
             }

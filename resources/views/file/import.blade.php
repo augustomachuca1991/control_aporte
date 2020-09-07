@@ -1,7 +1,8 @@
 @extends('admin.app')
 
 @section('body')
-<div id="app" class="container-fluid">
+<div id="app">
+  <h3 class="h3-responsive">Importar Archivo</h3>
 	<import-component></import-component> 
 </div>
 @endsection
