@@ -21,7 +21,12 @@ Route::get('/name/{name}', function ($name) {
     //dd($name);
     //dd(pathinfo($name, PATHINFO_FILENAME));
     $explode_name   = explode( '_', pathinfo($name, PATHINFO_FILENAME));
-    dd($explode_name);
+    $count = count($explode_name);
+    if ($count >= 3 ) {
+    	echo 'todo ok';
+    }else{
+    	echo 'El nombre no cumple con el formato. El mismo debe tener como minimo 3 elementos';
+    }
 });
 
 Route::get('/info', function () {
@@ -50,7 +55,7 @@ Route::middleware('admin')->group(function(){
 	Route::get('/computo', 'LiquidacionOrganismoController@index')->name('computo');
 
 	//-------- import/export Controller------------
-	Route::get('/import', 'ExcelController@indexImport')->name('csv_import');
+	Route::get('/import', 'ExcelController@indexImport')->name('csv_import')->withoutMiddleware('admin');
 	Route::get('/export', 'ExcelController@indexExport')->name('csv_export');
 
 	

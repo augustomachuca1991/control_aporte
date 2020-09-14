@@ -12,13 +12,13 @@
 				      </caption>
 				      <thead>
 				        <tr class="table-dark">
-				          <th scope="col">#Cod</th>
-				          <th scope="col">Usuario</th>
 				          <th scope="col">Organismo</th>
+				          <th scope="col">Tipo Liquidacion</th>
 				          <th scope="col">Rectificativa</th>
-				          <th scope="col">Creacion</th>
-				          <th scope="col">Ultima Modificación</th>
-				          <th scope="col">Accion</th>
+				          <th scope="col">Periodo de Liquidación</th>
+				          <th scope="col">Importado</th>
+				          <!-- <th scope="col">Usuario</th>
+				          <th scope="col">Accion</th> -->
 				        </tr>
 				      </thead>
 				      <tbody>
@@ -26,13 +26,13 @@
 				          <td colspan="7">No hay datos</td>
 				        </tr>
 				        <tr v-else v-for="(declaracion_jurada, index) in paginated('dd_jj') " :key="declaracion_jurada.id">
-				          <th scope="row">{{declaracion_jurada.id}}</th>
-				          <td>{{declaracion_jurada.user.name}}</td>
-				          <td>{{declaracion_jurada.organismo.organismo | capitalize}}</td>
-				          <td v-if="declaracion_jurada.secuencia === null">no</td>
-				          <td v-else>si<!--{{declaracion_jurada.secuencia}}--></td>
-				          <td>{{declaracion_jurada.created_at | moment}}</td>
-				          <td>{{declaracion_jurada.updated_at | moment}}</td>
+				          <th scope="row">{{declaracion_jurada.organismo.organismo | capitalize}}</th>
+				          <td>{{declaracion_jurada.tipoliquidacion.descripcion}}</td>
+				          <td v-if="declaracion_jurada.secuencia === null">Orginal</td>
+				          <td v-else>Rectificativa nº{{declaracion_jurada.secuencia}}</td>
+				          <td>{{declaracion_jurada.periodo.periodo}}</td>
+				          <!-- <td>{{declaracion_jurada.created_at | moment}}</td>
+				          <td>{{declaracion_jurada.user.name}}</td> -->
 				          <td>
 				              <a class="btn btn-outline-success btn-sm text-success" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea">
 				              	<i class="fas fa-tasks"></i>

@@ -1,81 +1,87 @@
 <template>
-	<div class="card mb-3">
-    <img class="card-img-top" src="/image/bannerExcel.jpg" alt="Card image cap">
-    <div class="card-img-overlay">
-      <h3 class="card-title">Importar Liquidacion</h3>
-      <p class="text-dark">El archivo debera estar en formato .CSV o .TXT</p>
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Subir Archivo</h5>
-      <form @submit.prevent="submitFile()">
-        <div class="form-group row">
-          <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Importar Archivo</label>
-          <div class="col-sm-8 d-flex align-items-start">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="file" name="file" lang="es" ref="file" @change="handleFileUpload()">
-              <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+	 <div class="card mb-3">
+      <img class="card-img-top" src="/image/bannerExcel.jpg" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Subir Archivo</h5>
+        <form @submit.prevent="submitFile()">
+          <div class="form-group row">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Importar Archivo</label>
+            <div class="col-sm-8 d-flex align-items-start">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="file" name="file" lang="es" ref="file" @change="handleFileUpload()"  required>
+                <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <button type="submit" name="import" id="import" class="btn btn-success btn-block">
+                <i class="fas fa-file-upload"></i>&nbsp;
+                <span class="small">Importar</span>
+              </button>
             </div>
           </div>
-          <div class="col-sm-2">
-            <button type="submit" name="import" id="import" class="btn btn-success btn-block">
-              <i class="fas fa-file-upload"></i>&nbsp;
-              <span class="small">Importar</span>
-            </button>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
 </template>
+
 <script>
-  const Toast = swal.mixin({
-                  toast: true,
-                  position: 'top-end',
-                  timer: 4000,
-                  showConfirmButton: false,
-                  onOpen: (toast) => {
-                    toast.addEventListener('mouseenter', swal.stopTimer)
-                    toast.addEventListener('mouseleave', swal.resumeTimer)
-                  }
-                });
-	export default {
-      data: function(){
-          return{      
-            file:'',
-            meta:{
-              headers: {
-                  'Content-Type': 'multipart/form-data'
-              }
-            },
-          }
-      },
-      mounted(){
-        console.log('import-component mounted')
-      },
-      methods:{ 
-        submitFile () {
-        let formData = new FormData()
-        formData.append('file', this.file)
-        axios.post('api/import', formData, this.meta).then((response)=>{
-            if (response.data.status === 200) {
-            	Toast.fire({
-                icon: 'success',
-                title: 'El archivo esta siendo importado',
-                background: '#E7FFD7',
-              })
-            }else{
-              Toast.fire({
-                icon: 'error',
-                title: response.data.message,
-                background:'#FCDBCD',
-              })
+    const Toast = swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    timer: 6000,
+                    showConfirmButton: false,
+                    onOpen: (toast) => {
+                      toast.addEventListener('mouseenter', swal.stopTimer)
+                      toast.addEventListener('mouseleave', swal.resumeTimer)
+                    }
+                  });
+    export default {
+        data: function(){
+            return{      
+              file:'',
+              meta:{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+              },
             }
-          })
-  	    },
-        handleFileUpload(){
-          this.file = '';
-      		this.file = this.$refs.file.files[0];
-      	}
-      },
-    }	
+        },
+        mounted(){
+          console.log('import-component mounted')
+        },
+        methods:{ 
+          submitFile () {
+            let formData = new FormData()
+            formData.append('file', this.file)
+            axios.post('api/import', formData, this.meta)
+              .then((response)=>{
+                if (response.data.status) {
+                  Toast.fire({
+                    icon: 'success',
+                    title: response.data.message,
+                    background: '#E7FFD7',
+                  })
+                }else{
+                  Toast.fire({
+                    icon: 'error',
+                    title: response.data.message,
+                    background:'#FCDBCD',
+                  })
+                }
+                console.log(response.data.user);
+              }).catch((error) => {
+                  Toast.fire({
+                    icon: 'error',
+                    title: error.message,
+                    background:'#FCDBCD',
+                  })
+              })
+          },
+          handleFileUpload(){
+            this.file = '';
+            this.file = this.$refs.file.files[0];
+          }
+        },
+      } 
+              
 </script>
