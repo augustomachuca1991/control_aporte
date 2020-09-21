@@ -35,31 +35,6 @@ class ExcelController extends Controller
 
 
     public function import(Request $request){
-<<<<<<< HEAD
-        //dd($request);
-    	if ($request->hasFile('file')) {
-            $file = $request->file('file');
-        	$name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));//obtiene nombre de archivo sin extension
-            $validar = ['file' => $file, 
-                        'name' => $name,
-                        //'secuencia' => $name[3],
-                        ];
-            $rules = ['file' => 'file|mimes:csv,txt',
-                      'name' => 'array|max:4|min:3',
-                      'name.0' => 'string|exists:organismos,organismo',
-                      'name.1' => 'integer|exists:periodos,cod_periodo|digits:6',
-                      'name.2' => 'string|exists:tipo_liquidacions,descripcion',
-                      //'secuencia' => 'integer',
-                     ];
-            //$messages = [
-            //                'array' => 'Nombre de Archivo no tiene el formato correcto',
-            //            ];
-        	$validator = Validator::make($validar, $rules);
-	        if (!$validator->fails()) {
-	        	$message = 'Importando Archivo';
-	        	$status = 200;
-                //$name = $file->getClientOriginalName();
-=======
     	// if ($request->hasFile('file')) {
      //        $file = $request->file('file');
      //        $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));//obtiene nombre de archivo sin extension
@@ -142,32 +117,21 @@ class ExcelController extends Controller
                 $periodo_id = $name[1];
                 $tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
                 $organismo_id = Organismo::where('organismo',$name[0])->first()->cod_organismo;
+                $secuencia = $name[3];
                 $message = 'Importando Archivo';
                 $status = 1;
->>>>>>> 15eb9507a8eabe1ac81f2b919360eb1fe24d84b5
                 $ddjj_id = DeclaracionJurada::insertGetId([
                                'user_id' => 1,
                                'periodo_id' => $periodo_id,
                                'tipoliquidacion_id' => $tipoliquidacion_id,
                                'organismo_id' => $organismo_id,
-                               'secuencia' => $name[3],
+                               'secuencia' => $secuencia,
                                'created_at' => now(),
                                'updated_at' => now(),
                            ]);
                 (new LiquidacionsImport($ddjj_id))
                 ->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
                 ->chain([new CompletedImport]);
-<<<<<<< HEAD
-	        } else {
-	            $message = $validator->errors()->first();
-	            $status = 300;
-	        }
-	    } else {
-	        $message = 'Debe Seleccionar un archivo';
-	        $status = 301;
-	    }
-    	return response()->json(['message'=> $message, 'status' => $status, ]);
-=======
             }
             
         }else{
@@ -176,7 +140,6 @@ class ExcelController extends Controller
         }
         
         return response()->json(['message'=> $message, 'status' => $status, 'user' => $request]);
->>>>>>> 15eb9507a8eabe1ac81f2b919360eb1fe24d84b5
     }
 
     
