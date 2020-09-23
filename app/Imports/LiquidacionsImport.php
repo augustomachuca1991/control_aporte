@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings};
 
-class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInserts,WithChunkReading,ShouldQueue,WithCustomCsvSettings
+class LiquidacionsImport implements ToCollection,WithBatchInserts,WithChunkReading,ShouldQueue,WithCustomCsvSettings,WithHeadingRow
 {
     use Importable;
 
@@ -33,11 +33,41 @@ class LiquidacionsImport implements ToCollection, WithHeadingRow,WithBatchInsert
         
         DB::beginTransaction();
         try {
+            foreach ($rows as $row) {
+                DeclaracionJuradaLine::create([
+                    'declaracionjurada_id' => $this->cabecera,
+                    'nombre' => $row['nombre'],
+                    'cuil' => $row['cuil'],
+                    'fecha_nac' => date("Y-m-d", strtotime($row['fecha_nac'])),
+                    'sexo' => $row['sexo'],
+                    'puesto_laboral' => $row['puesto_laboral'],
+                    'cargo' => $row['cargo'],
+                    'fecha_ingreso' =>  date("Y-m-d", strtotime($row['fecha_ingreso'])),
+                    'cod_clase' => $row['cod_clase'],
+                    'clase' => $row['clase'],
+                    'cod_estado' => $row['cod_estado'],
+                    'estado' => $row['estado'],
+                    'cod_jurisdiccion' => $row['cod_jurisdiccion'],
+                    'jurisdiccion' => $row['jurisdiccion'],
+                    'cod_organismo' => $row['cod_organismo'],
+                    'organismo' => $row['organismo'],
+                    'haber_bruto' => $row['haber_bruto'],
+                    'aporte_personal' => $row['aporte_personal'],
+                    'aporte_estatal' => $row['aporte_estatal'],
+                    'basico' => $row['basico'],
+                    'antiguedad' => $row['antiguedad'],
+                    // 'adicionales' => $row['adicionales'],
+                    // 'familiar' => $row['familiar'],
+                    // 'hijo' => $row['hijo'],
+                    // 'esposa' => $row['esposa'],
+                    // 'otros' => $row['otros'],
+                    // 'cod_funcion' => $row['cod_funcion'],
+                    // 'funcion' => $row['funcion'],
 
-            DeclaracionJuradaLine::create([
-                'declaracionjurada_id' => $this->cabecera,
-                'data' => $rows,
-            ]);
+
+                ]);
+            }
+            
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

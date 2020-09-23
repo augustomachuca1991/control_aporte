@@ -117,6 +117,7 @@ class ExcelController extends Controller
                 $periodo_id = $name[1];
                 $tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
                 $organismo_id = Organismo::where('organismo',$name[0])->first()->cod_organismo;
+                $secuencia = $name[3];
                 $message = 'Importando Archivo';
                 $status = 1;
                 $ddjj_id = DeclaracionJurada::insertGetId([
@@ -124,7 +125,7 @@ class ExcelController extends Controller
                                'periodo_id' => $periodo_id,
                                'tipoliquidacion_id' => $tipoliquidacion_id,
                                'organismo_id' => $organismo_id,
-                               'secuencia' => $name[3],
+                               'secuencia' => $secuencia,
                                'created_at' => now(),
                                'updated_at' => now(),
                            ]);
