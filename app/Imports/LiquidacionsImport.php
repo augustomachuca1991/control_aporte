@@ -3,13 +3,12 @@
 namespace App\Imports;
 
 use App\{Liquidacion,DeclaracionJuradaLine};
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Validator;
+//use Illuminate\Support\Facades\{DB,Validator};
 use Maatwebsite\Excel\Events\AfterImport;
 use App\Events\{NotificationImport,FailedImport};
-use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,RegistersEventListeners};
+use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,RegistersEventListeners,WithValidation,SkipsOnError,SkipsErrors,SkipsOnFailure,SkipsFailures};
 
 class LiquidacionsImport implements 
     ToCollection,
@@ -17,10 +16,13 @@ class LiquidacionsImport implements
     ShouldQueue,
     WithCustomCsvSettings,
     WithHeadingRow,
-    WithEvents
+    WithEvents,
+    WithValidation
+    //SkipsOnError,
+    //SkipsOnFailure
     //WithBatchInserts
 {
-    use Importable, RegistersEventListeners;
+    use Importable, SkipsErrors, RegistersEventListeners, SkipsFailures;
 
     
     public $cabecera;
@@ -36,8 +38,8 @@ class LiquidacionsImport implements
     public function collection(Collection $rows)
     {
         
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
             foreach ($rows as $row) {
                 DeclaracionJuradaLine::create([
                     'declaracionjurada_id' => $this->cabecera,
@@ -73,12 +75,47 @@ class LiquidacionsImport implements
                 ]);
             }
             
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-        } catch(\Throwable $e){
-            DB::rollback();
-        }
+        //     DB::commit();
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        // } catch(\Throwable $e){
+        //     DB::rollback();
+        // }
+    }
+
+
+
+    public function rules(): array
+    {
+        return [
+            '*.nombre' =>['required'],
+            '*.cuil' =>['required','integer','digits_between:10,11'],
+            '*.fecha_nac' =>['required','date'],
+            '*.sexo' =>['required','string'],
+            '*.puesto_laboral' =>['required','integer'],
+            '*.cargo' =>['required'],
+            '*.fecha_ingreso' =>['required','date'],
+            '*.cod_clase' =>['required','integer'],
+            '*.clase' =>['required'],
+            '*.cod_estado' =>['required','integer'],
+            '*.estado' =>['required'],
+            '*.cod_jurisdiccion' =>['required','integer'],
+            '*.jurisdiccion' =>['required'],
+            '*.cod_organismo' =>['required','integer'],
+            '*.organismo' =>['required'],
+            '*.haber_bruto' =>['required', 'numeric'],
+            '*.aporte_personal' =>['required','numeric'],
+            '*.aporte_estatal' =>['required', 'numeric'],
+            '*.basico' =>['required', 'numeric'],
+            '*.antiguedad' =>['required','numeric'],
+            '*.adicional' =>['required', 'numeric'],
+            '*.familiar' =>['required', 'numeric'],
+            '*.hijo' =>['required', 'numeric'],
+            '*.esposa' =>['required','numeric'],
+            '*.otros' =>['required', 'numeric'],
+            '*.cod_funcion' =>['integer','nullable'],
+            '*.funcion' =>['string', 'nullable'],
+        ];
     }
 
 
@@ -122,20 +159,36 @@ class LiquidacionsImport implements
 
     public static function afterImport(AfterImport $event)
     {
-        //dd($event);
+        
         event(new NotificationImport('El archivo excel se importó correctamente'));
 
     }
+
+    
+
     
 
 
-    // public function registerEvents(): array
+    // public function onError(\Throwable $e)
     // {
-    //     return [
-    //         ImportFailed::class => function(ImportFailed $event) {
-    //             event(new FailedImport('Error'));
-    //         },
-    //     ];
+    //     event(new FailedImport('Error'));
     // }
+
+    //  public function onFailure(Failure ...$failures)
+    // {
+    //     event(new FailedImport('Error'));
+    // }
+
+
+    public function registerEvents(): array
+    {
+        return [
+            ImportFailed::class => function(ImportFailed $event) {
+                event(new FailedImport('Error'));
+            },
+        ];
+    }
+
+
 
 }

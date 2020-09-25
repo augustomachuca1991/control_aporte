@@ -55,7 +55,7 @@
             formData.append('file', this.file)
             axios.post('api/import', formData, this.meta)
               .then((response)=>{
-                if (response.data.status) {
+                if (response.status) {
                   Toast.fire({
                     icon: 'success',
                     title: response.data.message,
@@ -68,11 +68,12 @@
                     background:'#FCDBCD',
                   })
                 }
-                console.log(response.data.user);
+                console.log(response.data);
               }).catch((error) => {
+                  console.log('por el catch: '+error)
                   Toast.fire({
                     icon: 'error',
-                    title: error.message,
+                    title: error,
                     background:'#FCDBCD',
                   })
               })

@@ -36,6 +36,10 @@ class ExcelController extends Controller
 
     public function import(Request $request){
     
+        
+
+
+
         $file = $request->file('file');
         $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));//obtiene nombre de archivo sin extension
         $count = count($name);
