@@ -16,7 +16,7 @@
 				          <th scope="col">Tipo Liquidacion</th>
 				          <th scope="col">Rectificativa</th>
 				          <th scope="col">Periodo de Liquidación</th>
-				          <th scope="col">Importado</th>
+				          <th scope="col">Acción</th>
 				          <!-- <th scope="col">Usuario</th>
 				          <th scope="col">Accion</th> -->
 				        </tr>
@@ -37,7 +37,7 @@
 				              <a class="btn btn-outline-success btn-sm text-success" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea">
 				              	<i class="fas fa-tasks"></i>
 				              </a>
-				              <a class="btn btn-outline-primary btn-sm text-primary" @click="getDetalle(declaracion_jurada.id)" data-toggle="modal" data-target="#detalle">
+				              <a class="btn btn-outline-primary btn-sm text-primary" @click="getDetalle(declaracion_jurada.id)" data-toggle="modal" data-target=".bd-example-modal-lg">
 				              	<i class="far fa-eye"></i>
 				              </a> 
 				          </td>
@@ -62,22 +62,45 @@
 			</div>
 		</div>
 		<!-- Modal -->
-		<div class="modal fade" id="detalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
 		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel" v-model="title">{{title}}</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body" v-model="detalle">
-		        {{detalle}}
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-primary">Save changes</button>
-		      </div>
+		      <table class="table">
+				  <thead class="thead-dark">
+				    <tr>
+				      <th scope="col"># Cuil</th>
+				      <th scope="col">Nombre Agente</th>
+				      <th scope="col">Puesto Laboral</th>
+				      <th scope="col">Cargo</th>
+				      <th scope="col">Clase</th>
+				      <th scope="col">Estado</th>
+				      <th scope="col">Jurisdiccion</th>
+				      <th scope="col">Organismo</th>
+				      <!-- <th scope="col">Haber Bruto</th>
+				      <th scope="col">Aporte Personal</th>
+				      <th scope="col">Basico</th>
+				      <th scope="col">Adicionales</th>
+				      <th scope="col">Funcion</th> -->
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr v-for="(detalle,index) in detalles" :key="detalle.id">
+				      <th scope="row">{{detalle.cuil}}</th>
+				      <td>{{detalle.nombre | capitalize}}</td>
+				      <td>{{detalle.puesto_laboral}}</td>
+				      <td>{{detalle.cargo}}</td>
+				      <td>{{detalle.clase}}</td>
+				      <td>{{detalle.estado}}</td>
+				      <td>{{detalle.jurisdiccion}}</td>
+				      <td>{{detalle.organismo}}</td>
+				      <!-- <td>{{detalle.haber_bruto}}</td>
+				      <td>{{detalle.aporte_personal}}</td>
+				      <td>{{detalle.basico}}</td>
+				      <td>{{detalle.adicional}}</td>
+				      <td>{{detalle.clase}}</td> -->
+				    </tr>
+				  </tbody>
+			  </table>
 		    </div>
 		  </div>
 		</div>
@@ -89,7 +112,7 @@
         data: function(){
             return{
             	declaraciones_juradas:[],
-            	detalle:[],
+            	detalles:[],
             	title:'',
             	paginate: ['dd_jj'],
             	shown: false,
@@ -111,12 +134,9 @@
 		  getDetalle: function(cabecera_id){
 		  	axios.get('api/declaracion_jurada/detalle/'+cabecera_id).then((response)=>{
 		  		this.title = ''
-		  		this.detalle = []
-		  		response.data.forEach(obj => {
-			        this.detalle.push(obj.data);
-			        console.log('data: '+obj.data);
-			    });
-			    this.title = 'Declaracion jurada Nº '+response.data[0].declaracionjurada_id
+		  		this.detalles = []
+		  		this.detalles = response.data
+		  		this.title = 'Declaracion Jurada nº '+this.detalles[0].declaracionjurada_id
        		})
 		  }
 

@@ -7,17 +7,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings};
+use Maatwebsite\Excel\Events\AfterImport;
+use App\Events\{NotificationImport,FailedImport};
+use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,RegistersEventListeners};
 
-class LiquidacionsImport implements ToCollection,WithBatchInserts,WithChunkReading,ShouldQueue,WithCustomCsvSettings,WithHeadingRow
+class LiquidacionsImport implements 
+    ToCollection,
+    WithChunkReading,
+    ShouldQueue,
+    WithCustomCsvSettings,
+    WithHeadingRow,
+    WithEvents
+    //WithBatchInserts
 {
-    use Importable;
+    use Importable, RegistersEventListeners;
 
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+    
     public $cabecera;
 
     public function __construct($cabecera)
@@ -56,13 +61,13 @@ class LiquidacionsImport implements ToCollection,WithBatchInserts,WithChunkReadi
                     'aporte_estatal' => $row['aporte_estatal'],
                     'basico' => $row['basico'],
                     'antiguedad' => $row['antiguedad'],
-                    // 'adicionales' => $row['adicionales'],
-                    // 'familiar' => $row['familiar'],
-                    // 'hijo' => $row['hijo'],
-                    // 'esposa' => $row['esposa'],
-                    // 'otros' => $row['otros'],
-                    // 'cod_funcion' => $row['cod_funcion'],
-                    // 'funcion' => $row['funcion'],
+                    'adicionales' => $row['adicionales'],
+                    'familiar' => $row['familiar'],
+                    'hijo' => $row['hijo'],
+                    'esposa' => $row['esposa'],
+                    'otros' => $row['otros'],
+                    'cod_funcion' => $row['cod_funcion'],
+                    'funcion' => $row['funcion'],
 
 
                 ]);
@@ -85,10 +90,10 @@ class LiquidacionsImport implements ToCollection,WithBatchInserts,WithChunkReadi
     | Lee el archivo en bloques
     |  
     */
-    public function batchSize(): int
-    {
-        return 500;
-    }
+    // public function batchSize(): int
+    // {
+    //     return 500;
+    // }
     
     
     
@@ -110,6 +115,27 @@ class LiquidacionsImport implements ToCollection,WithBatchInserts,WithChunkReadi
     {
         return [
             'delimiter' => '@',
+            'enclosure' => '',
+            'input_encoding' => 'UTF-8'
         ];
     }
+
+    public static function afterImport(AfterImport $event)
+    {
+        //dd($event);
+        event(new NotificationImport('El archivo excel se importó correctamente'));
+
+    }
+    
+
+
+    // public function registerEvents(): array
+    // {
+    //     return [
+    //         ImportFailed::class => function(ImportFailed $event) {
+    //             event(new FailedImport('Error'));
+    //         },
+    //     ];
+    // }
+
 }

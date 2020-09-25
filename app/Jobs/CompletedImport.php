@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Events\NotificationImport;
+use App\Events\{NotificationImport,FailedImport};
 
 class CompletedImport implements ShouldQueue
 {
@@ -18,11 +18,11 @@ class CompletedImport implements ShouldQueue
      *
      * @return void
      */
-    //public $user;
+    public $condition;
 
-    public function __construct()
+    public function __construct($condition)
     {
-        //$this->user = $user;
+         $this->condition = $condition;
     }
 
     /**
@@ -32,6 +32,10 @@ class CompletedImport implements ShouldQueue
      */
     public function handle()
     {
-        event(new NotificationImport('Archivo importado exitosamente'));
+        if ($this->condition) {
+            event(new NotificationImport('Archivo importado exitosamente'));
+        }else{
+            event(new FailedImport('algo malio sal :( '));
+        }
     }
 }

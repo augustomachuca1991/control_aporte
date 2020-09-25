@@ -35,46 +35,7 @@ class ExcelController extends Controller
 
 
     public function import(Request $request){
-    	// if ($request->hasFile('file')) {
-     //        $file = $request->file('file');
-     //        $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));//obtiene nombre de archivo sin extension
-     //        $validar = ['file' => $file, 
-     //                    'name' => $name,
-     //                    'organismo' => $name[0],
-     //                    'periodo' => $name[1],
-     //                    'tipo_liquidacion' => $name[2],
-     //                    'secuencia' => $name[3],
-     //                    ];
-     //        $rules = ['file' => 'file|mimes:csv,txt',
-     //                  'name' => 'array|max:4|min:3',
-     //                  'organismo' => 'string|exists:organismos,organismo',
-     //                  'periodo' => 'integer|exists:periodos,cod_periodo|digits:6',
-     //                  'tipo_liquidacion' => 'string|exists:tipo_liquidacions,descripcion',
-     //                  'secuencia' => 'integer',
-     //                 ];
-     //        $validator = Validator::make($validar, $rules);
-     //        if (!$validator->fails()) {
-     //            $message = 'Importando Archivo';
-     //            $status = 200;
-     //            $ddjj_id = DeclaracionJurada::insertGetId([
-     //                            'user_id' => $request->id,
-     //                            'periodo_id' => 202005,
-     //                            'tipoliquidacion_id' => 1,
-     //                            'organismo_id' => 1,
-     //                            'secuencia' => 2,
-     //                            'created_at' => now(),
-     //                        ]);
-     //            (new LiquidacionsImport($ddjj_id))
-     //            ->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
-     //            ->chain([new CompletedImport]);
-     //        } else {
-     //            $message = $validator->errors()->first();
-     //            $status = 900;
-     //        }
-	    // } else {
-	    //     $message = 'Debe Seleccionar un archivo';
-     //        $status = 900;
-	    // }
+    
         $file = $request->file('file');
         $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));//obtiene nombre de archivo sin extension
         $count = count($name);
@@ -129,9 +90,9 @@ class ExcelController extends Controller
                                'created_at' => now(),
                                'updated_at' => now(),
                            ]);
-                (new LiquidacionsImport($ddjj_id))
-                ->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
-                ->chain([new CompletedImport]);
+                $import = new LiquidacionsImport($ddjj_id);
+                $import->queue($file,null,\Maatwebsite\Excel\Excel::CSV);
+                //->chain([new CompletedImport(true)]);
             }
             
         }else{
