@@ -18,11 +18,11 @@ class CompletedImport implements ShouldQueue
      *
      * @return void
      */
-    public $condition;
+    //public $condition;
 
-    public function __construct($condition)
+    public function __construct()
     {
-         $this->condition = $condition;
+         //$this->condition = $condition;
     }
 
     /**
@@ -32,10 +32,7 @@ class CompletedImport implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->condition) {
+        
             event(new NotificationImport('Archivo importado exitosamente'));
-        }else{
-            event(new FailedImport('algo malio sal :( '));
-        }
     }
 }

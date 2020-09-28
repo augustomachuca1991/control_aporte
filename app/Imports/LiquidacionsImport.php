@@ -5,10 +5,10 @@ namespace App\Imports;
 use App\{Liquidacion,DeclaracionJuradaLine};
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
-//use Illuminate\Support\Facades\{DB,Validator};
-use Maatwebsite\Excel\Events\AfterImport;
 use App\Events\{NotificationImport,FailedImport};
-use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,RegistersEventListeners,WithValidation,SkipsOnError,SkipsErrors,SkipsOnFailure,SkipsFailures};
+use Maatwebsite\Excel\Validators\Failure;
+use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,WithValidation,SkipsOnError,SkipsErrors,SkipsOnFailure,SkipsFailures};
+//use Maatwebsite\Excel\Events\AfterImport;
 
 class LiquidacionsImport implements 
     ToCollection,
@@ -16,13 +16,13 @@ class LiquidacionsImport implements
     ShouldQueue,
     WithCustomCsvSettings,
     WithHeadingRow,
+    SkipsOnError,
+    SkipsOnFailure,
     WithEvents,
     WithValidation
-    //SkipsOnError,
-    //SkipsOnFailure
     //WithBatchInserts
 {
-    use Importable, SkipsErrors, RegistersEventListeners, SkipsFailures;
+    use Importable, SkipsErrors, SkipsFailures;
 
     
     public $cabecera;
@@ -33,54 +33,45 @@ class LiquidacionsImport implements
     }
     
 
-    public $tries = 3;
+    public $tries = 1;
     //public $timeout = 180;
     public function collection(Collection $rows)
     {
-        
-        // DB::beginTransaction();
-        // try {
-            foreach ($rows as $row) {
-                DeclaracionJuradaLine::create([
-                    'declaracionjurada_id' => $this->cabecera,
-                    'nombre' => $row['nombre'],
-                    'cuil' => $row['cuil'],
-                    'fecha_nac' => date("Y-m-d", strtotime($row['fecha_nac'])),
-                    'sexo' => $row['sexo'],
-                    'puesto_laboral' => $row['puesto_laboral'],
-                    'cargo' => $row['cargo'],
-                    'fecha_ingreso' =>  date("Y-m-d", strtotime($row['fecha_ingreso'])),
-                    'cod_clase' => $row['cod_clase'],
-                    'clase' => $row['clase'],
-                    'cod_estado' => $row['cod_estado'],
-                    'estado' => $row['estado'],
-                    'cod_jurisdiccion' => $row['cod_jurisdiccion'],
-                    'jurisdiccion' => $row['jurisdiccion'],
-                    'cod_organismo' => $row['cod_organismo'],
-                    'organismo' => $row['organismo'],
-                    'haber_bruto' => $row['haber_bruto'],
-                    'aporte_personal' => $row['aporte_personal'],
-                    'aporte_estatal' => $row['aporte_estatal'],
-                    'basico' => $row['basico'],
-                    'antiguedad' => $row['antiguedad'],
-                    'adicionales' => $row['adicionales'],
-                    'familiar' => $row['familiar'],
-                    'hijo' => $row['hijo'],
-                    'esposa' => $row['esposa'],
-                    'otros' => $row['otros'],
-                    'cod_funcion' => $row['cod_funcion'],
-                    'funcion' => $row['funcion'],
+    
+        foreach ($rows as $row) {
+            DeclaracionJuradaLine::create([
+                'declaracionjurada_id' => $this->cabecera,
+                'nombre' => $row['nombre'],
+                'cuil' => $row['cuil'],
+                'fecha_nac' => date("Y-m-d", strtotime($row['fecha_nac'])),
+                'sexo' => $row['sexo'],
+                'puesto_laboral' => $row['puesto_laboral'],
+                'cargo' => $row['cargo'],
+                'fecha_ingreso' =>  date("Y-m-d", strtotime($row['fecha_ingreso'])),
+                'cod_clase' => $row['cod_clase'],
+                'clase' => $row['clase'],
+                'cod_estado' => $row['cod_estado'],
+                'estado' => $row['estado'],
+                'cod_jurisdiccion' => $row['cod_jurisdiccion'],
+                'jurisdiccion' => $row['jurisdiccion'],
+                'cod_organismo' => $row['cod_organismo'],
+                'organismo' => $row['organismo'],
+                'haber_bruto' => $row['haber_bruto'],
+                'aporte_personal' => $row['aporte_personal'],
+                'aporte_estatal' => $row['aporte_estatal'],
+                'basico' => $row['basico'],
+                'antiguedad' => $row['antiguedad'],
+                'adicionales' => $row['adicionales'],
+                'familiar' => $row['familiar'],
+                'hijo' => $row['hijo'],
+                // 'esposa' => $row['esposa'],
+                // 'otros' => $row['otros'],
+                // 'cod_funcion' => $row['cod_funcion'],
+                // 'funcion' => $row['funcion'],
 
 
-                ]);
-            }
-            
-        //     DB::commit();
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        // } catch(\Throwable $e){
-        //     DB::rollback();
-        // }
+            ]);
+        }
     }
 
 
@@ -108,13 +99,13 @@ class LiquidacionsImport implements
             '*.aporte_estatal' =>['required', 'numeric'],
             '*.basico' =>['required', 'numeric'],
             '*.antiguedad' =>['required','numeric'],
-            '*.adicional' =>['required', 'numeric'],
-            '*.familiar' =>['required', 'numeric'],
-            '*.hijo' =>['required', 'numeric'],
-            '*.esposa' =>['required','numeric'],
-            '*.otros' =>['required', 'numeric'],
-            '*.cod_funcion' =>['integer','nullable'],
-            '*.funcion' =>['string', 'nullable'],
+            // '*.adicional' =>['required', 'numeric'],
+            // '*.familiar' =>['required', 'numeric'],
+            // '*.hijo' =>['required', 'numeric'],
+            // '*.esposa' =>['required','numeric'],
+            // '*.otros' =>['required', 'numeric'],
+            // '*.cod_funcion' =>['integer','nullable'],
+            // '*.funcion' =>['string', 'nullable'],
         ];
     }
 
@@ -157,12 +148,12 @@ class LiquidacionsImport implements
         ];
     }
 
-    public static function afterImport(AfterImport $event)
-    {
+    // public static function afterImport(AfterImport $event)
+    // {
         
-        event(new NotificationImport('El archivo excel se importó correctamente'));
+    //     event(new NotificationImport('todo ok'));
 
-    }
+    // }
 
     
 
@@ -171,20 +162,45 @@ class LiquidacionsImport implements
 
     // public function onError(\Throwable $e)
     // {
-    //     event(new FailedImport('Error'));
+    //     //event(new FailedImport('Error: '+$e->getMessage()));
     // }
 
-    //  public function onFailure(Failure ...$failures)
-    // {
-    //     event(new FailedImport('Error'));
-    // }
+    public function onFailure(Failure ...$failures)
+    {
+        
+        $table = "<table class='table'>
+                    <thead>
+                        <tr>
+                            <th scope='col'>Fila</th>
+                            <th scope='col'>Columna</th>
+                            <th scope='col'>Errores</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class='tr-danger'>
+                            <td>1</td>
+                            <td>cuil</td>
+                            <td>error</td>
+                        </tr>
+                    </tbody>";
+        
+
+        // foreach ($failures as $failure ) {
+        //     (string)$failure->row()."</td><td>".$failure->attribute()."</td><td>".
+        //     foreach ($failure->errors() as $error) {
+        //         # code...
+        //         $error;
+        //     }
+        // }
+        event(new FailedImport($table));
+    }
 
 
     public function registerEvents(): array
     {
         return [
             ImportFailed::class => function(ImportFailed $event) {
-                event(new FailedImport('Error'));
+                //event(new FailedImport('Error'));
             },
         ];
     }

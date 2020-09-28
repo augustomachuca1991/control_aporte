@@ -20,7 +20,7 @@
     channel.bind('event-import', function(data) {
     	swal.fire(
           data.message,
-          'click para continuar',
+          'trabajo finalizado',
           'success'
       )
     });
@@ -28,8 +28,8 @@
     var channel = pusher.subscribe('canalfailed-import');
     channel.bind('eventfailed-import', function(data) {
       swal.fire(
+          'Error durante la importación',
           data.message,
-          'click para continuar',
           'error'
       )
     });

@@ -35,13 +35,10 @@ class ExcelController extends Controller
 
 
     public function import(Request $request){
-    
-        
-
 
 
         $file = $request->file('file');
-        $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));//obtiene nombre de archivo sin extension
+        $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $count = count($name);
         if ($count >= 3) {
             if ($count == 3) {
@@ -95,8 +92,8 @@ class ExcelController extends Controller
                                'updated_at' => now(),
                            ]);
                 $import = new LiquidacionsImport($ddjj_id);
-                $import->queue($file,null,\Maatwebsite\Excel\Excel::CSV);
-                //->chain([new CompletedImport(true)]);
+                $import->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
+                ->chain([new CompletedImport]);
             }
             
         }else{
@@ -116,7 +113,7 @@ class ExcelController extends Controller
             $message ='Codigo seleccionado '.$cod;
             $status = 1;      
         } else {
-            $message ='Debe Seleccionar un Periodo';
+            $message ='Debe seleccionar un periodo de liquidación';
             $status = 0;
         }
     	
