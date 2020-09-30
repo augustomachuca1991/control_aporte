@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\LiquidacionsExport;
 use App\Imports\LiquidacionsImport;
-use App\Jobs\CompletedImport;
+use App\Jobs\{CompletedImport,CompletedExport};
 use App\{DeclaracionJurada,Periodo,TipoLiquidacion,Organismo};
 // use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -108,15 +108,20 @@ class ExcelController extends Controller
 
 
     public function export(Request $request){
-    	$cod = $request->periodo;
-        if ($request->periodo != null) {
-            $message ='Codigo seleccionado '.$cod;
-            $status = 1;      
+    	$cod_periodo = $request->periodo;
+        if ($cod_periodo != null) {
+            $name= 'Liquidacion'.strtotime(now()).'.csv';
+            $liquidaciones = new LiquidacionsExport($cod_periodo);
+            $liquidaciones
+            ->store($name,'local',\Maatwebsite\Excel\Excel::CSV, ['Content-Type' => 'text/csv'])
+            ->chain([new CompletedExport]);
+            $message = 'Exportando Archivo';
+            $status = 1;
         } else {
             $message ='Debe seleccionar un periodo de liquidación';
             $status = 0;
         }
     	
-    	return response()->json(['message'=> $message, 'status' => $status, 'codigo_periodo' => $cod]);
+    	return response()->json(['message'=> $message, 'status' => $status]);
     }
 }

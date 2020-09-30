@@ -25,6 +25,16 @@
 </template>
 
 <script>
+  const Toast = swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  timer: 6000,
+                  showConfirmButton: false,
+                  onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', swal.stopTimer)
+                    toast.addEventListener('mouseleave', swal.resumeTimer)
+                  }
+                });
 	export default {
         data: function(){
             return{
@@ -45,10 +55,23 @@
         			periodo: this.selectedPeriodo
         		}
         		axios.post('api/export', periodo).then((response)=>{
-	               alert(response.data.message);
+                    if (response.data.status) {
+                      Toast.fire({
+                        icon: 'success',
+                        title: response.data.message,
+                        background: '#E7FFD7',
+                      })
+                    } else {
+                      Toast.fire({
+                        icon: 'error',
+                        title: response.data.message,
+                        background:'#FCDBCD',
+                      })
+                    }
+                 
 	          	}).catch(function (error) {
                   console.log(error);
-                });
+              });
         	},
         	cambio:function(){
         		this.selectedPeriodo = this.selectedPeriodo;

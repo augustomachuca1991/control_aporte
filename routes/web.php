@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\PuestoLaboral;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,16 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/name/{name}', function ($name) {
-    //dd($name);
-    //dd(pathinfo($name, PATHINFO_FILENAME));
-    $explode_name   = explode( '_', pathinfo($name, PATHINFO_FILENAME));
-    $count = count($explode_name);
-    if ($count >= 3 ) {
-    	echo 'todo ok';
-    }else{
-    	echo 'El nombre no cumple con el formato. El mismo debe tener como minimo 3 elementos';
-    }
+Route::get('/puestos', function () {
+    //echo public_path('/image/ips.png');
+
 });
 
 Route::get('/info', function () {

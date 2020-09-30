@@ -36,34 +36,34 @@ class LiquidacionTableSeeder extends Seeder
         $organismo30 = Organismo::find(30);
 
         
-        $liquidacion1->organismos()->attach($organismo1->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion1->organismos()->attach($organismo1->cod_organismo,['periodo_id' => 202005 , 'tipo_id' => 1]);
         $liquidacion1->historia_laborales()->attach(1,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion2->organismos()->attach($organismo2->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion2->organismos()->attach($organismo2->cod_organismo,['periodo_id' => 202005 , 'tipo_id' => 1]);
         $liquidacion2->historia_laborales()->attach(2,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion3->organismos()->attach($organismo3->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion3->organismos()->attach($organismo3->cod_organismo,['periodo_id' => 202005 , 'tipo_id' => 1]);
         $liquidacion3->historia_laborales()->attach(3,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion4->organismos()->attach($organismo4->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion4->organismos()->attach($organismo4->cod_organismo,['periodo_id' => 202005 , 'tipo_id' => 1]);
         $liquidacion4->historia_laborales()->attach(4,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion5->organismos()->attach($organismo5->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion5->organismos()->attach($organismo5->cod_organismo,['periodo_id' => 202005 , 'tipo_id' => 1]);
         $liquidacion5->historia_laborales()->attach(5,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion6->organismos()->attach($organismo6->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion6->organismos()->attach($organismo6->cod_organismo,['periodo_id' => 202006 , 'tipo_id' => 1]);
         $liquidacion6->historia_laborales()->attach(6,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion7->organismos()->attach($organismo7->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion7->organismos()->attach($organismo7->cod_organismo,['periodo_id' => 202006 , 'tipo_id' => 1]);
         $liquidacion7->historia_laborales()->attach(7,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion8->organismos()->attach($organismo20->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion8->organismos()->attach($organismo20->cod_organismo,['periodo_id' => 202006 , 'tipo_id' => 1]);
         $liquidacion8->historia_laborales()->attach(8,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion9->organismos()->attach($organismo21->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion9->organismos()->attach($organismo21->cod_organismo,['periodo_id' => 202006 , 'tipo_id' => 1]);
         $liquidacion9->historia_laborales()->attach(9,['estado_id' => 1 , 'funcion_id' => null]);
 
-        $liquidacion10->organismos()->attach($organismo30->cod_organismo,['periodo_id' => 25616 , 'tipo_id' => 1]);
+        $liquidacion10->organismos()->attach($organismo30->cod_organismo,['periodo_id' => 202006 , 'tipo_id' => 1]);
         $liquidacion10->historia_laborales()->attach(10,['estado_id' => 1 , 'funcion_id' => null]);
     }
 }
