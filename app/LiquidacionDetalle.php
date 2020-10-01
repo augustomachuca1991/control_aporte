@@ -9,6 +9,12 @@ class LiquidacionDetalle extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+    protected $fillable = [
+        'liquidacion_id',
+        'concepto_id',
+        'unidad',
+        'importe',
+    ];
 
     /**
      * relacion uno a mucho con tabla liquidacions.

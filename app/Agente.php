@@ -10,6 +10,13 @@ class Agente extends Model
     use SoftDeletes; 
 
     protected $dates = ['deleted_at'];
+    protected $fillable = [
+        'cuil',
+        'nombre',
+        'fecha_nac',
+        'sexo',
+    ];
+    
 
     public function organismos(){
 

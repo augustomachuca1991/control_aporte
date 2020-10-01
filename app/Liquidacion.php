@@ -10,6 +10,15 @@ class Liquidacion extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+    protected $fillable = [
+        'declaracion_id',
+        'bruto',
+        'bonificable',
+        'no_bonificable',
+        'no_remunerativo',
+        'familiar',
+        'descuento',
+    ];
     
     /**
      * relacion mucho a mucho con tabla historia_laborals.
@@ -79,6 +88,16 @@ class Liquidacion extends Model
     public function detalles()
     {
         return $this->hasMany('App\LiquidacionDetalle')->with('concepto');
+    }
+
+    /**
+     * relacion mucho a mucho con tabla conceptos.
+     *
+     * @var array
+     */
+    public function conceptos()
+    {
+        return $this->belongsToMany('App\ConceptoLiquidacion','liquidacion_detalles','liquidacion_id', 'concepto_id');
     }
 
 

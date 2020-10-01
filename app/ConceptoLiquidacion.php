@@ -10,6 +10,11 @@ class ConceptoLiquidacion extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+    protected $fillable = [
+        'concepto',
+        'organismo_id',
+        'subtipo_id'
+    ];
 
     public function detalles()
     {
@@ -27,8 +32,8 @@ class ConceptoLiquidacion extends Model
         return $this->belongsTo('App\Organismo');
     }
 
-    //public function liquidaciones()
-    //{
-    //    return $this->belongsToMany('App\Liquidacion','liquidacion_detalles','id', 'concepto_id');
-    //}
+    public function liquidaciones()
+    {
+       return $this->belongsToMany('App\Liquidacion','liquidacion_detalles','id', 'concepto_id');
+    }
 }

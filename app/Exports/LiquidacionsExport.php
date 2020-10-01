@@ -1,4 +1,4 @@
-<?php
+j<?php
 
 namespace App\Exports;
 
@@ -60,13 +60,13 @@ class LiquidacionsExport implements FromQuery, WithHeadings, ShouldQueue, WithDr
     public function query()
     {
         try {
-        	
         	return DeclaracionJuradaLine::query();
         } catch (Exception $e) {
         	\Log::debug('Fallo al decargar: '.$e->getMessagge());	
         }
         //->where('cod_periodo',$this->cod_periodo);
     }
+        	
 
     public function drawings()
     {
@@ -83,8 +83,8 @@ class LiquidacionsExport implements FromQuery, WithHeadings, ShouldQueue, WithDr
     public function properties(): array
     {
         return [
-            'creator'        => 'Machuca Augusto',
-            'title'          => 'Ips corrientes',
+            'creator' => 'Machuca Augusto',
+            'title' => 'Ips corrientes',
         ];
     }
 

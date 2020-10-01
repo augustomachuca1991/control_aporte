@@ -15,10 +15,10 @@
 				          <th scope="col">Organismo</th>
 				          <th scope="col">Tipo Liquidacion</th>
 				          <th scope="col">Rectificativa</th>
-				          <th scope="col">Periodo de Liquidación</th>
+				          <th scope="col">Periodo</th>
+				          <th scope="col">Usuario</th>
 				          <th scope="col">Acción</th>
-				          <!-- <th scope="col">Usuario</th>
-				          <th scope="col">Accion</th> -->
+				          <!--<th scope="col">Accion</th> -->
 				        </tr>
 				      </thead>
 				      <tbody>
@@ -31,10 +31,10 @@
 				          <td v-if="declaracion_jurada.secuencia === null">Orginal</td>
 				          <td v-else>Rectificativa nº{{declaracion_jurada.secuencia}}</td>
 				          <td>{{declaracion_jurada.periodo.periodo}}</td>
-				          <!-- <td>{{declaracion_jurada.created_at | moment}}</td>
-				          <td>{{declaracion_jurada.user.name}}</td> -->
+				          <td>{{declaracion_jurada.user.name}}</td> 
+				          <!-- <td>{{declaracion_jurada.created_at | moment}}</td>-->
 				          <td>
-				              <a class="btn btn-outline-success btn-sm text-success" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea">
+				              <a class="btn btn-outline-success btn-sm text-success" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea" @click="task(declaracion_jurada.id)">
 				              	<i class="fas fa-tasks"></i>
 				              </a>
 				              <a class="btn btn-outline-primary btn-sm text-primary" @click="getDetalle(declaracion_jurada.id)" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -58,9 +58,14 @@
 									:hide-single-page="true"
 									:limit = "5">
 					</paginate-links>
+					<a class="btn btn-primary shadow text-white">
+						aplicadas <i class="fas fa-check"></i>
+					</a>
 				</div>
 			</div>
 		</div>
+			
+
 		<!-- Modal -->
 		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-lg">
@@ -138,7 +143,25 @@
 		  		this.detalles = response.data
 		  		this.title = 'Declaracion Jurada nº '+this.detalles[0].declaracionjurada_id
        		})
-		  }
+		  },
+  		  task: function(cabecera_id){
+  		  	let cabecera = cabecera_id
+  		  	axios.delete('api/declaracion_jurada/aplicar/'+cabecera).then((response) =>{
+	  		  	this.declaraciones_juradas = response.data
+	  		  	swal.fire(
+	  		  	          'Aplicando tarea',
+	  		  	          response.status.toString(),
+	  		  	          'success'
+	  		  	      )
+	  		  	//console.log(response.data)
+  		  	}).catch((error)=>{
+  		  		swal.fire(
+	  		  	          'Error',
+	  		  	          error.message,
+	  		  	          'error'
+	  		  	      )
+  		  	})
+  		  }
 
 		},
 		//filters: {

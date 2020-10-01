@@ -122,6 +122,7 @@ class ExcelController extends Controller
             $status = 0;
         }
     	
-    	return response()->json(['message'=> $message, 'status' => $status]);
+        return response()->json(['message'=> $message, 'status' => $status]);
     }
+    	
 }
