@@ -10,7 +10,12 @@ class HistoriaLaboral extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['puesto_id', 'clase_id', 'fecha_inicio','fecha_fin'];
+    protected $fillable = [
+        'puesto_id', 
+        'clase_id', 
+        'fecha_inicio',
+        'fecha_fin'
+    ];
 
 
     public function liquidaciones()

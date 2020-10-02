@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{DeclaracionJurada,Liquidacion,Agente};
+use App\{DeclaracionJurada,Liquidacion,Agente,PuestoLaboral,Clase,Categoria,HistoriaLaboral};
 use Illuminate\Http\Request;
 
 class DeclaracionJuradaController extends Controller
@@ -83,18 +83,51 @@ class DeclaracionJuradaController extends Controller
         
         $declaracionJurada = DeclaracionJurada::find($id);
         foreach ($declaracionJurada->ddjj_lines as $line) {
-            $noExisteAgente = Agente::where('cuil', $line->cuil)->doesntExist();
-            if ($noExisteAgente) {
-                $agente = Agente::create([
+            //clases y categorias
+            $clase = Clase::where('cod_clase', $line->cod_clase);
+            if ($clase->doesntExist()) {
+                $categoria = Categoria::where('cod_categoria', 1);//luego remplazar 1 por $line->cod_categoria
+                if ($categoria->doesntExist()) {
+                    $categoria1 = Categoria::create([
+                        'cod_categoria' => 1,//luego remplazar 1 por $line->cod_categoria
+                        'categoria' => 'Policia',
+                    ]);
+                    $categoria1->jurisdicciones()->attach($line->cod_jurisdiccion);
+                }else{
+                    $categoria1 = $categoria->first();
+                }
+                $clase1 = Clase::create([
+                    'cod_clase' => $line->cod_clase,
+                    'categoria_id' => $categoria1->cod_categoria,
+                    'clase' => $line->clase,
+                ]);
+            }else{
+                $clase1 = $clase->first();
+            }
+
+            //agentes
+            $agente = Agente::where('cuil', $line->cuil);
+            if ($agente->doesntExist()) {
+                $agente1 = Agente::create([
                     'nombre' => $line->nombre,
                     'cuil' => $line->cuil,
                     'fecha_nac' => date("Y-m-d", strtotime($line->fecha_nac)),
                     'sexo' => $line->sexo,
                 ]);
-                # code...
-            }else{
-                #code
+                $agente1->organismos()->attach($declaracionJurada->organismo_id,[
+                    'cod_laboral' => $line->puesto_laboral,
+                    'fecha_ingreso' => date("Y-m-d", strtotime($line->fecha_ingreso)),
+                    'fecha_egreso' => null,
+                ]);
+                $puesto_laboral = PuestoLaboral::where('cod_laboral',$line->puesto_laboral);
+                $puesto_laboral->first()->clases()->attach($clase1->id,[
+                        'fecha_inicio' => date("Y-m-d", strtotime($line->fecha_ingreso)),
+                        'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString()
+                ]);
             }
+
+            
+
 
 
             $liquidacion = Liquidacion::create([
@@ -106,13 +139,20 @@ class DeclaracionJuradaController extends Controller
                 'familiar' => 12,
                 'descuento' => 12,
             ]);
-            $liquidacion->organismos()->attach($declaracionJurada->organismo_id ,
-                [
-                    'periodo_id' => $declaracionJurada->periodo_id , 
-                    'tipo_id' => $declaracionJurada->tipoliquidacion_id
-                ]
-            );
-            //$liquidacion->historia_laborales()->attach(3,['estado_id' => 1 , 'funcion_id' => null]);
+
+            $liquidacion->organismos()->attach($declaracionJurada->organismo_id ,[
+                'periodo_id' => $declaracionJurada->periodo_id , 
+                'tipo_id' => $declaracionJurada->tipoliquidacion_id
+            ]);
+            
+            //$hl= HistoriaLaboral::where('puesto_id', $puesto_laboral->id)->first();
+
+            // \Log::debug('Historia laboral: '.$hl);
+
+            // $liquidacion->historia_laborales()->attach( $hl->id ,[
+            //     'estado_id' => $line->cod_estado , 
+            //     'funcion_id' => null
+            // ]);
 
             $liquidacion->conceptos()->attach(1,['unidad' =>'2%','importe'=> 5000]);
         }

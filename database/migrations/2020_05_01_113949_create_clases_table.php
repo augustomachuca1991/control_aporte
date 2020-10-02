@@ -15,6 +15,7 @@ class CreateClasesTable extends Migration
     {
         Schema::create('clases', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('cod_clase')->unsigned();
             $table->bigInteger('categoria_id')->unsigned();
             $table->foreign('categoria_id')->references('cod_categoria')->on('categorias');
             $table->string('clase');

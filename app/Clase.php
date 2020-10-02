@@ -11,7 +11,7 @@ class Clase extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['categoria_id', 'clase'];
+    protected $fillable = ['cod_clase' ,'categoria_id', 'clase'];
 
     public function categoria()
     {
