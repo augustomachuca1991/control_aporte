@@ -145,16 +145,22 @@ class DeclaracionJuradaController extends Controller
                 'tipo_id' => $declaracionJurada->tipoliquidacion_id
             ]);
             
-            //$hl= HistoriaLaboral::where('puesto_id', $puesto_laboral->id)->first();
+            $historia_laboral= HistoriaLaboral::where('puesto_id', $line->puesto_laboral)->where('clase_id' , $line->cod_clase)->first();
 
-            // \Log::debug('Historia laboral: '.$hl);
-
-            // $liquidacion->historia_laborales()->attach( $hl->id ,[
-            //     'estado_id' => $line->cod_estado , 
-            //     'funcion_id' => null
-            // ]);
-
-            $liquidacion->conceptos()->attach(1,['unidad' =>'2%','importe'=> 5000]);
+            $liquidacion->historia_laborales()->attach($historia_laboral->id,[
+                'estado_id' => $line->cod_estado , 
+                'funcion_id' => null
+            ]);
+            
+            $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
+            $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
+            $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
+            $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
+            $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
+            $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
+            $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
+            $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
+            $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
         }
 
         $declaracionJurada->ddjj_lines()->delete();
