@@ -19,7 +19,8 @@ Route::get('/', function () {
 });
 
 Route::get('/puestos', function () {
-    //echo public_path('/image/ips.png');
+    $puesto_laboral = PuestoLaboral::find(1);
+    return $puesto_laboral->historialaborales()->where('clase_id' , $clase1->id);
 
 });
 

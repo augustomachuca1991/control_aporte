@@ -1,46 +1,65 @@
 <template>
-  <div class="table-responsive-lg">
+  <div id="liquidaciones">
     <!--<label>Liquidaciones {{filtro.data}} </label>-->
-
+    <!-- <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
+    
+    <paginate> -->
     <!--table-->
-    <table class="table table-sm table-hover table-bordeless" v-model="filtro.data">
-      <caption>
-          Instituto de Previsión Social de Corrientes
-      </caption>
-      <thead>
-        <tr class="table-dark">
-          <th scope="col">#cod</th>
-          <th scope="col">Tipo Liquidacion</th>
-          <th scope="col">Agente</th>
-          <th scope="col">Puesto Laboral</th>
-          <th scope="col">Periodo</th>
-          <th scope="col">Jurisdiccion</th>
-          <th scope="col">Organismo</th>
-          <th scope="col">Detalle</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="!filtro.condition" class="table-default text-center">
-          <td colspan="8">No hay datos</td>
-        </tr>
-        <tr v-else v-for="liquidacion in filtro.data">
-          <th scope="row">00{{liquidacion.id}}</th>
-          <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
-          <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
-          <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.cod_laboral}}</td>
-          <td v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.periodo}}</td>
-          <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
-          <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</td>
-          <td>
-              <a :href="'#detalle'" class="btn btn-outline-success border-0 btn-block shadow text-muteds" data-toggle="modal" v-on:click="show(liquidacion.id)">
-              <i class="fas fa-dollar-sign"></i>
-              </a>  
-          </td>
-        </tr>
-      </tbody>
-      
-    </table>
-
+    <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
+      <table class="table">
+        <caption>
+            <span v-if="$refs.paginator">
+                Mostrando {{$refs.paginator.pageItemsCount}} resultados
+            </span>
+        </caption>
+        <thead>
+          <tr class="table-dark">
+            <th scope="col">Puesto Laboral</th>
+            <th scope="col">Tipo Liquidacion</th>
+            <th scope="col">Agente</th>
+            <th scope="col">Periodo</th>
+            <th scope="col">Jurisdiccion</th>
+            <th scope="col">Organismo</th>
+            <th scope="col">Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="!filtro.condition" class="text-center">
+            <td colspan="7">No hay datos</td>
+          </tr>
+          <tr v-else v-for="liquidacion in paginated('liquidacions')" :key="liquidacion.id">
+              <th scope="row" v-for="historia_laboral in liquidacion.historia_laborales">00{{historia_laboral.puesto.cod_laboral}}</th>
+              <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
+              <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
+              <td v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.periodo}}</td>
+              <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
+              <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</td>
+              <td>
+                  <a :href="'#detalle'" class="btn btn-outline-success border-0 btn-block shadow text-muteds" data-toggle="modal" v-on:click="show(liquidacion.id)">
+                  <i class="fas fa-dollar-sign"></i>
+                  </a>  
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </paginate>
+    <div class="d-flex flex-row-reverse">
+      <nav aria-label="Page navigation example"> 
+        <paginate-links 
+          for="liquidacions" 
+          :async="true"
+          :limit="3" 
+          :show-step-links="true"
+          :step-links="{
+            next: '»',
+            prev: '«'
+          }"
+          :classes="{'ul': 'pagination', 'li': 'page-item', 'a': 'page-link'}"
+          :hide-single-page="true"
+          @change="onLangsPageChange">
+        </paginate-links>
+      </nav>
+    </div>
     <!--modal-->
     <div id="detalle" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" v-model="liquidacion">
       <div class="modal-dialog modal-lg">
@@ -290,7 +309,12 @@
             return{
                 liquidaciones:[],
                 liquidacion:[],
-                paginate:this.liquidaciones,
+                paginate: ['liquidacions'],
+                paginas:{
+                  from:1,
+                  to:1,
+                },
+                shown: false,
                 //pagination:{
                 //  current_page:this.filtro.current_page,
                 //  primero:this.filtro.first_page_url,
@@ -308,8 +332,9 @@
         },
         mounted() {
 
-                
-                console.log('tabla liquidacion component mounted')
+            setTimeout(() => {
+              this.shown = true
+            }, 500)
         }, 
         methods:{
             show(id){
@@ -325,6 +350,11 @@
                 //this.liquidaciones = this.filtros.data.data
                 this.liquidacion = [];
             },
+            onLangsPageChange(toPage, fromPage){
+              this.paginas.from = fromPage;
+              this.paginas.to = toPage;
+              console.log(this.filtro.data)
+            }
         },
     }
 </script>

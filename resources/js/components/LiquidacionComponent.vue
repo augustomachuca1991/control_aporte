@@ -11,10 +11,9 @@
           </caption>
           <thead>
             <tr>
-              <th scope="col"># Codigo</th>
+              <th scope="col">Puesto Laboral</th>
               <th scope="col">Tipo liquidacion</th>
               <th scope="col">Agente</th>
-              <th scope="col">Puesto laboral</th>
               <th scope="col">Periodo</th>
               <th scope="col">Detalle</th>
             </tr>
@@ -23,7 +22,7 @@
             <tr v-for="liquidacion in liquidaciones" :key="liquidacion.id" :liquidacion="liquidacion">
               <th scope="row">
                   <tr>  
-                      <td>000{{liquidacion.id}}</td>
+                      <td>00{{historia_laboral.puesto.cod_laboral}}</td>
                   </tr>
               </th>
               <td>
@@ -34,11 +33,6 @@
               <td v-for="historia_laboral in liquidacion.historia_laborales">
                   <tr>  
                       <td>{{historia_laboral.puesto.agente.nombre}}</td>
-                  </tr>
-              </td>
-              <td>
-                  <tr v-for="historia_laboral in liquidacion.historia_laborales">  
-                      <td> {{historia_laboral.puesto.cod_laboral}}</td>
                   </tr>
               </td>
               <td v-for="periodo in liquidacion.periodos">

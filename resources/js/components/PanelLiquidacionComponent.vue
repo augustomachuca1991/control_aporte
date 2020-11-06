@@ -28,20 +28,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col">
-                <div class="card border-0 shadow">
-                    <div class="card-header border-0 shadow text-center">LIQUIDACIONES</div>
-
-                    <div class="card-body">
-                        <listaliquidaciones-component :filtro="filtro">
-                        </listaliquidaciones-component>
-                    </div>
-                </div>
+            <div class="col-12 col-lg-6">
+                <listaliquidaciones-component :filtro="filtro">
+                </listaliquidaciones-component>
             </div>
         </div>
+        
     </div>
 </template>
 

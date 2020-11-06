@@ -20,6 +20,8 @@ class DeclaracionJuradaLine extends Model
     	'puesto_laboral',
     	'cargo',
     	'fecha_ingreso',
+        'cod_categoria',
+        'categoria',
     	'cod_clase',
     	'clase',
     	'cod_estado',

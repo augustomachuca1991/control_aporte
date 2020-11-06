@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{DeclaracionJurada,Liquidacion,Agente,PuestoLaboral,Clase,Categoria,HistoriaLaboral};
+use App\{DeclaracionJurada,Liquidacion,Agente,PuestoLaboral,Clase,Categoria,HistoriaLaboral,Jurisdiccion};
 use Illuminate\Http\Request;
 
 class DeclaracionJuradaController extends Controller
@@ -83,29 +83,47 @@ class DeclaracionJuradaController extends Controller
         
         $declaracionJurada = DeclaracionJurada::find($id);
         foreach ($declaracionJurada->ddjj_lines as $line) {
-            //clases y categorias
-            $clase = Clase::where('cod_clase', $line->cod_clase);
-            if ($clase->doesntExist()) {
-                $categoria = Categoria::where('cod_categoria', 1);//luego remplazar 1 por $line->cod_categoria
-                if ($categoria->doesntExist()) {
-                    $categoria1 = Categoria::create([
-                        'cod_categoria' => 1,//luego remplazar 1 por $line->cod_categoria
-                        'categoria' => 'Policia',
-                    ]);
-                    $categoria1->jurisdicciones()->attach($line->cod_jurisdiccion);
-                }else{
-                    $categoria1 = $categoria->first();
-                }
-                $clase1 = Clase::create([
-                    'cod_clase' => $line->cod_clase,
-                    'categoria_id' => $categoria1->cod_categoria,
-                    'clase' => $line->clase,
+            //Categoria-------------------------------------------------------------------
+            $categoria = Categoria::where('cod_categoria', $line->cod_categoria);
+            if ($categoria->doesntExist()) {
+                $categoria1 = Categoria::create([
+                    'cod_categoria' => $line->cod_categoria,
+                    'categoria' => $line->categoria,
                 ]);
+                //Clase------------------------------------------------------------------------
+                $clase1 = New Clase();
+                $clase1->cod_clase = $line->cod_clase;
+                $clase1->categoria_id = $categoria1->id;
+                $clase1->clase = $line->clase;
+                $clase1->save();
+                //Jurisdiccion------------------------------------------------------------------
+                $jurisdiccion = Jurisdiccion::where('cod_jurisdiccion', $line->cod_jurisdiccion);
+                if ($jurisdiccion->doesntExist()) {
+                    $jurisdiccion1 = Jurisdiccion::create([
+                        'cod_jurisdiccion' => $line->cod_jurisdiccion,
+                        'jurisdiccion' => $line->jurisdiccion,
+                        'origen_id' => $line->cod_origen,
+                    ]);
+                }else{
+                    $jurisdiccion1 = $jurisdiccion->first();
+                }
+                $categoria1->jurisdicciones()->attach($jurisdiccion1->id);
             }else{
-                $clase1 = $clase->first();
+                $categoria1 = $categoria->first();
+                $clase = Clase::where('cod_clase', $line->cod_clase);
+                if ($clase->doesntExist()) {
+                    $clase1 = Clase::create([
+                        'cod_clase' => $line->cod_clase,
+                        'clase' => $line->clase,
+                        'categoria_id' => $categoria1->cod_categoria,
+                    ]);
+                } else {
+                    $clase1 = $clase->first();
+                }
+                
             }
 
-            //agentes
+            //Agentes------------------------------------------------------------------
             $agente = Agente::where('cuil', $line->cuil);
             if ($agente->doesntExist()) {
                 $agente1 = Agente::create([
@@ -120,47 +138,72 @@ class DeclaracionJuradaController extends Controller
                     'fecha_egreso' => null,
                 ]);
                 $puesto_laboral = PuestoLaboral::where('cod_laboral',$line->puesto_laboral);
-                $puesto_laboral->first()->clases()->attach($clase1->id,[
+                $puesto_laboral->clases()->attach($clase1->id,[
                         'fecha_inicio' => date("Y-m-d", strtotime($line->fecha_ingreso)),
                         'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString()
                 ]);
+            }else{
+                $agente1 = $agente->first();
+                $puesto_laboral = PuestoLaboral::where('cod_laboral' , $line->puesto_laboral);
+                if ($puesto_laboral->doesntExist()) {
+                    $agente1->organismos()->attach($declaracionJurada->organismo_id,[
+                        'cod_laboral' => $line->puesto_laboral,
+                        'fecha_ingreso' => date("Y-m-d", strtotime($line->fecha_ingreso)),
+                        'fecha_egreso' => null,
+                    ]);
+                    // $puesto_laboral->first()->clases()->attach($clase1->id,[
+                    //     'fecha_inicio' => date("Y-m-d", strtotime($line->fecha_ingreso)),
+                    //     'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
+                    // ]);
+                }
+                
             }
 
+            $puesto_laboral->first()->clases()->attach($clase1->id,[
+                'fecha_inicio' => date("Y-m-d", strtotime($line->fecha_ingreso)),
+                'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
+            ]);
+
+            //$historia_laboral = $puesto_laboral->first()->historialaborales()->where('clase_id' , $clase1->id);
+
+            // $historia_laboral = HistoriaLaboral::where('puesto_id', $line->puesto_laboral)
+            //                                     ->where('clase_id' , $line->cod_clase)
+            //                                     ->first();
+
+            // $liquidacion = Liquidacion::create([
+            //     'declaracion_id' => $line->declaracionjurada_id,
+            //     'bruto' => $line->aporte_personal/0.185,
+            //     'bonificable' => $line->basico+$line->antiguedad,
+            //     'no_bonificable' => 12,
+            //     'no_remunerativo' => 12,
+            //     'familiar' => $line->hijo+$line->esposa,
+            //     'descuento' => $line->aporte_personal+0,
+            // ]);
+
+            // $liquidacion->organismos()->attach($declaracionJurada->organismo_id ,[
+            //     'periodo_id' => $declaracionJurada->periodo_id , 
+            //     'tipo_id' => $declaracionJurada->tipoliquidacion_id
+            // ]);
             
 
 
+            // $liquidacion->historia_laborales()->attach(1,[  //corregir por h_l->id;
+            //     'estado_id' => $line->cod_estado , 
+            //     'funcion_id' => null
+            // ]);
 
-            $liquidacion = Liquidacion::create([
-                'declaracion_id' => $line->declaracionjurada_id,
-                'bruto' => 12,
-                'bonificable' => 12,
-                'no_bonificable' => 12,
-                'no_remunerativo' => 12,
-                'familiar' => 12,
-                'descuento' => 12,
-            ]);
-
-            $liquidacion->organismos()->attach($declaracionJurada->organismo_id ,[
-                'periodo_id' => $declaracionJurada->periodo_id , 
-                'tipo_id' => $declaracionJurada->tipoliquidacion_id
-            ]);
+            // $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
+            // $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
+            // $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
+            // $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
+            // $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
+            // $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
+            // $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
+            // $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
+            // $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
             
-            $historia_laboral= HistoriaLaboral::where('puesto_id', $line->puesto_laboral)->where('clase_id' , $line->cod_clase)->first();
-
-            $liquidacion->historia_laborales()->attach($historia_laboral->id,[
-                'estado_id' => $line->cod_estado , 
-                'funcion_id' => null
-            ]);
             
-            $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
-            $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
-            $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
-            $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
-            $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
-            $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
-            $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
-            $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
-            $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
+        
         }
 
         $declaracionJurada->ddjj_lines()->delete();

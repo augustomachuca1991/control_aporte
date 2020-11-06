@@ -27,4 +27,9 @@ class PuestoLaboral extends Model
         return $this->belongsTo('App\Organismo')->with('Jurisdiccion');
     }
 
+    public function historialaborales()
+    {
+        return $this->hasMany('App\HistoriaLaboral');
+    } 
+
 }

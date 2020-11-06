@@ -24,6 +24,8 @@ class CreateDeclaracionJuradaLinesTable extends Migration
             $table->bigInteger('puesto_laboral')->unsigned();
             $table->string('cargo');
             $table->date('fecha_ingreso');
+            $table->bigInteger('cod_categoria')->unsigned();
+            $table->string('categoria');
             $table->bigInteger('cod_clase')->unsigned();
             $table->string('clase');
             $table->bigInteger('cod_estado')->unsigned();

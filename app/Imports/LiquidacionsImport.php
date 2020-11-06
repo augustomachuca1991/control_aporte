@@ -48,6 +48,8 @@ class LiquidacionsImport implements
                    'puesto_laboral' => $row['puesto_laboral'],
                    'cargo' => $row['cargo'],
                    'fecha_ingreso' =>  date("Y-m-d", strtotime($row['fecha_ingreso'])),
+                   'cod_categoria' => $row['cod_categoria'],
+                   'categoria' => $row['categoria'],
                    'cod_clase' => $row['cod_clase'],
                    'clase' => $row['clase'],
                    'cod_estado' => $row['cod_estado'],
@@ -94,6 +96,8 @@ class LiquidacionsImport implements
             '*.puesto_laboral' =>['required','integer'],
             '*.cargo' =>['required'],
             '*.fecha_ingreso' =>['required','date'],
+            '*.cod_categoria' =>['required','integer'],
+            '*.categoria' =>['required'],
             '*.cod_clase' =>['required','integer'],
             '*.clase' =>['required'],
             '*.cod_estado' =>['required','integer'],
@@ -187,13 +191,13 @@ class LiquidacionsImport implements
             event(new FailedImport($row.$columna.$valores.$errores));
         } catch (Exception $e) {
             //$this->failed($e);
-            \Log::info('exepcion personalizado:'.$exception->getMessage());
+            \Log::info('Exception:'.$exception->getMessage());
         } catch(\ErrorException $e){
             //$this->failed($e);
-            \Log::info('exepcion personalizado:'.$exception->getMessage());
+            \Log::info('ErrorException:'.$exception->getMessage());
         } catch(Throwable $e){
             //$this->failed($e);
-            \Log::info('exepcion personalizado:'.$exception->getMessage());
+            \Log::info('Throwable:'.$exception->getMessage());
         }
         
         
@@ -211,7 +215,7 @@ class LiquidacionsImport implements
 
     public function failed($exception)
     {
-        \Log::info('exepcion personalizado:'.$exception->getMessage());
+        \Log::debug('exepcion personalizado:'.$exception->getMessage());
         event(new FailedImport($exception->getMessage()));
         // etc...
     }

@@ -62,7 +62,7 @@ class ExcelController extends Controller
             ];
             $mensajes = [
                 'archivo.file' => 'Debe Seleccionar un archivo',
-                'archivo.mimes' => 'El tipo de archivo esincorrecto. Debe ser .csv o .txt',
+                'archivo.mimes' => 'El tipo de archivo es incorrecto. Debe ser .csv o .txt',
                 'nombre.required' => 'Nombre Requerido',
                 'nombre.array' => 'El nombre no cumple con el formato. El mismo debe ser ej: organimo_periodo_tipoliquidacion_secuencia.csv',
                 'nombre.max' => 'El nombre no cumple con el formato. El mismo debe tener como maximo 4 elementos',
