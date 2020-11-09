@@ -83,6 +83,17 @@ class DeclaracionJuradaController extends Controller
         
         $declaracionJurada = DeclaracionJurada::find($id);
         foreach ($declaracionJurada->ddjj_lines as $line) {
+
+            //nueva liquidacion-----------------------------------------------------------
+            $liquidacion = Liquidacion::create([
+                'declaracion_id' => $line->declaracionjurada_id,
+                'bruto' => $line->aporte_personal/0.185,
+                'bonificable' => $line->basico+$line->antiguedad,
+                'no_bonificable' => 12,
+                'no_remunerativo' => 12,
+                'familiar' => $line->hijo+$line->esposa,
+                'descuento' => $line->aporte_personal+0,
+            ]);
             //Categoria-------------------------------------------------------------------
             $categoria = Categoria::where('cod_categoria', $line->cod_categoria);
             if ($categoria->doesntExist()) {
@@ -138,10 +149,10 @@ class DeclaracionJuradaController extends Controller
                     'fecha_egreso' => null,
                 ]);
                 $puesto_laboral = PuestoLaboral::where('cod_laboral',$line->puesto_laboral);
-                $puesto_laboral->clases()->attach($clase1->id,[
-                        'fecha_inicio' => date("Y-m-d", strtotime($line->fecha_ingreso)),
-                        'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString()
-                ]);
+                // $puesto_laboral->clases()->attach($clase1->id,[
+                //         'fecha_inicio' => date("Y-m-d", strtotime($line->fecha_ingreso)),
+                //         'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString()
+                // ]);
             }else{
                 $agente1 = $agente->first();
                 $puesto_laboral = PuestoLaboral::where('cod_laboral' , $line->puesto_laboral);
@@ -164,43 +175,43 @@ class DeclaracionJuradaController extends Controller
                 'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
             ]);
 
-            //$historia_laboral = $puesto_laboral->first()->historialaborales()->where('clase_id' , $clase1->id);
+            $historia_laboral = $puesto_laboral->first()->historialaborales()->where('clase_id' , $clase1->id)->first();
 
             // $historia_laboral = HistoriaLaboral::where('puesto_id', $line->puesto_laboral)
             //                                     ->where('clase_id' , $line->cod_clase)
             //                                     ->first();
 
-            // $liquidacion = Liquidacion::create([
-            //     'declaracion_id' => $line->declaracionjurada_id,
-            //     'bruto' => $line->aporte_personal/0.185,
-            //     'bonificable' => $line->basico+$line->antiguedad,
-            //     'no_bonificable' => 12,
-            //     'no_remunerativo' => 12,
-            //     'familiar' => $line->hijo+$line->esposa,
-            //     'descuento' => $line->aporte_personal+0,
-            // ]);
+            
 
-            // $liquidacion->organismos()->attach($declaracionJurada->organismo_id ,[
-            //     'periodo_id' => $declaracionJurada->periodo_id , 
-            //     'tipo_id' => $declaracionJurada->tipoliquidacion_id
-            // ]);
+            $liquidacion->organismos()->attach($declaracionJurada->organismo_id ,[
+                'periodo_id' => $declaracionJurada->periodo_id , 
+                'tipo_id' => $declaracionJurada->tipoliquidacion_id,
+                'haber_bruto' => 12,
+                'total_aporte_personal' => 13,
+                'total_sueldo_basico' => 14,
+                'total_antiguedad' => 15,
+                'total_adicional' => 16,
+                'total_familiar' => 17,
+                'total_hijo' => 18,
+                'total_esposa' => 19,
+            ]);
             
 
 
-            // $liquidacion->historia_laborales()->attach(1,[  //corregir por h_l->id;
-            //     'estado_id' => $line->cod_estado , 
-            //     'funcion_id' => null
-            // ]);
+            $liquidacion->historia_laborales()->attach($historia_laboral->id,[ 
+                'estado_id' => $line->cod_estado , 
+                'funcion_id' => null
+            ]);
 
-            // $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
-            // $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
-            // $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
-            // $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
-            // $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
-            // $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
-            // $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
-            // $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
-            // $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
+            $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
+            $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
+            $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
+            $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
+            $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
+            $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
+            $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
+            $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
+            $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
             
             
         

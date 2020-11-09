@@ -86,32 +86,80 @@ class LiquidacionOrganismoController extends Controller
 
     public function ComputoOrigenes($periodo){
         
-        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)->whereHas('organismo', function($query){
-            $query->whereHas('jurisdiccion',function($query2){
-                $query2->whereHas('origen',function($query3){
-                    $query3;
-                });
-            });
-        })->with(['organismo','periodo','tipoliquidacion'])
-        ->get();
+        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)
+        ->join('organismos', 'liquidacion_organismo.organismo_id', '=', 'organismos.cod_organismo')
+        ->join('jurisdiccions', 'organismos.jurisdiccion_id', '=', 'jurisdiccions.cod_jurisdiccion')
+        ->join('origens', 'jurisdiccions.origen_id', '=', 'origens.cod_origen')
+        ->join('periodos', 'liquidacion_organismo.periodo_id', '=', 'periodos.cod_periodo')
+        ->join('tipo_liquidacions', 'liquidacion_organismo.tipo_id', '=', 'tipo_liquidacions.id')
+        ->selectRaw('
+                     origens.origen AS origen,
+                     periodos.periodo AS periodo,
+                     tipo_liquidacions.descripcion AS tipo_liquidacion,
+                     SUM(haber_bruto) AS haber_bruto,
+                     SUM(total_aporte_personal) AS total_aporte_personal,
+                     SUM(total_sueldo_basico) AS total_sueldo_basico, 
+                     SUM(total_antiguedad) AS total_antiguedad, 
+                     SUM(total_adicional) AS total_adicional,
+                     SUM(total_familiar) AS total_familiar,
+                     SUM(total_hijo) AS total_hijo,
+                     SUM(total_esposa) AS total_esposa')
+        ->groupBy('origen','periodo','tipo_liquidacion')->get();
         return $computos;
     }
 
     public function ComputoJurisdicciones($periodo){
         
-        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)->whereHas('organismo', function($query){
-            $query->whereHas('jurisdiccion',function($query2){
-                $query2;
-            });
-        })->with('organismo')->get()->groupBy('organismo.jurisdiccion.jurisdiccion');
+        // $computos = LiquidacionOrganismo::where('periodo_id', $periodo)->whereHas('organismo', function($query){
+        //     $query->whereHas('jurisdiccion',function($query2){
+        //         $query2;
+        //     });
+        // })->with('organismo')->get()->groupBy('organismo.jurisdiccion.jurisdiccion');
+        // return $computos;
+        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)
+        ->join('organismos', 'liquidacion_organismo.organismo_id', '=', 'organismos.cod_organismo')
+        ->join('jurisdiccions', 'organismos.jurisdiccion_id', '=', 'jurisdiccions.cod_jurisdiccion')
+        ->join('periodos', 'liquidacion_organismo.periodo_id', '=', 'periodos.cod_periodo')
+        ->join('tipo_liquidacions', 'liquidacion_organismo.tipo_id', '=', 'tipo_liquidacions.id')
+        ->selectRaw('
+                     jurisdiccions.jurisdiccion AS jurisdiccion,
+                     periodos.periodo AS periodo,
+                     tipo_liquidacions.descripcion AS tipo_liquidacion,
+                     SUM(haber_bruto) AS haber_bruto,
+                     SUM(total_aporte_personal) AS total_aporte_personal,
+                     SUM(total_sueldo_basico) AS total_sueldo_basico, 
+                     SUM(total_antiguedad) AS total_antiguedad, 
+                     SUM(total_adicional) AS total_adicional,
+                     SUM(total_familiar) AS total_familiar,
+                     SUM(total_hijo) AS total_hijo,
+                     SUM(total_esposa) AS total_esposa')
+        ->groupBy('jurisdiccion','periodo','tipo_liquidacion')->get();
         return $computos;
     }
 
     public function ComputoOrganismos($periodo){
         
-        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)->whereHas('organismo', function($query){
-            $query;
-        })->with('organismo')->get()->groupBy('organismo.organismo');
+        // $computos = LiquidacionOrganismo::where('periodo_id', $periodo)->whereHas('organismo', function($query){
+        //     $query;
+        // })->with('organismo')->get()->groupBy('organismo.organismo');
+        // return $computos;
+        $computos = LiquidacionOrganismo::where('periodo_id', $periodo)
+        ->join('organismos', 'liquidacion_organismo.organismo_id', '=', 'organismos.cod_organismo')
+        ->join('periodos', 'liquidacion_organismo.periodo_id', '=', 'periodos.cod_periodo')
+        ->join('tipo_liquidacions', 'liquidacion_organismo.tipo_id', '=', 'tipo_liquidacions.id')
+        ->selectRaw('
+                     organismos.organismo AS organismo,
+                     periodos.periodo AS periodo,
+                     tipo_liquidacions.descripcion AS tipo_liquidacion,
+                     SUM(haber_bruto) AS haber_bruto,
+                     SUM(total_aporte_personal) AS total_aporte_personal,
+                     SUM(total_sueldo_basico) AS total_sueldo_basico, 
+                     SUM(total_antiguedad) AS total_antiguedad, 
+                     SUM(total_adicional) AS total_adicional,
+                     SUM(total_familiar) AS total_familiar,
+                     SUM(total_hijo) AS total_hijo,
+                     SUM(total_esposa) AS total_esposa')
+        ->groupBy('organismo','periodo','tipo_liquidacion')->get();
         return $computos;
     }
 }

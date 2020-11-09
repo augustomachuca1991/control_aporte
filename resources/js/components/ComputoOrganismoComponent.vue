@@ -2,18 +2,19 @@
 	<div class="tab-pane fade show active mh-100" id="organismo" role="tabpanel" aria-labelledby="organismo-tab" >
 		<div class="card">
 			<div class="card-body">
-				<div class="card-title" v-if="organismos.length !== 0">Liquidacion de {{organismos[0].periodo.periodo}}</div>
+				<div class="card-title" v-if="organismos.length !== 0">Liquidacion de {{organismos[0].periodo}}</div>
 				   <ejs-grid locale='es-ES' :dataSource="organismos" :allowPaging="true" :allowSorting='true' :allowFiltering='true' :allowGrouping='true' :pageSettings='pageSettings'>
 		          <e-columns>
-		          	<e-column field='organismo.jurisdiccion.origen.origen' headerText='Origen' textAlign='left' width=100></e-column>
-		            <e-column field='organismo.jurisdiccion.jurisdiccion' headerText='Jurisdiccion' textAlign='left' width=120></e-column>
-		            <e-column field='organismo.organismo' headerText='Organismo' textAlign='left' width=120></e-column>
-		            <e-column field='tipoliquidacion.descripcion' headerText='Tipo Sueldo' textAlign='left' width=120></e-column>
+		          	
+		            <e-column field='organismo' headerText='Organismo' textAlign='left' width=120></e-column>
 		            <e-column field='haber_bruto' headerText='Haber Bruto' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_aporte_personal' headerText='Aporte Personal' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_sueldo_basico' headerText='Sueldo Basico' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_antiguedad' headerText='Antiguedad' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_adicional' headerText='Adicional' textAlign='Right' format='C2' width=90></e-column>
+		            <e-column field='total_familiar' headerText='Adicional' textAlign='Right' format='C2' width=90></e-column>
+		            <e-column field='total_hijo' headerText='Adicional' textAlign='Right' format='C2' width=90></e-column>
+		            <e-column field='total_esposa' headerText='Adicional' textAlign='Right' format='C2' width=90></e-column>
 		          </e-columns>
 		          <e-aggregates>
 		            <e-aggregate>
@@ -23,6 +24,9 @@
 		                    <e-column type="Sum" field="total_sueldo_basico" format="C2" :footerTemplate='footerSum'></e-column>
 		                    <e-column type="Sum" field="total_antiguedad" format="C2" :footerTemplate='footerSum'></e-column>
 		                    <e-column type="Sum" field="total_adicional" format="C2" :footerTemplate='footerSum'></e-column>
+		                    <e-column type="Sum" field="total_familiar" format="C2" :footerTemplate='footerSum'></e-column>
+		                    <e-column type="Sum" field="total_hijo" format="C2" :footerTemplate='footerSum'></e-column>
+		                    <e-column type="Sum" field="total_esposa" format="C2" :footerTemplate='footerSum'></e-column>
 		                </e-columns>
 		            </e-aggregate>
 		          </e-aggregates>

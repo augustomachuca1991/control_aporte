@@ -1,10 +1,11 @@
 <template>
 		<div class="card">
 			<div class="card-body">
-				<div class="card-title" v-if="origenes.length !== 0">Liquidacion de {{origenes[0].periodo.periodo}}</div>
-				<ejs-grid :dataSource="origenes" :allowPaging="true" :allowSorting='true' :allowFiltering='true' :allowGrouping='true' :pageSettings='pageSettings' >
+				<div class="card-title" v-if="origenes.length !== 0">Liquidacion de {{origenes[0].periodo}} - {{origenes[0].tipo_liquidacion}}</div>
+				<ejs-grid locale='es-ES' :dataSource="origenes" :allowPaging="true" :allowSorting='true' :allowFiltering='true' :allowGrouping='true' :pageSettings='pageSettings'>
 		          <e-columns>
-		          	<e-column field='organismo.jurisdiccion.origen.origen' headerText='Origen' textAlign='left' width=120></e-column>
+		          	<e-column field='origen' headerText='Origen' textAlign='left' width=120></e-column>
+		          	<e-column field='haber_bruto' headerText='Total Haber Bruto' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_aporte_personal' headerText='Aporte Personal' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_sueldo_basico' headerText='Basico' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_antiguedad' headerText='Antiguedad' textAlign='Right' format='C2' width=90></e-column>
@@ -28,7 +29,31 @@
 
 <script>
 	
-	import {Page, Sort, Filter, Group, Aggregate } from "@syncfusion/ej2-vue-grids";
+	import { L10n, setCulture } from '@syncfusion/ej2-base';
+ 	import {Page, Sort, Filter, Group, Aggregate } from "@syncfusion/ej2-vue-grids";
+ 	//import '@syncfusion/ej2-vue-grids/styles/material.css'
+
+ 	setCulture('es-ES');
+
+	L10n.load({
+	    'es-ES': {
+	        'grid': {
+	            'EmptyRecord': 'Sin Registros',
+	            'EmptyDataSourceError': 'DataSource must not be empty at initial load since columns are generated from dataSource in AutoGenerate Column Grid',
+	            'GroupDropArea': 'Arrastre el encabezado de una columna aquí para agrupar su columna',
+	        },
+	        'pager':{
+	            'currentPageInfo': '{0} de {1} Paginas',
+	            'totalItemsInfo': '	({0} Registros)',
+	            'firstPageTooltip': 'Primer Pagina',
+	            'lastPageTooltip': 'Fin Pagina',
+	            'nextPageTooltip': 'Siguente',
+	            'previousPageTooltip': 'Anterior',
+	            'nextPagerTooltip': 'Go to next pager',
+	            'previousPagerTooltip': 'Go to previous pager'
+	        }
+	    }
+	});
 	export default {
 	  props:['origenes'],
 	  data() {

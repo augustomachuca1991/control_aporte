@@ -29,7 +29,7 @@ class PuestoLaboral extends Model
 
     public function historialaborales()
     {
-        return $this->hasMany('App\HistoriaLaboral');
+        return $this->hasMany('App\HistoriaLaboral' ,'puesto_id');
     } 
 
 }

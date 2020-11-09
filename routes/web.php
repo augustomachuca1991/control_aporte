@@ -19,8 +19,8 @@ Route::get('/', function () {
 });
 
 Route::get('/puestos', function () {
-    $puesto_laboral = PuestoLaboral::find(1);
-    return $puesto_laboral->historialaborales()->where('clase_id' , $clase1->id);
+    $puesto_laboral = PuestoLaboral::all();
+    return $puesto_laboral->first()->historialaborales()->where('clase_id' , 1)->first();
 
 });
 
