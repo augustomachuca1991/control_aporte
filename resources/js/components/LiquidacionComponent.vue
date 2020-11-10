@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="liquidacion">
     <div class="card shadow"> 
       <div class="card-header">
           <h5 class="card-title">Liquidaciones</h5>

@@ -114,3 +114,7 @@ Route::delete('/hlaborales/delete/{id}', 'HistoriaLaboralController@destroy')->n
 
 //Origenes
 Route::get('/origen', 'OrigenController@index')->name('origen');
+
+
+//Notificaciones
+Route::get('/notification', 'NotificationController@getNotificaciones');

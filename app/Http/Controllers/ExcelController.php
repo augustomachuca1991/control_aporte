@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\LiquidacionsExport;
 use App\Imports\LiquidacionsImport;
-use App\Jobs\{CompletedImport,CompletedExport};
-use App\{DeclaracionJurada,Periodo,TipoLiquidacion,Organismo};
+use App\Jobs\{CompletedImport,CompletedExport,NotificationJob};
+use App\{DeclaracionJurada,Periodo,TipoLiquidacion,Organismo,User};
 // use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -91,9 +91,10 @@ class ExcelController extends Controller
                                'created_at' => now(),
                                'updated_at' => now(),
                            ]);
+                $user = User::find(1);
                 $import = new LiquidacionsImport($ddjj_id);
                 $import->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
-                ->chain([new CompletedImport]);
+                ->chain([new CompletedImport,new NotificationJob($user)]);
             }
             
         }else{

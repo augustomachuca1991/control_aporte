@@ -1,9 +1,10 @@
 @extends('admin.app')
 
+<!-- @section('css')
+	<link href="./node_modules/@syncfusion/ej2/material.css" rel="stylesheet" />
+@endsection -->
 
 @section('body')
- <div id="app">
  	<panelcomputo-component></panelcomputo-component>
- </div>
 @endsection
     

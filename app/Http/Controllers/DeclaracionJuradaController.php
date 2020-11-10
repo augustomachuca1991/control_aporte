@@ -188,7 +188,7 @@ class DeclaracionJuradaController extends Controller
                 'tipo_id' => $declaracionJurada->tipoliquidacion_id,
                 'haber_bruto' => 12,
                 'total_aporte_personal' => 13,
-                'total_sueldo_basico' => 14,
+                'total_sueldo_basico' => 14, 
                 'total_antiguedad' => 15,
                 'total_adicional' => 16,
                 'total_familiar' => 17,

@@ -1,5 +1,5 @@
 <template>
-	 <div class="card mb-3">
+	 <div id="import" class="card mb-3">
       <img class="card-img-top" src="/image/bannerExcel.jpg" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">Subir Archivo</h5>

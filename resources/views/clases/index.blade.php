@@ -1,6 +1,6 @@
 @extends('admin.app')
 @section('body')
- <div id="app" class="container">
+ <div class="container">
     <panelclase-component></panelclase-component>
 </div>      
    

@@ -2,9 +2,7 @@
 
 @section('body')
  <!-- Page Heading -->
- <div id="app">
-	<panel-component></panel-component>
- </div>
+<panel-component></panel-component>
 
 
 <!-- Modal--> 

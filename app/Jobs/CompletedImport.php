@@ -32,7 +32,6 @@ class CompletedImport implements ShouldQueue
      */
     public function handle()
     {
-        
-            event(new NotificationImport('Archivo importado exitosamente'));
+        event(new NotificationImport('Archivo importado exitosamente'));
     }
 }

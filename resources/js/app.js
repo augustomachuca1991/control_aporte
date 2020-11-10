@@ -77,6 +77,9 @@ Vue.component('export-component', require('./components/ExportComponent.vue').de
 //declaraciones juradas
 Vue.component('ddjj-component', require('./components/DeclaracionJuradaComponent.vue').default);
 
+//notificaticion 
+Vue.component('notification-component', require('./components/NotificacionComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
