@@ -118,3 +118,5 @@ Route::get('/origen', 'OrigenController@index')->name('origen');
 
 //Notificaciones
 Route::get('/notification', 'NotificationController@getNotificaciones');
+Route::get('/notification/{id}', 'NotificationController@notReadNotifications');
+Route::put('/notification/leida/{id}', 'NotificationController@markAsReads');

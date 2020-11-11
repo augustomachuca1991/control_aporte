@@ -224,7 +224,7 @@
             </li>
 
             <!-- Nav Item - Alerts -->
-            <notification-component></notification-component>
+            <notification-component :user="{{Auth::user()}}"></notification-component>
 
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Notification;
+use App\{Notification,User};
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -83,9 +83,32 @@ class NotificationController extends Controller
         //
     }
 
-    public function getNotificaciones(){
+    public function getNotificaciones()
+    {
         
         return Notification::all();
     
     }
+
+
+
+    public function notReadNotifications($user_id)
+    {
+
+        $notification_no_leidas = User::find($user_id)->unreadNotifications;
+        return $notification_no_leidas->sortByDesc('created_at');
+    }
+
+
+
+    public function markAsReads($notification_id)
+    {   
+
+        $notification = Notification::find($notification_id);
+        $notification->update(['read_at' => now()]);
+        $notification->save();
+        //return $this->getNotificaciones();
+
+    }
+
 }

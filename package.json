@@ -35,6 +35,7 @@
         "moment": "^2.27.0",
         "startbootstrap-sb-admin-2": "^4.1.1",
         "sweetalert2": "^9.17.1",
+        "vue-month-picker": "^1.4.0",
         "vue-paginate": "^3.6.0",
         "vue-popperjs": "^2.3.0",
         "vuelidate": "^0.7.5"

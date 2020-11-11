@@ -19,6 +19,13 @@ import 'sweetalert2/src/sweetalert2.scss'
 import { GridPlugin } from "@syncfusion/ej2-vue-grids";
 //import '@syncfusion/ej2-vue-grids/styles/material.css'
 
+
+//MonthPicker 
+import MonthPicker from 'vue-month-picker'
+import MonthPickerInput from 'vue-month-picker'
+
+
+
 //filtro general
 Vue.filter('capitalize', function (value) {
   if (!value) return ''
@@ -43,6 +50,8 @@ Vue.filter('moment', function (date) {
 
 Vue.use(GridPlugin);
 Vue.use(VuePaginate);
+Vue.use(MonthPicker)
+Vue.use(MonthPickerInput)
 //Vue.use(moment);
 Vue.component('panel-component', require('./components/PanelLiquidacionComponent.vue').default);
 Vue.component('filter-component', require('./components/FiltroComponent.vue').default);

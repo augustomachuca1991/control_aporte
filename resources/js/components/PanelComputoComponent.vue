@@ -1,6 +1,9 @@
 <template>
 	 <div>
+	 	<p>{{ date.month  }}-{{date.year}}</p>
+	 	  <month-picker @change="showDate"></month-picker>
 	    <filtroperiodo-component @sendPeriodo="getPeriodo(...arguments)"></filtroperiodo-component>
+	    <!-- <month-picker-input :no-default="true"></month-picker-input> -->
 		<div class="card text-center">
 		  <div class="card-header">
 		    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -13,6 +16,7 @@
 		      <li class="nav-item" role="presentation">
 		        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Organismo</a>
 		      </li>
+
 		    </ul>
 		    <div class="tab-content" id="pills-tabContent">
 		      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><computoorigen-component :origenes="origenes"></computoorigen-component></div>
@@ -25,13 +29,23 @@
 </template>
 
 <script>
+  //import MonthPicker from 'vue-month-picker'
   export default {
+	  	// components: {
+	  	// 		MonthPicker
+	  	// },
         data: function(){
             return{
                 origenes:[],
                 jurisdicciones:[],
                 organismos:[],
                 periodo:'',
+                date: {
+    				from: null,
+    				to: null,
+    				month: null,
+    				year: null
+    			}
             }
         
         },
@@ -63,6 +77,9 @@
 					
                 
 			},
+			showDate (date) {
+						this.date = date
+			}
         },
   }
 </script>

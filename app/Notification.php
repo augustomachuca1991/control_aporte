@@ -8,6 +8,6 @@ class Notification extends Model
 {
     
 
-    //
+    protected $fillable = ['read_at'];
 
 }
