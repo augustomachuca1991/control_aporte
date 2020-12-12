@@ -76,25 +76,23 @@ class ExcelController extends Controller
                 $message = $validator->errors()->first();
                 $status = 0;
             }else{
+                $organismo_id = Organismo::where('organismo',$name[0])->first()->cod_organismo;
                 $periodo_id = $name[1];
                 $tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
-                $organismo_id = Organismo::where('organismo',$name[0])->first()->cod_organismo;
                 $secuencia = $name[3];
-                $message = 'Importando Archivo';
-                $status = 1;
-                $ddjj_id = DeclaracionJurada::insertGetId([
+                $declaracionjurada = DeclaracionJurada::create([
                                'user_id' => 1,
                                'periodo_id' => $periodo_id,
                                'tipoliquidacion_id' => $tipoliquidacion_id,
                                'organismo_id' => $organismo_id,
                                'secuencia' => $secuencia,
-                               'created_at' => now(),
-                               'updated_at' => now(),
                            ]);
                 $user = User::find(1);
-                $import = new LiquidacionsImport($ddjj_id);
+                $import = new LiquidacionsImport($declaracionjurada);
                 $import->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
                 ->chain([new CompletedImport,new NotificationJob($user)]);
+                $message = 'Importando Archivo';
+                $status = 1;
             }
             
         }else{

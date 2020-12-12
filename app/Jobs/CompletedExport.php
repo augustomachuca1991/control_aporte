@@ -34,7 +34,7 @@ class CompletedExport implements ShouldQueue
         
         try {
             
-            event(new NotificationImport('Descarga exitosa ;)'));
+            event(new NotificationImport('Descarga exitosa'));
         
         } catch (Exception $e) {
             

@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\{Liquidacion,DeclaracionJuradaLine};
+use App\{DeclaracionJurada,Liquidacion,DeclaracionJuradaLine,Categoria,Clase,Jurisdiccion,Agente, PuestoLaboral,HistoriaLaboral};
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Events\{NotificationImport,FailedImport};
@@ -25,22 +25,22 @@ class LiquidacionsImport implements
     use Importable, SkipsErrors, SkipsFailures;
 
     
-    public $cabecera;
+    protected $declaracionjurada;
 
-    public function __construct($cabecera)
+    public function __construct(DeclaracionJurada $declaracionjurada)
     {
-      $this->cabecera = $cabecera;
+      $this->declaracionjurada = $declaracionjurada;
     }
     
 
-    public $tries = 2;
+    public $tries = 3;
     //public $timeout = 180;
     public function collection(Collection $rows)
     {
         try {
-           foreach ($rows as $row) {
-               DeclaracionJuradaLine::create([
-                   'declaracionjurada_id' => $this->cabecera,
+            foreach ($rows as $row) {
+                $declaracionjurada_detalle = DeclaracionJuradaLine::create([
+                   'declaracionjurada_id' => $this->declaracionjurada->id,
                    'nombre' => $row['nombre'],
                    'cuil' => $row['cuil'],
                    'fecha_nac' => date("Y-m-d", strtotime($row['fecha_nac'])),
@@ -70,10 +70,139 @@ class LiquidacionsImport implements
                    // 'otros' => $row['otros'],
                    // 'cod_funcion' => $row['cod_funcion'],
                    // 'funcion' => $row['funcion'],
+                ]);
+
+                //Nueva Liquidacion-------------------------------------------------------------
+                $liquidacion = new Liquidacion();
+                $liquidacion->declaracion_id = $this->declaracionjurada->id;
+                $liquidacion->bruto = $row['aporte_personal']/0.185;
+                $liquidacion->bonificable = $row['basico']+$row['antiguedad'];
+                $liquidacion->no_bonificable = 1200;
+                $liquidacion->no_remunerativo = 1500;
+                $liquidacion->familiar = $row['hijo']+$row['esposa'];
+                $liquidacion->descuento = $row['aporte_personal']+0;
+                $liquidacion->save();
+
+                //Liquidacion Organismos-------------------------------------------------------
+                $liquidacion->organismos()->attach($this->declaracionjurada->organismo_id ,[
+                    'periodo_id' => $this->declaracionjurada->periodo_id , 
+                    'tipo_id' => $this->declaracionjurada->tipoliquidacion_id,
+                    'haber_bruto' => $liquidacion->bruto,
+                    'total_aporte_personal' => $row['aporte_personal'],
+                    'total_sueldo_basico' => $row['basico'], 
+                    'total_antiguedad' => $row['antiguedad'],
+                    'total_adicional' => 1600,
+                    'total_familiar' => $liquidacion->familiar,
+                    'total_hijo' => $row['hijo'],
+                    'total_esposa' => $row['esposa'],
+                ]);
+
+                //Nueva Categoria, Clase y Jurisdiccion-------------------------------------------------------------------
+                $categoria = Categoria::where('cod_categoria', $declaracionjurada_detalle->cod_categoria);
+                if ($categoria->doesntExist()) {
+                    $categoria1 = Categoria::create([
+                        'cod_categoria' => $declaracionjurada_detalle->cod_categoria,
+                        'categoria' => $declaracionjurada_detalle->categoria,
+                    ]);
+                    //Clase------------------------------------------------------------------------
+                    $clase1 = New Clase();
+                    $clase1->cod_clase = $declaracionjurada_detalle->cod_clase;
+                    $clase1->categoria_id = $categoria1->id;
+                    $clase1->clase = $declaracionjurada_detalle->clase;
+                    $clase1->save();
+                    //Jurisdiccion------------------------------------------------------------------
+                    $jurisdiccion = Jurisdiccion::where('cod_jurisdiccion', $declaracionjurada_detalle->cod_jurisdiccion);
+                    if ($jurisdiccion->doesntExist()) {
+                        $jurisdiccion1 = Jurisdiccion::create([
+                            'cod_jurisdiccion' => $declaracionjurada_detalle->cod_jurisdiccion,
+                            'jurisdiccion' => $declaracionjurada_detalle->jurisdiccion,
+                            'origen_id' => $declaracionjurada_detalle->cod_origen,
+                        ]);
+                    }else{
+                        $jurisdiccion1 = $jurisdiccion->first();
+                    }
+                    $categoria1->jurisdicciones()->attach($jurisdiccion1->id);
+                }else{
+                    $categoria1 = $categoria->first();
+                    $clase = Clase::where('cod_clase', $declaracionjurada_detalle->cod_clase);
+                    if ($clase->doesntExist()) {
+                        $clase1 = Clase::create([
+                            'cod_clase' => $declaracionjurada_detalle->cod_clase,
+                            'clase' => $declaracionjurada_detalle->clase,
+                            'categoria_id' => $categoria1->cod_categoria,
+                        ]);
+                    } else {
+                        $clase1 = $clase->first();
+                    }
+                }//end nueva categoria, clase y jurisdiccion
 
 
-               ]);
-           } 
+                //Agentes------------------------------------------------------------------
+                $agente = Agente::where('cuil', $declaracionjurada_detalle->cuil);
+                if ($agente->doesntExist()) {
+                    $agente1 = Agente::create([
+                        'nombre' => $declaracionjurada_detalle->nombre,
+                        'cuil' => $declaracionjurada_detalle->cuil,
+                        'fecha_nac' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_nac)),
+                        'sexo' => $declaracionjurada_detalle->sexo,
+                    ]);
+                }else{
+                    $agente1 = $agente->first();
+                }
+
+
+                //Puesto Laboral----------------------------------------------------------------------------------
+                $puesto_laboral = PuestoLaboral::where('cod_laboral', $declaracionjurada_detalle->puesto_laboral);
+                if ($puesto_laboral->doesntExist()) {
+                    $agente1->organismos()->attach($this->declaracionjurada->organismo_id,[
+                        'cod_laboral' => $declaracionjurada_detalle->puesto_laboral,
+                        'fecha_ingreso' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_ingreso)),
+                        'fecha_egreso' => null,
+                    ]);
+                    $puesto_laboral1 = $agente1->puestolaborales->first();
+                } else{
+                    $puesto_laboral1 = $puesto_laboral->first();
+                }
+                
+
+                //puesto laborales-------------------------------------------------------------------------------------
+                $puesto_laboral1->clases()->attach($clase1->id,[
+                    'fecha_inicio' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_ingreso)),
+                    'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
+                ]);
+
+                
+                $historia_laboral = $puesto_laboral1->historialaborales->first();
+                // $historia_laboral = HistoriaLaboral::where('puesto_id', $declaracionjurada_detalle->puesto_laboral)
+                //                                      ->where('clase_id' , $declaracionjurada_detalle->cod_clase)
+                //                                      ->first();
+
+                
+                //liquidaciones con Historias laborales-----------------------------------------------------------------
+                $liquidacion->historia_laborales()->attach($historia_laboral->id,[ 
+                    'estado_id' => $declaracionjurada_detalle->cod_estado , 
+                    'funcion_id' => null
+                ]);
+
+
+                //Conceptos de liquidaciones
+                $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
+                $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
+                $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
+                $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
+                $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
+                $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
+                $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
+                $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
+                $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
+                    
+
+
+
+
+
+            }//end foreach
+
         } catch (Exception $e) {
             $this->failed($e);
         } catch(\ErrorException $e){
@@ -189,15 +318,15 @@ class LiquidacionsImport implements
                 }
             }
             event(new FailedImport($row.$columna.$valores.$errores));
-        } catch (Exception $e) {
-            //$this->failed($e);
-            \Log::info('Exception:'.$exception->getMessage());
+        } catch (\Exception $e) {
+            $this->failed($e);
+            //\Log::info('Exception:'.$exception->getMessage());
         } catch(\ErrorException $e){
-            //$this->failed($e);
-            \Log::info('ErrorException:'.$exception->getMessage());
-        } catch(Throwable $e){
-            //$this->failed($e);
-            \Log::info('Throwable:'.$exception->getMessage());
+            $this->failed($e);
+            //\Log::info('ErrorException:'.$exception->getMessage());
+        } catch(\Throwable $e){
+            $this->failed($e);
+            //\Log::info('Throwable:'.$exception->getMessage());
         }
         
         
@@ -215,7 +344,7 @@ class LiquidacionsImport implements
 
     public function failed($exception)
     {
-        \Log::debug('exepcion personalizado:'.$exception->getMessage());
+        \Log::debug('excepcion personalizado:'.$exception->getMessage());
         event(new FailedImport($exception->getMessage()));
         // etc...
     }

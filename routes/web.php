@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\PuestoLaboral;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,16 +15,6 @@ use App\PuestoLaboral;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/puestos', function () {
-    $puesto_laboral = PuestoLaboral::all();
-    return $puesto_laboral->first()->historialaborales()->where('clase_id' , 1)->first();
-
-});
-
-Route::get('/info', function () {
-    echo phpinfo();
 });
 
 Auth::routes();

@@ -12,11 +12,12 @@
 				      </caption>
 				      <thead>
 				        <tr class="table-dark">
-				          <th scope="col">Organismo</th>
-				          <th scope="col">Tipo Liquidacion</th>
-				          <th scope="col">Rectificativa</th>
-				          <th scope="col">Periodo</th>
 				          <th scope="col">Usuario</th>
+				          <th scope="col">Generado</th>
+				          <th scope="col">Organismo</th>
+				          <th scope="col">Tipo</th>
+				          <th scope="col">Periodo</th>
+				          <th scope="col">Rectificativa</th>
 				          <th scope="col">Acción</th>
 				          <!--<th scope="col">Accion</th> -->
 				        </tr>
@@ -26,20 +27,20 @@
 				          <td colspan="7">No hay datos</td>
 				        </tr>
 				        <tr v-else v-for="(declaracion_jurada, index) in paginated('dd_jj') " :key="declaracion_jurada.id">
-				          <th scope="row">{{declaracion_jurada.organismo.organismo | capitalize}}</th>
+				          <td>{{declaracion_jurada.user.name | capitalize}}</td> 
+				          <td>{{declaracion_jurada.created_at | moment}}</td>
+				          <th>{{declaracion_jurada.organismo.organismo | capitalize}}</th>
 				          <td>{{declaracion_jurada.tipoliquidacion.descripcion}}</td>
-				          <td v-if="declaracion_jurada.secuencia === null">Orginal</td>
-				          <td v-else>Rectificativa nº{{declaracion_jurada.secuencia}}</td>
 				          <td>{{declaracion_jurada.periodo.periodo}}</td>
-				          <td>{{declaracion_jurada.user.name}}</td> 
-				          <!-- <td>{{declaracion_jurada.created_at | moment}}</td>-->
+				          <td v-if="declaracion_jurada.secuencia === null">Orginal</td>
+				          <td v-else>Nº{{declaracion_jurada.secuencia}}</td>
 				          <td>
-				              <a class="btn btn-outline-success btn-sm text-success" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea" @click="task(declaracion_jurada.id)">
+				              <a class="btn btn-outline-success btn-sm text-success" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea">
 				              	<i class="fas fa-tasks"></i>
 				              </a>
-				              <a class="btn btn-outline-primary btn-sm text-primary" @click="getDetalle(declaracion_jurada.id)" data-toggle="modal" data-target=".bd-example-modal-lg">
+				              <!-- <a class="btn btn-outline-primary btn-sm text-primary" @click="getDetalle(declaracion_jurada.id)" data-toggle="modal" data-target=".bd-example-modal-lg">
 				              	<i class="far fa-eye"></i>
-				              </a> 
+				              </a>  -->
 				          </td>
 				        </tr>
 				      </tbody>
@@ -154,10 +155,11 @@
 	  		  	          'success'
 	  		  	      )
 	  		  	//console.log(response.data)
-  		  	}).catch((error)=>{
+  		  	}).catch((response)=>{
+  		  		console.log(response)
   		  		swal.fire(
 	  		  	          'Error',
-	  		  	          error.message,
+	  		  	          response.message,
 	  		  	          'error'
 	  		  	      )
   		  	})
