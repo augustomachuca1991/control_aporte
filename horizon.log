@@ -1,0 +1,17 @@
+Horizon started successfully.
+[2020-12-15 12:52:55][174] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2020-12-15 12:52:55][174] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2020-12-15 12:52:55][175] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2020-12-15 12:53:04][175] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2020-12-15 12:53:04][176] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2020-12-15 12:53:14][176] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2020-12-15 12:53:14][177] Processing: Maatwebsite\Excel\Jobs\AfterImportJob
+[2020-12-15 12:53:14][177] Processed:  Maatwebsite\Excel\Jobs\AfterImportJob
+[2020-12-15 12:53:14][178] Processing: App\Jobs\CompletedImport
+[2020-12-15 12:53:14][178] Processed:  App\Jobs\CompletedImport
+[2020-12-15 12:53:14][179] Processing: App\Events\NotificationImport
+[2020-12-15 12:53:16][180] Processing: App\Jobs\NotificationJob
+[2020-12-15 12:53:16][180] Processed:  App\Jobs\NotificationJob
+[2020-12-15 12:53:17][179] Processed:  App\Events\NotificationImport
+[2020-12-15 12:53:22][181] Processing: App\Notifications\FinishJob
+[2020-12-15 12:53:22][181] Processed:  App\Notifications\FinishJob

@@ -1,5 +1,33 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
+        <!--filtro origen, jurisdiccion, organismo-->
+        <h3 class="text-center">Panel de Liquidacion</h3>
+        <filter-component 
+                @sendOrigen="search('origen',...arguments)" 
+                @sendJur="search('jurisdiccion',...arguments)" 
+                @sendOrganismo="search('organismo',...arguments)">
+        </filter-component>
+        <div class="form-row my-2 justify-content-between">
+        <!--filtro periodo-->
+        <filtroperiodo-component 
+           @sendPeriodo="search('periodo',...arguments)">
+        </filtroperiodo-component>
+        <!--filtro tipo liquidacion-->
+        <filtertipoliquidacion-component 
+            @sendTipo="search('tipo_liquidacion',...arguments)">
+        </filtertipoliquidacion-component>
+        <!--buscar por nombre de agente-->
+        <buscaragente-component 
+            @buscarAgente="like(...arguments)">
+        </buscaragente-component>
+        </div>
+
+        <listaliquidaciones-component 
+            :filtro="filtro">
+        </listaliquidaciones-component>
+        
+    </div>
+    <!-- <div class="container">
 
         <div class="row">
             <div class="col-12 col-lg-6">
@@ -34,7 +62,9 @@
             </div>
         </div>
         
-    </div>
+    </div> -->
+    
+        
 </template>
 
 <script>
@@ -120,6 +150,9 @@
 
     }
 </script>
+
+
+
 
 
 

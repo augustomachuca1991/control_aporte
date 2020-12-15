@@ -144,7 +144,7 @@ class JurisdiccionController extends Controller
 
     public function jurisdiccion_json(Jurisdiccion $jurisdiccion)
 {
-    return Jurisdiccion::with('categorias')->get();
+    return Jurisdiccion::with(['categorias','origen'])->get();
 }
 
     public function getJurisdiccionesSelected($id){

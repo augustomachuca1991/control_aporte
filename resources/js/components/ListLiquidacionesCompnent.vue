@@ -1,11 +1,68 @@
 <template>
-  <div id="liquidaciones">
+  <div id="liquidaciones center">
     <!--<label>Liquidaciones {{filtro.data}} </label>-->
     <!-- <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
     
     <paginate> -->
     <!--table-->
-    <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
+  
+    <div class="table-responsive">
+      <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
+        <table class="table">
+          <caption>
+              <span v-if="$refs.paginator">
+                  Mostrando {{$refs.paginator.pageItemsCount}} resultados
+              </span>
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Puesto Laboral</th>
+              <th scope="col">Tipo Liquidacion</th>
+              <th scope="col">Agente</th>
+              <th scope="col">Periodo</th>
+              <th scope="col">Jurisdiccion</th>
+              <th scope="col">Organismo</th>
+              <th scope="col">Detalle</th>
+            </tr>
+          </thead>
+            <tbody>
+              <tr v-if="!filtro.condition">
+                <td>No hay datos</td>
+              </tr>
+              <tr v-else v-for="liquidacion in paginated('liquidacions')" :key="liquidacion.id">
+                  <th scope="row" v-for="historia_laboral in liquidacion.historia_laborales">00{{historia_laboral.puesto.cod_laboral}}</th>
+                  <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
+                  <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
+                  <td v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.periodo}}</td>
+                  <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
+                  <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</td>
+                  <td>
+                      <a :href="'#detalle'" class="btn btn-outline-success border-0 btn-block shadow text-muteds" data-toggle="modal" v-on:click="show(liquidacion.id)">
+                      <i class="fas fa-dollar-sign"></i>
+                      </a>  
+                  </td>
+              </tr>
+            </tbody>
+        </table>
+      </paginate>
+    </div>
+  
+  <nav aria-label="Page navigation example"> 
+    <paginate-links 
+      for="liquidacions" 
+      :async="true"
+      :limit="3" 
+      :show-step-links="true"
+      :step-links="{
+        next: '»',
+        prev: '«'
+      }"
+      :classes="{'ul': 'pagination', 'li': 'page-item', 'a': 'page-link'}"
+      :hide-single-page="true"
+      @change="onLangsPageChange">
+    </paginate-links>
+  </nav>
+    <!-- <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
       <table class="table">
         <caption>
             <span v-if="$refs.paginator">
@@ -59,7 +116,88 @@
           @change="onLangsPageChange">
         </paginate-links>
       </nav>
-    </div>
+    </div> -->
+
+
+      <!--collapse table-->
+      <!--tabla liquidacion-->
+      
+      <!-- <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Puesto Laboral</th>
+              <th scope="col">Agente</th>
+              <th scope="col">Cuil</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="liquidacion in paginated('liquidacions')" :key="liquidacion.id" class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" :href='''liquidacion.id'>
+                  <td class="expand-button"></td>
+                  <td v-for="historia_laboral in liquidacion.historia_laborales">
+                    {{historia_laboral.puesto.cod_laboral}}
+                  </td>
+                  <td v-for="historia_laboral in liquidacion.historia_laborales">
+                    {{historia_laboral.puesto.agente.nombre}}
+                  </td>
+                  <td v-for="historia_laboral in liquidacion.historia_laborales">
+                    {{historia_laboral.puesto.cod_laboral}}
+                  </td>
+              </tr>
+              <tr v-for="liquidacion in paginated('liquidacions')" :key="liquidacion.id" class="hide-table-padding">
+                  <td colspan="4">
+                      <div :id='liquidacion.id' class="collapse in p-3">
+                        <div class="row">
+                          <div class="col-2">Tipo Liquidacion</div>
+                          <div class="col-6" v-for="tipoliquidacion in liquidacion.liquidacion_organismo">
+                          {{tipoliquidacion.tipoliquidacion.descripcion}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-2">Tipo Liquidacion</div>
+                          <div class="col-6" v-for="tipoliquidacion in liquidacion.liquidacion_organismo">
+                          {{tipoliquidacion.tipoliquidacion.descripcion}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-2">Tipo Liquidacion</div>
+                          <div class="col-6" v-for="tipoliquidacion in liquidacion.liquidacion_organismo">
+                          {{tipoliquidacion.tipoliquidacion.descripcion}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-2">Ver Mas</div>
+                          <div class="col-6"><button class="btn btn-info">+</button></div>
+                        </div>
+                      </div>
+                  </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      </paginate>
+      <div class="d-flex flex-row-reverse">
+          <nav aria-label="Page navigation example"> 
+            <paginate-links 
+              for="liquidacions" 
+              :async="true"
+              :limit="3" 
+              :show-step-links="true"
+              :step-links="{
+                next: '»',
+                prev: '«'
+              }"
+              :classes="{'ul': 'pagination', 'li': 'page-item', 'a': 'page-link'}"
+              :hide-single-page="true"
+              @change="onLangsPageChange">
+            </paginate-links>
+          </nav>
+        </div> -->
+   
+    
+
     <!--modal-->
     <div id="detalle" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" v-model="liquidacion">
       <div class="modal-dialog modal-lg">
@@ -358,3 +496,26 @@
         },
     }
 </script>
+
+<style type="text/css">
+    tr.hide-table-padding td {
+      padding: 0;
+    }
+
+    .expand-button {
+        position: relative;
+    }
+
+    .accordion-toggle .expand-button:after
+    {
+      position: absolute;
+      left:.75rem;
+      top: 50%;
+      transform: translate(0, -50%);
+      content: '-';
+    }
+    .accordion-toggle.collapsed .expand-button:after
+    {
+      content: '+';
+    }
+</style>

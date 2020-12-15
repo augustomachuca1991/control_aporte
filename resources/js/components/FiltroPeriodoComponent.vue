@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <form>
       <div class="form-group border-0 shadow p-3" v-model="periodos">
         <label for="periodo" class="text-muted"><i class="fas fa-search"></i> Periodo Liquidacion</label>
@@ -7,10 +7,16 @@
           <option class="text-muted" :value="''" selected disabled>Seleccione Periodo</option>
           <option v-for="periodo in periodos" :value="periodo.cod_periodo" :periodo="periodo">Liquidacion de {{periodo.periodo}}</option>
         </select>
-        <!--<label class="text-muted">Cod Tipo Liquidacion:&nbsp;{{selected}}</label>-->
       </div>
     </form>
-  </div>
+  </div> -->
+  <div class="col-12 col-lg-4 shadow p-3" v-model="periodos">
+      <label for="periodo" class="text-muted"><i class="fas fa-search"></i> Periodo Liquidacion</label>
+        <select class="custom-select" id="periodo" v-model="selected" v-on:change="cambio()">
+          <option class="text-muted" :value="''" selected disabled>Seleccione Periodo</option>
+          <option v-for="periodo in periodos" :value="periodo.cod_periodo" :periodo="periodo">Liquidacion de {{periodo.periodo}}</option>
+        </select>
+    </div>
 </template>
 
 <script>

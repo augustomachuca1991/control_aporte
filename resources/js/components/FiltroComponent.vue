@@ -1,34 +1,55 @@
 <template>
-  <div>
-      <div class="form-group border-0 shadow p-3">
-        <div class="col-12 col-lg">
-          <label for="origen" class="text-muted"><i class="fas fa-search"></i> Origen</label>
-          <select class="form-control form-control-sm" id="origen" name="origen" v-model="selectedOrigen" v-on:change="cambioOrigen()">
-            <option :value="''" disabled selected>Seleccione Origen</option>
-            <option v-for="origen in origenes" :value="origen.cod_origen">{{origen.origen}}</option>
-          </select>
-          <!--<label class="text-muted">Cod Origen:&nbsp;{{selectedOrigen}}</label>-->
-        </div>
-        <div class="col-12 col-lg">
-           <label for="jurisdiccion" class="text-muted"><i class="fas fa-search"></i> Jurisdiccion</label>
-            <select :disabled="selectedOrigen.length == 0" class="form-control form-control-sm" id="juris diccion" name="jurisdiccion" v-model="selectedJurisdicion" v-on:change="cambioJurisdiccion()">
-               <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
-               <option v-for="jurisdiccion in jurisdicciones" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
-            </select>
-            <!--<label class="text-muted">Cod Jurisdiccion:&nbsp;{{selectedJurisdicion}}</label>-->
-        </div>
-        <div class="col-12 col-lg">
-          <label for="organismo" class="text-muted"><i class="fas fa-search"></i> Organismo</label>
-            <select :disabled="selectedJurisdicion.length == 0" class="form-control form-control-sm" id="organismo" name="organismo" v-model="selectedOrganismo" v-on:change="cambioOrganismo()">
-              <option :value="''" disabled selected>Seleccione Organismo</option>
-              <option v-for="organismo in organismos" :value="organismo.cod_organismo">{{organismo.organismo}}</option>
-            </select>
-          <!--<label class="text-muted">Cod Organismo:&nbsp;{{selectedOrganismo}}</label>-->
-        </div>
-      </div>
+  <!-- <div class="form-group border-0 shadow p-3">
+    
+  
+  <form class="form-inline">
+    <div class="col">
+      <label for="origen" class="text-muted"><i class="fas fa-search"></i> Origen</label>
+      <select class="custom-select" id="origen" name="origen" v-model="selectedOrigen" v-on:change="cambioOrigen()">
+        <option :value="''" disabled selected>Seleccione Origen</option>
+        <option v-for="origen in origenes" :value="origen.cod_origen">{{origen.origen}}</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="jurisdiccion" class="text-muted"><i class="fas fa-search"></i> Jurisdiccion</label>
+       <select :disabled="selectedOrigen.length == 0" class="custom-select" id="juris diccion" name="jurisdiccion" v-model="selectedJurisdicion" v-on:change="cambioJurisdiccion()">
+          <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
+          <option v-for="jurisdiccion in jurisdicciones" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
+       </select>
+    </div>
+    <div class="col">
+      <label for="organismo" class="text-muted"><i class="fas fa-search"></i> Organismo</label>
+      <select :disabled="selectedJurisdicion.length == 0" class="custom-select" id="organismo" name="organismo" v-model="selectedOrganismo" v-on:change="cambioOrganismo()">
+        <option :value="''" disabled selected>Seleccione Organismo</option>
+        <option v-for="organismo in organismos" :value="organismo.cod_organismo">{{organismo.organismo}}</option>
+      </select>
+    </div>
+</form>
+</div> -->
 
-    <!--aca termina-->
-  </div>
+<div class="form-row border-0 shadow p-3">
+    <div class="col-12 col-lg-4 mb-3">
+      <label for="origen" class="text-muted"><i class="fas fa-search"></i> Origen</label>
+      <select class="custom-select" id="origen" name="origen" v-model="selectedOrigen" v-on:change="cambioOrigen()">
+        <option :value="''" disabled selected>Seleccione Origen</option>
+        <option v-for="origen in origenes" :value="origen.cod_origen">{{origen.origen}}</option>
+      </select>
+    </div>
+    <div class="col-12 col-lg-4 mb-3">
+      <label for="jurisdiccion" class="text-muted"><i class="fas fa-search"></i> Jurisdiccion</label>
+       <select :disabled="selectedOrigen.length == 0" class="custom-select" id="juris diccion" name="jurisdiccion" v-model="selectedJurisdicion" v-on:change="cambioJurisdiccion()">
+          <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
+          <option v-for="jurisdiccion in jurisdicciones" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
+       </select>
+    </div>
+    <div class="col-12 col-lg-4 mb-3">
+      <label for="organismo" class="text-muted"><i class="fas fa-search"></i> Organismo</label>
+      <select :disabled="selectedJurisdicion.length == 0" class="custom-select" id="organismo" name="organismo" v-model="selectedOrganismo" v-on:change="cambioOrganismo()">
+        <option :value="''" disabled selected>Seleccione Organismo</option>
+        <option v-for="organismo in organismos" :value="organismo.cod_organismo">{{organismo.organismo}}</option>
+      </select>
+    </div>
+</div>
 </template>
 
 <script>
