@@ -47,26 +47,48 @@ class JurisdiccionController extends Controller
     public function store(Request $request)
     {
         //
-        $date = Carbon::now()->toDateTimeString();
+        // $date = Carbon::now()->toDateTimeString();
 
-        $validarDatos = $request->validate([
-            'cod_jurisdiccion'  =>  'required',
-            'origen_id'       =>    'required',
-            'jurisdiccion'     =>  'required',
+        // $validarDatos = $request->validate([
+        //     'cod_jurisdiccion'  =>  'required',
+        //     'origen_id'       =>    'required',
+        //     'jurisdiccion'     =>  'required',
+        // ]);
+        // // dd($request->all());
+        // try {
+
+        //     $jur = Jurisdiccion::create([
+        //         'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
+        //         'origen_id'       =>   $request->origen_id,
+        //         'jurisdiccion'       =>   $request->jurisdiccion,
+        //         'created_at'    =>   $date,
+        //     ]);
+        //     return response()->json(['isValid'=>true,'errors'=>'Jurisdicción creada satisfactoriamente']);
+        // }catch(\Exception $e) {
+        //     return response()->json(['isValid'=>false,'errors'=>'Error al crear la Jurisdicción']);
+        // }
+
+        $validator = $request->validate([
+            'cod_jurisdiccion' => 'required|integer|unique:jurisdiccions,cod_jurisdiccion',
+            'jurisdiccion' =>   'required',
+            'origen_id' => 'required'
         ]);
-        // dd($request->all());
-        try {
 
-            $jur = Jurisdiccion::create([
-                'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
-                'origen_id'       =>   $request->origen_id,
-                'jurisdiccion'       =>   $request->jurisdiccion,
-                'created_at'    =>   $date,
+        if (!$validator) {
+            return $validator;
+        } else {
+            $jurisdiccion = Jurisdiccion::create([
+                'cod_jurisdiccion' => $request->cod_jurisdiccion,
+                'jurisdiccion' => $request->jurisdiccion,
+                'origen_id' => $request->origen_id
             ]);
-            return response()->json(['isValid'=>true,'errors'=>'Jurisdicción creada satisfactoriamente']);
-        }catch(\Exception $e) {
-            return response()->json(['isValid'=>false,'errors'=>'Error al crear la Jurisdicción']);
+            return $jurisdiccion;
         }
+
+
+        
+
+
     }
 
     /**

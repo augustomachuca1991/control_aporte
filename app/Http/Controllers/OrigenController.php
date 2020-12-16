@@ -84,4 +84,13 @@ class OrigenController extends Controller
     {
         //
     }
+
+
+
+
+    public function getOrigen()
+    {
+        
+        return Origen::all();
+    }
 }

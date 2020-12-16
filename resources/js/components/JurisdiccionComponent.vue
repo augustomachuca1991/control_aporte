@@ -4,18 +4,45 @@
         <div class="modal fade" id="jurisdiccion_new" tabindex="-1" role="dialog" aria-labelledby="ModalLabelNewJurisdiccion" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabelNewJurisdiccion">Nueva Jurisdiccion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                ...
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Nuevo</button>
-              </div>
+              <form  action="" @submit.prevent="newJurisdiccion()">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalLabelNewJurisdiccion">Nueva Jurisdiccion</h5>
+                  <!-- {{errors}} -->
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                      <label for="input_codigo_jurisdiccion" class="col-sm-3 col-form-label">Codigo</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="input_codigo_jurisdiccion" placeholder="Codigo" v-model="cod_jurisdiccion">
+                        <span class="errors text-danger text-sm" v-for="error in errors.cod_jurisdiccion">{{error}}</span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="input_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="input_jurisdiccion" placeholder="Jurisdiccion" v-model="descripcion">
+                        <span class="errors text-danger text-sm" v-for="error in errors.jurisdiccion">{{error}}</span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="select_origen" class="col-sm-3 col-form-label">Origen</label>
+                      <div class="col-sm-9">
+                        <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" >
+                          <option selected disabled>Seleccione Origen...</option>
+                          <option v-for="origen in origenes" :key="origen.id" :value="origen.cod_origen">
+                            {{origen.origen}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -41,6 +68,18 @@
           </div>
         </div>
         <!--Table-->
+        <h3 class="text-center">Lista de Jurisdiccion</h3>
+        <div class="row">
+          <div class="col-md-12 col-lg-4 my-2">
+            <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nueva Jurisdicción</button>
+          </div>
+          <div class="col-md-12 col-lg-4 offset-lg-4 my-2 ">
+            <form class="form-inline justify-content-end">
+                  <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search">
+                  <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
+            </form>
+          </div>
+        </div>
         <div class="table-responsive-md">
           <table class="table">
             <thead>
@@ -78,8 +117,13 @@
         data: function() {
                 return {
                     jurisdicciones:[],
+                    origenes:[],
                     jurisdiccion:{},
                     descripcion:'',
+                    cod_jurisdiccion:'',
+                    selectedOrigen:'',
+                    printorigen:{},
+                    errors:[]
                 }
             },
         mounted() {
@@ -92,6 +136,37 @@
                                 this.jurisdicciones = response.data;
                             })
                         },
+            getOrigenes(){
+                axios.get('api/origen').then((response)=>{
+                    console.log(response.data)
+                    this.origenes = response.data;
+                })
+            },
+            newJurisdiccion(){
+                const params = {
+                    cod_jurisdiccion : this.cod_jurisdiccion,
+                    jurisdiccion : this.descripcion,
+                    origen_id : this.selectedOrigen,
+                    created_at: new Date(),
+                    origen:{
+                      origen: this.origenes[this.selectedOrigen-1].origen
+                    }
+                };
+
+
+                
+                
+                axios.post('api/jurisdiccion/create',params)
+                                 .then((response)=> {
+                                   console.log(response.data);
+                                   this.jurisdicciones.push(params);
+                                   this.empty();
+                                   $('#jurisdiccion_new').modal('hide');
+                                 }).catch((err) => {
+                                   console.log(err.response.data.errors)
+                                   this.errors = err.response.data.errors;
+                                 });
+            },
             trash(index,id){
                 if (confirm('Seguro desea eliminar: '+this.jurisdicciones[index].jurisdiccion)){
                     this.jurisdicciones.splice(index, 1);
@@ -110,6 +185,14 @@
             edit(index,jurisdiccion){
                 this.jurisdiccion = jurisdiccion;
                 this.descripcion = jurisdiccion.jurisdiccion;
+            },
+            open_modal(){
+                this.getOrigenes();
+            },
+            empty(){
+              this.descripcion  = '';
+              this.cod_jurisdiccion = '';
+              this.cod_origen = '';
             }
         },
     }
