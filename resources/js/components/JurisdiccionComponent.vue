@@ -13,34 +13,41 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group row">
-                      <label for="input_codigo_jurisdiccion" class="col-sm-3 col-form-label">Codigo</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" id="input_codigo_jurisdiccion" placeholder="Codigo" v-model="cod_jurisdiccion">
-                        <span class="errors text-danger text-sm" v-for="error in errors.cod_jurisdiccion">{{error}}</span>
-                      </div>
+                  <div class="form-group row">
+                    <label for="input_codigo_jurisdiccion" class="col-sm-3 col-form-label">Codigo</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="input_codigo_jurisdiccion" placeholder="Codigo" v-model="cod_jurisdiccion">
+                      <span class="errors text-danger" v-for="error in errors.cod_jurisdiccion">    
+                        <small><em>{{error}}</em></small>
+                      </span>
                     </div>
-                    <div class="form-group row">
-                      <label for="input_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" id="input_jurisdiccion" placeholder="Jurisdiccion" v-model="descripcion">
-                        <span class="errors text-danger text-sm" v-for="error in errors.jurisdiccion">{{error}}</span>
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="input_jurisdiccion" placeholder="Jurisdiccion" v-model="descripcion">
+                      <span class="errors text-danger" v-for="error in errors.jurisdiccion">
+                          <small><em>{{error}}</em></small>
+                      </span>
                     </div>
-                    <div class="form-group row">
-                      <label for="select_origen" class="col-sm-3 col-form-label">Origen</label>
-                      <div class="col-sm-9">
-                        <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" >
-                          <option selected disabled>Seleccione Origen...</option>
-                          <option v-for="origen in origenes" :key="origen.id" :value="origen.cod_origen">
-                            {{origen.origen}}
-                          </option>
-                        </select>
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="select_origen" class="col-sm-3 col-form-label">Origen</label>
+                    <div class="col-sm-9">
+                      <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" >
+                        <option selected disabled>Seleccione Origen...</option>
+                        <option v-for="(origen,index) in origenes" :key="origen.id" :value="origen.cod_origen">
+                          {{origen.origen}}
+                        </option>
+                      </select>
+                      <span class="errors text-danger" v-for="error in errors.origen_id">
+                          <small><em>{{error}}</em></small>
+                      </span>
                     </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
+                  <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
                 </div>
               </form>
             </div>
@@ -53,16 +60,50 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabelEditJurisdiccion">Editar Jurisdiccion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <p v-model="descripcion">{{descripcion}}</p>
+                <div class="form-group row">
+                  <label for="input_codigo_jurisdiccion_edit" class="col-sm-3 col-form-label">Codigo</label>
+                  <div class="col-sm-9">
+
+                    <input v-if='editMode' type="text" class="form-control" id="input_codigo_jurisdiccion_edit" placeholder="Codigo" :value="cod_jurisdiccion">
+                    <p v-else>{{cod_jurisdiccion}}</p>
+                    <span class="error" v-for="error in errors.cod_jurisdiccion">
+                        {{error}}
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="input_jurisdiccion_edit" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                  <div class="col-sm-9">
+                    <input v-if="editMode" type="text" class="form-control" id="input_jurisdiccion_edit" placeholder="Jurisdiccion" :value="descripcion">
+                    <p v-else>{{cod_jurisdiccion}}</p>
+                    <span class="error" v-for="error in errors.jurisdiccion">
+                        {{error}}
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen</label>
+                  <div class="col-sm-9">
+                    <select v-if="editMode" class="custom-select" id="select_origen_edit"  v-model="selectedOrigen">
+                      <option v-for="origen in origenes" :key="origen.id" :value="origen.cod_origen" :selected="origen.cod_origen == selectedOrigen">
+                        {{origen.origen}}
+                      </option>
+                    </select>
+                    <p v-else>Sisper</p>
+                    <span class="errors text-danger text-sm" v-for="error in errors.origen_id">
+                        {{error}}
+                    </span>
+                  </div>
+                </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button @click="empty()" type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
+                <button @click="editar()" type="button" class="btn btn-ligth border-dark btn-sm"><i class="fa fa-edit"></i>&nbsp;Editar</button>
               </div>
             </div>
           </div>
@@ -99,7 +140,7 @@
                   <th scope="row">{{jurisdiccion.cod_jurisdiccion}}</th>
                   <td>{{jurisdiccion.jurisdiccion}}</td>
                   <td>{{jurisdiccion.origen.origen}}</td>
-                  <td>{{jurisdiccion.created_at | moment}}</td>
+                  <td><em> {{jurisdiccion.created_at | moment}}</em></td>
                   <td>
                     <button @click="trash(index,jurisdiccion.id)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
                     <button @click="edit(index,jurisdiccion)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#jurisdiccion_edit"><i class="fa fa-edit"></i></button>
@@ -122,8 +163,8 @@
                     descripcion:'',
                     cod_jurisdiccion:'',
                     selectedOrigen:'',
-                    printorigen:{},
-                    errors:[]
+                    errors:[],
+                    editMode:false
                 }
             },
         mounted() {
@@ -149,7 +190,7 @@
                     origen_id : this.selectedOrigen,
                     created_at: new Date(),
                     origen:{
-                      origen: this.origenes[this.selectedOrigen-1].origen
+                        origen: this.origenes[this.selectedOrigen-1].origen
                     }
                 };
 
@@ -161,7 +202,7 @@
                                    console.log(response.data);
                                    this.jurisdicciones.push(params);
                                    this.empty();
-                                   $('#jurisdiccion_new').modal('hide');
+                                   alert('agregado correctamente');
                                  }).catch((err) => {
                                    console.log(err.response.data.errors)
                                    this.errors = err.response.data.errors;
@@ -183,16 +224,26 @@
                 }
             },
             edit(index,jurisdiccion){
-                this.jurisdiccion = jurisdiccion;
+                this.getOrigenes();
                 this.descripcion = jurisdiccion.jurisdiccion;
+                this.cod_jurisdiccion = jurisdiccion.cod_jurisdiccion;
+                this.selectedOrigen = jurisdiccion.origen_id;
             },
             open_modal(){
                 this.getOrigenes();
             },
+            editar(){
+                this.editMode = true;
+            },
             empty(){
+              $('#jurisdiccion_new').modal('hide');
+              $('#jurisdiccion_edit').modal('hide');
+              this.errors = [];
               this.descripcion  = '';
               this.cod_jurisdiccion = '';
               this.cod_origen = '';
+              this.selectedOrigen = '';
+              this.editMode = false;
             }
         },
     }
