@@ -23,6 +23,7 @@
   <!-- Fonts -->
   <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
   <link rel="dns-prefetch" href="//fonts.gstatic.com"> 
+  
   @yield('css')
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">

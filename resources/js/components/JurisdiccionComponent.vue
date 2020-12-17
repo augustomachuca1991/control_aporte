@@ -16,7 +16,7 @@
                   <div class="form-group row">
                     <label for="input_codigo_jurisdiccion" class="col-sm-3 col-form-label">Codigo</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="input_codigo_jurisdiccion" placeholder="Codigo" v-model="cod_jurisdiccion">
+                      <input type="text" class="form-control" id="input_codigo_jurisdiccion" v-model="cod_jurisdiccion">
                       <span class="errors text-danger" v-for="error in errors.cod_jurisdiccion">    
                         <small><em>{{error}}</em></small>
                       </span>
@@ -25,7 +25,7 @@
                   <div class="form-group row">
                     <label for="input_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="input_jurisdiccion" placeholder="Jurisdiccion" v-model="descripcion">
+                      <input type="text" class="form-control" id="input_jurisdiccion" v-model="descripcion">
                       <span class="errors text-danger" v-for="error in errors.jurisdiccion">
                           <small><em>{{error}}</em></small>
                       </span>
@@ -36,7 +36,7 @@
                     <div class="col-sm-9">
                       <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" >
                         <option selected disabled>Seleccione Origen...</option>
-                        <option v-for="(origen,index) in origenes" :key="origen.id" :value="origen.cod_origen">
+                        <option v-for="(origen,index) in origenes" :key="origen.id" :value="index">
                           {{origen.origen}}
                         </option>
                       </select>
@@ -69,45 +69,53 @@
                   <label for="input_codigo_jurisdiccion_edit" class="col-sm-3 col-form-label">Codigo</label>
                   <div class="col-sm-9">
 
-                    <input v-if='editMode' type="text" class="form-control" id="input_codigo_jurisdiccion_edit" placeholder="Codigo" :value="cod_jurisdiccion">
-                    <p v-else>{{cod_jurisdiccion}}</p>
-                    <span class="error" v-for="error in errors.cod_jurisdiccion">
-                        {{error}}
+                    <input v-if='editMode' type="text" class="form-control" id="input_codigo_jurisdiccion_edit" placeholder="Codigo" v-model="cod_jurisdiccion" disabled>
+                    <p class="text-justify" v-else>{{cod_jurisdiccion}}</p>
+                    <span class="errors text-danger" v-for="error in errors.cod_jurisdiccion">
+                        <small><em>{{error}}</em></small>
                     </span>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="input_jurisdiccion_edit" class="col-sm-3 col-form-label">Jurisdiccion</label>
                   <div class="col-sm-9">
-                    <input v-if="editMode" type="text" class="form-control" id="input_jurisdiccion_edit" placeholder="Jurisdiccion" :value="descripcion">
-                    <p v-else>{{cod_jurisdiccion}}</p>
-                    <span class="error" v-for="error in errors.jurisdiccion">
-                        {{error}}
+                    <input v-if="editMode" type="text" class="form-control" id="input_jurisdiccion_edit" placeholder="Jurisdiccion" v-model="descripcion">
+                    <p class="text-justify" v-else>{{descripcion}}</p>
+                    <span class="errors text-danger" v-for="error in errors.jurisdiccion">
+                        <small><em>{{error}}</em></small>
                     </span>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen</label>
                   <div class="col-sm-9">
-                    <select v-if="editMode" class="custom-select" id="select_origen_edit"  v-model="selectedOrigen">
-                      <option v-for="origen in origenes" :key="origen.id" :value="origen.cod_origen" :selected="origen.cod_origen == selectedOrigen">
+                    <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedOrigen">
+                      <option v-for="(origen,index) in origenes" :key="origen.id" :value="index" :selected=" index === selectedOrigen">
                         {{origen.origen}}
                       </option>
                     </select>
-                    <p v-else>Sisper</p>
-                    <span class="errors text-danger text-sm" v-for="error in errors.origen_id">
-                        {{error}}
+                    <p class="text-justify" v-else>{{origen.origen}}</p>
+                    <span class="errors text-danger" v-for="error in errors.origen_id">
+                        <small><em>{{error}}</em></small>
                     </span>
                   </div>
                 </div>
               </div>
               <div class="modal-footer">
-                <button @click="empty()" type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
-                <button @click="editar()" type="button" class="btn btn-ligth border-dark btn-sm"><i class="fa fa-edit"></i>&nbsp;Editar</button>
+                <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
+                <button v-if="editMode" class="btn btn-info btn-sm" @click="update()">
+                  <i class="fa fa-save"></i>&nbsp;Guardar Cambbios
+                </button>
+                <button v-else  type="button" class="btn btn-secondary btn-sm" @click="editar()">
+                  <i class="fa fa-edit"></i>&nbsp;Editar
+                </button>
               </div>
             </div>
           </div>
         </div>
+
+
+
         <!--Table-->
         <h3 class="text-center">Lista de Jurisdiccion</h3>
         <div class="row">
@@ -116,8 +124,8 @@
           </div>
           <div class="col-md-12 col-lg-4 offset-lg-4 my-2 ">
             <form class="form-inline justify-content-end">
-                  <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search">
                   <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
+                  <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @keyup="buscar()">
             </form>
           </div>
         </div>
@@ -125,10 +133,10 @@
           <table class="table">
             <thead>
                 <tr>
-                  <th scope="col"># Cod</th>
-                  <th scope="col">Jurisdicción</th>
-                  <th scope="col">Origen</th>
-                  <th scope="col">Creado</th>
+                  <th scope="col"># Cod <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Jurisdicción <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Origen <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Creado <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -158,13 +166,16 @@
         data: function() {
                 return {
                     jurisdicciones:[],
-                    origenes:[],
                     jurisdiccion:{},
+                    origenes:[],
+                    origen:{},
                     descripcion:'',
                     cod_jurisdiccion:'',
                     selectedOrigen:'',
                     errors:[],
-                    editMode:false
+                    editMode:false,
+                    search:'',
+                    index:''
                 }
             },
         mounted() {
@@ -184,50 +195,86 @@
                 })
             },
             newJurisdiccion(){
+                let codigo_origen = '';
+                if (this.selectedOrigen >= 0) {
+                  this.origen = this.origenes[this.selectedOrigen];
+                  codigo_origen = this.origenes[this.selectedOrigen].cod_origen;
+                }
                 const params = {
                     cod_jurisdiccion : this.cod_jurisdiccion,
                     jurisdiccion : this.descripcion,
-                    origen_id : this.selectedOrigen,
+                    origen_id : codigo_origen,
                     created_at: new Date(),
-                    origen:{
-                        origen: this.origenes[this.selectedOrigen-1].origen
-                    }
+                    origen: this.origen,
                 };
-
-
-                
-                
                 axios.post('api/jurisdiccion/create',params)
                                  .then((response)=> {
-                                   console.log(response.data);
                                    this.jurisdicciones.push(params);
                                    this.empty();
-                                   alert('agregado correctamente');
+                                    swal.fire(
+                                         'Jurisdicción: '+response.data.jurisdiccion,
+                                         ' se cargo correctamente',
+                                         'success'
+                                     )
+                                   
                                  }).catch((err) => {
                                    console.log(err.response.data.errors)
                                    this.errors = err.response.data.errors;
                                  });
             },
             trash(index,id){
-                if (confirm('Seguro desea eliminar: '+this.jurisdicciones[index].jurisdiccion)){
+                // if (confirm('Seguro desea eliminar: '+this.jurisdicciones[index].jurisdiccion)){
+                //     this.jurisdicciones.splice(index, 1);
+                //     axios.delete(`api/jurisdiccion/delete/${id}`)
+                //         .then((response)=>{
+                //             if (response.data.isValid) {
+                //                 alert(response.data.errors)
+                //             }else{
+                //                 alert('no se puedo eliminar')
+                //             }
+                //         })
+                // }else{
+                //     console.log('no')
+                // }
+
+                swal.fire({
+                  title: 'Esta seguro?',
+                  text: this.jurisdicciones[index].jurisdiccion+" esta a punto de ser eliminada!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Si, eliminar!'
+                }).then((result) => {
+                  if (result.isConfirmed) {
                     this.jurisdicciones.splice(index, 1);
                     axios.delete(`api/jurisdiccion/delete/${id}`)
-                        .then((response)=>{
-                            if (response.data.isValid) {
-                                alert(response.data.errors)
-                            }else{
-                                alert('no se puedo eliminar el elemento')
-                            }
-                        })
-                }else{
-                    console.log('no')
-                }
+                    .then((response)=>{
+                        if (response.data.isValid) {
+                            swal.fire(
+                              'Borrado!',
+                              response.data.errors,
+                              'success'
+                            )
+                        }else{
+                            swal.fire(
+                              'Algo salio Mal!',
+                              'error'
+                            )
+                        }
+                    })
+                    
+                  }
+                })
             },
             edit(index,jurisdiccion){
                 this.getOrigenes();
+                this.jurisdiccion = jurisdiccion;
                 this.descripcion = jurisdiccion.jurisdiccion;
                 this.cod_jurisdiccion = jurisdiccion.cod_jurisdiccion;
-                this.selectedOrigen = jurisdiccion.origen_id;
+                this.origen = jurisdiccion.origen;
+                this.selectedOrigen = (this.origen.cod_origen-1);
+                this.index = index;
             },
             open_modal(){
                 this.getOrigenes();
@@ -244,6 +291,33 @@
               this.cod_origen = '';
               this.selectedOrigen = '';
               this.editMode = false;
+              this.origen = {};
+            },
+            buscar(){
+              axios.get(`api/jurisdiccion/${this.search}`).then((response)=>{
+                  this.jurisdicciones = response.data;
+              })
+            },
+            update(){
+              const params = {
+                  cod_jurisdiccion : this.cod_jurisdiccion,
+                  jurisdiccion : this.descripcion,
+                  origen_id : this.origenes[this.selectedOrigen].cod_origen,
+                  created_at: this.jurisdiccion.created_at,
+                  origen: this.origenes[this.selectedOrigen],
+              };
+
+              axios.put(`api/jurisdiccion/update/${this.jurisdiccion.id}`,params)
+              .then((response)=>{
+                  this.jurisdicciones[this.index] = params;
+                  this.empty();
+              })
+              .catch((err) => {
+               console.log(err.response.data.errors)
+               this.errors = err.response.data.errors;
+              });
+
+              
             }
         },
     }
