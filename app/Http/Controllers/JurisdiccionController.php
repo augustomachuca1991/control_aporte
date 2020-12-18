@@ -20,19 +20,6 @@ class JurisdiccionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        //return view('jurisdicciones.create', [
-            //'jurisdiccion' => new Jurisdiccion()
-        //]);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -57,28 +44,6 @@ class JurisdiccionController extends Controller
             ]);
             return $jurisdiccion;
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Jurisdiccion  $jurisdiccion
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Jurisdiccion $jurisdiccion)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Jurisdiccion  $jurisdiccion
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, Jurisdiccion $jurisdiccion)
-    {
-        //
     }
 
     /**
@@ -133,12 +98,27 @@ class JurisdiccionController extends Controller
         }
     }
 
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Jurisdiccion  $jurisdiccion
+     * @return \Illuminate\Http\Response
+     */
     public function getJurisdicciones(Jurisdiccion $jurisdiccion)
     {
         return Jurisdiccion::with(['categorias','origen'])->latest()->get();
     }
-
-    public function search($search){
+    
+    /**
+     * search the specified resource from storage.
+     *
+     * @param  \App\Jurisdiccion  $jurisdiccion
+     * @return \Illuminate\Http\Response
+     */
+    public function search($search)
+    {
 
         try{
             return Jurisdiccion::with(['categorias','origen'])
@@ -146,12 +126,13 @@ class JurisdiccionController extends Controller
             ->orWhere('cod_jurisdiccion' ,'LIKE' ,"%".$search."%")
             ->get();
         }catch (\Exception $e){
-            return [];
+            return 'algo salio mal';
         }
 
     }
 
-    public function sort($column , $order){
+    public function sort($column , $order)
+    {
 
         try{
             

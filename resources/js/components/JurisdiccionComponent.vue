@@ -323,10 +323,9 @@
               }else{
                 sort = 'desc'
               }
-              axios.get(`api/jurisdiccion/order/${column}/sort/${sort}`)
-                    .then((response)=>{
+              axios.get(`api/jurisdiccion/order/${column}/sort/${sort}`).then((response)=>{
                         this.jurisdicciones = response.data
-                    })
+              })
             }
         },
     }

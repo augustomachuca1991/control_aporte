@@ -1,396 +1,347 @@
 <template>
-    <div id="organismos" style="overflow-x:auto;">
-
-        <div class="form-row col mb-3 shadow p-3">
-            <div class="form-group col-md-6 border-0 shadow p-3">
-                <label class="text-muted" for="origen1"><i class="fas fa-search"></i> Origen</label>
-                <select class="custom-select mr-sm-2" id="origen1" name="origen1"  v-model="selectedOrigen">
-                    <option :value="''" disabled selected>Seleccione Origen</option>
-                    <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
-                </select>
+    <div>
+        <!-- Modal nuevo organismo -->
+        <div class="modal fade" id="organismo_new" tabindex="-1" role="dialog" aria-labelledby="ModalLabelNewOrganismo" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form  action="" @submit.prevent="newOrganismo()">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalLabelNewOrganismo">Nuevo Organismo</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group row">
+                    <label for="input_cod_organismo" class="col-sm-3 col-form-label">Codigo</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="input_cod_organismo" v-model="cod_organismo">
+                      <!-- <span class="errors text-danger" v-for="error in errors.cod_organismo">    
+                        <small><em>{{error}}</em></small>
+                      </span> -->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input_organismo" class="col-sm-3 col-form-label">Organismo</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="input_organismo" v-model="descripcion">
+                      <!-- <span class="errors text-danger" v-for="error in errors.organismo">
+                          <small><em>{{error}}</em></small>
+                      </span> -->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="select_origen" class="col-sm-3 col-form-label">Origen</label>
+                    <div class="col-sm-9">
+                      <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" @change="selectOrigen()">>
+                        <option selected disabled :value="''">Seleccione Origen...</option>
+                        <option v-for="(origen,index) in origenes" :key="origen.id" :value="index">
+                          {{origen.origen}}
+                        </option>
+                      </select>
+                      <!-- <span class="errors text-danger" v-for="error in errors.origen_id">
+                          <small><em>{{error}}</em></small>
+                      </span> -->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="select_origen" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                    <div class="col-sm-9">
+                      <select :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion" v-model="selectedJurisdiccion">
+                        <option selected disabled :value="''">Seleccione Jurisdiccion...</option>
+                        <option v-for="(jurisdiccion,index) in jurisdicciones" :key="jurisdiccion.id" :value="index">
+                          {{jurisdiccion.jurisdiccion}}
+                        </option>
+                      </select>
+                      <!-- <span class="errors text-danger" v-for="error in errors.origen_id">
+                          <small><em>{{error}}</em></small>
+                      </span> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
+                </div>
+              </form>
             </div>
-            <div class="form-group col-md-6 border-0 shadow p-3">
-                <label class="text-muted" for="jurisdiccion_1"><i class="fas fa-search"></i> Jurisdicción</label>
-                <select class="custom-select mr-sm-2" id="jurisdiccion_1" name="jurisdiccion_1"  v-model="selectedJurisdiccion">
-                    <option :value="''" disabled selected>Seleccione Jurisdicción</option>
-                    <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
-                </select>
-            </div>
+          </div>
         </div>
 
+        <!-- Modal editar jurisdiccion -->
+        <!-- <div class="modal fade" id="jurisdiccion_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditJurisdiccion" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabelEditJurisdiccion">Editar Jurisdiccion</h5>
+                <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group row">
+                  <label for="input_codigo_jurisdiccion_edit" class="col-sm-3 col-form-label">Codigo</label>
+                  <div class="col-sm-9">
+
+                    <input v-if='editMode' type="text" class="form-control" id="input_codigo_jurisdiccion_edit" placeholder="Codigo" v-model="cod_jurisdiccion" disabled>
+                    <p class="text-justify" v-else>{{cod_jurisdiccion}}</p>
+                    <span class="errors text-danger" v-for="error in errors.cod_jurisdiccion">
+                        <small><em>{{error}}</em></small>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="input_jurisdiccion_edit" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                  <div class="col-sm-9">
+                    <input v-if="editMode" type="text" class="form-control" id="input_jurisdiccion_edit" placeholder="Jurisdiccion" v-model="descripcion">
+                    <p class="text-justify" v-else>{{descripcion}}</p>
+                    <span class="errors text-danger" v-for="error in errors.jurisdiccion">
+                        <small><em>{{error}}</em></small>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen</label>
+                  <div class="col-sm-9">
+                    <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedOrigen">
+                      <option v-for="(origen,index) in origenes" :key="origen.id" :value="index" :selected=" index === selectedOrigen">
+                        {{origen.origen}}
+                      </option>
+                    </select>
+                    <p class="text-justify" v-else>{{origen.origen}}</p>
+                    <span class="errors text-danger" v-for="error in errors.origen_id">
+                        <small><em>{{error}}</em></small>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
+                <button v-if="editMode" class="btn btn-info btn-sm" @click="update()">
+                  <i class="fa fa-save"></i>&nbsp;Guardar Cambbios
+                </button>
+                <button v-else  type="button" class="btn btn-secondary btn-sm" @click="editar()">
+                  <i class="fa fa-edit"></i>&nbsp;Editar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+
+
+        <!--Table-->
+        <h3 class="text-center">Lista de Organismos</h3>
         <div class="row">
-            <div class="col">
-                <a class="btn btn-success" v-on:click="encabezado = 'Crear Organismo'" data-toggle="modal" data-target="#altaModal">Crear nuevo organismo</a>
-            </div>
+          <div class="col-md-12 col-lg-4 my-2">
+            <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#organismo_new"><i class="fa fa-plus"></i>&nbsp;Nuevo Organismo</button>
+          </div>
+          <div class="col-md-12 col-lg-4 offset-lg-4 my-2 ">
+            <form class="form-inline justify-content-end">
+                  <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
+                  <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @keyup="buscar()">
+            </form>
+          </div>
         </div>
-        <br>
-        <div v-if="this.message != ''">
-            <div class="alert alert-danger alert-block" role="alert" id="mensaje_error"  v-if="this.isValid == false">
-                <button type="button" class="close" data-dismiss="alert">x</button>
-                <strong style="color:darkred" align="center">{{this.message}}</strong>
-            </div>
-            <div class="alert alert-success" role="alert" id="mensaje_exito" v-if="this.isValid == true">
-                <button type="button" class="close" data-dismiss="alert">x</button>
-                <strong style="color:darkgreen" align="center" >{{this.message}}</strong>
-            </div>
-        </div>
-
-        <table class="table table-borderless table-striped border" v-model="organismos">
-            <thead >
-            <tr style="text-align: center;">
-                <th scope="col">Id.</th>
-                <th scope="col">cod.</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Origen</th>
-                <th scope="col">Creación</th>
-                <th scope="col">Modificación</th>
-                <th scope="col" nowrap colspan="2">Opciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-if="organismos.length===0">
-                <td colspan="6">No hay datos</td>
-            </tr>
-            <tr style="text-align: center;" v-for="organismo in organismos">
-                <td>{{ organismo.id }}</td>
-                <td>{{ organismo.cod_organismo }}</td>
-                <td><a data-toggle="modal" data-target="#mostrarModal" @click="mostrarOrganismo(organismo)" >{{ organismo.organismo }}</a></td>
-                <td>{{ organismo.jurisdiccion_id }}</td>
-                <td>{{ organismo.created_at }}</td>
-                <td>{{ organismo.updated_at }}</td>
-                <td class="td-button">
-                    <a @click="editOrganismo(organismo)" class="btn btn-outline-warning border-0  btn-sm shadow" data-toggle="modal" data-target="#editarModal"><i class="far fa-edit"></i></a>
-                </td>
-                <td class="td-button">
-                    <form @submit.prevent="deleteOrganismo(organismo.id)">
-                        <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <!-- Modal mostrar -->
-        <div class="modal fade" id="mostrarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true" >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
-                    <div class="modal-header">
-                        <h1 class="modal-title" v-model="encabezado">Detalle Organismo</h1>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" class="form-group" method="POST">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group" v-model="origen">
-                                        <label class="required" for="mostrarOrigen" >Origen</label>
-                                        <select class="custom-select mr-sm-2" id="mostrarOrigen" name="origen" v-model="jur_aux.origen_id" disabled>
-                                            <option>Seleccione Orígenes</option>
-                                            <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.cod_origen">{{origen.origen}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group" v-model="jurisdiccion">
-                                        <label class="required" for="mostrarJurisdiccion" >Jurisdicción</label>
-                                        <select class="custom-select mr-sm-2" id="mostrarJurisdiccion" name="jurisdiccion" v-model="org_aux.jurisdiccion_id" disabled>
-                                            <option>Seleccione Jurisdicción</option>
-                                            <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="editarCodJurisdiccion" class="required">Cod. Organismo</label>
-                                    <input type="text" name="cod_jurisdiccion" id="mostrarCodJurisdiccion" value=""
-                                           class="form-control"  v-model="org_aux.cod_organismo" readonly>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="editarDescripcion" class="required">Organismo</label>
-                                    <input type="text" name="descripcion" id="mostrarDescripcion" value=""
-                                           class="form-control"  v-model="org_aux.organismo" readonly>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="modal-footer">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
-                                    <span class="btn btn-danger" aria-hidden="true">Volver</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal alta -->
-        <div class="modal fade" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="altaModalLabel" aria-hidden="true" >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
-                    <div class="modal-header">
-                        <h1 class="modal-title" v-model="encabezado">{{encabezado}}</h1>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" class="form-group" method="POST">
-                            <div class="form-group">
-                                <label class="col-form-label" for="origen_new">Origen</label>
-                                <select class="custom-select mr-sm-2" name="origen_new" v-model="selectedOrigen" placeholder="Seleccione origen">
-                                    <option :value="''" disabled selected>Seleccione Origen</option>
-                                    <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
-                                </select>
-                                <span style="color:red" v-if="feedback.cod_origen" v-text="feedback.cod_origen[0]" ></span>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-form-label" for="jurisdiccion_new">Jurisdiccion</label>
-                                <select class="custom-select mr-sm-2" name="origen_new" v-model="selectedJurisdiccion" placeholder="Seleccione jurisdicción">
-                                    <option :value="''" disabled selected>Seleccione Origen</option>
-                                    <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
-                                </select>
-                                <span style="color:red" v-if="feedback.cod_jurisdiccion" v-text="feedback.cod_jurisdiccion[0]" ></span>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="altaCodOrganismo" class="required">Cod. Organismo</label>
-                                    <input type="text" name="cod_organismo" id="altaCodOrganismo" value=""
-                                           class="form-control"  v-model="org_aux.cod_organismo">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="altaDescripcion" class="required">Organismo</label>
-                                    <input type="text" name="descripcion" id="altaDescripcion" value=""
-                                           class="form-control"  v-model="org_aux.organismo">
-                                </div>
-                            </div>
-                            <br>
-                            <div class="modal-footer">
-                                <button v-on:click="createOrganismo()" data-dismiss="modal" id="alta_organismo" class="btn btn-primary border-0">Guardar</button>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
-                                    <span class="btn btn-danger" aria-hidden="true">Volver</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal editar -->
-        <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true" >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content border-primary justify-content-center"  style="max-width: 40rem;">
-                    <div class="modal-header">
-                        <h1 class="modal-title" v-model="encabezado">{{encabezado}}</h1>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" class="form-group" method="POST">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group" v-model="origenes">
-                                        <label class="required" for="editarOrigen" >Origen</label>
-                                        <select class="custom-select mr-sm-2" id="editarOrigen" name="origen" v-model="jur_aux.origen_id" >
-                                            <option>Seleccione Orígenes</option>
-                                            <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.cod_origen">{{origen.origen}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group" v-model="jurisdicciones">
-                                        <label class="required" for="editarJurisdiccion" >Jurisdicción</label>
-                                        <select class="custom-select mr-sm-2" id="editarJurisdiccion" name="origen" v-model="org_aux.jurisdiccion_id" >
-                                            <option>Seleccione Jurisdicción</option>
-                                            <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="editarCodOrganismo" class="required">Cod. Organismo</label>
-                                    <input type="text" name="cod_organismo" id="editarCodOrganismo" value=""
-                                           class="form-control"  v-model="org_aux.cod_organismo">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="editarDescripcion" class="required">Organismo</label>
-                                    <input type="text" name="descripcion" id="editarDescripcion" value=""
-                                           class="form-control"  v-model="org_aux.organismo">
-                                </div>
-                            </div>
-                            <br>
-                            <div class="modal-footer">
-                                <button v-on:click="updateOrganismo(org_aux)" data-dismiss="modal" id="editar_organismo" class="btn btn-primary border-0">Guardar</button>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
-                                    <span class="btn btn-danger" aria-hidden="true">Volver</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        <div class="table-responsive-md">
+          <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col"># Cod<a href="#" class="text-dark" @click="sort('cod_organismo')"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Organismo<a href="#" class="text-dark" @click="sort('organismo')"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">jurisdicción<a href="#" class="text-dark" @click="sort('jurisdiccion_id')"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Origen<a href="#" class="text-dark" @click="sort('jurisdiccion_id')"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Creado<a href="#" class="text-dark" @click="sort('created_at')"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="organismos.length===0">
+                    <td class="text-center">No data</td>
+                </tr>
+                <tr v-else v-for="(organismo,index) in organismos" :key='organismo.id'>
+                  <th scope="row">{{organismo.cod_organismo}}</th>
+                  <td>{{organismo.organismo}}</td>
+                  <td>{{organismo.jurisdiccion.jurisdiccion}}</td>
+                  <td>{{organismo.jurisdiccion.origen.origen}}</td>
+                  <td><em> {{organismo.created_at | moment}}</em></td>
+                  <td>
+                    <button @click="trash(index,organismo.id)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
+                    <button @click="edit(index,organismo)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#jurisdiccion_edit"><i class="fa fa-edit"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "OrganismoComponent",
         data: function(){
             return{
+                origenes:[],
                 jurisdicciones:[],
-                jurisdiccion: [],
                 organismos:[],
-                selectedOrigen: [],
-                selectedJurisdiccion: [],
-                origenes: [],
-                origen: [],
-                message: "",
-                isValid: false,
-                jur_aux: [],
-                org_aux: [],
-                feedback: "",
-                form_editar: false,
-                encabezado: '',
-                error_descripcion: ''
+                origen:{},
+                jurisdiccion:{},
+                organismo:{},
+                selectedOrigen:'',
+                selectedJurisdiccion:'',
+                cod_organismo:'',
+                descripcion:'',
+                search:'',
+                order:false,
+                errors:[],
             }
         },
         mounted() {
-            //this.getOrganismos();
-            this.getOrigenes();
-            //this.getJurisdicciones();
+            axios.get('api/organismo').then((response)=>{
+                console.log(response.data)
+                    this.organismos = response.data;
+            })
         },
 
         methods: {
-            //getJurisdicciones(){
-                //axios.get('api/jurisdiccion').then((response)=>{
-                    //this.jurisdicciones = response.data;
-                //})
-            //},
             getOrigenes(){
-                axios.get('api/origen/')
-                    .then((response)=>{
-                        this.origenes = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                axios.get('api/origen/').then((response)=>{
+                    this.origenes = response.data;
+                })
+            },
+            selectOrigen(){
+                this.jurisdicciones = [];
+                this.selectedJurisdiccion = '';
+                if (this.selectedOrigen >= 0) {
+                    this.origen = this.origenes[this.selectedOrigen]
+                    this.jurisdicciones = this.origen.jurisdicciones
+                }
+
+            },
+            selectJurisdiccion(){
+                this.jurisdiccion = {};
+                if (this.selectedJurisdiccion >= 0) {
+                    this.jurisdiccion = this.jurisdicciones[this.selectedJurisdiccion]
+                }
+
             },
             getOrganismos(){
                 axios.get('api/organismo').then((response)=>{
-                    console.log(response.data)
                     this.organismos = response.data;
                 })
             },
-            getOrigenSelected(){
-                axios.get(`api/jurisdiccion/${this.selectedOrigen}`).then((response)=>{
-                    console.log(response.data);
-                    this.jurisdicciones = response.data;
+            newOrganismo(){
+                //let codigo_origen = '';
+                const organismo = {}
+                if (this.selectedOrigen >= 0) {
+                  if (this.selectedJurisdiccion >= 0) {
+                    
+                    const organismo = {
+                            cod_organismo : this.cod_organismo,
+                            jurisdiccion_id : this.jurisdiccion.cod_jurisdiccion,
+                            organismo : this.descripcion,
+                            created_at: new Date(),
+                            jurisdiccion: {
+                                id : this.jurisdiccion.id,
+                                cod_jurisdiccion : this.jurisdiccion.cod_jurisdiccion,
+                                origen_id: this.origen.id,
+                                jurisdiccion: this.jurisdiccion.jurisdiccion,
+                                origen : this.origen
+                            }
+                        };
+                    console.log(organismo);
+                    this.organismos.push(organismo);
+                    this.empty();
+                  }
+                }
+                
+                // axios.post('api/jurisdiccion/create',params)
+                //                  .then((response)=> {
+                //                    this.jurisdicciones.push(params);
+                //                    this.empty();
+                //                     Toast.fire({
+                //                       icon: 'success',
+                //                       title: 'Jurisdicción '+response.data.jurisdiccion+' se creó satisfactoriamente.',
+                //                       background:'#E7FFD7',
+                //                     })
+                                   
+                //                  }).catch((err) => {
+                //                    console.log(err.response.data.errors)
+                //                    this.errors = err.response.data.errors;
+                //                  });
+            },
+            trash(index,id){
+               swal.fire({
+                 title: 'Esta seguro?',
+                 text: this.organismos[index].organismo+" esta a punto de ser eliminada!",
+                 icon: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'Si, eliminar!'
+               }).then((result) => {
+                 if (result.isConfirmed) {
+                   this.organismos.splice(index, 1);
+                   axios.delete(`api/organismo/delete/${id}`)
+                   .then((response)=>{
+                       if (response.data.isValid) {
+                           Toast.fire({
+                             icon: 'success',
+                             title: response.data.errors,
+                             background:'#E7FFD7',
+                           })
+
+                       }else{
+                           Toast.fire({
+                             icon: 'error',
+                             title: 'Atencion!!! Algo Salio Mal.',
+                             background:'#FCDBCD',
+                           })
+                       }
+                   })
+                 }
+               })
+            },
+            edit(index,organismo){
+                console.log(index) 
+                console.log(organismo)
+            },
+            buscar(){
+                axios.get(`api/organismo/${this.search}`).then((response)=>{
+                  this.organismos = response.data;
                 })
             },
-            getJurisdiccionesSelected(p){
-                this.selectedJurisdicion = p;
-                //alert('en el get:');
-                //alert(this.selectedJurisdicion);
-                axios.get(`api/organismo/${this.selectedJurisdicion}`).then((response)=>{
-                    console.log(this.selectedJurisdicion);
-                    //console.log(response.data);
-                    this.organismos = response.data;
+            sort(column){
+                this.order = !this.order;
+                let sort;
+                if (this.order) {
+                  sort = 'asc'
+                }else{
+                  sort = 'desc'
+                }axios.get(`api/organismo/order/${column}/sort/${sort}`).then((response)=>{
+                    this.organismos = response.data
                 })
             },
-
-            editOrganismo(p_organismo){
-                console.log(p_organismo);
-                this.org_aux = _.cloneDeep(p_organismo);
-                this.jur_aux = _.cloneDeep(p_organismo.jurisdiccion);
-                this.encabezado = 'Editar Organismo';
+            open_modal(){
+                this.getOrigenes();
+                //this.getJurisdicciones();
             },
-            mostrarOrganismo(p_organismo){
-                this.org_aux = _.cloneDeep(p_organismo);
-                this.jur_aux = _.cloneDeep(p_organismo.jurisdiccion);
-            },
-
-            updateOrganismo(p_organismo){
-                if(confirm("¿Seguro que desea guardar los cambios?")){
-                    const params = {
-                        cod_organismo : p_organismo.cod_organismo,
-                        organismo : p_organismo.organismo,
-                        jurisdiccion_id : p_organismo.jurisdiccion_id,
-                    };
-                    axios.put(`api/organismo/update/${p_organismo.id}` , params)
-                        .then(response => {
-                            this.isValid = response.data.isValid;
-                            this.message = response.data.errors;
-                            this.empty();
-                        }).catch(function (error) {
-                        console.log(error);
-                    });
-                }
-            },
-
-            createOrganismo(){
-                if(confirm("¿Seguro que desea crear el Organismo?")){
-                    const params = {
-                        cod_organismo : this.org_aux.cod_organismo,
-                        organismo : this.org_aux.organismo,
-                        jurisdiccion_id : this.selectedJurisdicion,
-                    };
-                    console.log(params);
-                    axios.post('api/organismo/create', params )
-                        .then(response => {
-                            this.isValid = response.data.isValid;
-                            this.message = response.data.errors;
-                            this.empty();
-
-
-                        }).catch(function (error) {
-                        console.log(error);
-                    });
-                }
-            },
-
-            deleteOrganismo(id){
-                if(confirm("¿Seguro que quieres eliminar este Organismo?")){
-                    axios.delete(`api/organismo/delete/${id}`)
-                        .then((response)=>{
-                            this.isValid = response.data.isValid;
-                            this.message = response.data.errors
-                            this.empty();
-
-                        }).catch(function (error) {
-                        console.log(error);
-                    });
-                }
-            },
-
             empty(){
-                this.jur_aux = [];
-                this.org_aux = [];
-                this.getOrigenSelected();
-                this.getJurisdiccionesSelected(this.selectedJurisdiccion);
+              $('#organismo_new').modal('hide');
+              this.errors = [];
+              this.descripcion  = '';
+              this.cod_organismo = '';
+              this.jurisdiccion_id = '';
+              this.selectedOrigen = '';
+              this.selectedJurisdiccion = '';
+              //this.editMode = false;
+              this.origen = {};
+              this.jurisdiccion = {};
+              this.organismo = {};
             },
+
+            
+
+            
 
         },
-        watch:{
-            selectedOrigen: function () {
-                this.getOrigenSelected();
-                this.organismos = [];
-            },
-            selectedJurisdiccion: function () {
-                this.getJurisdiccionesSelected(this.selectedJurisdiccion);
-            }
-        }
     }
 </script>
-
-<style scoped>
-
-</style>

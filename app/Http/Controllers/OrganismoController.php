@@ -37,27 +37,21 @@ class OrganismoController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $date = Carbon::now()->toDateTimeString();
-
-        $validarDatos = $request->validate([
-            'cod_organismo'  =>  'required',
-            'jurisdiccion_id'       =>    'required',
-            'organismo'     =>  'required',
+        $validator = $request->validate([
+            'cod_organismo' => 'required|integer|unique:organismos,cod_organismo',
+            'organismo' =>   'required',
+            'jurisdiccion_id' => 'required'
         ]);
 
-        try {
-
-            $org = Organismo::create([
-                'cod_organismo'       =>   $request->cod_organismo,
-                'jurisdiccion_id'       =>   $request->jurisdiccion_id,
-                'organismo'       =>   $request->organismo,
-                'created_at'    =>   $date,
+        if (!$validator) {
+            return $validator;
+        } else {
+            $organismo = Organismo::create([
+                'cod_organismo' => $request->cod_organismo,
+                'organismo' => $request->organismo,
+                'jurisdiccion_id' => $request->jurisdiccion_id
             ]);
-
-            return response()->json(['isValid'=>true,'errors'=>'Organismo creado satisfactoriamente']);
-        }catch(\Exception $e) {
-            return response()->json(['isValid'=>false,'errors'=>'Error al crear la Organismo']);
+            return $organismo;
         }
     }
 
@@ -126,11 +120,11 @@ class OrganismoController extends Controller
     {
         //
         try {
-            $organismo = Organismo::find($id);
+            $organismo = Organismo::findOrFail($id);
             $organismo->delete();
-            return response()->json(['isValid'=>true,'errors'=>'Organismo eliminado satisfactoriamente']);
+            return response()->json(['isValid'=>true,'errors'=>'organismo eliminada satisfactoriamente']);
         }catch(\Exception $e) {
-            return response()->json(['isValid'=>false,'errors'=>'Error al eliminar el Organismo']);
+            return response()->json(['isValid'=>false,'errors'=>'Error al eliminar la organismo']);
         }
     }
 
@@ -140,13 +134,29 @@ class OrganismoController extends Controller
      * @param  \App\Organismo  $organismo
      * @return \Illuminate\Http\Response
      */
-    public function getOrganismos(Organismo $organismo)
+    public function getOrganismos()
     {
+        return Organismo::with(['jurisdiccion'])->latest()->get();
+    }
+
+    /**
+     * search the specified resource from storage.
+     *
+     * @param  \App\Jurisdiccion  $jurisdiccion
+     * @return \Illuminate\Http\Response
+     */
+    public function search($search)
+    {
+
         try{
-        return Organismo::with('jurisdiccion')->get();
-        }catch (\Exception $e) {
-            return [];
+            return Organismo::with(['jurisdiccion'])
+            ->where('organismo' ,'LIKE' ,"%".$search."%")
+            ->orWhere('cod_organismo' ,'LIKE' ,"%".$search."%")
+            ->get();
+        }catch (\Exception $e){
+            return 'algo salio mal';
         }
+
     }
 
     /**
@@ -155,11 +165,16 @@ class OrganismoController extends Controller
      * @param  \App\Organismo  $organismo
      * @return \Illuminate\Http\Response
      */
-    public function getJurisdiccionesSelected($id){
+    public function sort($column , $order){
+
         try{
-            return Organismo::with('jurisdiccion')->where('jurisdiccion_id',$id)->get();
+            
+            return Organismo::with(['jurisdiccion'])
+            ->orderBy($column, $order)
+            ->get();
         }catch (\Exception $e){
-            return [];
+            return 'algo salio mal';
         }
+
     }
 }

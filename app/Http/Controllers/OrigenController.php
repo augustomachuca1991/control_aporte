@@ -88,9 +88,9 @@ class OrigenController extends Controller
 
 
 
-    public function getOrigen()
+    public function getOrigenes()
     {
         
-        return Origen::all();
+        return Origen::with('Jurisdicciones')->get();
     }
 }

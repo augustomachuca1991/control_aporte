@@ -96,11 +96,14 @@ Route::delete('/jurisdiccion/delete/{id}', 'JurisdiccionController@destroy')->na
 Route::get('/jurisdiccion/order/{column}/sort/{sort}', 'JurisdiccionController@sort')->name('sort_jurisdiccion');
 // Organismos
 Route::get('/organismo', 'OrganismoController@getOrganismos')->name('organismo');
-Route::get('/organismo/{id}', 'OrganismoController@getJurisdiccionesSelected')->name('organismo');
+Route::get('/organismo/{search}', 'OrganismoController@search')->name('organismo_search');
 Route::get('/organismo/edit/{id}', 'OrganismoController@edit')->name('edit_organismo');
 Route::put('/organismo/update/{id}', 'OrganismoController@update')->name('update_organismo');
 Route::post('/organismo/create', 'OrganismoController@store')->name('create_organismo');
 Route::delete('/organismo/delete/{id}', 'OrganismoController@destroy')->name('delete_organismo');
+Route::get('/organismo/order/{column}/sort/{sort}', 'OrganismoController@sort')->name('sort_organismo');
+
+
 
 // Historias Laborales
 Route::get('/hlaborales', 'HistoriaLaboralController@getHistoriaLaborales')->name('historialaboral');
@@ -113,7 +116,7 @@ Route::delete('/hlaborales/delete/{id}', 'HistoriaLaboralController@destroy')->n
 
 
 //Origenes
-Route::get('/origen', 'OrigenController@getOrigen')->name('origen');
+Route::get('/origen', 'OrigenController@getOrigenes')->name('origen');
 
 //Notificaciones
 Route::get('/notification', 'NotificationController@getNotificaciones');
