@@ -93,7 +93,7 @@ Route::get('/jurisdiccion/edit/{id}', 'JurisdiccionController@edit')->name('edit
 Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('update_jurisdiccion');
 Route::post('/jurisdiccion/create', 'JurisdiccionController@store')->name('create_jurisdiccion');
 Route::delete('/jurisdiccion/delete/{id}', 'JurisdiccionController@destroy')->name('delete_jurisdiccion');
-
+Route::get('/jurisdiccion/order/{column}/sort/{sort}', 'JurisdiccionController@sort')->name('sort_jurisdiccion');
 // Organismos
 Route::get('/organismo', 'OrganismoController@getOrganismos')->name('organismo');
 Route::get('/organismo/{id}', 'OrganismoController@getJurisdiccionesSelected')->name('organismo');

@@ -133,10 +133,10 @@
           <table class="table">
             <thead>
                 <tr>
-                  <th scope="col"># Cod <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Jurisdicción <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Origen <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Creado <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col"># Cod <a href="#" class="text-dark" @click="sort('cod_jurisdiccion')"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Jurisdicción <a href="#" class="text-dark" @click="sort('jurisdiccion')"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Origen <a href="#" class="text-dark" @click="sort('origen_id')"><small><i class="fas fa-sort"></i></small></a></th>
+                  <th scope="col">Creado <a href="#" class="text-dark" @click="sort('created_at')"><small><i class="fas fa-sort"></i></small></a></th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -162,6 +162,16 @@
 </template>
 
 <script>
+  const Toast = swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  timer: 6000,
+                  showConfirmButton: false,
+                  onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', swal.stopTimer)
+                    toast.addEventListener('mouseleave', swal.resumeTimer)
+                  }
+                });
     export default {
         data: function() {
                 return {
@@ -175,7 +185,8 @@
                     errors:[],
                     editMode:false,
                     search:'',
-                    index:''
+                    index:'',
+                    order:false,
                 }
             },
         mounted() {
@@ -211,11 +222,11 @@
                                  .then((response)=> {
                                    this.jurisdicciones.push(params);
                                    this.empty();
-                                    swal.fire(
-                                         'Jurisdicción: '+response.data.jurisdiccion,
-                                         ' se cargo correctamente',
-                                         'success'
-                                     )
+                                    Toast.fire({
+                                      icon: 'success',
+                                      title: 'Jurisdicción '+response.data.jurisdiccion+' se creó satisfactoriamente.',
+                                      background:'#E7FFD7',
+                                    })
                                    
                                  }).catch((err) => {
                                    console.log(err.response.data.errors)
@@ -223,20 +234,6 @@
                                  });
             },
             trash(index,id){
-                // if (confirm('Seguro desea eliminar: '+this.jurisdicciones[index].jurisdiccion)){
-                //     this.jurisdicciones.splice(index, 1);
-                //     axios.delete(`api/jurisdiccion/delete/${id}`)
-                //         .then((response)=>{
-                //             if (response.data.isValid) {
-                //                 alert(response.data.errors)
-                //             }else{
-                //                 alert('no se puedo eliminar')
-                //             }
-                //         })
-                // }else{
-                //     console.log('no')
-                // }
-
                 swal.fire({
                   title: 'Esta seguro?',
                   text: this.jurisdicciones[index].jurisdiccion+" esta a punto de ser eliminada!",
@@ -251,19 +248,20 @@
                     axios.delete(`api/jurisdiccion/delete/${id}`)
                     .then((response)=>{
                         if (response.data.isValid) {
-                            swal.fire(
-                              'Borrado!',
-                              response.data.errors,
-                              'success'
-                            )
+                            Toast.fire({
+                              icon: 'success',
+                              title: response.data.errors,
+                              background:'#E7FFD7',
+                            })
+
                         }else{
-                            swal.fire(
-                              'Algo salio Mal!',
-                              'error'
-                            )
+                            Toast.fire({
+                              icon: 'error',
+                              title: 'Atencion!!! Algo Salio Mal.',
+                              background:'#FCDBCD',
+                            })
                         }
                     })
-                    
                   }
                 })
             },
@@ -316,8 +314,19 @@
                console.log(err.response.data.errors)
                this.errors = err.response.data.errors;
               });
-
-              
+            },
+            sort(column){
+              this.order = !this.order;
+              let sort;
+              if (this.order) {
+                sort = 'asc'
+              }else{
+                sort = 'desc'
+              }
+              axios.get(`api/jurisdiccion/order/${column}/sort/${sort}`)
+                    .then((response)=>{
+                        this.jurisdicciones = response.data
+                    })
             }
         },
     }

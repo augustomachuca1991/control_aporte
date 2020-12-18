@@ -16,12 +16,6 @@ class JurisdiccionController extends Controller
      */
     public function index()
     {
-        //
-        //$jurisdicciones = Jurisdiccion::paginate(10);
-        //return view('jurisdicciones.index', [
-        //    'jurisdicciones' => $jurisdicciones
-        //]);
-
         return view('jurisdicciones.index');
     }
 
@@ -46,27 +40,6 @@ class JurisdiccionController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // $date = Carbon::now()->toDateTimeString();
-
-        // $validarDatos = $request->validate([
-        //     'cod_jurisdiccion'  =>  'required',
-        //     'origen_id'       =>    'required',
-        //     'jurisdiccion'     =>  'required',
-        // ]);
-        // // dd($request->all());
-        // try {
-
-        //     $jur = Jurisdiccion::create([
-        //         'cod_jurisdiccion'       =>   $request->cod_jurisdiccion,
-        //         'origen_id'       =>   $request->origen_id,
-        //         'jurisdiccion'       =>   $request->jurisdiccion,
-        //         'created_at'    =>   $date,
-        //     ]);
-        //     return response()->json(['isValid'=>true,'errors'=>'Jurisdicción creada satisfactoriamente']);
-        // }catch(\Exception $e) {
-        //     return response()->json(['isValid'=>false,'errors'=>'Error al crear la Jurisdicción']);
-        // }
 
         $validator = $request->validate([
             'cod_jurisdiccion' => 'required|integer|unique:jurisdiccions,cod_jurisdiccion',
@@ -84,11 +57,6 @@ class JurisdiccionController extends Controller
             ]);
             return $jurisdiccion;
         }
-
-
-        
-
-
     }
 
     /**
@@ -173,15 +141,25 @@ class JurisdiccionController extends Controller
     public function search($search){
 
         try{
-            //return $jur = Jurisdiccion::whereHas('origenes', function ($query) use ($id) {
-                //$query->where('origen_id',(int)$id);
-            ////})->get();
             return Jurisdiccion::with(['categorias','origen'])
             ->where('jurisdiccion' ,'LIKE' ,"%".$search."%")
             ->orWhere('cod_jurisdiccion' ,'LIKE' ,"%".$search."%")
             ->get();
         }catch (\Exception $e){
             return [];
+        }
+
+    }
+
+    public function sort($column , $order){
+
+        try{
+            
+            return Jurisdiccion::with(['categorias','origen'])
+            ->orderBy($column, $order)
+            ->get();
+        }catch (\Exception $e){
+            return 'algo salio mal';
         }
 
     }
