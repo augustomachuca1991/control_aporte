@@ -13,53 +13,54 @@
                 </div>
                 <div class="modal-body">
                   <div class="form-group row">
-                    <label for="input_cod_organismo" class="col-sm-3 col-form-label">Codigo</label>
+                    <label for="input_cod_organismo" class="col-sm-3 col-form-label">Codigo *</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="input_cod_organismo" v-model="cod_organismo">
-                      <!-- <span class="errors text-danger" v-for="error in errors.cod_organismo">    
+                      <span class="errors text-danger" v-for="error in errors.cod_organismo">    
                         <small><em>{{error}}</em></small>
-                      </span> -->
+                      </span>
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="input_organismo" class="col-sm-3 col-form-label">Organismo</label>
+                    <label for="input_organismo" class="col-sm-3 col-form-label">Organismo *</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="input_organismo" v-model="descripcion">
-                      <!-- <span class="errors text-danger" v-for="error in errors.organismo">
+                      <span class="errors text-danger" v-for="error in errors.organismo">
                           <small><em>{{error}}</em></small>
-                      </span> -->
+                      </span>
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="select_origen" class="col-sm-3 col-form-label">Origen</label>
+                    <label for="select_origen" class="col-sm-3 col-form-label">Origen *</label>
                     <div class="col-sm-9">
-                      <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" @change="selectOrigen()">>
+                      <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" @change="selectOrigen()">
                         <option selected disabled :value="''">Seleccione Origen...</option>
                         <option v-for="(origen,index) in origenes" :key="origen.id" :value="index">
                           {{origen.origen}}
                         </option>
                       </select>
-                      <!-- <span class="errors text-danger" v-for="error in errors.origen_id">
+                      <span class="errors text-danger" v-for="error in errors.origen_id">
                           <small><em>{{error}}</em></small>
-                      </span> -->
+                      </span>
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="select_origen" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                    <label for="select_origen" class="col-sm-3 col-form-label">Jurisdiccion *</label>
                     <div class="col-sm-9">
-                      <select :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion" v-model="selectedJurisdiccion">
+                      <select :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion" v-model="selectedJurisdiccion" @change="selectJurisdiccion()">
                         <option selected disabled :value="''">Seleccione Jurisdiccion...</option>
                         <option v-for="(jurisdiccion,index) in jurisdicciones" :key="jurisdiccion.id" :value="index">
                           {{jurisdiccion.jurisdiccion}}
                         </option>
                       </select>
-                      <!-- <span class="errors text-danger" v-for="error in errors.origen_id">
+                      <span class="errors text-danger" v-for="error in errors.jurisdiccion_id">
                           <small><em>{{error}}</em></small>
-                      </span> -->
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer">
+                  <span><small><em>(*) obligatorio</em></small></span>
                   <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
                 </div>
               </form>
@@ -68,64 +69,65 @@
         </div>
 
         <!-- Modal editar jurisdiccion -->
-        <!-- <div class="modal fade" id="jurisdiccion_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditJurisdiccion" aria-hidden="true">
+        <div class="modal fade" id="organismo_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditOrganismo" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabelEditJurisdiccion">Editar Jurisdiccion</h5>
+                <h5 class="modal-title" id="ModalLabelEditOrganismo">Editar Organismo</h5>
                 <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
                 <div class="form-group row">
-                  <label for="input_codigo_jurisdiccion_edit" class="col-sm-3 col-form-label">Codigo</label>
+                  <label for="input_codigo_organismo_edit" class="col-sm-3 col-form-label">Codigo</label>
                   <div class="col-sm-9">
 
-                    <input v-if='editMode' type="text" class="form-control" id="input_codigo_jurisdiccion_edit" placeholder="Codigo" v-model="cod_jurisdiccion" disabled>
-                    <p class="text-justify" v-else>{{cod_jurisdiccion}}</p>
-                    <span class="errors text-danger" v-for="error in errors.cod_jurisdiccion">
+                    <input v-if='false' type="text" class="form-control" id="input_codigo_organismo_edit" placeholder="Codigo" v-model="cod_organismo" disabled>
+                    <p class="text-justify" v-else>{{organismo.cod_organismo}}</p>
+                    <!-- <span class="errors text-danger" v-for="error in errors.cod_jurisdiccion">
                         <small><em>{{error}}</em></small>
-                    </span>
+                    </span> -->
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="input_jurisdiccion_edit" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                  <label for="input_organismo_edit" class="col-sm-3 col-form-label">Organismo</label>
                   <div class="col-sm-9">
-                    <input v-if="editMode" type="text" class="form-control" id="input_jurisdiccion_edit" placeholder="Jurisdiccion" v-model="descripcion">
-                    <p class="text-justify" v-else>{{descripcion}}</p>
-                    <span class="errors text-danger" v-for="error in errors.jurisdiccion">
+                    <input v-if="false" type="text" class="form-control" id="input_organismo_edit" placeholder="Organismo" v-model="descripcion">
+                    <p class="text-justify" v-else>{{organismo.organismo}}</p>
+                    <!-- <span class="errors text-danger" v-for="error in errors.jurisdiccion">
                         <small><em>{{error}}</em></small>
-                    </span>
+                    </span> -->
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen</label>
                   <div class="col-sm-9">
-                    <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedOrigen">
+                    <select v-if="false" class="custom-select" id="select_origen_edit" v-model="selectedOrigen">
                       <option v-for="(origen,index) in origenes" :key="origen.id" :value="index" :selected=" index === selectedOrigen">
                         {{origen.origen}}
                       </option>
                     </select>
-                    <p class="text-justify" v-else>{{origen.origen}}</p>
-                    <span class="errors text-danger" v-for="error in errors.origen_id">
+                    <p class="text-justify" v-else>{{organismo.jurisdiccion}}</p>
+                    <!-- <span class="errors text-danger" v-for="error in errors.origen_id">
                         <small><em>{{error}}</em></small>
-                    </span>
+                    </span> -->
                   </div>
                 </div>
+                ...
               </div>
               <div class="modal-footer">
-                <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
+                <!-- <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
                 <button v-if="editMode" class="btn btn-info btn-sm" @click="update()">
                   <i class="fa fa-save"></i>&nbsp;Guardar Cambbios
                 </button>
                 <button v-else  type="button" class="btn btn-secondary btn-sm" @click="editar()">
                   <i class="fa fa-edit"></i>&nbsp;Editar
-                </button>
+                </button> -->
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
 
 
 
@@ -166,7 +168,7 @@
                   <td><em> {{organismo.created_at | moment}}</em></td>
                   <td>
                     <button @click="trash(index,organismo.id)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
-                    <button @click="edit(index,organismo)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#jurisdiccion_edit"><i class="fa fa-edit"></i></button>
+                    <button @click="edit(index,organismo)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#organismo_edit"><i class="fa fa-edit"></i></button>
                   </td>
                 </tr>
               </tbody>
@@ -176,6 +178,16 @@
 </template>
 
 <script>
+    const Toast = swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    timer: 6000,
+                    showConfirmButton: false,
+                    onOpen: (toast) => {
+                      toast.addEventListener('mouseenter', swal.stopTimer)
+                      toast.addEventListener('mouseleave', swal.resumeTimer)
+                    }
+                  });
     export default {
         data: function(){
             return{
@@ -192,13 +204,13 @@
                 search:'',
                 order:false,
                 errors:[],
+                cod_jurisdiccion:'',
+                cod_origen:'',
+                index_organismo: ''
             }
         },
         mounted() {
-            axios.get('api/organismo').then((response)=>{
-                console.log(response.data)
-                    this.organismos = response.data;
-            })
+            this.getOrganismos();
         },
 
         methods: {
@@ -210,17 +222,19 @@
             selectOrigen(){
                 this.jurisdicciones = [];
                 this.selectedJurisdiccion = '';
+                this.cod_origen = '';
                 if (this.selectedOrigen >= 0) {
                     this.origen = this.origenes[this.selectedOrigen]
+                    this.cod_origen = this.origen.cod_origen
                     this.jurisdicciones = this.origen.jurisdicciones
                 }
 
             },
             selectJurisdiccion(){
-                this.jurisdiccion = {};
-                if (this.selectedJurisdiccion >= 0) {
-                    this.jurisdiccion = this.jurisdicciones[this.selectedJurisdiccion]
-                }
+                    if (this.selectedJurisdiccion >= 0) {
+                      this.jurisdiccion = this.jurisdicciones[this.selectedJurisdiccion];
+                      this.cod_jurisdiccion = this.jurisdiccion.cod_jurisdiccion;
+                    }
 
             },
             getOrganismos(){
@@ -229,44 +243,40 @@
                 })
             },
             newOrganismo(){
-                //let codigo_origen = '';
-                const organismo = {}
-                if (this.selectedOrigen >= 0) {
-                  if (this.selectedJurisdiccion >= 0) {
-                    
-                    const organismo = {
-                            cod_organismo : this.cod_organismo,
-                            jurisdiccion_id : this.jurisdiccion.cod_jurisdiccion,
-                            organismo : this.descripcion,
-                            created_at: new Date(),
-                            jurisdiccion: {
-                                id : this.jurisdiccion.id,
-                                cod_jurisdiccion : this.jurisdiccion.cod_jurisdiccion,
-                                origen_id: this.origen.id,
-                                jurisdiccion: this.jurisdiccion.jurisdiccion,
-                                origen : this.origen
-                            }
-                        };
-                    console.log(organismo);
-                    this.organismos.push(organismo);
-                    this.empty();
-                  }
+                let params = {
+                  cod_organismo : this.cod_organismo,
+                  jurisdiccion_id : this.cod_jurisdiccion,
+                  organismo : this.descripcion,
+                  origen_id : this.cod_origen
                 }
-                
-                // axios.post('api/jurisdiccion/create',params)
-                //                  .then((response)=> {
-                //                    this.jurisdicciones.push(params);
-                //                    this.empty();
-                //                     Toast.fire({
-                //                       icon: 'success',
-                //                       title: 'Jurisdicción '+response.data.jurisdiccion+' se creó satisfactoriamente.',
-                //                       background:'#E7FFD7',
-                //                     })
-                                   
-                //                  }).catch((err) => {
-                //                    console.log(err.response.data.errors)
-                //                    this.errors = err.response.data.errors;
-                //                  });
+                const organismo = {
+                        cod_organismo : this.cod_organismo,
+                        jurisdiccion_id : this.jurisdiccion.cod_jurisdiccion,
+                        organismo : this.descripcion,
+                        created_at: new Date(),
+                        jurisdiccion: {
+                            id : this.jurisdiccion.id,
+                            cod_jurisdiccion : this.jurisdiccion.cod_jurisdiccion,
+                            origen_id: this.origen.cod_origen,
+                            jurisdiccion: this.jurisdiccion.jurisdiccion,
+                            origen : this.origen
+                        }
+                    };
+
+                axios.post('api/organismo/create',params)
+                              .then((response)=> {
+                                  this.organismos.push(organismo);
+                                  this.empty();
+                                  Toast.fire({
+                                    icon: 'success',
+                                    title: 'Jurisdicción '+response.data.organismo+' se creó satisfactoriamente.',
+                                    background:'#E7FFD7',
+                                  })
+                               
+                             }).catch((err) => {
+                               console.log(err.response.data.errors)
+                               this.errors = err.response.data.errors;
+                             });
             },
             trash(index,id){
                swal.fire({
@@ -301,8 +311,8 @@
                })
             },
             edit(index,organismo){
-                console.log(index) 
-                console.log(organismo)
+                this.index_organismo = index;
+                this.organismo = organismo;
             },
             buscar(){
                 axios.get(`api/organismo/${this.search}`).then((response)=>{
@@ -326,16 +336,19 @@
             },
             empty(){
               $('#organismo_new').modal('hide');
+              $('#organismo_edit').modal('hide');
               this.errors = [];
               this.descripcion  = '';
               this.cod_organismo = '';
-              this.jurisdiccion_id = '';
+              this.cod_origen = '';
+              this.cod_jurisdiccion = '';
               this.selectedOrigen = '';
               this.selectedJurisdiccion = '';
               //this.editMode = false;
               this.origen = {};
               this.jurisdiccion = {};
               this.organismo = {};
+              this.index_organismo = '';
             },
 
             

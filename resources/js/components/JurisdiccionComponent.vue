@@ -14,7 +14,7 @@
                 </div>
                 <div class="modal-body">
                   <div class="form-group row">
-                    <label for="input_codigo_jurisdiccion" class="col-sm-3 col-form-label">Codigo</label>
+                    <label for="input_codigo_jurisdiccion" class="col-sm-3 col-form-label">Codigo *</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="input_codigo_jurisdiccion" v-model="cod_jurisdiccion">
                       <span class="errors text-danger" v-for="error in errors.cod_jurisdiccion">    
@@ -23,7 +23,7 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="input_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                    <label for="input_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion *</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="input_jurisdiccion" v-model="descripcion">
                       <span class="errors text-danger" v-for="error in errors.jurisdiccion">
@@ -32,10 +32,10 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="select_origen" class="col-sm-3 col-form-label">Origen</label>
+                    <label for="select_origen" class="col-sm-3 col-form-label">Origen *</label>
                     <div class="col-sm-9">
                       <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" >
-                        <option selected disabled>Seleccione Origen...</option>
+                        <option selected disabled :value="''">Seleccione Origen...</option>
                         <option v-for="(origen,index) in origenes" :key="origen.id" :value="index">
                           {{origen.origen}}
                         </option>
@@ -47,6 +47,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
+                  <span><small><em>(*) obligatorio</em></small></span>
                   <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
                 </div>
               </form>
@@ -66,7 +67,7 @@
               </div>
               <div class="modal-body">
                 <div class="form-group row">
-                  <label for="input_codigo_jurisdiccion_edit" class="col-sm-3 col-form-label">Codigo</label>
+                  <label for="input_codigo_jurisdiccion_edit" class="col-sm-3 col-form-label">Codigo *</label>
                   <div class="col-sm-9">
 
                     <input v-if='editMode' type="text" class="form-control" id="input_codigo_jurisdiccion_edit" placeholder="Codigo" v-model="cod_jurisdiccion" disabled>
@@ -77,7 +78,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="input_jurisdiccion_edit" class="col-sm-3 col-form-label">Jurisdiccion</label>
+                  <label for="input_jurisdiccion_edit" class="col-sm-3 col-form-label">Jurisdiccion *</label>
                   <div class="col-sm-9">
                     <input v-if="editMode" type="text" class="form-control" id="input_jurisdiccion_edit" placeholder="Jurisdiccion" v-model="descripcion">
                     <p class="text-justify" v-else>{{descripcion}}</p>
@@ -87,7 +88,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen</label>
+                  <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen *</label>
                   <div class="col-sm-9">
                     <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedOrigen">
                       <option v-for="(origen,index) in origenes" :key="origen.id" :value="index" :selected=" index === selectedOrigen">
@@ -102,6 +103,7 @@
                 </div>
               </div>
               <div class="modal-footer">
+                <span><small><em>(*) obligatorio</em></small></span>
                 <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
                 <button v-if="editMode" class="btn btn-info btn-sm" @click="update()">
                   <i class="fa fa-save"></i>&nbsp;Guardar Cambbios

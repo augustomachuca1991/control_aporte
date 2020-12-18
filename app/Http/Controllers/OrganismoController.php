@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Organismo;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OrganismoController extends Controller
 {
@@ -37,12 +38,13 @@ class OrganismoController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validator = $request->validate([
             'cod_organismo' => 'required|integer|unique:organismos,cod_organismo',
             'organismo' =>   'required',
-            'jurisdiccion_id' => 'required'
+            'jurisdiccion_id' => 'required',
+            'origen_id' => 'required'
         ]);
-
         if (!$validator) {
             return $validator;
         } else {
