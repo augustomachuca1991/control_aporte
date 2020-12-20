@@ -394,7 +394,7 @@
             },
             open_modal(){
                 this.getOrigenes();
-                this.getJurisdicciones();
+                //this.getJurisdicciones();
             },
             empty(){
               $('#organismo_new').modal('hide');
@@ -411,9 +411,8 @@
               this.jurisdiccion = {};
               this.organismo = {};
               this.index_organismo = '';
-              this.origenes = [],
-              this.jurisdicciones = [],
-              this.organismos = [],
+              this.origenes = [];
+              this.jurisdicciones = [];
             },
             editar(){
               this.editMode = true;
