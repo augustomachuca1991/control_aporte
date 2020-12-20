@@ -222,7 +222,7 @@
                 };
                 axios.post('api/jurisdiccion/create',params)
                                  .then((response)=> {
-                                   this.jurisdicciones.push(params);
+                                   this.jurisdicciones.unshift(params);
                                    this.empty();
                                     Toast.fire({
                                       icon: 'success',

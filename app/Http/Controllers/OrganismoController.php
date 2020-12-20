@@ -138,7 +138,7 @@ class OrganismoController extends Controller
      */
     public function getOrganismos()
     {
-        return Organismo::with(['jurisdiccion'])->latest()->get();
+        return Organismo::with(['jurisdiccion'])->get();
     }
 
     /**

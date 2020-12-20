@@ -108,7 +108,7 @@ class JurisdiccionController extends Controller
      */
     public function getJurisdicciones(Jurisdiccion $jurisdiccion)
     {
-        return Jurisdiccion::with(['categorias','origen'])->latest()->get();
+        return Jurisdiccion::with(['categorias','origen'])->get();
     }
     
     /**
