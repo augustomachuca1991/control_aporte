@@ -10,7 +10,7 @@
       </div>
     </form>
   </div> -->
-  <div class="col-12 col-lg-4 shadow p-3" v-model="periodos">
+  <div v-model="periodos">
       <label for="periodo" class="text-muted"><i class="fas fa-search"></i> Periodo Liquidacion</label>
         <select class="custom-select" id="periodo" v-model="selected" v-on:change="cambio()">
           <option class="text-muted" :value="''" selected disabled>Seleccione Periodo</option>

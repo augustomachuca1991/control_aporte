@@ -1,27 +1,44 @@
 <template>
-    <div class="container-fluid">
+    <div class="container">
         <!--filtro origen, jurisdiccion, organismo-->
-        <h3 class="text-center">Panel de Liquidacion</h3>
-        <filter-component 
-                @sendOrigen="search('origen',...arguments)" 
-                @sendJur="search('jurisdiccion',...arguments)" 
-                @sendOrganismo="search('organismo',...arguments)">
-        </filter-component>
-        <div class="form-row my-2 justify-content-between">
-        <!--filtro periodo-->
-        <filtroperiodo-component 
-           @sendPeriodo="search('periodo',...arguments)">
-        </filtroperiodo-component>
-        <!--filtro tipo liquidacion-->
-        <filtertipoliquidacion-component 
-            @sendTipo="search('tipo_liquidacion',...arguments)">
-        </filtertipoliquidacion-component>
-        <!--buscar por nombre de agente-->
-        <buscaragente-component 
-            @buscarAgente="like(...arguments)">
-        </buscaragente-component>
-        </div>
+        
 
+        <div class="card my-5 border-0 shadow">
+            <div class="card-header bg-info">
+                <div class="card-title">
+                    <h5 class="text-center text-dark">Panel de busqueda</h5>
+                </div>
+            </div>
+            <div class="card-body">
+                <filter-component 
+                        @sendOrigen="search('origen',...arguments)" 
+                        @sendJur="search('jurisdiccion',...arguments)" 
+                        @sendOrganismo="search('organismo',...arguments)">
+                </filter-component>
+                <div class="form-row my-2 justify-content-between">
+                <!--filtro periodo-->
+                    <div class="col-12 col-md-12 col-lg-4 mb-md-3">
+                        <!--buscar por nombre de agente-->
+                        <buscaragente-component 
+                            @buscarAgente="like(...arguments)">
+                        </buscaragente-component>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <!--filtro tipo liquidacion-->
+                        <filtertipoliquidacion-component 
+                            @sendTipo="search('tipo_liquidacion',...arguments)">
+                        </filtertipoliquidacion-component>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <filtroperiodo-component 
+                           @sendPeriodo="search('periodo',...arguments)">
+                        </filtroperiodo-component>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Liquidaciones</h3>
         <listaliquidaciones-component 
             :filtro="filtro">
         </listaliquidaciones-component>

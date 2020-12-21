@@ -380,6 +380,7 @@
   <!-- Custom scripts for all pages-->
   <script src="{{asset('admin/js/sb-admin-2.min.js')}}"></script>
   <script src="{{ asset('js/app.js') }}" defer></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   @yield('js')
 </body>
 

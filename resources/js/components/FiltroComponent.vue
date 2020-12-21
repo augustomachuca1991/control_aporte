@@ -27,7 +27,7 @@
 </form>
 </div> -->
 
-<div class="form-row border-0 shadow p-3">
+<div class="form-row">
     <div class="col-12 col-lg-4 mb-3">
       <label for="origen" class="text-muted"><i class="fas fa-search"></i> Origen</label>
       <select class="custom-select" id="origen" name="origen" v-model="selectedOrigen" v-on:change="cambioOrigen()">

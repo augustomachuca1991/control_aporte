@@ -82,4 +82,29 @@ class AgenteController extends Controller
     {
         //
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Agente  $agente
+     * @return \Illuminate\Http\Response
+     */
+    public function getAgentes()
+    {
+        return Agente::with('puestolaborales')->get();
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Agente  $agente
+     * @return \Illuminate\Http\Response
+     */
+    public function search($cuil)
+    {
+        return Agente::with('puestolaborales')->where('cuil' , $cuil)->get();
+    }
+
+
 }
