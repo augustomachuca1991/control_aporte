@@ -125,5 +125,5 @@ Route::put('/notification/leida/{id}', 'NotificationController@markAsReads');
 
 
 //Agentes
-Route::get('/agente', 'AgenteController@getAgentes')->name('agente');
+//Route::get('/agente', 'AgenteController@getAgentes')->name('agente');
 Route::get('/agente/{cuil}', 'AgenteController@search')->name('agente_search');

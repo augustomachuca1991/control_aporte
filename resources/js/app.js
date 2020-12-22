@@ -34,7 +34,12 @@ Vue.filter('capitalize', function (value) {
 })
 // filtro moment
 Vue.filter('moment', function (date) {
-   return moment(date ,"YYYYMMDD").locale('es').fromNow();
+   return moment(date).locale('es').fromNow();
+})
+
+Vue.filter('format_moment', function (date) {
+   //return moment(date ,"YYYYMMDD").locale('es').fromNow();
+   return moment(date).format('LL');
 })		
 	
 /**

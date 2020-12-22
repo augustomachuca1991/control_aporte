@@ -39,7 +39,7 @@
                           {{origen.origen}}
                         </option>
                       </select>
-                      <span class="errors text-danger" v-for="error in errors.origen_id">
+                      <span class="errors text-danger" v-for="error in errors.origen_id" >
                           <small><em>{{error}}</em></small>
                       </span>
                     </div>
@@ -397,8 +397,6 @@
                 //this.getJurisdicciones();
             },
             empty(){
-              $('#organismo_new').modal('hide');
-              $('#organismo_edit').modal('hide');
               this.errors = [];
               this.descripcion  = '';
               this.cod_organismo = '';
@@ -413,6 +411,9 @@
               this.index_organismo = '';
               this.origenes = [];
               this.jurisdicciones = [];
+              $('#organismo_new').modal('hide');
+              $('#organismo_edit').modal('hide');
+              
             },
             editar(){
               this.editMode = true;

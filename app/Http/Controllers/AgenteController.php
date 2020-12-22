@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Agente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AgenteController extends Controller
 {
@@ -103,7 +104,20 @@ class AgenteController extends Controller
      */
     public function search($cuil)
     {
-        return Agente::with('puestolaborales')->where('cuil' , $cuil)->get();
+        //$cuil->validate();
+         $data = ['cuil' => $cuil];
+         $rules = ['cuil' => 'integer|exists:agentes,cuil'];
+         //$rules = ['cuil' => 'required|integer|exists:agentes,cuil'];
+        $validator = Validator::make($data,$rules);
+
+        //$validator = $data->validate(['required|integer']);
+
+        if (!$validator) {
+            return $validator;
+        }else{
+
+            return Agente::with('puestolaborales')->where('cuil' , $cuil)->get();
+        }
     }
 
 

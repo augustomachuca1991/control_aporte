@@ -6,7 +6,7 @@
         <div class="card my-5 border-0 shadow">
             <div class="card-header bg-info">
                 <div class="card-title">
-                    <h5 class="text-center text-dark">Panel de busqueda</h5>
+                    <h2 class="text-white">Panel de busqueda</h2>
                 </div>
             </div>
             <div class="card-body">
