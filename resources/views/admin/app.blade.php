@@ -82,7 +82,7 @@
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
+          <i class="fas fa-file-csv"></i>
           <span>Excel/CSV</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
@@ -125,11 +125,11 @@
       </li>
 
       <!-- Nav Item - Charts -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span></a>
-      </li>
+      </li> -->
 
       <li class="nav-item">
         <a class="nav-link" href="/jurisdicciones">
@@ -151,7 +151,7 @@
 
       <li class="nav-item">
         <a class="nav-link" href="/hlaborales">
-          <i class="fas fa-fw fa-table"></i>
+          <i class="fas fa-fw fa-chart-area"></i>
           <span>Historias Lab.</span></a>
       </li>
 

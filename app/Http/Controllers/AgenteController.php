@@ -104,19 +104,15 @@ class AgenteController extends Controller
      */
     public function search($cuil)
     {
-        //$cuil->validate();
-         $data = ['cuil' => $cuil];
-         $rules = ['cuil' => 'integer|exists:agentes,cuil'];
-         //$rules = ['cuil' => 'required|integer|exists:agentes,cuil'];
+        
+        $data = ['cuil' => $cuil];
+        $rules = ['cuil' => 'required|integer|exists:agentes,cuil'];
         $validator = Validator::make($data,$rules);
-
-        //$validator = $data->validate(['required|integer']);
-
-        if (!$validator) {
-            return $validator;
+        if ($validator->fails()) {
+            return response()->json(['isError' => true ,'data' => $validator->errors()]);
         }else{
-
-            return Agente::with('puestolaborales')->where('cuil' , $cuil)->get();
+            $agentes = Agente::with('puestolaborales')->where('cuil' , $cuil)->get();
+            return response()->json(['isError' => false ,'data' => $agentes]);
         }
     }
 
