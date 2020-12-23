@@ -2,7 +2,7 @@
 
 @section('body')
   <h3 class="h3-responsive">Importar Archivo</h3>
-	<import-component></import-component>
+	<import-component :user="{{$user}}"></import-component>
 @endsection
 
 

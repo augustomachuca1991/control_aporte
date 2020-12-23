@@ -102,16 +102,18 @@ class AgenteController extends Controller
      * @param  \App\Agente  $agente
      * @return \Illuminate\Http\Response
      */
-    public function search($cuil)
+    public function search(Request $request)
     {
         
-        $data = ['cuil' => $cuil];
+        $data = ['cuil' => $request->cuil];
         $rules = ['cuil' => 'required|integer|exists:agentes,cuil'];
-        $validator = Validator::make($data,$rules);
+        $message = ['cuil.integer' => 'Debe ingresar un tipo de cuil valido. Verifique',
+                    'cuil.exists' => 'El cuil ingresado no existe en nuestra base de datos.'];
+        $validator = Validator::make($data,$rules,$message);
         if ($validator->fails()) {
             return response()->json(['isError' => true ,'data' => $validator->errors()]);
         }else{
-            $agentes = Agente::with('puestolaborales')->where('cuil' , $cuil)->get();
+            $agentes = Agente::with('puestolaborales')->where('cuil' , $request->cuil)->get();
             return response()->json(['isError' => false ,'data' => $agentes]);
         }
     }

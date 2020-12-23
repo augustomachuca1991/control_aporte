@@ -7,7 +7,7 @@ use App\Exports\LiquidacionsExport;
 use App\Imports\LiquidacionsImport;
 use App\Jobs\{CompletedImport,CompletedExport,NotificationJob};
 use App\{DeclaracionJurada,Periodo,TipoLiquidacion,Organismo,User};
-// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class ExcelController extends Controller
@@ -21,7 +21,8 @@ class ExcelController extends Controller
     
 
     public function indexImport(){
-    	return view('file.import');
+        $user = Auth::user();
+    	return view('file.import',compact('user'));
     }
 
     
@@ -36,8 +37,8 @@ class ExcelController extends Controller
 
     public function import(Request $request){
 
-
         $file = $request->file('file');
+        $auth_id = $request->user;
         $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $count = count($name);
         if ($count >= 3) {
@@ -81,13 +82,13 @@ class ExcelController extends Controller
                 $tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
                 $secuencia = $name[3];
                 $declaracionjurada = DeclaracionJurada::create([
-                               'user_id' => 1,
+                               'user_id' => $auth_id,
                                'periodo_id' => $periodo_id,
                                'tipoliquidacion_id' => $tipoliquidacion_id,
                                'organismo_id' => $organismo_id,
                                'secuencia' => $secuencia,
                            ]);
-                $user = User::find(1);
+                $user = User::find($auth_id);
                 $import = new LiquidacionsImport($declaracionjurada);
                 $import->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
                 ->chain([new CompletedImport,new NotificationJob($user)]);
@@ -100,7 +101,7 @@ class ExcelController extends Controller
             $status = 0;
         }
         
-        return response()->json(['message'=> $message, 'status' => $status, 'user' => $request]);
+        return response()->json(['message'=> $message, 'status' => $status, 'request' => $request]);
     }
 
     

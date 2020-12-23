@@ -23,7 +23,7 @@
 				<div class="row my-1">
 		         <div class="col col-lg-4 ml-auto">
 		           <buscaragente-component @buscarAgente="datos_agente(...arguments)"></buscaragente-component>
-		           <span class="errors text-danger" v-for="error in errors.cuil">    
+		           	<span class="errors text-danger" v-for="error in errors.cuil">    
                      <small><em>{{error}}</em></small>
                   	</span>	
 		         </div>
@@ -51,7 +51,21 @@
 			          <h4 class="h4-responsive font-weight-bold text-dark">Historias Laborales</h4>
 			        </div>
 			        <div class="card-body">
-			          <div id="timeline" style="height: 250px; border: 1px solid #ccc"></div>
+			        	<div v-if="shown">
+			        		<div class="spinner-grow text-dark" style="width: 3rem; height: 3rem;" role="status">
+			        		  <span class="sr-only">Loading...</span>
+			        		</div>
+			        		<div class="spinner-grow text-info" style="width: 3rem; height: 3rem;" role="status">
+			        		  <span class="sr-only">Loading...</span>
+			        		</div>
+			        		<div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
+			        		  <span class="sr-only">Loading...</span>
+			        		</div>
+			        	</div>
+			         <div class="container">
+			         	
+			          <div class="shadow" id="timeline" style="height: 250px; border: 1px solid #ccc"></div>
+			         </div>
 			        </div>
 			      </div>
 			    </div>
@@ -81,11 +95,12 @@
 	        	datos_agente:function(input){
 	        		this.puestos = [];
 	        		this.cuil = input.search;
-	        		axios.get(`api/agente/${this.cuil}`)
+	        		const params = {
+	        			cuil : this.cuil
+	        		}
+	        		axios.post(`api/agente`, params)
 	        		.then((response)=>{
-	        			setTimeout(() => {
-	        			  this.shown = true
-	        			}, 1000)
+	        			
 
 	        			if (response.data.isError) {
 	        				this.errors = [];
@@ -94,19 +109,25 @@
 		        			this.agente = {};
 	        				this.errors = response.data.data;
 	        			} else {
-	        				this.errors = [];
-		        			this.puestos = [];
-		        			this.datos = [];
-		        		    this.agente = response.data.data;
-		        		    this.puestos = this.agente[0].puestolaborales;
-		        			google.charts.setOnLoadCallback(this.drawChart);
+	        				this.shown = true;
+	        				setTimeout(() => {
+		        				
+		          				this.errors = [];
+		  	        			this.puestos = [];
+		  	        			this.datos = [];
+		  	        		    this.agente = response.data.data;
+		  	        		    this.puestos = this.agente[0].puestolaborales;
+		  	        		    this.shown = false;
+		  	        			google.charts.setOnLoadCallback(this.drawChart);
+	        				}, 2500)
+	        				
 	        			}
 	        		}).catch((err) => {
 	                   console.log(err.response.data)
-	                   //this.errors = err.response.data.errors;
 	                 });
 	        	},
 	        	drawChart:function() {
+	        		
 	        		var fecha_egreso;
 	        		var container = document.getElementById('timeline');
 	        		var chart = new google.visualization.Timeline(container);
@@ -130,11 +151,8 @@
 	        		dataTable.addRows(this.datos);
 
 	        		var option = {
-	        			//colors : ['#63813f', '#80a851', '#9fd065','#b1e870', '#c1fc7b', '#d8ffaa'],
-	        			colors: ['#cbb69d', '#603913', '#c69c6e'],
+	        			colors : ['#63813f', '#80a851'],
 	        			//backgroundColor :'#bcc5b1',
-	        			timeline: { rowLabelStyle: {fontName: 'Helvetica', fontSize: 16, color: '#666666' },
-	        			                     barLabelStyle: { fontName: 'Garamond', fontSize: 14 } }
 
 	        		}
 

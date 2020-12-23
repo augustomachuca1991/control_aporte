@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
 
 //Declaraciones Juradas
 Route::get('declaracion_jurada' , 'DeclaracionJuradaController@getDeclaracionesJuradas');
@@ -126,4 +125,4 @@ Route::put('/notification/leida/{id}', 'NotificationController@markAsReads');
 
 //Agentes
 //Route::get('/agente', 'AgenteController@getAgentes')->name('agente');
-Route::get('/agente/{cuil}', 'AgenteController@search')->name('agente_search');
+Route::post('/agente', 'AgenteController@search')->name('agente_search');

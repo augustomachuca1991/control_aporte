@@ -36,6 +36,7 @@
                     }
                   });
     export default {
+        props:['user'],
         data: function(){
             return{      
               file:'',
@@ -47,12 +48,13 @@
             }
         },
         mounted(){
-          console.log('import-component mounted')
+          console.log(this.user)
         },
         methods:{ 
           submitFile () {
             let formData = new FormData()
             formData.append('file', this.file)
+            formData.append('user', this.user.id)
             axios.post('api/import', formData, this.meta)
               .then((response)=>{
                 if (response.data.status) {
@@ -72,7 +74,7 @@
                   console.log('por el catch: '+error)
                   Toast.fire({
                     icon: 'error',
-                    title: error,
+                    title: error.response.data.errors,
                     background:'#FCDBCD',
                   })
               })

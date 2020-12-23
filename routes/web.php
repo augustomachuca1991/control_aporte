@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //middleware admin
 Route::middleware('admin')->group(function(){
+
+	// Route::get('/getadmin', function(){
+	// 	return Auth::id();
+	// 	//return User::find(1);
+	// });
 
 	Route::get('/dashboard', function(){
 		return view('admin.index');
