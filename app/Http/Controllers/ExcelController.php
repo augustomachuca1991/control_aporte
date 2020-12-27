@@ -39,6 +39,7 @@ class ExcelController extends Controller
 
         $file = $request->file('file');
         $auth_id = $request->user;
+        $storage_path = $file->storeAs('csv' , $file->getClientOriginalName()); 
         $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $count = count($name);
         if ($count >= 3) {
@@ -47,6 +48,7 @@ class ExcelController extends Controller
             }
             $validacion = [
                 'archivo' => $file,
+                'path' => $storage_path,
                 'nombre' => $name,
                 'organismo' => $name[0],
                 'periodo' => $name[1],
@@ -55,6 +57,7 @@ class ExcelController extends Controller
             ];
             $reglas = [
                 'archivo' => 'file|mimes:csv,txt',
+                'path' => 'unique:declaracion_juradas,path',
                 'nombre' => 'required|array|max:4',
                 'organismo' => 'exists:organismos,organismo',
                 'periodo' => 'exists:periodos,cod_periodo',
@@ -64,6 +67,7 @@ class ExcelController extends Controller
             $mensajes = [
                 'archivo.file' => 'Debe Seleccionar un archivo',
                 'archivo.mimes' => 'El tipo de archivo es incorrecto. Debe ser .csv o .txt',
+                'path.unique' => 'Esta intentando importar un archivo ya existente',
                 'nombre.required' => 'Nombre Requerido',
                 'nombre.array' => 'El nombre no cumple con el formato. El mismo debe ser ej: organimo_periodo_tipoliquidacion_secuencia.csv',
                 'nombre.max' => 'El nombre no cumple con el formato. El mismo debe tener como maximo 4 elementos',
@@ -77,6 +81,7 @@ class ExcelController extends Controller
                 $message = $validator->errors()->first();
                 $status = 0;
             }else{
+
                 $organismo_id = Organismo::where('organismo',$name[0])->first()->cod_organismo;
                 $periodo_id = $name[1];
                 $tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
@@ -87,6 +92,7 @@ class ExcelController extends Controller
                                'tipoliquidacion_id' => $tipoliquidacion_id,
                                'organismo_id' => $organismo_id,
                                'secuencia' => $secuencia,
+                               'path' => $storage_path
                            ]);
                 $user = User::find($auth_id);
                 $import = new LiquidacionsImport($declaracionjurada);

@@ -18,7 +18,7 @@
 				          <th scope="col">Tipo</th>
 				          <th scope="col">Periodo</th>
 				          <th scope="col">Rectificativa</th>
-				          <th scope="col">Acción</th>
+				          <th scope="col"></th>
 				          <!--<th scope="col">Accion</th> -->
 				        </tr>
 				      </thead>
@@ -35,8 +35,8 @@
 				          <td v-if="declaracion_jurada.secuencia === null">Orginal</td>
 				          <td v-else>Nº{{declaracion_jurada.secuencia}}</td>
 				          <td>
-				              <a class="btn btn-outline-success btn-sm text-success" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea">
-				              	<i class="fas fa-tasks"></i>
+				              <a class="btn btn-outline-info text-info btn-sm border-0" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea">
+				              	<i class="fas fa-download"></i>
 				              </a>
 				              <!-- <a class="btn btn-outline-primary btn-sm text-primary" @click="getDetalle(declaracion_jurada.id)" data-toggle="modal" data-target=".bd-example-modal-lg">
 				              	<i class="far fa-eye"></i>
@@ -59,9 +59,9 @@
 									:hide-single-page="true"
 									:limit = "5">
 					</paginate-links>
-					<a class="btn btn-primary shadow text-white">
+					<!-- <a class="btn btn-primary shadow text-white">
 						aplicadas <i class="fas fa-check"></i>
-					</a>
+					</a> -->
 				</div>
 			</div>
 		</div>

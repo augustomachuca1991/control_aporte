@@ -23,6 +23,7 @@ class CreateDeclaracionJuradasTable extends Migration
             $table->foreign('tipoliquidacion_id')->references('id')->on('tipo_liquidacions');
             $table->bigInteger('organismo_id')->unsigned();
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
+            $table->string('path');
             $table->unsignedInteger('secuencia')->nullable();
 
             $table->softDeletes(); 
