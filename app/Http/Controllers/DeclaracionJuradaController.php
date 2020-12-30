@@ -235,4 +235,13 @@ class DeclaracionJuradaController extends Controller
         return DeclaracionJurada::whereHas('ddjj_lines')->with(['organismo', 'user','periodo', 'tipoliquidacion'])->orderBy('id', 'desc')->get();
     }
 
+    public function download(Request $request)
+    {
+        $pathToFile = \Storage::url('app/'.$request->path);
+        $header = [
+               'Content-Type' => 'text/csv',
+           ];
+        return response()->download('..'.$pathToFile, 'descarga.csv',$header);
+    }
+
 }

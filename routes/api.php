@@ -21,9 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //Declaraciones Juradas
 Route::get('declaracion_jurada' , 'DeclaracionJuradaController@getDeclaracionesJuradas');
-Route::delete('declaracion_jurada/aplicar/{id}' , 'DeclaracionJuradaController@destroy');
+//Route::delete('declaracion_jurada/aplicar/{id}' , 'DeclaracionJuradaController@destroy');
 //Declaraciones Juradas detalle
 Route::get('declaracion_jurada/detalle/{id}' , 'DeclaracionJuradaLineController@show');
+Route::post('declaracion_jurada/download', 'DeclaracionJuradaController@download');
 
 //Computos
 Route::get('/computo/origen/{periodo}', 'LiquidacionOrganismoController@computoOrigenes');
@@ -93,6 +94,8 @@ Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('
 Route::post('/jurisdiccion/create', 'JurisdiccionController@store')->name('create_jurisdiccion');
 Route::delete('/jurisdiccion/delete/{id}', 'JurisdiccionController@destroy')->name('delete_jurisdiccion');
 Route::get('/jurisdiccion/order/{column}/sort/{sort}', 'JurisdiccionController@sort')->name('sort_jurisdiccion');
+
+
 // Organismos
 Route::get('/organismo', 'OrganismoController@getOrganismos')->name('organismo');
 Route::get('/organismo/{search}', 'OrganismoController@search')->name('organismo_search');
