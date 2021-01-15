@@ -1,20 +1,20 @@
 <template>
-    <div class="form-row col mb-3 shadow p-3">
-      <div class="form-group col-md-4 border-0">
+  <div class="form-row">
+      <div class="col">
         <label class="text-muted" for="origen1"><i class="fas fa-search"></i> Origen</label>
-        <select class="form-control form-control-md" id="origen1" name="origen1"  v-model="selectedOrigen">
+        <select class="custom-select" id="origen1" name="origen1"  v-model="selectedOrigen">
           <option :value="''" disabled selected>Seleccione Origen</option>
           <option v-for="(origen, index) in origenes" :key="origen.cod_origen" :value="origen.cod_origen">{{origen.origen}}</option>
         </select>
       </div>
-      <div class="form-group col-md-4 border-0">
+      <div class="col">
         <label class="text-muted" for="jurisdiccion"><i class="fas fa-search"></i> Jurisdiccion</label>
-        <select  :disabled="selectedOrigen.length == 0" class="form-control form-control-md" id="jurisdiccion1" name="jurisdiccion1" v-model="selectedJurisdiccion">
+        <select  :disabled="selectedOrigen.length == 0" class="custom-select" id="jurisdiccion1" name="jurisdiccion1" v-model="selectedJurisdiccion">
            <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
            <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.cod_jurisdiccion" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
         </select>
       </div>
-    </div>
+  </div>
 </template>
 
 

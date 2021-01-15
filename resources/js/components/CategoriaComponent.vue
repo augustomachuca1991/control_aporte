@@ -1,13 +1,13 @@
 <template>
   <div id="categorias">
-    <table class="table table-borderless table-striped border" v-model="categorias" >
+    <table class="table my-2" v-model="categorias" >
       <caption>Categorías</caption>
       <thead>
         <tr>
           <th scope="col">Cod. Categoría</th>
           <th scope="col">Categoría</th>
            <!--<th scope="col">Jurisdiccion</th>-->
-          <th>Acción</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -18,19 +18,18 @@
           <th>{{categoria.cod_categoria}}</th>
           <td>{{categoria.categoria}}</td>
            <!--<td v-for="jurisdiccion in categoria.jurisdicciones">{{jurisdiccion.jurisdiccion}}</td>-->
-          <td class="row">
-              <div class="col-md-1">
-                <button @click="editCategoria(categoria)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark" data-toggle="modal" data-target="#edit_categoria">
+          <td>
+              <!-- <button @click="editCategoria(categoria)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#edit_categoria">
                 <i class="far fa-edit"></i>
-              </button>
-              </div>
-              <div class="col-md-1">
-               <form @submit.prevent="deleteCategoria(categoria.id)">
-                <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark">
+              </button> -->
+               <form @submit.prevent="deleteCategoria(categoria.id)" class="form-inline">
+                <button type="submit" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0">
                   <i class="far fa-trash-alt"></i>
                 </button>
               </form>
-              </div>
+              <button @click="editCategoria(categoria)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#edit_categoria">
+                <i class="far fa-edit"></i>
+              </button>
           </td>
         </tr>
         

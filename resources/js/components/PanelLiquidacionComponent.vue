@@ -37,51 +37,13 @@
                 </div>
             </div>
         </div>
-        
+            
         <h3>Liquidaciones</h3>
         <listaliquidaciones-component 
             :filtro="filtro">
-        </listaliquidaciones-component>
+        </listaliquidaciones-component>        
         
     </div>
-    <!-- <div class="container">
-
-        <div class="row">
-            <div class="col-12 col-lg-6">
-                <filter-component 
-                        @sendOrigen="search('origen',...arguments)" 
-                        @sendJur="search('jurisdiccion',...arguments)" 
-                        @sendOrganismo="search('organismo',...arguments)">
-                </filter-component>
-            </div>
-            <div class="col-12 col-lg-6">
-                <div class="row">
-                    <div class="col-12 col-lg-6">
-                        <filtroperiodo-component 
-                           @sendPeriodo="search('periodo',...arguments)">
-                        </filtroperiodo-component>
-                    </div>
-                    <div class="col-12 col-lg-6">
-                        <filtertipoliquidacion-component 
-                            @sendTipo="search('tipo_liquidacion',...arguments)">
-                        </filtertipoliquidacion-component>    
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <buscaragente-component @buscarAgente="like(...arguments)"></buscaragente-component>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <listaliquidaciones-component :filtro="filtro">
-                </listaliquidaciones-component>
-            </div>
-        </div>
-        
-    </div> -->
-    
-        
 </template>
 
 <script>

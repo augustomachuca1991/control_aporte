@@ -1,14 +1,8 @@
 <template>
 <div id="panelcategoria">
+    <h3 class="h3-responsive mb-3">Categorías</h3>
     <filtrocategoria-component @jurisdiccion="get_codigo(...arguments)" :selectO="selectO"></filtrocategoria-component>
-    <div class="card shadow">
-      <div class="card-header">
-          <h5 class="card-title" align="center"><b>Categorías</b></h5>
-      </div>
-      <div class="card-body">
-        <categoria-component :categorias="categorias" @select="selectOrigen(...arguments)"></categoria-component>
-      </div>  
-    </div>  
+    <categoria-component :categorias="categorias" @select="selectOrigen(...arguments)"></categoria-component>
     
 </div>
 </template>
