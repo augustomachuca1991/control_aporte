@@ -100,9 +100,16 @@
   		  				const params = {
   		  					path: pathToFile,
   		  				} 
-  		  			  	axios.post('api/declaracion_jurada/download', params)
+  		  			  	axios.post('api/declaracion_jurada/download', params, {responseType: 'arraybuffer'})
   		  			  	.then((response)=>{
-  		  			  		console.log(response.data)
+  		  			  		//console.log(response.data)
+  		  			  		var fileUrl = window.URL.createObjectURL(new Blob([response.data]))
+  		  			  		var fileLink = document.createElement('a')
+  		  			  		fileLink.href = fileUrl
+
+  		  			  		fileLink.setAttribute('download', 'declaracionjurada.csv')
+  		  			  		document.body.appendChild(fileLink)
+  		  			  		fileLink.click()
   		  	       		})
   		  }
 
