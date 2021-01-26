@@ -1,6 +1,14 @@
 <template>
-	<div class="" v-if="shown">
-		<h4 class="h4-responsive card-title text-center">Declaraciones Juradas</h4>
+	<div v-if="shown">
+		<h4 class="h4-responsive card-title text-center my-4">Declaraciones Juradas</h4>
+		<div class="row">
+		  <div class="col-md-12 col-lg-4 offset-lg-8 my-2 ">
+		    <form class="form-inline justify-content-end">
+		          <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
+		          <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @keyup="buscar()">
+		    </form>
+		  </div>
+		</div>
 		<div class="table-lg-responsive">
 			<paginate  name="dd_jj" :list="declaraciones_juradas" :per="8" ref="paginator">
 				<table class="table table-sm">
@@ -26,15 +34,15 @@
 			          <td colspan="7">No hay datos</td>
 			        </tr>
 			        <tr v-else v-for="(declaracion_jurada, index) in paginated('dd_jj') " :key="declaracion_jurada.id">
-			          <td>{{declaracion_jurada.user.name | capitalize}}</td> 
+			          <th scope="row">{{declaracion_jurada.user.name | capitalize}}</th> 
 			          <td>{{declaracion_jurada.created_at | moment}}</td>
-			          <th>{{declaracion_jurada.organismo.organismo | capitalize}}</th>
+			          <td>{{declaracion_jurada.organismo.organismo | capitalize}}</td>
 			          <td>{{declaracion_jurada.tipoliquidacion.descripcion}}</td>
 			          <td>{{declaracion_jurada.periodo.periodo}}</td>
-			          <td v-if="declaracion_jurada.secuencia === null">Orginal</td>
+			          <td v-if="declaracion_jurada.secuencia === null">Original</td>
 			          <td v-else>Nº{{declaracion_jurada.secuencia}}</td>
 			          <td>
-			              <a class="btn btn-outline-info text-info btn-sm border-0" data-toggle="tooltip" data-placement="bottom" title="aplicar tarea" @click="download(declaracion_jurada.path)">
+			              <a class="btn btn-outline-info text-info btn-sm border-0" data-toggle="tooltip" data-placement="bottom" title="Descargar declaracion jurada" @click="download(declaracion_jurada.path)">
 			              	<i class="fas fa-download"></i>
 			              </a>
 			              <!-- <a class="btn btn-outline-primary btn-sm text-primary" @click="getDetalle(declaracion_jurada.id)" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -73,6 +81,7 @@
             	title:'',
             	paginate: ['dd_jj'],
             	shown: false,
+            	search:'',
             }
         },
         mounted(){
@@ -87,14 +96,6 @@
         methods: {
 		  moment: function () {
 		    return moment().format('dd/mm/yyyy');
-		  },
-		  getDetalle: function(cabecera_id){
-		  	axios.get('api/declaracion_jurada/detalle/'+cabecera_id).then((response)=>{
-		  		this.title = ''
-		  		this.detalles = []
-		  		this.detalles = response.data
-		  		this.title = 'Declaracion Jurada nº '+this.detalles[0].declaracionjurada_id
-       		})
 		  },
   		  download: function(pathToFile){
   		  				const params = {
@@ -111,7 +112,13 @@
   		  			  		document.body.appendChild(fileLink)
   		  			  		fileLink.click()
   		  	       		})
-  		  }
+  		  },
+  		  buscar(){
+  		    axios.get(`api/declaracion_jurada/${this.search}`).then((response)=>{
+  		        //console.log(response.data)
+  		        this.declaraciones_juradas = response.data;
+  		    })
+  		  },
 
 		},
 		//filters: {

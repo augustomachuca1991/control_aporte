@@ -3,11 +3,11 @@
 	 	<!-- <filtroperiodo-component @sendPeriodo="getPeriodo(...arguments)"></filtroperiodo-component> -->
 	    <div class="form-group">
 		    <label for="exampleInputEmail1">Periodo liquidacion <i class="fas fa-calendar-alt"></i></label>
-    		<month-picker-input
+    		<month-picker-input v-model='anio'
             :lang="'es'"
             :max-date="fecha_actual"
-            :default-month="5"
-            :default-year="2020"
+            :default-month="1"
+            :default-year="2021"
             :input-pre-filled="true"
             @change="showDate"
           	></month-picker-input>
@@ -63,8 +63,9 @@
             console.log("panel computos component mounted");
             var milisegundos = Date.now();
             this.fecha_actual = new Date(milisegundos);
-            this.mes = this.fecha_actual.getMonth()-1;
+            this.mes = this.fecha_actual.getMonth()+1;
             this.anio = this.fecha_actual.getFullYear();
+            //console.log(this.fecha_actual.getMonth()+1)
 
         },
         methods:{
