@@ -1,55 +1,27 @@
 <template>
-  <!-- <div class="form-group border-0 shadow p-3">
-    
-  
-  <form class="form-inline">
-    <div class="col">
-      <label for="origen" class="text-muted"><i class="fas fa-search"></i> Origen</label>
-      <select class="custom-select" id="origen" name="origen" v-model="selectedOrigen" v-on:change="cambioOrigen()">
-        <option :value="''" disabled selected>Seleccione Origen</option>
-        <option v-for="origen in origenes" :value="origen.cod_origen">{{origen.origen}}</option>
-      </select>
-    </div>
-    <div class="col">
-      <label for="jurisdiccion" class="text-muted"><i class="fas fa-search"></i> Jurisdiccion</label>
-       <select :disabled="selectedOrigen.length == 0" class="custom-select" id="juris diccion" name="jurisdiccion" v-model="selectedJurisdicion" v-on:change="cambioJurisdiccion()">
-          <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
-          <option v-for="jurisdiccion in jurisdicciones" :value="jurisdiccion.cod_jurisdiccion">{{jurisdiccion.jurisdiccion}}</option>
-       </select>
-    </div>
-    <div class="col">
-      <label for="organismo" class="text-muted"><i class="fas fa-search"></i> Organismo</label>
-      <select :disabled="selectedJurisdicion.length == 0" class="custom-select" id="organismo" name="organismo" v-model="selectedOrganismo" v-on:change="cambioOrganismo()">
-        <option :value="''" disabled selected>Seleccione Organismo</option>
-        <option v-for="organismo in organismos" :value="organismo.cod_organismo">{{organismo.organismo}}</option>
-      </select>
-    </div>
-</form>
-</div> -->
-
-<div class="form-row">
-    <div class="col-12 col-lg-4 mb-3">
-      <label for="origen" class="text-muted"><i class="fas fa-search"></i> Origen</label>
-      <select class="custom-select" id="origen" name="origen" v-model="selectedOrigen" v-on:change="cambioOrigen()">
-        <option :value="''" disabled selected>Seleccione Origen</option>
-        <option v-for="(origen,index) in origenes" :key="origen.id" :value="index">{{origen.origen}}</option>
-      </select>
-    </div>
-    <div class="col-12 col-lg-4 mb-3">
-      <label for="jurisdiccion" class="text-muted"><i class="fas fa-search"></i> Jurisdiccion</label>
-       <select :disabled="selectedOrigen.length == 0" class="custom-select" id="juris diccion" name="jurisdiccion" v-model="selectedJurisdicion" v-on:change="cambioJurisdiccion()">
-          <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
-          <option v-for="(jurisdiccion,index) in jurisdicciones" :key="jurisdiccion.id" :value="index">{{jurisdiccion.jurisdiccion}}</option>
-       </select>
-    </div>
-    <div class="col-12 col-lg-4 mb-3">
-      <label for="organismo" class="text-muted"><i class="fas fa-search"></i> Organismo</label>
-      <select :disabled="selectedJurisdicion.length == 0" class="custom-select" id="organismo" name="organismo" v-model="selectedOrganismo" v-on:change="cambioOrganismo()">
-        <option :value="''" disabled selected>Seleccione Organismo</option>
-        <option v-for="(organismo,index) in organismos" :key="organismo.id" :value="index">{{organismo.organismo}}</option>
-      </select>
-    </div>
-</div>
+  <div class="form-row">
+      <div class="col-12 col-lg-4 mb-3">
+        <label for="origen" class="text-muted"><i class="fas fa-search"></i> Origen</label>
+        <select class="custom-select" id="origen" name="origen" v-model="selectedOrigen" v-on:change="cambioOrigen()">
+          <option :value="''" disabled selected>Seleccione Origen</option>
+          <option v-for="(origen,index) in origenes" :key="origen.id" :value="index">{{origen.origen}}</option>
+        </select>
+      </div>
+      <div class="col-12 col-lg-4 mb-3">
+        <label for="jurisdiccion" class="text-muted"><i class="fas fa-search"></i> Jurisdiccion</label>
+         <select :disabled="selectedOrigen.length == 0" class="custom-select" id="juris diccion" name="jurisdiccion" v-model="selectedJurisdicion" v-on:change="cambioJurisdiccion()">
+            <option :value="''" disabled selected>Seleccione Jurisdiccion</option>
+            <option v-for="(jurisdiccion,index) in jurisdicciones" :key="jurisdiccion.id" :value="index">{{jurisdiccion.jurisdiccion}}</option>
+         </select>
+      </div>
+      <div class="col-12 col-lg-4 mb-3">
+        <label for="organismo" class="text-muted"><i class="fas fa-search"></i> Organismo</label>
+        <select :disabled="selectedJurisdicion.length == 0" class="custom-select" id="organismo" name="organismo" v-model="selectedOrganismo" v-on:change="cambioOrganismo()">
+          <option :value="''" disabled selected>Seleccione Organismo</option>
+          <option v-for="(organismo,index) in organismos" :key="organismo.id" :value="index">{{organismo.organismo}}</option>
+        </select>
+      </div>
+  </div>
 </template>
 
 <script>
@@ -78,7 +50,7 @@
             this.selectedOrganismo = "";
             if (this.selectedOrigen !== '') {
               this.jurisdicciones = this.origenes[this.selectedOrigen].jurisdicciones
-              const origen = this.selectedOrigen;
+              const origen = this.origenes[this.selectedOrigen].cod_origen;
               this.$emit('sendOrigen',origen);
             }
           },
@@ -87,13 +59,13 @@
             this.selectedOrganismo = "";
             if (this.selectedJurisdicion !== '') {
                 this.organismos = this.jurisdicciones[this.selectedJurisdicion].organismos
-                const jur = this.selectedJurisdicion;
+                const jur = this.jurisdicciones[this.selectedJurisdicion].cod_jurisdiccion;
                 this.$emit('sendJur',jur);
             }
           },
           cambioOrganismo: function(){
             if (this.selectedOrganismo !== '') {
-                  const organismo = this.selectedOrganismo;
+                  const organismo = this.organismos[this.selectedOrganismo].cod_organismos;
                   this.$emit('sendOrganismo',organismo);
             }
           }

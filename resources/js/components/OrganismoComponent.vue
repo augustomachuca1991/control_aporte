@@ -105,8 +105,8 @@
                   <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen</label>
                   <div class="col-sm-9">
                     <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedOrigen" @change="selectOrigen()">
-                      <option v-for="(origen,index) in origenes" :key="origen.id" :value="index" :selected=" index === selectedOrigen">
-                        {{origen.origen}}
+                      <option v-for="(origen,index) in origenes" :key="origen.id" :value="index" :selected=" origen.id === selectedOrigen">
+                        {{selectedOrigen}}-{{origen.id}}-{{origen.origen}}
                       </option>
                     </select>
                     <p class="text-justify" v-else>{{origen.origen}}</p>
@@ -119,8 +119,8 @@
                   <label for="input_cod_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion</label>
                   <div class="col-sm-9" @change="selectJurisdiccion()">
                     <select v-if="editMode"  :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion_edit" v-model="selectedJurisdiccion">
-                      <option v-for="(jurisdiccion,index) in jurisdicciones" :key="jurisdiccion.id" :value="index" :selected=" index === selectedJurisdiccion">
-                        {{jurisdiccion.jurisdiccion}}
+                      <option v-for="(jurisdiccion,key,index) in jurisdicciones" :key="jurisdiccion.id" :value="index" :selected=" index === selectedJurisdiccion">
+                        {{key}}-{{index}}-{{jurisdiccion.jurisdiccion}}
                       </option>
                     </select>
                     <p class="text-justify" v-else>{{jurisdiccion.jurisdiccion}}</p>
@@ -338,8 +338,8 @@
                 this.descripcion = this.organismo.organismo;
                 this.jurisdiccion = this.organismo.jurisdiccion;
                 this.origen = this.jurisdiccion.origen;
-                this.selectedOrigen = (this.origen.id-1);
-                this.selectedJurisdiccion = (this.jurisdiccion.id-1);
+                this.selectedOrigen = this.origen.cod_origen;
+                this.selectedJurisdiccion = this.jurisdiccion.cod_origen;
             },
             update(){
               //const params = {
