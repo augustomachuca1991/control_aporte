@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <!-- Modal editar jurisdiccion -->
+        <!-- Modal editar Organismo -->
         <div class="modal fade" id="organismo_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditOrganismo" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -105,8 +105,8 @@
                   <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen</label>
                   <div class="col-sm-9">
                     <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedOrigen" @change="selectOrigen()">
-                      <option v-for="(origen,index) in origenes" :key="origen.id" :value="index" :selected=" origen.id === selectedOrigen">
-                        {{selectedOrigen}}-{{origen.id}}-{{origen.origen}}
+                      <option v-for="(origen, index) in origenes" :key="origen.id" :value="index" :selected=" index === selectedOrigen">
+                        {{origen.origen}}
                       </option>
                     </select>
                     <p class="text-justify" v-else>{{origen.origen}}</p>
@@ -118,11 +118,20 @@
                 <div class="form-group row">
                   <label for="input_cod_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion</label>
                   <div class="col-sm-9" @change="selectJurisdiccion()">
-                    <select v-if="editMode"  :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion_edit" v-model="selectedJurisdiccion">
-                      <option v-for="(jurisdiccion,key,index) in jurisdicciones" :key="jurisdiccion.id" :value="index" :selected=" index === selectedJurisdiccion">
-                        {{key}}-{{index}}-{{jurisdiccion.jurisdiccion}}
+                    <select v-if="editMode"  :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion_edit">
+                      <option v-if="noclick" selected :value="''">
+                        {{jurisdiccion.jurisdiccion}}
                       </option>
-                    </select>
+
+                      <option v-else v-for="(jurisdiccion, index) in jurisdicciones" :value="index" :key="jurisdiccion.id">
+                        {{jurisdiccion.jurisdiccion}}
+                      </option>
+                    </select> 
+                    <!-- <select v-if="editMode"  :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion_edit" v-model="selectedJurisdiccion">
+                      <option v-for="(jurisdiccion, index) in jurisdicciones" :value="index" :key="jurisdiccion.id">
+                        {{jurisdiccion.jurisdiccion}}
+                      </option>
+                    </select> -->
                     <p class="text-justify" v-else>{{jurisdiccion.jurisdiccion}}</p>
                     <!-- <span class="errors text-danger" v-for="error in errors.origen_id">
                         <small><em>{{error}}</em></small>
@@ -221,7 +230,10 @@
                 cod_jurisdiccion:'',
                 cod_origen:'',
                 index_organismo: '',
-                editMode:false
+                editMode:false,
+                noclick:false
+                
+
             }
         },
         mounted() {
@@ -240,6 +252,7 @@
                 })
             },
             selectOrigen(){
+                this.noclick = false;
                 this.jurisdicciones = [];
                 this.selectedJurisdiccion = '';
                 this.cod_origen = '';
@@ -338,8 +351,9 @@
                 this.descripcion = this.organismo.organismo;
                 this.jurisdiccion = this.organismo.jurisdiccion;
                 this.origen = this.jurisdiccion.origen;
-                this.selectedOrigen = this.origen.cod_origen;
-                this.selectedJurisdiccion = this.jurisdiccion.cod_origen;
+                this.selectedOrigen = (this.origen.id - 1);
+                this.selectedJurisdiccion = this.jurisdiccion.id;
+                this.noclick = true;
             },
             update(){
               //const params = {
@@ -384,11 +398,14 @@
             sort(column){
                 this.order = !this.order;
                 let sort;
+                
                 if (this.order) {
                   sort = 'asc'
                 }else{
                   sort = 'desc'
-                }axios.get(`api/organismo/order/${column}/sort/${sort}`).then((response)=>{
+                }
+
+                axios.get(`api/organismo/order/${column}/sort/${sort}`).then((response)=>{
                     this.organismos = response.data
                 })
             },
