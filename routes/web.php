@@ -24,8 +24,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-//middleware admin
-Route::middleware('admin')->group(function(){
+
 
 	// Route::get('/getadmin', function(){
 	// 	return Auth::id();
@@ -73,7 +72,7 @@ Route::middleware('admin')->group(function(){
         ->names('hlaborales')
         ->parameters(['hlaborales' => 'hlaborales']);
 
-});
+
 
 
 

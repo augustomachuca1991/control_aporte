@@ -13,8 +13,8 @@ window.Vue = require('vue');
 var VuePaginate = require('vue-paginate');
 var moment = require('moment'); // require 
 
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/src/sweetalert2.scss'
+// import Swal from 'sweetalert2/dist/sweetalert2.js'
+// import 'sweetalert2/src/sweetalert2.scss'
 
 import { GridPlugin } from "@syncfusion/ej2-vue-grids";
 //import '@syncfusion/ej2-vue-grids/styles/material.css'

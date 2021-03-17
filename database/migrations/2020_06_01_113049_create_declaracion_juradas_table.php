@@ -24,6 +24,7 @@ class CreateDeclaracionJuradasTable extends Migration
             $table->bigInteger('organismo_id')->unsigned();
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
             $table->string('path');
+            $table->string('nombre_archivo');
             $table->unsignedInteger('secuencia')->nullable();
 
             $table->softDeletes(); 

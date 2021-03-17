@@ -9,6 +9,9 @@ use App\Jobs\{CompletedImport,CompletedExport,NotificationJob};
 use App\{DeclaracionJurada,Periodo,TipoLiquidacion,Organismo,User};
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile; 
+use Illuminate\Support\Facades\Storage;
 
 class ExcelController extends Controller
 {
@@ -37,77 +40,23 @@ class ExcelController extends Controller
 
     public function import(Request $request){
 
-        $file = $request->file('file');
-        $auth_id = $request->user;
-        $storage_path = $file->storeAs('csv' , $file->getClientOriginalName()); 
-        $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-        $count = count($name);
-        if ($count >= 3) {
-            if ($count == 3) {
-                $name[3] = null;
-            }
-            $validacion = [
-                'archivo' => $file,
-                'path' => $storage_path,
-                'nombre' => $name,
-                'organismo' => $name[0],
-                'periodo' => $name[1],
-                'tipo_liquidacion' => $name[2],
-                'secuencia' => $name[3]
-            ];
-            $reglas = [
-                'archivo' => 'file|mimes:csv,txt',
-                'path' => 'unique:declaracion_juradas,path',
-                'nombre' => 'required|array|max:4',
-                'organismo' => 'exists:organismos,organismo',
-                'periodo' => 'exists:periodos,cod_periodo',
-                'tipo_liquidacion' => 'exists:tipo_liquidacions,descripcion',
-                'secuencia' => 'integer|nullable'
-            ];
-            $mensajes = [
-                'archivo.file' => 'Debe Seleccionar un archivo',
-                'archivo.mimes' => 'El tipo de archivo es incorrecto. Debe ser .csv o .txt',
-                'path.unique' => 'Esta intentando importar un archivo ya existente',
-                'nombre.required' => 'Nombre Requerido',
-                'nombre.array' => 'El nombre no cumple con el formato. El mismo debe ser ej: organimo_periodo_tipoliquidacion_secuencia.csv',
-                'nombre.max' => 'El nombre no cumple con el formato. El mismo debe tener como maximo 4 elementos',
-                'organismo.exists' => 'El organismo no existe o no esta escrito correctamente',
-                'periodo.exists' => 'El codigo de periodo no existe',
-                'tipo_liquidacion.exists' => 'Tipo de Liquidacion no existe. Verifique',
-                'secuencia.integer' => 'El numero secuencia debe ser un entero o bien nulo',
-            ];
-            $validator = Validator::make($validacion, $reglas, $mensajes);
-            if ($validator->fails()) {
-                $message = $validator->errors()->first();
-                $status = 0;
-            }else{
+        //recupero usuario autenticado y declaracion jurada;
+        $user = User::find( $request->user['id']);
+        $declaracionjurada = DeclaracionJurada::find($request->id);
 
-                $organismo_id = Organismo::where('organismo',$name[0])->first()->cod_organismo;
-                $periodo_id = $name[1];
-                $tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
-                $secuencia = $name[3];
-                $declaracionjurada = DeclaracionJurada::create([
-                               'user_id' => $auth_id,
-                               'periodo_id' => $periodo_id,
-                               'tipoliquidacion_id' => $tipoliquidacion_id,
-                               'organismo_id' => $organismo_id,
-                               'secuencia' => $secuencia,
-                               'path' => $storage_path
-                           ]);
-                $user = User::find($auth_id);
-                $import = new LiquidacionsImport($declaracionjurada);
-                $import->queue($file,null,\Maatwebsite\Excel\Excel::CSV)
-                ->chain([new CompletedImport,new NotificationJob($user)]);
-                $message = 'Importando Archivo';
-                $status = 1;
-            }
-            
-        }else{
-            $message = 'El nombre no cumple con el formato. El mismo debe tener como minimo 3 elementos';
-            $status = 0;
-        }
+
+
+        //recupero path del archivo a importar;
+        $path = Storage::url($request->path);
+        $file = Storage::putFileAs('public', new File("./".$path), 'import.csv');
         
-        return response()->json(['message'=> $message, 'status' => $status, 'request' => $request]);
+        
+        //Importa Archivo el archivo
+        $import = new LiquidacionsImport($declaracionjurada);
+        $import->queue($file)->chain([new CompletedImport,new NotificationJob($user)]);
+
+        return $declaracionjurada;
+        
     }
 
     
@@ -130,6 +79,9 @@ class ExcelController extends Controller
     	
         return response()->json(['message'=> $message, 'status' => $status]);
     }
+
+
+    
 
 
 

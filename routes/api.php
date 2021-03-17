@@ -20,11 +20,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //Declaraciones Juradas
-Route::get('declaracion_jurada' , 'DeclaracionJuradaController@getDeclaracionesJuradas');
+Route::get('/declaracion_jurada' , 'DeclaracionJuradaController@getDeclaracionesJuradas');
+Route::post('/declaracion_jurada/create', 'DeclaracionJuradaController@store');
 //Route::delete('declaracion_jurada/aplicar/{id}' , 'DeclaracionJuradaController@destroy');
 //Declaraciones Juradas detalle
-Route::get('declaracion_jurada/{search}' , 'DeclaracionJuradaController@search');
-Route::post('declaracion_jurada/download', 'DeclaracionJuradaController@download');
+Route::get('/declaracion_jurada/{search}' , 'DeclaracionJuradaController@search');
+Route::post('/declaracion_jurada/download', 'DeclaracionJuradaController@download');
+Route::get('/archivos-recientes', 'DeclaracionJuradaController@recientes')->name('archivos-recientes');
+
+
+Route::post('/declaracion_jurada_line/task' , 'DeclaracionJuradaLineController@store');
 
 //Computos
 Route::get('/computo/origen/{periodo}', 'LiquidacionOrganismoController@computoOrigenes');
@@ -42,6 +47,7 @@ Route::post('/liquidacion/filtro','LiquidacionController@filtro')->name('buscar'
 //Files Routes
 Route::post('/import', 'ExcelController@import')->name('import');
 Route::post('/export', 'ExcelController@export')->name('export');
+
 
 
 //Puestos Laborales

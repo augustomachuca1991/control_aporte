@@ -165,7 +165,7 @@ return [
         |
         */
         'local_path'  => storage_path(),
-
+        //'local_path'  => sys_get_temp_dir(),
         /*
         |--------------------------------------------------------------------------
         | Remote Temporary Disk
