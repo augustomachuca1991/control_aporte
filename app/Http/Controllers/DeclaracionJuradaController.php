@@ -45,6 +45,9 @@ class DeclaracionJuradaController extends Controller
         $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $original_name = $file->getClientOriginalName();
         $count = count($name);
+        if ($count === 3) {
+            $name[3] = null;
+        }
             $validacion = [
                 'archivo' => $file,
                 'original_name' => $original_name,
@@ -52,7 +55,7 @@ class DeclaracionJuradaController extends Controller
                 'organismo' => $name[0],
                 'periodo' => $name[1],
                 'tipo_liquidacion' => $name[2],
-                'secuencia' => 1,
+                'secuencia' => $name[3],
             ];
             $reglas = [
                 'archivo' => 'file|mimes:csv,txt',
@@ -61,7 +64,7 @@ class DeclaracionJuradaController extends Controller
                 'organismo' => 'exists:organismos,organismo',
                 'periodo' => 'exists:periodos,cod_periodo',
                 'tipo_liquidacion' => 'exists:tipo_liquidacions,descripcion',
-                'secuencia' => 'integer'
+                'secuencia' => 'integer|nullable'
             ];
             $mensajes = [
                 'archivo.file' => 'Debe Seleccionar un archivo',
@@ -93,7 +96,7 @@ class DeclaracionJuradaController extends Controller
                                'path' => $file_storage,
                                'nombre_archivo' => $original_name
                            ]);
-                return 'El archivo de subió de forma exitosa';
+                return $declaracionjurada;
             }
     }
 

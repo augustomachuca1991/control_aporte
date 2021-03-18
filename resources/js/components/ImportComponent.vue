@@ -172,6 +172,7 @@
               file:'',
               declaraciones_juradas:[],
               dd_jj:[],
+              declaracion_jurada:{},
               isLoad: false,
               isReciente: false,
               uploadPercentage:0,
@@ -218,54 +219,55 @@
               }.bind(this)
             })
               .then((response)=>{
-                              
+                             
                   setTimeout(() => {
                     this.isLoad = false;
                     Toast.fire({
                       icon: 'success',
-                      title: response.data
+                      title: response.data.nombre_archivo+" se cargo con exitó"
                     })
-                    let dj = {
-                      id: '3',
-                      user_id: '1',
-                      periodo_id: '202006',
-                      tipoliquidacion_id:  '1',
-                      organismo_id:  '32',
-                      path:  "csv/RthAyLnuHMLYuQaKXVGNeQpMbgKykbFr2gP8HjEI.txt",
-                      nombre_archivo: "mercedes_202006_sueldo.csv",
-                      secuencia: '1',
-                      created_at: "2021-03-17T10:37:05.000000Z",
-                      updated_at: "2021-03-17T10:37:05.000000Z",
-                      organismo: {
-                        id: '32',
-                        cod_organismo: '32',
-                        jurisdiccion_id: '22',
-                        organismo: "Mercedes",
-                        created_at: "2021-03-16T16:17:56.000000Z"
-                      },
-                      user: {
-                        id: '1',
-                        name: "Augusto Machuca",
-                        email: "augusto_fer22@hotmail.com",
-                        created_at: "2021-03-16T16:17:56.000000Z",
-                        updated_at: "2021-03-16T16:17:56.000000Z" ,
-                      },
-                      periodo: {
-                        id: '2',
-                        cod_periodo: '202006',
-                        mes: '6',
-                        anio: '2020',
-                        periodo: "Junio de 2020",
-                        created_at: "2021-03-16T16:17:56.000000Z",
-                      },
-                      tipoliquidacion: {
-                        id: '1',
-                        descripcion: "Sueldo",
-                        created_at : "2021-03-16T16:17:56.000000Z",
-                      },
-                    }
-                    this.dd_jj.unshift(dj);
-                    this.declaraciones_juradas.unshift(dj);
+                    // let dj = {
+                    //   id: '3',
+                    //   user_id: '1',
+                    //   periodo_id: '202006',
+                    //   tipoliquidacion_id:  '1',
+                    //   organismo_id:  '32',
+                    //   path:  "csv/RthAyLnuHMLYuQaKXVGNeQpMbgKykbFr2gP8HjEI.txt",
+                    //   nombre_archivo: "mercedes_202006_sueldo.csv",
+                    //   secuencia: '1',
+                    //   created_at: "2021-03-17T10:37:05.000000Z",
+                    //   updated_at: "2021-03-17T10:37:05.000000Z",
+                    //   organismo: {
+                    //     id: '32',
+                    //     cod_organismo: '32',
+                    //     jurisdiccion_id: '22',
+                    //     organismo: "Mercedes",
+                    //     created_at: "2021-03-16T16:17:56.000000Z"
+                    //   },
+                    //   user: {
+                    //     id: '1',
+                    //     name: "Augusto Machuca",
+                    //     email: "augusto_fer22@hotmail.com",
+                    //     created_at: "2021-03-16T16:17:56.000000Z",
+                    //     updated_at: "2021-03-16T16:17:56.000000Z" ,
+                    //   },
+                    //   periodo: {
+                    //     id: '2',
+                    //     cod_periodo: '202006',
+                    //     mes: '6',
+                    //     anio: '2020',
+                    //     periodo: "Junio de 2020",
+                    //     created_at: "2021-03-16T16:17:56.000000Z",
+                    //   },
+                    //   tipoliquidacion: {
+                    //     id: '1',
+                    //     descripcion: "Sueldo",
+                    //     created_at : "2021-03-16T16:17:56.000000Z",
+                    //   },
+                    // }
+                    this.declaracion_jurada = response.data
+                    this.dd_jj.unshift(this.declaracion_jurada);
+                    this.declaraciones_juradas.unshift(this.declaracion_jurada);
                     this.isReciente = true;
 
                     

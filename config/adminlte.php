@@ -309,22 +309,37 @@ return [
                 ],
             ],
         ],
-        ['header' => 'labels'],
+        ['header' => 'Tablas'],
         [
-            'text'       => 'important',
+            'text'       => 'Jurisdicciones',
             'icon_color' => 'red',
             'url'        => '#',
         ],
         [
-            'text'       => 'warning',
+            'text'       => 'Organismos',
             'icon_color' => 'yellow',
             'url'        => '#',
         ],
         [
-            'text'       => 'information',
+            'text'       => 'Clases',
             'icon_color' => 'cyan',
             'url'        => '#',
         ],
+        [
+            'text'       => 'Liquidaciones',
+            'icon_color' => 'olive',
+            'url'        => '#',
+        ],
+        [
+            'text'       => 'Historia Laboral',
+            'icon_color' => 'orange',
+            'url'        => '#',
+        ],
+        // [
+        //     'text'       => 'Clases',
+        //     'icon_color' => 'olive',
+        //     'url'        => '#',
+        // ],
     ],
 
     /*
