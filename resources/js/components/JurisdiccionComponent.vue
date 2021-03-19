@@ -207,12 +207,15 @@
                         <tr v-if="jurisdicciones.length===0">
                             <td class="text-center">No data</td>
                         </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>2</td>
-                          <td>3</td>
-                          <td>4</td>
-                          <td>5</td>
+                        <tr v-else v-for="(jurisdiccion,index) in jurisdicciones" :key='jurisdiccion.id'>
+                          <th scope="row">{{jurisdiccion.cod_jurisdiccion}}</th>
+                          <td>{{jurisdiccion.jurisdiccion}}</td>
+                          <td>{{jurisdiccion.origen.origen}}</td>
+                          <td><em> {{jurisdiccion.created_at | moment}}</em></td>
+                          <td>
+                            <button @click="trash(index,jurisdiccion.id)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
+                            <button @click="edit(index,jurisdiccion)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#jurisdiccion_edit"><i class="fa fa-edit"></i></button>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
