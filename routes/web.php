@@ -58,9 +58,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 	//-------- Jurisdicciones Controller------------
 
-	Route::resource('/jurisdicciones', 'JurisdiccionController')
-    ->names('jurisdicciones')
-	->parameters(['jurisdicciones' => 'jurisdicciones']);
+	Route::get('/jurisdicciones', 'JurisdiccionController@index')->name('jurisdicciones');
 
     //-------- Organismos Controller------------
     Route::resource('/organismos', 'OrganismoController')

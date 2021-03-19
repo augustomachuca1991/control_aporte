@@ -26,7 +26,7 @@ class CreateDeclaracionJuradasTable extends Migration
             $table->string('path');
             $table->string('nombre_archivo');
             $table->unsignedInteger('secuencia')->nullable();
-
+            $table->boolean('status');
             $table->softDeletes(); 
             $table->timestamps();
         });

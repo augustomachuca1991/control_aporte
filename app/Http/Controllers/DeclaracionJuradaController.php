@@ -18,8 +18,8 @@ class DeclaracionJuradaController extends Controller
      */
     public function index()
     {
-        $user = Auth()->user;
-        return view('declaraciones_juradas.index', compact('user'));
+        //$user = Auth()->user;
+        return view('declaraciones_juradas.index');
     }
 
     /**
@@ -109,7 +109,8 @@ class DeclaracionJuradaController extends Controller
                                'organismo_id' => $organismo_id,
                                'secuencia' => $secuencia,
                                'path' => $file_storage,
-                               'nombre_archivo' => $original_name
+                               'nombre_archivo' => $original_name,
+                               'status' => true,
                            ]);
                 $declaracionjurada = $this->show($new_declaracionjurada->id);
 
@@ -180,7 +181,7 @@ class DeclaracionJuradaController extends Controller
         //     ['organismo', 'user','periodo', 'tipoliquidacion']
         // )->orderBy('id', 'desc')->get();
         return DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion'])
-        ->orderBy('id', 'desc')->get();
+        ->latest()->get();
     }
 
     

@@ -46,8 +46,8 @@ return [
     */
 
     'logo' => '<b>IPS</b>Corrientes',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo_img' => 'image/ips.png',
+    'logo_img_class' => 'brand-image img-rounded',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'IPS',
@@ -121,14 +121,14 @@ return [
     */
 
     'classes_body' => '',
-    'classes_brand' => 'bg-success',
+    'classes_brand' => 'bg-secondary',
     'classes_brand_text' => 'text-white',
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-light-secondary elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav' => 'navbar-white navbar-light shadow',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -232,6 +232,24 @@ return [
             'method' => 'POST',
         ],
         [
+            'text' => '',
+            'button' => true,
+            'topnav_right' => true,
+            'icon' => 'far fa-bell',
+            'url' => '#',
+            'label' => '1',
+            'label_color' => 'danger'
+        ],
+        [
+            'text' => '',
+            'button' => true,
+            'topnav_right' => true,
+            'icon' => 'fas fa-envelope-open-text',
+            'url' => '#',
+            'label' => '+9',
+            'label_color' => 'danger'
+        ],
+        [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
@@ -313,7 +331,7 @@ return [
         [
             'text'       => 'Jurisdicciones',
             'icon_color' => 'red',
-            'url'        => '#',
+            'route'        => 'jurisdicciones',
         ],
         [
             'text'       => 'Organismos',

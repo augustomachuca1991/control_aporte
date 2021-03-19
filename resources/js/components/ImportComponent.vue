@@ -78,7 +78,10 @@
                       <td>{{reciente.id}}.</td>
                       <td>{{reciente.user.name}}</td>
                       <td>{{reciente.created_at | moment}}</td>
-                      <td><span class="badge bg-success">activo</span></td>
+                      <td>
+                        <span v-if="reciente.status" class="badge bg-info">Activo</span>
+                        <span  v-else class="badge bg-success rounded-circle"><i class="fas fa-check"></i></span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -112,7 +115,7 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Usuario</th>
+                        <th>Nombre de Archivo</th>
                         <th>Periodo</th>
                         <th>Organismo</th>
                         <th>Tipo</th>
@@ -122,18 +125,23 @@
                     <tbody>
                       <tr v-for="declaracion_jurada in declaraciones_juradas" :key="declaracion_jurada.id">
                         <td>{{declaracion_jurada.id}}</td>
-                        <td>{{declaracion_jurada.user.name}}</td>
+                        <td>
+                          <span class="text-success"><i class="fas fa-file-csv"></i></span>
+                          {{declaracion_jurada.nombre_archivo}}
+                        </td>
                         <td>{{declaracion_jurada.periodo.periodo}}</td>
                         <td>{{declaracion_jurada.organismo.organismo}}</td>
                         <td>
-                          <span v-if="declaracion_jurada.tipoliquidacion.descripcion === 'Sueldo'" class="badge bg-success">{{declaracion_jurada.tipoliquidacion.descripcion}}</span>
+                          <span v-if="declaracion_jurada.tipoliquidacion.descripcion === 'Sueldo'" class="badge bg-success">Haberes</span>
                           <span v-else class="badge bg-warning">{{declaracion_jurada.tipoliquidacion.descripcion}}</span>
                         </td>
                         <td>
-                          <button v-if="true" class="btn btn-outline-info rounded-circle btn-xs" @click="aplicar(declaracion_jurada)">
+                          
+                          
+                          <button v-if="declaracion_jurada.status" class="btn btn-outline-warning rounded btn-xs" @click="aplicar(declaracion_jurada)" data-toggle="tooltip" data-placement="top" title="Aplicar Tarea">
                             <i class="fas fa-tasks"></i>
                           </button>
-                          <span v-else class="text-olive"><i class="fas fa-check"></i></span>
+                          <span  v-else class="badge bg-success rounded-circle"><i class="fas fa-check"></i></span>
 
                         </td>
                       </tr>
@@ -174,6 +182,7 @@
               declaraciones_juradas:[],
               dd_jj:[],
               declaracion_jurada:{},
+              isImport : false,
               isLoad: false,
               isReciente: false,
               uploadPercentage:0,
@@ -262,12 +271,15 @@
           },
           aplicar(declaracion_jurada){
 
+              
 
               axios.post('api/import' , declaracion_jurada).then((response)=>{
+                 this.declaracion_jurada = response.data;
                  Toast.fire({
                    icon: 'success',
                    title: 'importando: '+response.data.nombre_archivo
                  })
+
               })
 
           },

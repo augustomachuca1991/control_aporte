@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Tablero')
+@section('title', 'Importar')
 
 @section('plugins.Sweetalert2', true)
 
@@ -33,7 +33,7 @@
         //exito
         var channel = pusher.subscribe('canal-import');
         channel.bind('event-import', function(data) {
-          let load = false;
+          
           Swal.fire(
               data.message,
               'ok',
@@ -43,7 +43,6 @@
         //fracaso
         var channel = pusher.subscribe('canalfailed-import');
         channel.bind('eventfailed-import', function(data) {
-          let load = false;
           Swal.fire(
               'Error durante la importación',
               'error',

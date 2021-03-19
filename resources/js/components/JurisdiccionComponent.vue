@@ -119,8 +119,7 @@
 
 
         <!--Table-->
-        <h3 class="text-center">Lista de Jurisdiccion</h3>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-12 col-lg-4 my-2">
             <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nueva Jurisdicción</button>
           </div>
@@ -158,7 +157,73 @@
                 </tr>
               </tbody>
           </table>
-        </div>
+        </div> -->
+        <!--end table-->
+
+
+        <!-- /.col (LEFT) -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col col-md-3 my-2">
+                <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nueva Jurisdicción</button>
+              </div>
+              <div class="col-md-3  offset-md-6 my-2">
+                <form class="form-inline justify-content-end">
+                      <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
+                      <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @keyup="buscar()">
+                </form>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Lista de Jurisdicciones</h3>
+
+                    <!-- <div class="card-tools">
+                      <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"  @keyup="">
+
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-outline-success" disabled>
+                            <i class="fas fa-search"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          <th>ID <a href="#" class="text-dark" @click="sort('cod_jurisdiccion')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Jurisdicción <a href="#" class="text-dark" @click="sort('jurisdiccion')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Origen <a href="#" class="text-dark" @click="sort('origen_id')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Creado <a href="#" class="text-dark" @click="sort('created_at')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-if="jurisdicciones.length===0">
+                            <td class="text-center">No data</td>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>2</td>
+                          <td>3</td>
+                          <td>4</td>
+                          <td>5</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+              </div>
+            </div>
+          </div>
+        </section>
     </div>
     
 </template>
