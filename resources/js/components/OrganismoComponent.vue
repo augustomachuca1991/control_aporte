@@ -155,8 +155,7 @@
 
 
         <!--Table-->
-        <h3 class="text-center">Lista de Organismos</h3>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-12 col-lg-4 my-2">
             <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#organismo_new"><i class="fa fa-plus"></i>&nbsp;Nuevo Organismo</button>
           </div>
@@ -196,7 +195,74 @@
                 </tr>
               </tbody>
           </table>
-        </div>
+        </div> -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col col-md-3 my-2">
+                <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nuevo Organismo</button>
+              </div>
+              <div class="col-md-3  offset-md-6 my-2">
+                <form class="form-inline justify-content-end">
+                      <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
+                      <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @keyup="buscar()">
+                </form>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Lista de Organismos</h3>
+
+                    <!-- <div class="card-tools">
+                      <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"  @keyup="">
+
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-outline-success" disabled>
+                            <i class="fas fa-search"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          <th scope="col"># Cod<a href="#" class="text-dark" @click="sort('cod_organismo')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Organismo<a href="#" class="text-dark" @click="sort('organismo')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">jurisdicción<a href="#" class="text-dark" @click="sort('jurisdiccion_id')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Origen<a href="#" class="text-dark" @click="sort('jurisdiccion_id')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Creado<a href="#" class="text-dark" @click="sort('created_at')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-if="organismos.length===0">
+                            <td class="text-center">No data</td>
+                        </tr>
+                        <tr v-else v-for="(organismo,index) in organismos" :key='organismo.id'>
+                          <th scope="row">{{organismo.cod_organismo}}</th>
+                          <td>{{organismo.organismo}}</td>
+                          <td>{{organismo.jurisdiccion.jurisdiccion}}</td>
+                          <td>{{organismo.jurisdiccion.origen.origen}}</td>
+                          <td><em> {{organismo.created_at | moment}}</em></td>
+                          <td>
+                            <button @click="trash(index,organismo.id)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
+                            <button @click="edit(index,organismo)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#organismo_edit"><i class="fa fa-edit"></i></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+              </div>
+            </div>
+          </div>
+        </section>
     </div>
 </template>
 

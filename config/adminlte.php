@@ -263,16 +263,15 @@ return [
             'text'        => 'Excel/CSV',
             // 'url'         => 'admin/pages',
             'icon'        => 'fas fa-file-csv',
+            'icon_color' => 'success',
             'submenu'   => [
                 ['text' => 'Importar',
                 'route' => 'csv_import',
                 'icon' => 'fas fa-file-upload',
-                'icon_color' => 'success'
                 ],
                 ['text' => 'Exportar',
                 'route' => 'csv_export',
                 'icon' => 'fas fa-file-download',
-                'icon_color' => 'warning'
                 ]
             ]
             // 'label'       => 4,
@@ -336,7 +335,7 @@ return [
         [
             'text'       => 'Organismos',
             'icon_color' => 'yellow',
-            'url'        => '#',
+            'route'        => 'organismos',
         ],
         [
             'text'       => 'Clases',
@@ -346,7 +345,7 @@ return [
         [
             'text'       => 'Liquidaciones',
             'icon_color' => 'olive',
-            'url'        => '#',
+            'route'        => 'liquidaciones',
         ],
         [
             'text'       => 'Historia Laboral',

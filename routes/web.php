@@ -39,7 +39,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('/declaraciones_juradas', 'DeclaracionJuradaController@index')->name('ddjj');
 	Route::get('/declaraciones_juradas/{id}', 'DeclaracionJuradaController@show')->name('ddjj_detalle');
 	//-------- Liquidacion Controller------------
-	Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidacion');
+	Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidaciones');
 
 	//-------- Computo Controller------------
 	Route::get('/computo', 'LiquidacionOrganismoController@index')->name('computo');
@@ -61,9 +61,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('/jurisdicciones', 'JurisdiccionController@index')->name('jurisdicciones');
 
     //-------- Organismos Controller------------
-    Route::resource('/organismos', 'OrganismoController')
-        ->names('organismos')
-        ->parameters(['organismos' => 'organismos']);
+    Route::get('/organismos', 'OrganismoController@index')->name('organismos');
 
     //-------- Historia Laborales Controller------------
     Route::resource('/hlaborales', 'HistoriaLaboralController')

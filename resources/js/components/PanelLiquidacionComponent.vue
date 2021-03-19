@@ -1,6 +1,5 @@
 <template>
-    <div class="container">
-        <!--filtro origen, jurisdiccion, organismo-->
+    <!-- <div class="container">
         
 
         <div class="card my-5 border-0 shadow">
@@ -16,15 +15,12 @@
                         @sendOrganismo="search('organismo',...arguments)">
                 </filter-component>
                 <div class="form-row my-2 justify-content-between">
-                <!--filtro periodo-->
                     <div class="col-12 col-md-12 col-lg-4 mb-md-3">
-                        <!--buscar por nombre de agente-->
                         <buscaragente-component 
                             @buscarAgente="like(...arguments)">
                         </buscaragente-component>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4">
-                        <!--filtro tipo liquidacion-->
                         <filtertipoliquidacion-component 
                             @sendTipo="search('tipo_liquidacion',...arguments)">
                         </filtertipoliquidacion-component>
@@ -43,6 +39,146 @@
             :filtro="filtro">
         </listaliquidaciones-component>        
         
+    </div> -->
+    <div id="panel_liquidacion">    
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+                <div class="card card-pink">
+                  <div class="card-header">
+                    <h3 class="card-title">Filtros</h3>
+
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
+                        
+
+
+
+                        <!--aqui va el componente-->
+                        <filter-component 
+                                @sendOrigen="search('origen',...arguments)" 
+                                @sendJur="search('jurisdiccion',...arguments)" 
+                                @sendOrganismo="search('organismo',...arguments)">
+                        </filter-component>
+                    </div>
+                  </div>
+                </div>
+               </div>
+
+
+
+               <div class="col-6">
+                 <div class="card card-orange">
+                   <div class="card-header">
+                     <h3 class="card-title">Buscar Agentes</h3>
+
+                     <div class="card-tools">
+                       <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                         <i class="fas fa-minus"></i>
+                       </button>
+                     </div>
+                   </div>
+                   <div class="card-body">
+                     <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
+                         
+
+
+
+                         <!--aqui va el componente-->
+                         <filter-component 
+                                 @sendOrigen="search('origen',...arguments)" 
+                                 @sendJur="search('jurisdiccion',...arguments)" 
+                                 @sendOrganismo="search('organismo',...arguments)">
+                         </filter-component>
+                     </div>
+                   </div>
+                 </div>
+                </div>
+
+
+                <div class="col-6">
+                  <div class="card card-olive">
+                    <div class="card-header">
+                      <h3 class="card-title">Perido</h3>
+
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
+                          
+
+
+
+                          <!--aqui va el componente-->
+                          <filter-component 
+                                  @sendOrigen="search('origen',...arguments)" 
+                                  @sendJur="search('jurisdiccion',...arguments)" 
+                                  @sendOrganismo="search('organismo',...arguments)">
+                          </filter-component>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+             
+              <!-- /.col (LEFT) -->
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Lista de Declaraciones juradas</h3>
+
+                      <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                          <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"">
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                      <table class="table table-hover text-nowrap">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Nombre de Archivo</th>
+                            <th>Periodo</th>
+                            <th>Organismo</th>
+                            <th>Tipo</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>0</td>
+                            <td>
+                              <span class="text-success"><i class="fas fa-file-csv"></i></span>
+                              1
+                            </td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+              </div>
+            <!-- /.row -->
+          </div><!-- /.container-fluid -->
+        </section>
     </div>
 </template>
 

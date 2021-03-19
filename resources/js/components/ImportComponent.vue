@@ -101,11 +101,11 @@
                     <div class="input-group input-group-sm" style="width: 150px;">
                       <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar" v-model="search" @keyup="buscar()">
 
-                      <div class="input-group-append">
+                      <!-- <div class="input-group-append">
                         <button type="button" class="btn btn-outline-success" disabled>
                           <i class="fas fa-search"></i>
                         </button>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>

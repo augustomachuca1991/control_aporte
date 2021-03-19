@@ -10,7 +10,7 @@
 @stop
 
 @section('content_header')
-    <h1 class="text-secondary h1-responsive">Lista de Jurisdicciones</h1>
+    <h1 class="text-secondary h1-responsive text-center">Lista de Jurisdicciones</h1>
 @stop
 
 
