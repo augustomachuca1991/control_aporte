@@ -16,7 +16,7 @@
 
 @section('content')
   <div id="app">
-    <import-component></import-component>    
+    <import-component :user="{{$user}}"></import-component>    
   </div>
 @stop
 

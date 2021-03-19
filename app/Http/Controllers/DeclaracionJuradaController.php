@@ -18,7 +18,8 @@ class DeclaracionJuradaController extends Controller
      */
     public function index()
     {
-        return view('declaraciones_juradas.index');
+        $user = Auth()->user;
+        return view('declaraciones_juradas.index', compact('user'));
     }
 
     /**
@@ -39,15 +40,25 @@ class DeclaracionJuradaController extends Controller
      */
     public function store(Request $request)
     {
+        //asignamos variables
         $file = $request->file('file');
-        $user = Auth::user();
+        $user_id = $request->user_id;
         $file_storage = $file->store('public');
         $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $original_name = $file->getClientOriginalName();
         $count = count($name);
+        
+
+
+
+        //validamos si existe si la cadena contiene numero de secuencia
         if ($count === 3) {
             $name[3] = null;
         }
+
+
+
+        //se valida el archivo a subir
             $validacion = [
                 'archivo' => $file,
                 'original_name' => $original_name,
@@ -79,16 +90,20 @@ class DeclaracionJuradaController extends Controller
                 'secuencia.integer' => 'El numero secuencia debe ser un entero',
             ];
             $validator = Validator::make($validacion, $reglas, $mensajes);
+
+
+            // si no pasa la validacion arroja mensaje caso contrario crea una nueva declaracion jurada
             if ($validator->fails()) {
-                return $validator->errors()->first();
+                $mensajes = $validator->errors()->first();
+                return response()->json(['data' => $mensajes , 'status' => false]);
             }else{
 
                 $organismo_id = Organismo::where('organismo',$name[0])->first()->cod_organismo;
                 $periodo_id = $name[1];
                 $tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
                 $secuencia = 1;
-                $declaracionjurada = DeclaracionJurada::create([
-                               'user_id' => 1,
+                $new_declaracionjurada = DeclaracionJurada::create([
+                               'user_id' => $user_id,
                                'periodo_id' => $periodo_id,
                                'tipoliquidacion_id' => $tipoliquidacion_id,
                                'organismo_id' => $organismo_id,
@@ -96,7 +111,9 @@ class DeclaracionJuradaController extends Controller
                                'path' => $file_storage,
                                'nombre_archivo' => $original_name
                            ]);
-                return $declaracionjurada;
+                $declaracionjurada = $this->show($new_declaracionjurada->id);
+
+                return response()->json(['data' => $declaracionjurada, 'status' => true]);
             }
     }
 
@@ -106,9 +123,11 @@ class DeclaracionJuradaController extends Controller
      * @param  \App\DeclaracionJurada  $declaracionJurada
      * @return \Illuminate\Http\Response
      */
-    public function show(DeclaracionJurada $declaracionJurada)
+    public function show($id)
     {
-        //
+        $declaracionjurada = DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion'])
+                            ->where('id', $id)->first();
+        return $declaracionjurada;
     }
 
     /**
@@ -190,19 +209,23 @@ class DeclaracionJuradaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search($buscar)
-    {
-        return DeclaracionJurada::whereHas('user', function($query) use($buscar){
-                    $query->where('name','LIKE',"%".$buscar."%");
-            })->orWhereHas('periodo', function($query) use($buscar){
-                    $query->where('periodo','LIKE',"%".$buscar."%");
-            })->orWhereHas('tipoliquidacion', function($query) use($buscar){
-                    $query->where('descripcion','LIKE',"%".$buscar."%");
-            })->orWhereHas('organismo', function($query) use($buscar){
-                    $query->where('organismo','LIKE',"%".$buscar."%");
-            })
-        ->with(['organismo', 'user','periodo', 'tipoliquidacion'])
-        //->orWhere('periodo_id' ,'LIKE' ,"%".$search."%")
-        ->get();
+    {   
+        
+            
+            return DeclaracionJurada::whereHas('user', function($query) use($buscar){
+                        $query->where('name','LIKE',"%".$buscar."%");
+                })->orWhereHas('periodo', function($query) use($buscar){
+                        $query->where('periodo','LIKE',"%".$buscar."%");
+                })->orWhereHas('tipoliquidacion', function($query) use($buscar){
+                        $query->where('descripcion','LIKE',"%".$buscar."%");
+                })->orWhereHas('organismo', function($query) use($buscar){
+                        $query->where('organismo','LIKE',"%".$buscar."%");
+                })
+            ->with(['organismo', 'user','periodo', 'tipoliquidacion'])
+            //->orWhere('periodo_id' ,'LIKE' ,"%".$search."%")
+            ->get();
+        
+        
     }
 
 

@@ -96,10 +96,10 @@
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="text" name="table_search" class="form-control float-right" placeholder="Buscar">
+                      <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar" v-model="search" @keyup="buscar()">
 
                       <div class="input-group-append">
-                        <button type="submit" class="btn btn-default">
+                        <button type="button" class="btn btn-outline-success" disabled>
                           <i class="fas fa-search"></i>
                         </button>
                       </div>
@@ -130,10 +130,11 @@
                           <span v-else class="badge bg-warning">{{declaracion_jurada.tipoliquidacion.descripcion}}</span>
                         </td>
                         <td>
-                          <button v-if="true" class="btn btn-outline-info rounded-circle btn-sm" @click="aplicar(declaracion_jurada)">
+                          <button v-if="true" class="btn btn-outline-info rounded-circle btn-xs" @click="aplicar(declaracion_jurada)">
                             <i class="fas fa-tasks"></i>
                           </button>
                           <span v-else class="text-olive"><i class="fas fa-check"></i></span>
+
                         </td>
                       </tr>
                     </tbody>
@@ -178,10 +179,11 @@
               uploadPercentage:0,
               loadedProgress:0,
               totalProgress:0,
+              search: '',
             }
         },
         mounted(){
-          //console.log(this.user)
+          console.log(this.user)
           axios.get('api/archivos-recientes').then((response)=>{
              if (response.data.length === 0) {
                 this.isReciente = false;
@@ -204,6 +206,7 @@
             
             let formData = new FormData()
             formData.append('file', this.file)
+            formData.append('user_id', this.user.id)
             
             axios.post('api/declaracion_jurada/create', formData, 
             {
@@ -219,70 +222,35 @@
               }.bind(this)
             })
               .then((response)=>{
-                             
-                  setTimeout(() => {
-                    this.isLoad = false;
-                    Toast.fire({
-                      icon: 'success',
-                      title: response.data.nombre_archivo+" se cargo con exitó"
-                    })
-                    // let dj = {
-                    //   id: '3',
-                    //   user_id: '1',
-                    //   periodo_id: '202006',
-                    //   tipoliquidacion_id:  '1',
-                    //   organismo_id:  '32',
-                    //   path:  "csv/RthAyLnuHMLYuQaKXVGNeQpMbgKykbFr2gP8HjEI.txt",
-                    //   nombre_archivo: "mercedes_202006_sueldo.csv",
-                    //   secuencia: '1',
-                    //   created_at: "2021-03-17T10:37:05.000000Z",
-                    //   updated_at: "2021-03-17T10:37:05.000000Z",
-                    //   organismo: {
-                    //     id: '32',
-                    //     cod_organismo: '32',
-                    //     jurisdiccion_id: '22',
-                    //     organismo: "Mercedes",
-                    //     created_at: "2021-03-16T16:17:56.000000Z"
-                    //   },
-                    //   user: {
-                    //     id: '1',
-                    //     name: "Augusto Machuca",
-                    //     email: "augusto_fer22@hotmail.com",
-                    //     created_at: "2021-03-16T16:17:56.000000Z",
-                    //     updated_at: "2021-03-16T16:17:56.000000Z" ,
-                    //   },
-                    //   periodo: {
-                    //     id: '2',
-                    //     cod_periodo: '202006',
-                    //     mes: '6',
-                    //     anio: '2020',
-                    //     periodo: "Junio de 2020",
-                    //     created_at: "2021-03-16T16:17:56.000000Z",
-                    //   },
-                    //   tipoliquidacion: {
-                    //     id: '1',
-                    //     descripcion: "Sueldo",
-                    //     created_at : "2021-03-16T16:17:56.000000Z",
-                    //   },
-                    // }
-                    this.declaracion_jurada = response.data
-                    this.dd_jj.unshift(this.declaracion_jurada);
-                    this.declaraciones_juradas.unshift(this.declaracion_jurada);
-                    this.isReciente = true;
+                
+                if (response.data.status) {
+                        this.declaracion_jurada = response.data.data;
+                        Toast.fire({
+                          icon: 'success',
+                          title: this.declaracion_jurada.nombre_archivo+' se subió con exito'
+                        })
+                        this.dd_jj.unshift(this.declaracion_jurada);
+                        this.declaraciones_juradas.unshift(this.declaracion_jurada);
+                        this.isReciente = true;
 
+                } else {
+                        Toast.fire({
+                          icon: 'error',
+                          title: response.data.data
+                        })
+                }
+                this.isLoad = false;
+                  
                     
-                  }, 5000)
                   
 
               }).catch((error) => {
-
-                  setTimeout(() => {
-                    this.isLoad = false;
-                    Toast.fire({
-                      icon: 'error',
-                      title: response.data.message
-                    })
-                  }, 5000)
+                  
+                  this.isLoad = false;
+                  Toast.fire({
+                    icon: 'error',
+                    title: error.response
+                  })
                   
               })
 
@@ -302,6 +270,11 @@
                  })
               })
 
+          },
+          buscar(){
+            axios.get(`api/declaracion_jurada/buscar/${this.search}`).then((response)=>{
+                this.declaraciones_juradas = response.data;
+            })
           }
         },
       } 

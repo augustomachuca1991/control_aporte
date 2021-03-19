@@ -3,8 +3,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Tablero')
-<!-- 
-@section('plugins.Sweetalert2', true) -->
+@section('plugins.Sweetalert2', true)
 @section('plugins.Chartjs', true)
 
 @section('content_header')
