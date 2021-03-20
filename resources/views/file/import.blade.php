@@ -2,8 +2,8 @@
 
 @section('title', 'Importar')
 
-@section('plugins.Sweetalert2', true)
-
+<!-- @section('plugins.Sweetalert2', true)
+ -->
 @section('css')
     <!-- <link rel="stylesheet" href="/css/admin_custom.css"> -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->

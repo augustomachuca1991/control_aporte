@@ -17,43 +17,30 @@
                   </button>
                 </div>
               </div>
-              <div class="card-body">
-                <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
-                  <form @submit.prevent="submitFile()">
-                    <div class="form-group row">
-                      
-                      <div class="col-sm-8 d-flex align-items-start">
-                        <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="file" name="file" lang="es" ref="file" @change="handleFileUpload()"  required>
-                          <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
-                          <span><i>{{file.name}}</i></span>
+              <form @submit.prevent="submitFile()">
+                <div class="card-body">
+                  <div class="import" style="min-height: 135px; height: 135px; max-height: 135px; max-width: 100%;">
+                      <div class="form-group">
+                        <div class="d-flex align-items-center">
+                          <!-- <label for="file" class="form-label text-muted">Subir Archivo</label> -->
+                          <input class="form-control border-0"  type="file" id="file" name="file" ref="file" @change="handleFileUpload()"  required>
                         </div>
                       </div>
-                      <div class="col-sm-4">
-                        <button v-if="isLoad" type="button" name="import" id="import" class="btn btn-success" disabled>
-                          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                          subiendo...
-                        </button>
-                        <button v-else type="submit" name="import" id="import" class="btn btn-success">
-                          <i class="fas fa-file-upload"></i>&nbsp;Importar
-                        </button>
-                      </div>
-                    </div>
-                    <div v-if="isLoad" class="form-group row">
-                      <div class="col">
-                        <progress  id="progress-bar" max="100" :value.prop="uploadPercentage"></progress>
-                        {{uploadPercentage}}%
-                      </div>
-                    </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
+                <div class="card-footer bg-white">
+                  <div>
+                    <button type="submit" name="import" id="import" class="btn btn-outline-secondary btn-block">
+                      <i class="fas fa-file-upload"></i>&nbsp;Subir
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
-
           </div>
           <div class="col-12 col-md-6">
             <!-- DONUT CHART -->
-            <div class="card card-secondary">
+            <div class="card card-olive">
               <div class="card-header">
                 <h3 class="card-title">Ultimos Archivo importado</h3>
 
@@ -93,7 +80,7 @@
           </div>
           <!-- /.col (LEFT) -->
             <div class="col-12">
-              <div class="card">
+              <div class="card card-olive">
                 <div class="card-header">
                   <h3 class="card-title">Lista de Declaraciones juradas</h3>
 
@@ -162,15 +149,15 @@
 <script>
     
 
-    const Toast = Swal.mixin({
+    const Toast = swal.mixin({
       toast: true,
       position: 'top-end',
       showConfirmButton: false,
       timer: 4000,
       timerProgressBar: true,
       didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
+        toast.addEventListener('mouseenter', swal.stopTimer)
+        toast.addEventListener('mouseleave', swal.resumeTimer)
       }
     })
     
@@ -236,7 +223,8 @@
                         this.declaracion_jurada = response.data.data;
                         Toast.fire({
                           icon: 'success',
-                          title: this.declaracion_jurada.nombre_archivo+' se subió con exito'
+                          title: this.declaracion_jurada.nombre_archivo+' se subió con exito',
+                          background:'#E7FFD7',
                         })
                         this.dd_jj.unshift(this.declaracion_jurada);
                         this.declaraciones_juradas.unshift(this.declaracion_jurada);
@@ -245,7 +233,8 @@
                 } else {
                         Toast.fire({
                           icon: 'error',
-                          title: response.data.data
+                          title: response.data.data,
+                          background:'#FCDBCD',
                         })
                 }
                 this.isLoad = false;
@@ -258,7 +247,8 @@
                   this.isLoad = false;
                   Toast.fire({
                     icon: 'error',
-                    title: error.response
+                    title: error.response,
+                    background:'#FCDBCD',
                   })
                   
               })

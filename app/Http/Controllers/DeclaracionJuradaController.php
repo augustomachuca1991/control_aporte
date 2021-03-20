@@ -231,7 +231,7 @@ class DeclaracionJuradaController extends Controller
 
 
     public function recientes(Request $request){
-        return DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion'])->latest()->take(4)->get();
+        return DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion'])->latest()->take(3)->get();
     }
 
 }

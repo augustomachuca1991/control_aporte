@@ -329,7 +329,7 @@ return [
         ['header' => 'Tablas'],
         [
             'text'       => 'Jurisdicciones',
-            'icon_color' => 'red',
+            'icon_color' => 'maroon',
             'route'        => 'jurisdicciones',
         ],
         [
@@ -340,11 +340,11 @@ return [
         [
             'text'       => 'Clases',
             'icon_color' => 'cyan',
-            'url'        => '#',
+            'route'        => 'clases',
         ],
         [
             'text'       => 'Liquidaciones',
-            'icon_color' => 'olive',
+            'icon_color' => 'purple',
             'route'        => 'liquidaciones',
         ],
         [

@@ -1,24 +1,19 @@
 <template>
-  <div id="liquidaciones">
+  <div id="lista_liquidaciones">
     <!--<label>Liquidaciones {{filtro.data}} </label>-->
     <!-- <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
     
     <paginate> -->
     <!--table-->
   
-    <div class="table-responsive">
-      <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
-        <table class="table">
-          <caption>
-              <span v-if="$refs.paginator">
-                  Mostrando {{$refs.paginator.pageItemsCount}} resultados
-              </span>
-          </caption>
+    <!-- <div class="table-responsive">-->
+      <!-- <paginate class="center" name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">  -->
+        <table <table class="table table-hover text-nowrap">
           <thead>
             <tr>
               <th scope="col">Puesto Laboral</th>
-              <th scope="col">Tipo Liquidacion</th>
               <th scope="col">Agente</th>
+              <th scope="col">Tipo Liquidacion</th>
               <th scope="col">Periodo</th>
               <th scope="col">Jurisdiccion</th>
               <th scope="col">Organismo</th>
@@ -26,28 +21,24 @@
             </tr>
           </thead>
             <tbody>
-              
-
-              <tr v-if="!filtro.condition">
-                <td>No se encontraron resultados</td>
-              </tr>
-              <tr v-else v-for="liquidacion in paginated('liquidacions')" :key="liquidacion.id">
-                  <th scope="row" v-for="historia_laboral in liquidacion.historia_laborales">00{{historia_laboral.puesto.cod_laboral}}</th>
-                  <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
+              <tr v-for=" liquidacion in filtro.data" :key="liquidacion.id">
+                  <th scope="row" v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">{{historia_laboral.puesto.cod_laboral}}</th>
                   <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
+                  <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo"><span v-if="tipoliquidacion.tipoliquidacion.descripcion === 'Sueldo'"class="badge bg-pink">haberes</span><span v-else class="badge bg-warning">S.A.C</span></td>
                   <td v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.periodo}}</td>
                   <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
                   <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</td>
                   <td>
-                      <a :href="'#detalle'" class="btn btn-outline-success rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" v-on:click="show(liquidacion.id)">
+                      <!-- <a :href="'#detalle'" class="btn btn-outline-success rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" v-on:click="show(liquidacion.id)">
                       <i class="fas fa-dollar-sign"></i>
-                      </a>  
+                      </a>   -->
+                      <a href="#" class="btn btn-outline-success border-0 rounded-circle btn-xs"><i class="fas fa-dollar-sign"></i></a>
                   </td>
               </tr>
             </tbody>
-        </table>
-      </paginate>
-    </div>
+        </table> 
+      <!-- </paginate> -->
+    <!--</div> -->
    <!--  <div v-if="shown">
       <div class="spinner-grow text-dark" style="width: 3rem; height: 3rem;" role="status">
         <span class="sr-only">Loading...</span>
@@ -59,7 +50,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div> -->
-  <nav aria-label="Page navigation example"> 
+  <!-- <nav aria-label="Page navigation example"> 
     <paginate-links 
       for="liquidacions" 
       :async="true"
@@ -73,7 +64,7 @@
       :hide-single-page="true"
       @change="onLangsPageChange">
     </paginate-links>
-  </nav>
+  </nav> -->
    
     
 
@@ -324,13 +315,12 @@
         props:['filtro'],
         data: function(){
             return{
-                liquidaciones:[],
-                liquidacion:[],
-                paginate: ['liquidacions'],
-                paginas:{
-                  from:1,
-                  to:1,
-                },
+                liquidacion:{},
+                // paginate: ['liquidacions'],
+                // paginas:{
+                //   from:1,
+                //   to:1,
+                // },
                 shown: false,
                 //pagination:{
                 //  current_page:this.filtro.current_page,

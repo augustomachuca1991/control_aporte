@@ -175,7 +175,7 @@
                 </form>
               </div>
               <div class="col-12">
-                <div class="card">
+                <div class="card card-maroon">
                   <div class="card-header">
                     <h3 class="card-title">Lista de Jurisdicciones</h3>
 

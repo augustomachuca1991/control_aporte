@@ -54,7 +54,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 	//-------- Clase Controller------------
 
-	Route::get('/clase', 'ClaseController@index')->name('clase');
+	Route::get('/clases', 'ClaseController@index')->name('clases');
 
 	//-------- Jurisdicciones Controller------------
 

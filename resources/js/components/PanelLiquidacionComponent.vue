@@ -45,7 +45,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-12">
-                <div class="card card-pink">
+                <div class="card card-purple">
                   <div class="card-header">
                     <h3 class="card-title">Filtros</h3>
 
@@ -56,12 +56,7 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
-                        
-
-
-
-                        <!--aqui va el componente-->
+                    <div class="import">
                         <filter-component 
                                 @sendOrigen="search('origen',...arguments)" 
                                 @sendJur="search('jurisdiccion',...arguments)" 
@@ -74,8 +69,8 @@
 
 
 
-               <div class="col-6">
-                 <div class="card card-orange">
+               <div class="col-12 col-md-4">
+                 <div class="card card-purple">
                    <div class="card-header">
                      <h3 class="card-title">Buscar Agentes</h3>
 
@@ -87,26 +82,19 @@
                    </div>
                    <div class="card-body">
                      <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
-                         
-
-
-
-                         <!--aqui va el componente-->
-                         <filter-component 
-                                 @sendOrigen="search('origen',...arguments)" 
-                                 @sendJur="search('jurisdiccion',...arguments)" 
-                                 @sendOrganismo="search('organismo',...arguments)">
-                         </filter-component>
+                         <buscaragente-component 
+                             @buscarAgente="like(...arguments)">
+                         </buscaragente-component>
                      </div>
                    </div>
                  </div>
                 </div>
 
 
-                <div class="col-6">
-                  <div class="card card-olive">
+                <div class="col-12 col-md-4">
+                  <div class="card card-purple">
                     <div class="card-header">
-                      <h3 class="card-title">Perido</h3>
+                      <h3 class="card-title">Buscar Periodo</h3>
 
                       <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -116,16 +104,31 @@
                     </div>
                     <div class="card-body">
                       <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
-                          
+                          <filtroperiodo-component 
+                             @sendPeriodo="search('periodo',...arguments)">
+                          </filtroperiodo-component>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
 
 
+                <div class="col-12 col-md-4">
+                  <div class="card card-purple">
+                    <div class="card-header">
+                      <h3 class="card-title">Tipo Liquidación</h3>
 
-                          <!--aqui va el componente-->
-                          <filter-component 
-                                  @sendOrigen="search('origen',...arguments)" 
-                                  @sendJur="search('jurisdiccion',...arguments)" 
-                                  @sendOrganismo="search('organismo',...arguments)">
-                          </filter-component>
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
+                          <filtertipoliquidacion-component 
+                              @sendTipo="search('tipo_liquidacion',...arguments)">
+                          </filtertipoliquidacion-component>
                       </div>
                     </div>
                   </div>
@@ -135,7 +138,7 @@
                 <div class="col-12">
                   <div class="card">
                     <div class="card-header">
-                      <h3 class="card-title">Lista de Declaraciones juradas</h3>
+                      <h3 class="card-title">Lista de Haberes</h3>
 
                       <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -145,31 +148,9 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                      <table class="table table-hover text-nowrap">
-                        <thead>
-                          <tr>
-                            <th>ID</th>
-                            <th>Nombre de Archivo</th>
-                            <th>Periodo</th>
-                            <th>Organismo</th>
-                            <th>Tipo</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>0</td>
-                            <td>
-                              <span class="text-success"><i class="fas fa-file-csv"></i></span>
-                              1
-                            </td>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>5</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <listaliquidaciones-component 
+                          :filtro="filtro">
+                      </listaliquidaciones-component> 
                     </div>
                     <!-- /.card-body -->
                   </div>

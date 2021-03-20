@@ -1,6 +1,6 @@
 <template>
     <div id="clases">
-        <table class="table table-borderless table-striped border" v-model="clases">
+        <!-- <table class="table table-borderless table-striped border" v-model="clases">
             <caption>Clases</caption>
             <thead>
                 <tr>
@@ -32,10 +32,10 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
 
         <!-- Modal Edit Clase -->
-        <div class="modal fade bd-example-modal-md edit" id="edit_clase" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <!-- <div class="modal fade bd-example-modal-md edit" id="edit_clase" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-md edit">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -76,14 +76,14 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Modal Nueva clase -->
-        <div class="m-2" align="right">
+        <!-- <div class="m-2" align="right">
         <a href="#" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#nueva_clase"><i class="fas fa-plus"></i> Nueva</a>    
-        </div>
+        </div> -->
 
-        <div class="modal fade bd-example-modal-md" tabindex="-1" id="nueva_clase" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <!-- <div class="modal fade bd-example-modal-md" tabindex="-1" id="nueva_clase" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -129,7 +129,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
   
     </div>
 </template>
