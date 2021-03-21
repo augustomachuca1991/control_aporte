@@ -19,16 +19,13 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
+                <div class="clases">
                     
 
 
 
                     <!--aqui va el componente-->
-                    <filter-component 
-                            @sendOrigen="search('origen',...arguments)" 
-                            @sendJur="search('jurisdiccion',...arguments)" 
-                            @sendOrganismo="search('organismo',...arguments)">
+                    <filter-component>
                     </filter-component>
                 </div>
               </div>
@@ -49,31 +46,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
-                  <table class="table table-hover text-nowrap">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Nombre de Archivo</th>
-                        <th>Periodo</th>
-                        <th>Organismo</th>
-                        <th>Tipo</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>0</td>
-                        <td>
-                          <span class="text-success"><i class="fas fa-file-csv"></i></span>
-                          1
-                        </td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <clase-component></clase-component>
                 </div>
                 <!-- /.card-body -->
               </div>

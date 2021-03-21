@@ -1,5 +1,29 @@
 <template>
     <div id="clases">
+        <table class="table table-hover text-nowrap">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Clase</th>
+              <th>Creado</th>
+              <th>Categoria</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(clase, index) in clases" :key="clase.id">
+              <td>{{clase.id}}</td>
+              <td>{{clase.clase}}</td>
+              <td>{{clase.created_at | moment}}</td>
+              <td>{{clase.categoria.categoria}}</td>
+              <td>
+                <button class="btn btn-warning rounded-circle btn-xs"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger rounded-circle btn-xs"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-info rounded-circle btn-xs"><i class="fas fa-eye"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <!-- <table class="table table-borderless table-striped border" v-model="clases">
             <caption>Clases</caption>
             <thead>
@@ -149,9 +173,9 @@
                         }
                     })
     export default {
-        props:['clases'],
         data: function(){
             return{
+                clases:[],
                 clase:{
                     id: '',
                     categoria_id:'',
@@ -236,10 +260,10 @@
                     }
                 });
             },
-            getOrigenes(){
-                axios.get('api/origen/')
+            getClases(){
+                axios.get('api/clase/')
                 .then((response)=>{
-                    this.origenes = response.data;
+                    this.clases = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -300,7 +324,7 @@
             },
         },
         mounted(){
-          this.getOrigenes(); 
+          this.getClases(); 
         }
 
     }

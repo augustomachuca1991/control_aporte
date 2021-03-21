@@ -350,7 +350,7 @@ return [
         [
             'text'       => 'Historia Laboral',
             'icon_color' => 'orange',
-            'url'        => '#',
+            'route'        => 'hlaborales',
         ],
         // [
         //     'text'       => 'Clases',

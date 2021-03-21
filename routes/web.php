@@ -64,9 +64,7 @@ Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/organismos', 'OrganismoController@index')->name('organismos');
 
     //-------- Historia Laborales Controller------------
-    Route::resource('/hlaborales', 'HistoriaLaboralController')
-        ->names('hlaborales')
-        ->parameters(['hlaborales' => 'hlaborales']);
+    Route::get('/hlaborales', 'HistoriaLaboralController@index')->name('hlaborales');
 
 
 

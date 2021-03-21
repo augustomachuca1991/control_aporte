@@ -1,27 +1,27 @@
-@extends('admin.app')
-@section('body')
-    
-    <!-- <div class="row">
-        <div class="col">
-            <h1>Historias Laborales</h1>
-        </div>
-    </div>
+@extends('adminlte::page')
 
-    <div class="card-body">
-        <historialaborales-component></historialaborales-component>
-    </div>
- -->
- <div class="container">
- 		<panel-historialaboral></panel-historialaboral>
- </div>
+@section('title', 'Historia Laboral')
+
+<!-- @section('plugins.Sweetalert2', true) -->
+
+@section('css')
+    <!-- <link rel="stylesheet" href="/css/admin_custom.css"> -->
+    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+@stop
+
+@section('content_header')
+    <h1 class="text-secondary h1-responsive">Panel de Historia Laboral</h1>
+@stop
 
 
-@endsection
+@section('content')
+  <div id="app">
+    <panel-historialaboral></panel-historialaboral>   
+  </div>
+@stop
+
+
 
 @section('js')
-<!--Load the AJAX API-->
-    
-
-
-
-@endsection
+    <script src="{{ asset('js/app.js') }}" defer></script>
+@stop

@@ -114,7 +114,10 @@ class ClaseController extends Controller
         return $this->getClases($categoria_id);
     }
 
-    public function getClases($id){
-        return Clase::where('categoria_id','=',$id)->get();
+    public function getClases(){
+        return Clase::with('categoria')->get();
     }
+
+
+
 }

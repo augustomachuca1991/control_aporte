@@ -53,6 +53,8 @@ Route::post('/export', 'ExcelController@export')->name('export');
 
 //Puestos Laborales
 Route::get('/puesto', 'PuestoLaboralController@getpuestoLaboral')->name('puesto_laboral');
+
+
 // agente_organismo
 Route::get('/agente_organismo', 'PuestoLaboralController@index')->name('puesto_laboral');
 Route::get('/agente_organismo/{id}', 'PuestoLaboralController@getPuestoLaboralSelected')->name('puesto_laboral');
@@ -87,7 +89,7 @@ Route::post('/categoria/create', 'CategoriaController@store')->name('create_cate
 Route::delete('/categoria/delete/{id}', 'CategoriaController@destroy')->name('delete_categoria');
 
 // Clases
-Route::get('/clase/{id}', 'ClaseController@getClases')->name('clases');
+Route::get('/clase', 'ClaseController@getClases')->name('clases');
 Route::get('/clase/edit/{id}', 'ClaseController@edit')->name('edit_clase');
 Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase');
 Route::post('/clase/create', 'ClaseController@store')->name('create_clase');
