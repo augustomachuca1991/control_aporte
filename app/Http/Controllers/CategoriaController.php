@@ -37,9 +37,9 @@ class CategoriaController extends Controller
     {
         // dd($request->all());
         $validarDatos = $request->validate([
-            'id_jurisdiccion'   => 'required',
             'cod_categoria'     => 'required|unique:categorias',
             'categoria'         => 'required|string',
+            'jurisdiccion_id'   => 'required',
         ]);
         // dd($validarDatos);
         $categoria = Categoria::create([
@@ -47,11 +47,9 @@ class CategoriaController extends Controller
                                         'categoria'     => $request->categoria
                                         ]);
         // dd($categoria);
-        $id_jurisdiccion = $request->id_jurisdiccion;
-        // dd($cod_jurisdiccion);
-        $categoria->jurisdicciones()->attach($id_jurisdiccion);
+        $categoria->jurisdicciones()->attach($request->jurisdiccion_id);
 
-        return $categoria;
+        return $this->show($categoria->id);
     }
 
     /**
@@ -60,9 +58,11 @@ class CategoriaController extends Controller
      * @param  \App\Categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function show(Categoria $categoria)
+    public function show($id)
     {
-        //
+        $categoria = Categoria::with(['jurisdicciones'])
+                ->where('id', $id)->first();
+        return $categoria;
     }
 
     /**
@@ -112,15 +112,22 @@ class CategoriaController extends Controller
     public function destroy($id)
     {
         $categoria = Categoria::find($id);
-        $j_id = $categoria->jurisdicciones->first()->pivot->jurisdiccion_id;
+        $nombre_categoria = $categoria->categoria;
+        foreach($categoria->clases as $clases)
+        {
+            $clases->delete();
+        };
+        $categoria->jurisdicciones()->detach();
         $categoria->delete();
 
-        return $this->getCategorias($j_id);
+        return $nombre_categoria." borrado exitosamente";
     }
 
     public function getCategorias(){
-        return Categoria::all();
+        return Categoria::with('jurisdicciones')->get();
     }
+
+
     public function getCategoria($id){
         $categoria =  Categoria::find($id);
         $j_id = $categoria->jurisdicciones->first()->pivot->jurisdiccion_id;

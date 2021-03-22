@@ -56,10 +56,10 @@ class ClaseController extends Controller
      * @param  \App\Clase  $clase
      * @return \Illuminate\Http\Response
      */
-    public function show($clase_id)
+    public function show($id)
     {
         $clase = Clase::with(['categoria'])
-                ->where('id', $clase_id)->first();
+                ->where('id', $id)->first();
         return $clase;
     }
 
@@ -108,6 +108,7 @@ class ClaseController extends Controller
      */
     public function destroy($id)
     {
+        //tambien se debe borrar la categoria relacionada a esa clase
         $clase = Clase::find($id);
         $nombre_clase = $clase->clase;
         $clase->delete();
@@ -129,6 +130,18 @@ class ClaseController extends Controller
             ->orWhereHas('categoria' , function($query) use ($search){
                 $query->where('categoria','LIKE',"%".$search."%");
             })
+            ->get();
+
+    }
+
+
+
+
+    public function sort($column , $order)
+    {
+            
+            return Clase::with(['categoria'])
+            ->orderBy($column, $order)
             ->get();
 
     }

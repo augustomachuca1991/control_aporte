@@ -50,7 +50,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 	
 	//-------- Categoria Controller------------
-	Route::get('/categoria', 'CategoriaController@index')->name('categoria');
+	Route::get('/categorias', 'CategoriaController@index')->name('categorias');
 
 	//-------- Clase Controller------------
 

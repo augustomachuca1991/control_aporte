@@ -343,6 +343,11 @@ return [
             'route'        => 'clases',
         ],
         [
+            'text'       => 'Categorias',
+            'icon_color' => 'navy',
+            'route'        => 'categorias',
+        ],
+        [
             'text'       => 'Liquidaciones',
             'icon_color' => 'purple',
             'route'        => 'liquidaciones',

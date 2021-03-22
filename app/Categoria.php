@@ -15,7 +15,7 @@ class Categoria extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['cod_categoria', 'categoria'];
 
-    public function Clases()
+    public function clases()
     {
     	return $this->hasMany('App\Clase');
     }

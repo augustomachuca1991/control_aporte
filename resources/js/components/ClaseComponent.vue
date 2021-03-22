@@ -154,10 +154,10 @@
                   <table class="table table-hover text-nowrap">
                     <thead>
                       <tr>
-                        <th>Cod</th>
-                        <th>Clase</th>
-                        <th>Creado</th>
-                        <th>Categoria</th>
+                        <th>Cod<a href="#" class="text-dark" @click="sort('cod_clase')"><small><i class="fas fa-sort"></i></small></a></th>
+                        <th>Clase<a href="#" class="text-dark" @click="sort('clase')"><small><i class="fas fa-sort"></i></small></a></th>
+                        <th>Creado<a href="#" class="text-dark" @click="sort('created_at')"><small><i class="fas fa-sort"></i></small></a></th>
+                        <th>Categoria<a href="#" class="text-dark" @click="sort('categoria')"><small><i class="fas fa-sort"></i></small></a></th>
                         <th></th>
                       </tr>
                     </thead>
@@ -215,6 +215,7 @@
                 selectedClase:'',
                 selectedCategoria:'',
                 editMode: false,
+                order: false,
 
             }
       },
@@ -349,6 +350,19 @@
               this.clases = response.data;
           })
 
+        },
+        sort(columna){
+          this.order = !this.order;
+          let sort;
+          if (this.order) {
+            sort = 'asc'
+          }else{
+            sort = 'desc'
+          }
+          console.log(columna)
+          axios.get(`api/clase/order/${columna}/sort/${sort}`).then((response)=>{
+              this.clases = response.data
+          })
         },
         empty(){
           $('#clase_new').modal('hide');

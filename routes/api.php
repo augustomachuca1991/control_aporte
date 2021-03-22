@@ -96,6 +96,7 @@ Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase')
 Route::post('/clase/create', 'ClaseController@store')->name('create_clase');
 Route::delete('/clase/delete/{id}', 'ClaseController@destroy')->name('delete_clase');
 Route::get('/clase/{search}', 'ClaseController@search')->name('clase_search');
+Route::get('/clase/order/{column}/sort/{sort}', 'ClaseController@sort')->name('sort_clase');
 
 // Jurisdicciones
 Route::get('/jurisdiccion', 'JurisdiccionController@getJurisdicciones')->name('jurisdiccion');
