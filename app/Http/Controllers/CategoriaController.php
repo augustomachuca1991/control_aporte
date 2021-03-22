@@ -118,10 +118,8 @@ class CategoriaController extends Controller
         return $this->getCategorias($j_id);
     }
 
-    public function getCategorias($id){
-        return Categoria::whereHas('jurisdicciones', function ($query) use ($id) {
-            $query->where('jurisdiccion_id',$id);
-        })->with('jurisdicciones')->get();
+    public function getCategorias(){
+        return Categoria::all();
     }
     public function getCategoria($id){
         $categoria =  Categoria::find($id);

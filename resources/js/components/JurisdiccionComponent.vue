@@ -205,7 +205,7 @@
                       </thead>
                       <tbody>
                         <tr v-if="jurisdicciones.length===0">
-                            <td class="text-center">No data</td>
+                            <td colspan="5" style="height: 100px;" class="align-middle"><p class="text-center">No se encontraron resultados</p></td>
                         </tr>
                         <tr v-else v-for="(jurisdiccion,index) in jurisdicciones" :key='jurisdiccion.id'>
                           <th scope="row">{{jurisdiccion.cod_jurisdiccion}}</th>

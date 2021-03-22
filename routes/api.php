@@ -81,6 +81,7 @@ Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
 Route::get('/periodo/{id}', 'PeriodoController@show');
 
 // Categoria
+Route::get('/categoria', 'CategoriaController@getCategorias')->name('categorias');
 Route::get('/categoria/find/{id}', 'CategoriaController@getCategoria')->name('find_categoria');
 Route::get('/categoria/{id}', 'CategoriaController@getCategorias')->name('categoria');
 Route::get('/categoria/edit/{id}', 'CategoriaController@edit')->name('edit_categoria');
@@ -94,6 +95,7 @@ Route::get('/clase/edit/{id}', 'ClaseController@edit')->name('edit_clase');
 Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase');
 Route::post('/clase/create', 'ClaseController@store')->name('create_clase');
 Route::delete('/clase/delete/{id}', 'ClaseController@destroy')->name('delete_clase');
+Route::get('/clase/{search}', 'ClaseController@search')->name('clase_search');
 
 // Jurisdicciones
 Route::get('/jurisdiccion', 'JurisdiccionController@getJurisdicciones')->name('jurisdiccion');

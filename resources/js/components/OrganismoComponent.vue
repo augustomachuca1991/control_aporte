@@ -240,7 +240,7 @@
                       </thead>
                       <tbody>
                         <tr v-if="organismos.length===0">
-                            <td class="text-center">No data</td>
+                            <td colspan="6" style="height: 100px;" class="align-middle"><p class="text-center">No se encontraron resultados</p></td>
                         </tr>
                         <tr v-else v-for="(organismo,index) in organismos" :key='organismo.id'>
                           <th scope="row">{{organismo.cod_organismo}}</th>

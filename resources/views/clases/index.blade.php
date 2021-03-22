@@ -16,7 +16,7 @@
 
 @section('content')
   <div id="app">
-    <panelclase-component></panelclase-component>   
+    <clase-component></clase-component>   
   </div>
 @stop
 

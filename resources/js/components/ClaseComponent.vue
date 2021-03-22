@@ -1,331 +1,372 @@
 <template>
-    <div id="clases">
-        <table class="table table-hover text-nowrap">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Clase</th>
-              <th>Creado</th>
-              <th>Categoria</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(clase, index) in clases" :key="clase.id">
-              <td>{{clase.id}}</td>
-              <td>{{clase.clase}}</td>
-              <td>{{clase.created_at | moment}}</td>
-              <td>{{clase.categoria.categoria}}</td>
-              <td>
-                <button class="btn btn-warning rounded-circle btn-xs"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger rounded-circle btn-xs"><i class="fas fa-trash"></i></button>
-                <button class="btn btn-info rounded-circle btn-xs"><i class="fas fa-eye"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <table class="table table-borderless table-striped border" v-model="clases">
-            <caption>Clases</caption>
-            <thead>
-                <tr>
-                    <th scope="col">Cod. Clase</th>
-                    <th scope="col">Clase</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-if="clases.length===0">
-                    <td colspan="6" align="center">No hay datos</td>
-                </tr>
-                <tr v-for="(clase, index) in clases" v-bind:key="clase.id" v-else>
-                    <th>{{clase.id}}</th>
-                    <td>{{clase.clase}}</td>
-                    <td class="row">
-                        <div class="col-md-1">
-                            <button @click="editClase(clase)" class="btn btn-outline-warning border-0 btn-sm shadow text-dark" data-toggle="modal" data-target="#edit_clase">
-                            <i class="far fa-edit"></i>
-                        </button>
-                        </div>
-                        <div class="col-md-1">
-                        <form @submit.prevent="deleteClase(clase.id)">
-                            <button type="submit" class="btn btn-outline-danger border-0 btn-sm shadow text-dark">
-                            <i class="far fa-trash-alt"></i>
-                            </button>
-                        </form>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table> -->
-
-        <!-- Modal Edit Clase -->
-        <!-- <div class="modal fade bd-example-modal-md edit" id="edit_clase" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-md edit">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="edit_clase">Editar clase</h5>
-                        <button type="button" v-on:click ="empty()" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="btn btn-danger" aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" class="form-group" method="POST">
-                            <div class="form-group">
-                                <label class="col-form-label" for="origen_new">Origen</label>
-                                <select class="form-control form-control-md" name="origen_new" v-model="origen_id" required>
-                                <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.id">{{origen.origen}}</option>
-                                </select>
-                            </div>  
-                            <div class="form-group">
-                                <label class="col-form-label" for="jurisdiccion_new">Jurisdiccion</label>
-                                <select class="form-control form-control-md" name="jurisdiccion_new" v-model="jurisdiccion_id" required>
-                                <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.id">{{jurisdiccion.jurisdiccion}}</option>
-                                </select>
-                            </div>   
-                            <div class="form-group">
-                                <label class="col-form-label" for="categoria_new">Categoria</label>
-                                <select class="form-control form-control-md" name="categoria_new" v-model="clase.categoria_id" required>
-                                <option v-for="(categoria, index) in categorias" :key="categoria.id" :value="categoria.id">{{categoria.categoria}}</option>
-                                <span  style="color:red" v-if="feedback.categoria_id" v-text="feedback.categoria_id[0]" ></span>
-                                </select>
-                            </div>       
-                            <div class="form-group">
-                                <label class="col-form-label">Nombre</label>
-                                <input type="text"class="form-control" name="clase" v-model="clase.clase">
-                            </div>
-                            <div class="modal-footer">
-                                <button v-on:click="updateClase(clase.id)" data-dismiss="modal" id="editar_clase" class="btn btn-outline-danger border-0">Editar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+  <div id="panel_clase">
+    <!--Modal nueva clase-->
+    <div class="modal fade" id="clase_new" tabindex="-1" role="dialog" aria-labelledby="ModalLabelNewClase" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form  action="" @submit.prevent="nuevaClase()">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalLabelNewClase">Nueva Clase</h5>
+              <!-- {{errors}} -->
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="empty()">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-        </div> -->
-
-        <!-- Modal Nueva clase -->
-        <!-- <div class="m-2" align="right">
-        <a href="#" class="btn btn-primary btn-sm text-white" data-toggle="modal" data-target="#nueva_clase"><i class="fas fa-plus"></i> Nueva</a>    
-        </div> -->
-
-        <!-- <div class="modal fade bd-example-modal-md" tabindex="-1" id="nueva_clase" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="nueva_clase">Nueva clase</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="btn btn-danger" aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    <div class="modal-body">
-                        <form @submit.prevent="createClase()" method="POST">
-                        <div class="form-group">
-                            <label class="col-form-label" for="origen_new">Origen</label>
-                            <select class="form-control form-control-md" name="origen_new" v-model="selectedOrigen">
-                                <option :value="''" disabled selected>Seleccione Origen</option>
-                                <option v-for="(origen, index) in origenes" :key="origen.id" :value="origen.id">{{origen.origen}}</option>
-                            </select>
-                            <span style="color:red" v-if="feedback.cod_origen" v-text="feedback.cod_origen[0]" ></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="jurisdiccion_new">Jurisdicción</label>
-                            <select :disabled="selectedOrigen.length == 0" class="form-control form-control-md" name="jurisdiccion_new" v-model="selectedJurisdiccion">
-                                <option :value="''" disabled selected> Seleccione Jurisdicción</option>
-                                <option v-for="(jurisdiccion, index) in jurisdicciones" :key="jurisdiccion.id" :value="jurisdiccion.id">{{jurisdiccion.jurisdiccion}}</option>
-                            </select>
-                            <span style="color:red" v-if="feedback.cod_jurisdiccion" v-text="feedback.cod_jurisdiccion[0]" ></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="categoria_new">Categoría</label>
-                            <select :disabled="selectedJurisdiccion.length == 0" class="form-control form-control-md" name="categoria_new" v-model="selectedCategoria">
-                                <option :value="''" disabled selected> Seleccione Categoria</option>
-                                <option v-for="(categoria, index) in categorias" :key="categoria.cod_categoria" :value="categoria.cod_categoria">{{categoria.categoria}}</option>
-                            </select>
-                            <span style="color:red" v-if="feedback.categoria_id" v-text="feedback.categoria_id[0]" ></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="clase" class="col-form-label">Nombre</label>
-                            <input type="text" class="form-control" id="clase" name="clase" v-model="clase.clase" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="crear_clase" class="btn btn-primary">Crear</button>
-                        </div>
-                        </form>
-                    </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="input_codigo_clase" class="col-sm-3 col-form-label">Codigo *</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="input_codigo_clase" v-model="cod_clase" >
+                  <span class="errors text-danger" v-for="error in errores.cod_clase">    
+                    <small><em>{{error}}</em></small>
+                  </span>
                 </div>
+              </div>
+              <div class="form-group row">
+                <label for="input_clase" class="col-sm-3 col-form-label">Clase *</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="input_clase" v-model="descripcion" >
+                  <span class="errors text-danger" v-for="error in errores.clase">
+                      <small><em>{{error}}</em></small>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="select_categoria" class="col-sm-3 col-form-label">Categoria *</label>
+                <div class="col-sm-9">
+                  <select :disabled="categorias.length === 0" class="custom-select" id="select_categoria" v-model="selectedCategoria" required>
+                    <option selected disabled :value="''">Seleccione Categoria...</option>
+                    <option v-for="(categoria,index) in categorias" :key="categoria.id" :value="index">
+                      {{categoria.categoria}}
+                    </option>
+                  </select>
+                  <span class="errors text-danger" v-for="error in errores.categoria_id">
+                      <small><em>{{error}}</em></small>
+                  </span>
+                </div>
+              </div>
             </div>
-        </div> -->
-  
+            <div class="modal-footer">
+              <span><small><em>(*) obligatorio</em></small></span>
+              <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+
+
+
+    <!-- Modal editar jurisdiccion -->
+    <div class="modal fade" id="clase_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditClase" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalLabelEditClase">Editar Jurisdiccion</h5>
+            <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- {{clase}} -->
+            <div class="form-group row">
+              <label for="input_codigo_clase_edit" class="col-sm-3 col-form-label">Codigo *</label>
+              <div class="col-sm-9">
+
+                <input v-if='editMode' type="text" class="form-control" id="input_codigo_clase_edit" placeholder="Codigo" v-model="cod_clase" disabled>
+                <p class="text-justify" v-else>{{cod_clase}}</p>
+                <!-- <span class="errors text-danger" v-for="error in errores.cod_clase">
+                    <small><em>{{error}}</em></small>
+                </span> -->
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="input_clase_edit" class="col-sm-3 col-form-label">Clase *</label>
+              <div class="col-sm-9">
+                <input v-if="editMode" type="text" class="form-control" id="input_clase_edit" placeholder="Clase" v-model="descripcion">
+                <p class="text-justify" v-else>{{descripcion}}</p>
+                <span class="errors text-danger" v-for="error in errores.clase">
+                    <small><em>{{error}}</em></small>
+                </span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="input_cod_origen" class="col-sm-3 col-form-label">Categoria *</label>
+              <div class="col-sm-9">
+                <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedCategoria" required>
+                  <option v-for="(categoria,index) in categorias" :key="categoria.id" :value="index" :selected=" index === selectedCategoria">
+                    {{categoria.categoria}}
+                  </option>
+                </select>
+                <p class="text-justify" v-else>{{categoria.categoria}}</p>
+                <span class="errors text-danger" v-for="error in errores.categoria_id">
+                    <small><em>{{error}}</em></small>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <span><small><em>(*) obligatorio</em></small></span>
+            <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
+            <button v-if="editMode" class="btn btn-info btn-sm" @click="actualizarClase()">
+              <i class="fa fa-save"></i>&nbsp;Guardar Cambbios
+            </button>
+            <button v-else  type="button" class="btn btn-secondary btn-sm" @click="isEditar()">
+              <i class="fa fa-edit"></i>&nbsp;Editar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+         <!-- nueva clase  y buscador--> 
+         <div class="col col-md-3 my-2">
+           <button @click="abrirModal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#clase_new"><i class="fa fa-plus"></i>&nbsp;Nueva clase</button>
+         </div>
+         <div class="col-md-3  offset-md-6 my-2">
+           <form class="form-inline justify-content-end">
+                 <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
+                 <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @keyup="buscar()">
+           </form>
+         </div>
+
+
+
+          <!-- /.col (LEFT) -->
+            <div class="col-12">
+              <div class="card card-info">
+                <div class="card-header">
+                  <h3 class="card-title">Lista de Clases</h3>
+
+                  <!-- <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"">
+                    </div>
+                  </div> -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Cod</th>
+                        <th>Clase</th>
+                        <th>Creado</th>
+                        <th>Categoria</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="clases.length===0">
+                          <td colspan="5" style="height: 100px;" class="align-middle"><p class="text-center">No se encontraron resultados</p></td>
+                      </tr>
+                      <tr v-else v-for="(clase, index) in clases" :key="clase.id">
+                        <td>{{clase.cod_clase}}</td>
+                        <td>{{clase.clase}}</td>
+                        <td>{{clase.created_at | moment}}</td>
+                        <td>{{clase.categoria.categoria}}</td>
+                        <td>
+                          <button class="btn btn-outline-warning rounded-circle btn-xs border-0" data-toggle="modal" data-target="#clase_edit" @click="editarClase(index, clase)"><i class="fas fa-edit"></i></button>
+                          <button class="btn btn-outline-danger rounded-circle btn-xs border-0" @click="eliminarClase(index,clase.id)" ><i class="fas fa-trash"></i></button>
+                          <button class="btn btn-outline-info rounded-circle btn-xs border-0"><i class="fas fa-eye"></i></button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+  </div>
 </template>
 
-
 <script>
-    const Toast =   swal.mixin
-                    ({
-                        toast: true,
-                        position: 'top-end',
-                        background: 'rgb(223, 237, 225)',
-                        timer: 3000,
-                        showConfirmButton: false,
-                        onOpen: (toast) => {
-                            toast.addEventListener('mouseenter', swal.stopTimer)
-                            toast.addEventListener('mouseleave', swal.resumeTimer)
-                        }
-                    })
-    export default {
-        data: function(){
+  const Toast = swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  timer: 6000,
+                  showConfirmButton: false,
+                  onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', swal.stopTimer)
+                    toast.addEventListener('mouseleave', swal.resumeTimer)
+                  }
+                });
+     export default {
+        data: function() {
             return{
                 clases:[],
-                clase:{
-                    id: '',
-                    categoria_id:'',
-                    clase:'',
-                    created_at: '',
-                    updated_at: '',
-                },
                 categorias:[],
-                selectedCategoria:"",
-                selectedOrigen:"",
-                selectedJurisdiccion:"",
-                feedback:'',
-                origenes:[],
-                categoria:'',
-                jurisdicciones:[],
-                origen_id:'',
-                jurisdiccion_id:''
+                errores:[],
+                clase:{},
+                categoria:{},
+                search:'',
+                cod_clase:'',
+                descripcion: '',
+                selectedClase:'',
+                selectedCategoria:'',
+                editMode: false,
+
             }
+      },
+      mounted() {
+        this.getClases();
+
+      },
+      methods:{
+        getClases(){
+          axios.get('api/clase/').then((response)=>{
+              this.clases = response.data;
+          })
+          .catch(function (error) {
+              console.log(error);
+              this.errors = error;
+          });
         },
-        methods:{
-            createClase() {
-                    const params = {
-                        categoria_id : this.selectedCategoria,
-                        clase : this.clase.clase
-                    };
-                    axios.post('api/clase/create', params )
-                    .then(response => {
-                        this.clases = response.data;
-                        $('#clases').removeClass('modal-open');
-                        $("#nueva_clase").modal('hide');
-                        this.empty();
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'Clase creada con éxito'
-                        })
-                    }).catch(error => {
-                        this.feedback = error.response.data.errors;
-                    });
-            },
-            editClase(clase){
-                this.clase = clase;
-                this.getCategoria(this.clase.categoria_id);
-            },
-            updateClase(id){
-                const params = {
-                categoria_id : this.clase.categoria_id,
-                clase : this.clase.clase
-                };
-                axios.put(`api/clase/update/${id}`, params).then((response)=>{
-                    $('#edit_clase').removeClass('show');
-                    $('modal-backdrop').remove();
-                    $('. close').click();
-                    this.getClases(); 
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Clase actualizada con éxito'
-                    })      
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            },
-            deleteClase(id){
-                swal.fire({
-                  title: '¿Estás seguro?',
-                  text: "Esta clase será eliminada",
-                  showCancelButton: true,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Si, eliminar',
-                  cancelButtonText: 'Cancelar',
-                }).then((result) => {
-                    if (result.value) {
-                        axios.delete(`api/clase/delete/${id}`).then((response)=>{
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Categoría eliminada con éxito' 
-                            })
-                            this.clases = response.data;
-                        }).catch(function (error) {
-                                console.log(error);
-                        });
-                    }
-                });
-            },
-            getClases(){
-                axios.get('api/clase/')
-                .then((response)=>{
-                    this.clases = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            getJurisdicciones(id){
-                axios.get(`api/jurisdiccion/${this.origen_id}`)
-                .then((response)=>{
-                this.jurisdicciones = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            getCategorias(id){
-                axios.get(`api/categoria/${id}`)
-                .then((response)=>{
-                    this.categorias = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            getCategoria(id){
-                axios.get(`api/categoria/find/${id}`)
-                .then((response)=>{
-                    this.origen_id = response.data.origen_id;
-                    this.getJurisdicciones(this.origen_id);
-                    this.jurisdiccion_id = response.data.jurisdiccion_id;
-                    this.getCategorias(this.jurisdiccion_id);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            empty(){
-                this.clase = {},
-                this.selectedOrigen = "";
-                this.selectedJurisdiccion = "";
-                this.selectedCategoria = "";
-                this.feedback = [];
-            },
+        getCategorias(){
+          axios.get('api/categoria').then((response)=>{
+              this.categorias = response.data;
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
         },
-        watch:{
-            selectedOrigen: function() {
-                  this.jurisdicciones = [];
-                  this.selectedJurisdiccion = "";
-                  if (this.selectedOrigen > 0) {
-                    this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones
-                  }
-            },
-            selectedJurisdiccion: function() {
-                  this.categorias = [];
-                  this.selectedCategoria = "";
-                  if (this.selectedJurisdiccion > 0) {
-                    this.getCategorias(this.selectedJurisdiccion);
-                  }
-            },
+        nuevaClase(){
+
+            // const nueva_clase = {
+            //     //id: 555,
+            //     cod_clase : this.cod_clase,
+            //     categoria_id : this.categorias[this.selectedCategoria].id,
+            //     clase : this.clase,
+            //     created_at: new Date(),
+            //     categoria: this.categorias[this.selectedCategoria],
+            // };
+            
+
+            let formData = new FormData()
+            formData.append('cod_clase', this.cod_clase)
+            formData.append('categoria_id', this.categorias[this.selectedCategoria].id)
+            formData.append('clase', this.descripcion)
+            axios.post('api/clase/create', formData).then((response)=>{
+              //console.log(response.data);
+              $('#clase_new').modal('hide');
+              Toast.fire({
+                icon: 'success',
+                title:'Se agrego la nueva clase '+response.data.clase,
+                background:'#E7FFD7',
+              })
+              this.clase = response.data;
+              this.clases.unshift(this.clase);
+              this.empty();
+            }).catch((err) => {
+              //console.log(err.response.data.errors)
+              this.errores = err.response.data.errors;
+            });
+
+            
         },
-        mounted(){
-          this.getClases(); 
-        }
+        editarClase(index, clase){
+          //this.empty();
+          //console.log(clase.categoria);
+          this.getCategorias();
+          this.clase = clase;
+          // this.clase = this.clases[index];
+          this.selectedClase = index;
+          this.cod_clase = this.clase.cod_clase;
+          this.descripcion = this.clase.clase
+          this.selectedCategoria = this.clase.categoria_id - 1;
+          this.categoria = this.clase.categoria
+        },
+        isEditar(){
+          this.editMode = true;
+        },
+        actualizarClase(){
+          // console.log('actualizado');
+          const params = {
+              //id: 555,
+              cod_clase : this.cod_clase,
+              categoria_id : this.categorias[this.selectedCategoria].id,
+              clase : this.descripcion,
+              created_at: new Date(),
+              categoria: this.categorias[this.selectedCategoria],
+          };
+          
+
+          axios.put(`api/clase/update/${this.clase.id}`,params)
+          .then((response)=>{
+              Toast.fire({
+                icon: 'success',
+                title:'La clase '+response.data.clase +' se edito con exitó',
+                background:'#E7FFD7',
+              })
+              this.clases[this.selectedClase] = response.data;
+              this.empty();
+          })
+          .catch((err) => {
+           console.log(err.response.data.errors)
+           this.errores = err.response.data.errors;
+          });
+        },
+        eliminarClase(index,id){
+          //console.log(index,clase)
+          swal.fire({
+            title: 'Esta seguro?',
+            text: this.clases[index].clase+" esta a punto de ser eliminada!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              axios.delete(`api/clase/delete/${id}`).then((response)=>{
+                  this.clases.splice(index, 1);
+                  Toast.fire({
+                    icon: 'success',
+                    title: response.data,
+                    background:'#E7FFD7',
+                  })
+              })
+            }
+          })
+        },
+        abrirModal(){
+          this.getCategorias();
+          console.log(this.categorias);
+        },
+        buscar(){
+          axios.get(`api/clase/${this.search}`).then((response)=>{
+              //console.log(response.data)
+              this.clases = response.data;
+          })
+
+        },
+        empty(){
+          $('#clase_new').modal('hide');
+          $('#clase_edit').modal('hide');
+          this.categorias = [];
+          this.errores = [];
+          this.clase = {};
+          this.categoria = {};
+          this.search = '';
+          this.cod_clase = '';
+          this.descripcion =  '';
+          this.categoria_id = '';
+          this.selectedClase = '';
+          this.selectedCategoria = '';
+          this.editMode = false;
+        },
+      },
+      
 
     }
 </script>

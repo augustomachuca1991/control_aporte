@@ -21,6 +21,9 @@
             </tr>
           </thead>
             <tbody>
+              <tr v-if="!filtro.condition">
+                <td colspan="8" style="height: 200px;" class="align-middle"><p class="text-center">No se encontraron resultados</p></td>
+              </tr>
               <tr v-for=" liquidacion in filtro.data" :key="liquidacion.id">
                   <th scope="row" v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">{{historia_laboral.puesto.cod_laboral}}</th>
                   <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>

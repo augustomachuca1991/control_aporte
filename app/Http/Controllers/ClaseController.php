@@ -35,17 +35,19 @@ class ClaseController extends Controller
      */
     public function store(Request $request)
     {
-        $validarDatos = $request->validate([
+        $validar = $request->validate([
+            'cod_clase' => 'required|integer',
+            'clase' => 'required|string',
             'categoria_id' => 'required',
-            'clase'     => 'required|string',
         ]);
 
         $clase = Clase::create([
-                                'categoria_id' => $request['categoria_id'],
-                                'clase'     => $request['clase']
-                                ]);
-        // return back()->withSuccess('Clase creada con éxito');
-        return Clase::where('categoria_id','=',$request->categoria_id)->get();
+            'cod_clase' => $request->cod_clase,
+            'clase' => $request->clase,
+            'categoria_id' => $request->categoria_id,
+        ]);
+
+        return $this->show($clase->id);
     }
 
     /**
@@ -54,9 +56,11 @@ class ClaseController extends Controller
      * @param  \App\Clase  $clase
      * @return \Illuminate\Http\Response
      */
-    public function show(Clase $clase)
+    public function show($clase_id)
     {
-        
+        $clase = Clase::with(['categoria'])
+                ->where('id', $clase_id)->first();
+        return $clase;
     }
 
     /**
@@ -67,7 +71,7 @@ class ClaseController extends Controller
      */
     public function edit($id)
     {
-        return Clase::find($id);
+        //return Clase::find($id);
     }
 
     /**
@@ -80,17 +84,18 @@ class ClaseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'clase'     => 'required'
+            //'cod_clase'     => 'required',
+            'clase' => 'required|string',
+            'categoria_id' => 'required',
         ]);
 
         $clase =  Clase::find($id);
-
-        $clase->categoria_id = $request['categoria_id'];
-        $clase->clase = $request['clase'];
+        $clase->categoria_id = $request->categoria_id;
+        $clase->clase = $request->clase;
         $clase->updated_at = now();
         $clase->save();
 
-        return $clase;
+        return $this->show($clase->id);
        
       
     }
@@ -104,18 +109,28 @@ class ClaseController extends Controller
     public function destroy($id)
     {
         $clase = Clase::find($id);
-        // dd($clase);
-
-        $categoria_id = $clase->categoria_id;
-        // dd($categoria_id);
-
+        $nombre_clase = $clase->clase;
         $clase->delete();
-        // $categoria_id = $
-        return $this->getClases($categoria_id);
+        return $nombre_clase.' Borrado correctamente';
     }
 
     public function getClases(){
-        return Clase::with('categoria')->get();
+        return Clase::with('categoria')->latest()->get();
+    }
+
+
+    public function search($search)
+    {
+
+        
+            return Clase::with(['categoria'])
+            ->where('clase' ,'LIKE' ,"%".$search."%")
+            ->orWhere('cod_clase' ,'LIKE' ,"%".$search."%")
+            ->orWhereHas('categoria' , function($query) use ($search){
+                $query->where('categoria','LIKE',"%".$search."%");
+            })
+            ->get();
+
     }
 
 
