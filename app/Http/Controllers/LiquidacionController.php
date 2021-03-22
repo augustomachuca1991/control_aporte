@@ -134,104 +134,42 @@ class LiquidacionController extends Controller
      */
     public function filtro(Request $request)
     {
+        
         $periodo = $request->periodo;
         $tipo = $request->tipo_liquidacion;
         $organismo = $request->organismo;
         $jur = $request->jurisdiccion;
         $origen = $request->origen;
-        return Liquidacion::whereHas('liquidacionOrganismo',function($query) use($periodo, $tipo, $organismo, $jur, $origen){
-
-            if ($origen) {
-                if ($periodo && $tipo) {
-                    $query->where('periodo_id',$periodo)->where('tipo_id',$tipo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                        $query2->whereHas('jurisdiccion', function($query3) use ($periodo, $tipo, $organismo, $jur, $origen){
-                            $query3->whereHas('origen', function($query4) use ($periodo, $tipo, $organismo, $jur, $origen){
-                                $query4->where('cod_origen' , $origen); 
+        if ($organismo) { 
+            $liquidaciones = Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($organismo){
+                $query->whereHas('organismo', function($query2) use ($organismo){
+                    $query2->where('cod_organismo' , $organismo);
+                });
+            });
+        }else{
+            if ($jur) {
+                $liquidaciones =  Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($jur){
+                    $query->whereHas('organismo', function($query2) use ($jur){
+                        $query2->whereHas('jurisdiccion',function($query3) use ($jur){
+                            $query3->where('cod_jurisdiccion' , $jur);
+                        });
+                    });
+                });
+            }else if($origen){
+                $liquidaciones =  Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($origen){
+                    $query->whereHas('organismo', function($query2) use ($origen){
+                        $query2->whereHas('jurisdiccion', function($query3) use ($origen){
+                            $query3->whereHas('origen', function($query4) use ($origen){
+                                $query4->where('cod_origen' , $origen);
                             });
                         });
                     });
-                } else if ($periodo && !$tipo ) {
-                    $query->where('periodo_id',$periodo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                        $query2->whereHas('jurisdiccion', function($query3) use ($periodo, $tipo, $organismo, $jur, $origen){
-                            $query3->whereHas('origen', function($query4) use ($periodo, $tipo, $organismo, $jur, $origen){
-                                $query4->where('cod_origen' , $origen); 
-                            });
-                        });
-                    });
-                } else if (!$periodo && $tipo) {
-                    $query->where('tipo_id',$tipo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                        $query2->whereHas('jurisdiccion', function($query3) use ($periodo, $tipo, $organismo, $jur, $origen){
-                            $query3->whereHas('origen', function($query4) use ($periodo, $tipo, $organismo, $jur, $origen){
-                                $query4->where('cod_origen' , $origen); 
-                            });
-                        });
-                    });
-                }else{
-                    $query->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                        $query2->whereHas('jurisdiccion', function($query3) use ($periodo, $tipo, $organismo, $jur, $origen){
-                            $query3->whereHas('origen', function($query4) use ($periodo, $tipo, $organismo, $jur, $origen){
-                                $query4->where('cod_origen' , $origen); 
-                            });
-                        });
-                    });
-                }
-            } else if($jur) {
-                if ($periodo && $tipo) {
-                    $query->where('periodo_id',$periodo)->where('tipo_id',$tipo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                       $query2->whereHas('jurisdiccion', function($query3) use ($periodo, $tipo, $organismo, $jur, $origen){
-                            $query3->where('cod_jurisdiccion' , $jur); 
-                        });
-                    });
-                } else if ($periodo && !$tipo ) {
-                    $query->where('periodo_id',$periodo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                       $query2->whereHas('jurisdiccion', function($query3) use ($periodo, $tipo, $organismo, $jur, $origen){
-                            $query3->where('cod_jurisdiccion' , $jur); 
-                        });
-                    });
-                } else if (!$periodo && $tipo) {
-                    $query->where('tipo_id',$tipo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                       $query2->whereHas('jurisdiccion', function($query3) use ($periodo, $tipo, $organismo, $jur, $origen){
-                            $query3->where('cod_jurisdiccion' , $jur); 
-                        });
-                    });
-                }else{
-                    $query->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                       $query2->whereHas('jurisdiccion', function($query3) use ($periodo, $tipo, $organismo, $jur, $origen){
-                            $query3->where('cod_jurisdiccion' , $jur); 
-                        });
-                    });
-                }
-            }else if($organismo){
-                if ($periodo && $tipo) {
-                    $query->where('periodo_id',$periodo)->where('tipo_id',$tipo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                        $query2->where('cod_organismo' , $organismo);
-                    });
-                } else if ($periodo && !$tipo ) {
-                    $query->where('periodo_id',$periodo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                        $query2->where('cod_organismo' , $organismo);
-                    });
-                } else if (!$periodo && $tipo) {
-                    $query->where('tipo_id',$tipo)->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                        $query2->where('cod_organismo' , $organismo);
-                    });
-                }else{
-                    $query->whereHas('organismo', function($query2) use ($periodo, $tipo, $organismo, $jur, $origen){
-                        $query2->where('cod_organismo' , $organismo);
-                    });
-                }
-            }else{
-                if ($periodo && $tipo) {
-                    $query->where('periodo_id',$periodo)->where('tipo_id',$tipo);
-                } else if ($periodo && !$tipo ) {
-                    $query->where('periodo_id',$periodo);
-                } else if (!$periodo && $tipo) {
-                    $query->where('tipo_id',$tipo);
-                }else{
-                    $query;
-                }
+                });
             }
+        }
 
-        })->with(['liquidacionOrganismo','historia_laborales'])->get();
+
+        return $liquidaciones->with(['liquidacionOrganismo','historia_laborales'])->get();
         
     }
 

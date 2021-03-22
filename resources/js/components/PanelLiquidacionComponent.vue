@@ -83,7 +83,7 @@
                    <div class="card-body">
                      <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
                          <buscaragente-component 
-                             @buscarAgente="like(...arguments)">
+                             @buscarAgente="buscar(...arguments)">
                          </buscaragente-component>
                      </div>
                    </div>
@@ -103,10 +103,29 @@
                       </div>
                     </div>
                     <div class="card-body">
-                      <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
+                      <div  style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
                           <filtroperiodo-component 
                              @sendPeriodo="search('periodo',...arguments)">
                           </filtroperiodo-component>
+                          <!-- <label for="periodo" class="text-muted"><i class="fas fa-search"></i>
+                            Periodo Liquidaciones
+                          </label>
+                          <br>
+                          <input type="date" name="periodo">
+ -->
+
+                          
+                            <!-- <label for="periodo" class="text-muted">
+                              <i class="fas fa-search"></i>
+                                Periodo Liquidaciones
+                            </label>
+                            <div class="input-group mb-2">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fas fa-calendar"></i></div>
+                              </div>
+                              <input type="date" class="form-control" id="Fecha">
+                            </div> -->
+                          
                       </div>
                     </div>
                   </div>
@@ -125,7 +144,7 @@
                       </div>
                     </div>
                     <div class="card-body">
-                      <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
+                      <div style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
                           <filtertipoliquidacion-component 
                               @sendTipo="search('tipo_liquidacion',...arguments)">
                           </filtertipoliquidacion-component>
@@ -148,9 +167,36 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                      <listaliquidaciones-component 
+                      
+
+                      <table v-if="shown" class="table table-hover text-nowrap">
+                        <thead>
+                          <tr>
+                            <th scope="col">Puesto Laboral</th>
+                            <th scope="col">Agente</th>
+                            <th scope="col">Tipo Liquidacion</th>
+                            <th scope="col">Periodo</th>
+                            <th scope="col">Jurisdiccion</th>
+                            <th scope="col">Organismo</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                          <tbody>
+                            <tr>
+                              <td colspan="8" style="height: 200px;" class="align-middle">
+                                <span class="text-center">Cargando...</span>
+                                <div class="spinner-border text-primary" role="status">
+                                  <span class="sr-only">Loading...</span>
+                                </div>
+                              </td>
+                            </tr>  
+                          </tbody>
+                      </table> 
+                      
+                      <listaliquidaciones-component v-else
                           :filtro="filtro">
                       </listaliquidaciones-component> 
+                    
                     </div>
                     <!-- /.card-body -->
                   </div>
@@ -174,9 +220,9 @@
                 origen:'',
                 jurisdiccion:'',
                 organismo:'',
-                condition:false
-
+                condition:false,
                 },
+                shown:false,
             };
         },
         mounted() {
@@ -184,6 +230,7 @@
         },
         methods:{
             search(index,parm){
+                this.shown = true;
                 switch (index) {
                   case 'periodo':
                     this.filtro.periodo = ''
@@ -219,28 +266,43 @@
                     jurisdiccion:this.filtro.jurisdiccion,
                     origen:this.filtro.origen,
                 }
-                axios.post('api/liquidacion/filtro', params).then((response)=>{
+                    
+                setTimeout(() => {
+                  axios.post('api/liquidacion/filtro', params).then((response)=>{
+                    this.shown = false;
                     this.filtro.data = [];
                     this.filtro.condition = false
                     if (response.data.length != 0 ) {
                         this.filtro.data = response.data
+                        console.log(this.filtro.data)
                         this.filtro.condition = true
                     }
-                }).catch(function (error) {
-                  console.log(error);
-                });
+                  }).catch(function (error) {
+                    console.log(error);
+                  });
+                }, 2000)
+                    
+                
             },
-            like(input){
-                axios.post(`api/liquidacion/agente/filtro` , input).then((response)=>{
-                    this.filtro.data = [];
-                    this.filtro.condition = false
-                    if (response.data.length != 0 ) {
-                        this.filtro.data = response.data
-                        this.filtro.condition = true
-                    }
-                }).catch(function (error) {
-                  console.log(error);
-                });
+            buscar(datos_agente){
+                this.shown = true;
+                setTimeout(()=>{
+                  axios.post(`api/liquidacion/agente/filtro` , datos_agente).then((response)=>{
+                      this.shown = false;
+                      this.filtro.data = [];
+                      this.filtro.condition = false
+                      if (response.data.length != 0 ) {
+                          this.filtro.data = response.data
+                          this.filtro.condition = true
+                      }
+                  }).catch(function (error) {
+                    console.log(error);
+                  });
+
+
+
+                },2000);
+                
             }
         },
 

@@ -5,7 +5,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <form  action="" @submit.prevent="newOrganismo()">
-                <div class="modal-header">
+                <div class="modal-header bg-warning">
                   <h5 class="modal-title" id="ModalLabelNewOrganismo">Nuevo Organismo</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -73,7 +73,7 @@
         <div class="modal fade" id="organismo_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditOrganismo" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header bg-warning">
                 <h5 class="modal-title" id="ModalLabelEditOrganismo">Editar Organismo</h5>
                 <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -200,7 +200,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col col-md-3 my-2">
-                <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nuevo Organismo</button>
+                <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#organismo_new"><i class="fa fa-plus"></i>&nbsp;Nuevo Organismo</button>
               </div>
               <div class="col-md-3  offset-md-6 my-2">
                 <form class="form-inline justify-content-end">

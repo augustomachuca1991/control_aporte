@@ -136,10 +136,10 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form  action="" @submit.prevent="nuevaCategoria()">
-            <div class="modal-header">
+            <div class="modal-header bg-navy">
               <h5 class="modal-title" id="ModalLabelNewCategoria">Nueva Categoria</h5>
               <!-- {{errors}} -->
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="empty()">
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" @click="empty()">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -192,9 +192,9 @@
     <div class="modal fade" id="categoria_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditCategoria" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-navy">
             <h5 class="modal-title" id="ModalLabelEditCategoria">Editar Categoria</h5>
-            <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button @click="empty()" type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -222,14 +222,14 @@
               </div>
             </div>
             <!-- <div class="form-group row">
-              <label for="input_cod_origen" class="col-sm-3 col-form-label">Jurisdiccion *</label>
+              <label for="input_cod_origen" class="col-sm-3 col-form-label">Jurisdicciones *</label>
               <div class="col-sm-9">
                 <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedJurisdiccion" required>
                   <option v-for="(jurisdiccion,index) in jurisdicciones" :key="jurisdiccion.id" :value="index" :selected=" index === selectedJurisdiccion">
                     {{jurisdiccion.jurisdiccion}}
                   </option>
                 </select>
-                <p class="text-justify" v-else>{{jurisdi.jurisdi}}</p>
+                <p class="text-justify" v-else v-for="jurisdiccion in categoria_jurisdicciones" :key="jurisdiccion.id">{{jurisdiccion.jurisdiccion}}</p>
                 <span class="errors text-danger" v-for="error in errores.categoria_id">
                     <small><em>{{error}}</em></small>
                 </span>
@@ -342,6 +342,7 @@
             return{
                 categorias:[],
                 jurisdicciones:[],
+                categoria_jurisdicciones:[],
                 errores:[],
                 jurisdiccion:{},
                 categoria:{},
@@ -420,7 +421,7 @@
           this.selectedCategoria = index;
           this.cod_categoria = this.categoria.cod_categoria;
           this.descripcion = this.categoria.categoria
-          // this.selectedCategoria = this.clase.categoria_id - 1;
+          this.categoria_jurisdicciones = this.categoria.jurisdicciones;
           // this.categoria = this.clase.categoria
         },
         isEditar(){
@@ -504,11 +505,12 @@
           $('#categoria_new').modal('hide');
           $('#categoria_edit').modal('hide');
           this.jurisdicciones = [];
+          this.categoria_jurisdicciones = [];
           this.errores = [];
           //this.clase = {};
           this.categoria = {};
           this.search = '';
-          //this.cod_clase = '';
+          this.cod_categoria = '';
           this.descripcion =  '';
           //this.categoria_id = '';
           //this.selectedClase = '';

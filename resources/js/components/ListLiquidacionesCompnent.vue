@@ -324,7 +324,7 @@
                 //   from:1,
                 //   to:1,
                 // },
-                shown: false,
+                shown: true,
                 //pagination:{
                 //  current_page:this.filtro.current_page,
                 //  primero:this.filtro.first_page_url,
@@ -342,9 +342,7 @@
         },
         mounted() {
 
-            setTimeout(() => {
-              this.shown = true
-            }, 2000)
+            console.log('lista liquidacion')
         }, 
         methods:{
             show(id){

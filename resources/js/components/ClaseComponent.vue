@@ -5,7 +5,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form  action="" @submit.prevent="nuevaClase()">
-            <div class="modal-header">
+            <div class="modal-header bg-info">
               <h5 class="modal-title" id="ModalLabelNewClase">Nueva Clase</h5>
               <!-- {{errors}} -->
               <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="empty()">
@@ -61,7 +61,7 @@
     <div class="modal fade" id="clase_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditClase" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-info">
             <h5 class="modal-title" id="ModalLabelEditClase">Editar Jurisdiccion</h5>
             <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -173,7 +173,7 @@
                         <td>
                           <button class="btn btn-outline-warning rounded-circle btn-xs border-0" data-toggle="modal" data-target="#clase_edit" @click="editarClase(index, clase)"><i class="fas fa-edit"></i></button>
                           <button class="btn btn-outline-danger rounded-circle btn-xs border-0" @click="eliminarClase(index,clase.id)" ><i class="fas fa-trash"></i></button>
-                          <button class="btn btn-outline-info rounded-circle btn-xs border-0"><i class="fas fa-eye"></i></button>
+                          <!-- <button class="btn btn-outline-info rounded-circle btn-xs border-0"><i class="fas fa-eye"></i></button> -->
                         </td>
                       </tr>
                     </tbody>

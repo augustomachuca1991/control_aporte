@@ -6,7 +6,7 @@
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Buscar... " aria-label="Recipient's username" aria-describedby="button-addon2" name="search" id="search" v-model="search">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+          <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-user"></i></button>
         </div>
       </div>
     </form>

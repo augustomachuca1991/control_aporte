@@ -65,7 +65,7 @@
           },
           cambioOrganismo: function(){
             if (this.selectedOrganismo !== '') {
-                  const organismo = this.organismos[this.selectedOrganismo].cod_organismos;
+                  const organismo = this.organismos[this.selectedOrganismo].cod_organismo;
                   this.$emit('sendOrganismo',organismo);
             }
           }
