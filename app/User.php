@@ -55,13 +55,14 @@ class User extends Authenticatable
 
     public function adminlte_image()
     {
-        return 'https://picsum.photos/300/300';
+        //return 'https://picsum.photos/300/300';
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
     }
 
 
     public function adminlte_desc()
     {
-        return 'administrador';
+        return $this->roles->first()->rol;
     }
 
     public function adminlte_profile_url()
