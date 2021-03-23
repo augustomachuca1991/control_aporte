@@ -91,6 +91,9 @@ class JurisdiccionController extends Controller
         //
         try {
             $jurisdiccion = Jurisdiccion::find($id);
+            foreach ($jurisdiccion->organismos as $organismos) {
+                $organismos->delete();
+            }
             $jurisdiccion->delete();
             return response()->json(['isValid'=>true,'errors'=>'Jurisdicción eliminada satisfactoriamente']);
         }catch(\Exception $e) {

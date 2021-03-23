@@ -5,7 +5,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <form  action="" @submit.prevent="newJurisdiccion()">
-                <div class="modal-header bg-maroon">
+                <div class="modal-header bg-teal">
                   <h5 class="modal-title" id="ModalLabelNewJurisdiccion">Nueva Jurisdiccion</h5>
                   <!-- {{errors}} -->
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -59,7 +59,7 @@
         <div class="modal fade" id="jurisdiccion_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditJurisdiccion" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header bg-maroon">
+              <div class="modal-header bg-teal">
                 <h5 class="modal-title" id="ModalLabelEditJurisdiccion">Editar Jurisdiccion</h5>
                 <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -175,7 +175,7 @@
                 </form>
               </div>
               <div class="col-12">
-                <div class="card card-maroon">
+                <div class="card card-teal">
                   <div class="card-header">
                     <h3 class="card-title">Lista de Jurisdicciones</h3>
 

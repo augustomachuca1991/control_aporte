@@ -29,7 +29,7 @@ class FinishJob extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database', 'mail'];
+        return ['mail','database'];
     }
 
     /**
@@ -41,6 +41,7 @@ class FinishJob extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
+                    ->greeting('Exito!')
                     ->line('La carga de archivo finalizo de forma exitosa.')
                     ->action('Instituto de Previsión Social', url('/dashboard'))
                     ->line('Gracias por Utilizar nuestra aplicación!');
@@ -52,22 +53,22 @@ class FinishJob extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array
      */
-    // public function toDatabase($notifiable)
-    // {
-    //     return [
-    //         'data' => [
-    //             'message' => 'Tarea Completada',
-    //             'time' => now()->diffForHumans(),
-    //             'image' => 'image\ips.png',
-    //         ]
-    //     ];
-    // }
-
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
         return [
-            'message' => 'Tarea Completa',
-            'image' => 'image\ips.png',
+            'data' => [
+                'message' => 'Tarea Completada',
+                'time' => now()->diffForHumans(),
+                'image' => 'image\ips.png',
+            ]
         ];
     }
+
+    // public function toArray($notifiable)
+    // {
+    //     return [
+    //         'message' => 'Tarea Completa',
+    //         'image' => 'image\ips.png',
+    //     ];
+    // }
 }

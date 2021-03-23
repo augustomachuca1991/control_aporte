@@ -231,15 +231,15 @@ return [
             'url' => '#',
             'method' => 'POST',
         ],
-        [
-            'text' => '',
-            'button' => true,
-            'topnav_right' => true,
-            'icon' => 'far fa-bell',
-            'url' => '#',
-            'label' => '1',
-            'label_color' => 'danger'
-        ],
+        // [
+        //     'text' => '',
+        //     'button' => true,
+        //     'topnav_right' => true,
+        //     'icon' => 'far fa-bell',
+        //     'url' => '#',
+        //     'label' => '1',
+        //     'label_color' => 'danger'
+        // ],
         [
             'text' => '',
             'button' => true,
@@ -277,7 +277,7 @@ return [
             // 'label'       => 4,
             // 'label_color' => 'warning',
         ],
-        ['header' => 'Computos'],
+        ['header' => 'Config. Personal'],
         [
             'text' => 'profile',
             'url'  => 'admin/settings',
@@ -329,7 +329,7 @@ return [
         ['header' => 'Tablas'],
         [
             'text'       => 'Jurisdicciones',
-            'icon_color' => 'maroon',
+            'icon_color' => 'teal',
             'route'        => 'jurisdicciones',
         ],
         [
@@ -357,11 +357,13 @@ return [
             'icon_color' => 'orange',
             'route'        => 'hlaborales',
         ],
-        // [
-        //     'text'       => 'Clases',
-        //     'icon_color' => 'olive',
-        //     'url'        => '#',
-        // ],
+
+        [ 'header' => 'Computos'],
+        [   'text'       => 'Computos',
+            'icon' => 'fas fa-list',
+            'icon_color' => 'maroon',
+            'route'        => 'computos',
+        ],
     ],
 
     /*

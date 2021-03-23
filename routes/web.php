@@ -42,7 +42,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidaciones');
 
 	//-------- Computo Controller------------
-	Route::get('/computo', 'LiquidacionOrganismoController@index')->name('computo');
+	Route::get('/computos', 'LiquidacionOrganismoController@index')->name('computos');
 
 	//-------- import/export Controller------------
 	Route::get('/import', 'ExcelController@indexImport')->name('csv_import');

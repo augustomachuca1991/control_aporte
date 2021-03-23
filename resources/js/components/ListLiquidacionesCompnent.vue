@@ -27,7 +27,7 @@
               <tr v-for=" liquidacion in filtro.data" :key="liquidacion.id">
                   <th scope="row" v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">{{historia_laboral.puesto.cod_laboral}}</th>
                   <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
-                  <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo"><span v-if="tipoliquidacion.tipoliquidacion.descripcion === 'Sueldo'"class="badge bg-pink">haberes</span><span v-else class="badge bg-warning">S.A.C</span></td>
+                  <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo"><span v-if="tipoliquidacion.tipoliquidacion.descripcion === 'Sueldo'"class="badge bg-olive">haberes</span><span v-else class="badge bg-warning">S.A.C</span></td>
                   <td v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.periodo}}</td>
                   <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
                   <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</td>
