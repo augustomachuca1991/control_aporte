@@ -47,7 +47,7 @@
 			          	<li class="text-sm">Fecha de nacimiento :  {{agente[0].fecha_nac | format_moment}}</li>
 			          </ul>
 			        </div>
-			        <div v-else class="card-header py-3">
+			        <div v-else class="card-header py-3 bg-orange">
 			          <h4 class="h4-responsive font-weight-bold text-dark">Historias Laborales</h4>
 			        </div>
 			        <div class="card-body">
