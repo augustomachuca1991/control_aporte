@@ -45,7 +45,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-12">
-                <div class="card card-purple">
+                <div class="card card-outline card-purple">
                   <div class="card-header">
                     <h3 class="card-title">Filtros</h3>
 
@@ -70,7 +70,7 @@
 
 
                <div class="col-12 col-md-4">
-                 <div class="card card-purple">
+                 <div class="card card-outline card-purple">
                    <div class="card-header">
                      <h3 class="card-title">Buscar Agentes</h3>
 
@@ -92,7 +92,7 @@
 
 
                 <div class="col-12 col-md-4">
-                  <div class="card card-purple">
+                  <div class="card card-outline card-purple">
                     <div class="card-header">
                       <h3 class="card-title">Buscar Periodo</h3>
 
@@ -133,7 +133,7 @@
 
 
                 <div class="col-12 col-md-4">
-                  <div class="card card-purple">
+                  <div class="card card-outline card-purple">
                     <div class="card-header">
                       <h3 class="card-title">Tipo Liquidación</h3>
 
@@ -155,8 +155,8 @@
              
               <!-- /.col (LEFT) -->
                 <div class="col-12">
-                  <div class="card">
-                    <div class="card-header">
+                  <div class="card card-outline">
+                    <div class="card-header bg-purple">
                       <h3 class="card-title">Lista de Haberes</h3>
 
                       <div class="card-tools">

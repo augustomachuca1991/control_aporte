@@ -1,75 +1,168 @@
 <template>
-	<div>
-			<!-- Content Row -->
-			<!-- <div class="row">
-			  <div class="col-12 mb-4">
-			    <div class="card border-left-success shadow h-100 py-2">
-			      <div class="card-body">
-			        <div class="row no-gutters align-items-center">
-			          <div class="col mr-2">
-			            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
-			            <div class="h5 mb-0 font-weight-bold text-gray-800">Historias Laborales</div>
-			          </div>
-			          <div class="col-auto">
-			            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-			          </div>
-			        </div>
-			      </div>
-			    </div>
-			  </div>
-			</div> -->
-			<div id="historias-laborales">
-				<!-- <h3 class="text-center font-weight-bold text-dark">Historias Laborales</h3> -->
-				<div class="row my-1">
-		         <div class="col col-lg-4 ml-auto">
-		           <buscaragente-component @buscarAgente="datos_agente(...arguments)"></buscaragente-component>
-		           	<span class="errors text-danger" v-for="error in errors.cuil">    
-                     <small><em>{{error}}</em></small>
-                  	</span>	
-		         </div>
-		       </div>
-			</div>
+	<div id="panel_historia_laboral">
+		 	<section class="content">
+		 	  <div class="container-fluid">
+		 	    <div class="row">
+		 	      <div class="col-12 col-md-6">
+		 	        <div class="card card-outline card-orange">
+		 	          <div class="card-header">
+		 	            <h3 class="card-title">Periodo Liquidación</h3>
 
-			<!-- {{cuil}} -->
-			<!-- <historialaborales-component></historialaborales-component> -->
-			<!--historia laboral-->
-			<div class="row">
-			    <div class="col-12">
+		 	            <div class="card-tools">
+		 	              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+		 	                <i class="fas fa-minus"></i>
+		 	              </button>
+		 	            </div>
+		 	          </div>
+		 	            <div class="card-body" style="min-height: 135px; height: 135px; max-height: 135px; max-width: 100%;">
+		 	              <div>
+		 	                  <!--calendar-->
+		 	                  		    <!-- <label for="exampleInputEmail1">Periodo liquidacion <i class="fas fa-calendar-alt"></i></label>
+		 	                      		<month-picker-input v-model='anio'
+		 	                              :lang="'es'"
+		 	                              :max-date="fecha_actual"
+		 	                              :default-month="6"
+		 	                              :default-year="2020"
+		 	                              :input-pre-filled="true"
+		 	                              @change="showDate"
+		 	                            	></month-picker-input> -->
+		 	              </div>
+		 	            </div>
+		 	        </div>
+		 	      </div>
+		 	      <div class="col-12 col-md-6">
+		 	        <!-- DONUT CHART -->
+		 	        <div class="card card-outline card-orange">
+		 	          <div class="card-header">
+		 	            <h3 class="card-title">Bucar Por Agente</h3>
 
-			      <!-- Project Card Example -->
-			      <div class="card shadow mb-4">
-			        <div v-if="agente.length > 0" class="card-header py-3">
-			          <h4 class="h4-responsive text-center font-weight-bold text-dark">Agente {{agente[0].nombre}}</h4>
-			          <ul>
-			          	<li class="text-sm">Nombre :  {{agente[0].nombre}}</li>
-			          	<li class="text-sm">Cuil :  {{agente[0].cuil}}</li>
-			          	<li class="text-sm">Sexo :  {{agente[0].sexo}}</li>
-			          	<li class="text-sm">Fecha de nacimiento :  {{agente[0].fecha_nac | format_moment}}</li>
-			          </ul>
-			        </div>
-			        <div v-else class="card-header py-3 bg-orange">
-			          <h4 class="h4-responsive font-weight-bold text-dark">Historias Laborales</h4>
-			        </div>
-			        <div class="card-body">
-			        	<div v-if="shown">
-			        		<div class="spinner-grow text-dark" style="width: 3rem; height: 3rem;" role="status">
-			        		  <span class="sr-only">Loading...</span>
-			        		</div>
-			        		<div class="spinner-grow text-info" style="width: 3rem; height: 3rem;" role="status">
-			        		  <span class="sr-only">Loading...</span>
-			        		</div>
-			        		<div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
-			        		  <span class="sr-only">Loading...</span>
-			        		</div>
-			        	</div>
-			         <div class="container">
-			         	
-			          <div class="shadow" id="timeline" style="height: 250px; border: 1px solid #ccc"></div>
-			         </div>
-			        </div>
-			      </div>
-			    </div>
-			</div>
+		 	            <div class="card-tools">
+		 	              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+		 	                <i class="fas fa-minus"></i>
+		 	              </button>
+		 	            </div>
+		 	          </div>
+		 	          <div class="card-body" style="min-height: 135px; height: 135px; max-height: 135px; max-width: 100%;">
+		 	          	<buscaragente-component @buscarAgente="datos_agente(...arguments)"></buscaragente-component>
+  			           	<span class="errors text-danger" v-for="error in errors.cuil">    
+  	                     <small><em>{{error}}</em></small>
+  	                  	</span>	
+		 	          </div>
+		 	        </div>
+
+		 	      </div>
+		 	      <!-- /.col (LEFT) -->
+		 	        <div class="col-12">
+		 	          <div class="card card-orange">
+		 	            <div class="card-header">
+		 	              <h3 class="card-title text-white">Historias Laborales</h3>
+
+		 	              <!-- <div class="card-tools">
+		 	                <div class="input-group input-group-sm" style="width: 150px;">
+		 	                  <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar">
+
+		 	                  <div class="input-group-append">
+		 	                    <button type="button" class="btn btn-outline-success" disabled>
+		 	                      <i class="fas fa-search"></i>
+		 	                    </button>
+		 	                  </div>
+		 	                </div>
+		 	              </div> -->
+		 	            </div>
+		 	            <!-- /.card-header -->
+		 	            <div class="card-body">
+		 	              
+		 	            	
+		 	            	<!-- Main node for this component -->
+		 	            	<div class="timeline timeline-inverse">
+		 	            	  <!-- Timeline time label -->
+		 	            	  <div class="time-label">
+		 	            	    <span class="bg-olive">{{this.fecha_ingreso }} - {{this.fecha_egreso}}  </span>
+		 	            	  </div>
+		 	            	  <div>
+		 	            	  <!-- Before each timeline item corresponds to one icon on the left scale -->
+		 	            	    <i class="fas fa-address-card bg-blue"></i>
+		 	            	    <!-- Timeline item -->
+		 	            	    <div class="timeline-item">
+		 	            	    <!-- Time -->
+		 	            	      <span class="time"><i class="fas fa-clock"></i> 12:05</span>
+		 	            	      <!-- Header. Optional -->
+		 	            	      <h3 class="timeline-header"><a href="#">Datos Personales</a> {{nombre}}</h3>
+		 	            	      <!-- Body -->
+		 	            	      	<!--carga-->
+	  	 	            	        <div v-if="shown">
+	  	 	            	        	<i class='fas fa-2x fa-sync-alt fa-spin'></i>
+	          			        		<!-- <div class="spinner-grow text-dark" style="width: 3rem; height: 3rem;" role="status">
+	          			        		  <span class="sr-only">Loading...</span>
+	          			        		</div>
+	          			        		<div class="spinner-grow text-info" style="width: 3rem; height: 3rem;" role="status">
+	          			        		  <span class="sr-only">Loading...</span>
+	          			        		</div>
+	          			        		<div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
+	          			        		  <span class="sr-only">Loading...</span>
+	          			        		</div> -->
+	          			        	</div>
+
+		 	            	      <div v-else class="timeline-body">
+		 	            	      	Nombre: {{nombre}}<br>
+		 	            	        Cuil: {{cuil}}<br>
+		 	            	        Fecha de Nacimiento: {{fecha_nac}}<br>
+		 	            	        Sexo: {{sexo}}<br>
+		 	            	        Puestos Laborales:
+		 	            	        <ul>
+		 	            	        	<li v-for="(puesto_laboral,index) in puestos_laborales" :key="puesto_laboral.id">Puesto Laboral <b>#{{puesto_laboral.cod_laboral}}</b>
+		 	            	        	<button class="btn btn-outline-info border-0 btn-xs" @click="cargo(index)">
+		 	            	        		<i class="fas fa-eye"></i>
+		 	            	        	</button>
+		 	            	        	</li>
+		 	            	        </ul>
+		 	            	      </div>
+		 	            	      <!-- Placement of additional controls. Optional -->
+		 	            	      <div class="timeline-footer">
+		 	            	        <a class="btn btn-primary btn-sm" @click="historiaLaboral()">Ver Periodo Completo</a>
+		 	            	        <!-- <a class="btn btn-danger btn-sm">Delete</a> -->
+		 	            	      </div>
+		 	            	    </div>
+		 	            	  </div>
+		 	            	  <!-- The last icon means the story is complete -->
+		 	            	  <div>
+		 	            	    <i class="fas fa-clock bg-gray"></i>
+		 	            	    <div class="timeline-item">
+		 	            	    <!-- Time -->
+		 	            	      <span class="time"><i class="fas fa-clock"></i> 12:05</span>
+		 	            	      <!-- Header. Optional -->
+		 	            	      <h3 class="timeline-header"><a href="#">Historia Laboral</a> sent you an email</h3>
+		 	            	      <!-- Body -->
+		 	            	      <div class="timeline-body">
+		 	            	        
+	        			        	<div class="shadow" id="timeline" style="height: 250px; border: 1px solid #ccc"></div>
+		 	            	      </div>
+		 	            	      <!-- Placement of additional controls. Optional -->
+		 	            	      <div class="timeline-footer">
+		 	            	        <!-- <a class="btn btn-primary btn-sm">Read more</a> -->
+		 	            	        <a class="btn btn-danger btn-sm" @click="empty()"><i class="fas fa-broom"></i>&nbsp;Limpiar</a>
+		 	            	      </div>
+		 	            	    </div>
+		 	            	  </div>
+		 	            	</div>
+
+
+
+
+
+
+
+
+
+		 	            </div>
+		 	            <!-- /.card-body -->
+		 	          </div>
+		 	          <!-- /.card -->
+		 	        </div>
+		 	      </div>
+		 	    <!-- /.row -->
+		 	  </div><!-- /.container-fluid -->
+		 	</section>
 	</div>
 </template>
 
@@ -79,12 +172,18 @@
 		 export default {
 	        data: function() {
 	                return {
-	                    cuil:'',
 	                    agente:{},
+	                    cuil:'',
+	                    nombre:'',
+	                    fecha_nac: '',
+	                    sexo:'',
 	                    datos: [],
-	        		  	puestos: [],
+	        		  	puestos_laborales: [],
+	        		  	puesto_laboral:{},
 	        		  	errors: [],
 	        		  	shown: false,
+	        		  	fecha_ingreso: 'fecha ingreso',
+	        		  	fecha_egreso: 'fecha cese',
 	                }
 	            },
 	        mounted() {
@@ -94,32 +193,31 @@
 	        },
 	        methods:{
 	        	datos_agente:function(input){
-	        		this.puestos = [];
+	        		this.empty();
 	        		this.cuil = input.search;
-	        		const params = {
-	        			cuil : this.cuil
-	        		}
-	        		axios.post(`api/agente`, params)
+	        		let formData = new FormData()
+	        		formData.append('cuil', this.cuil)
+	        		axios.post(`api/agente`, formData)
 	        		.then((response)=>{
 	        			
 
 	        			if (response.data.isError) {
-	        				this.errors = [];
-	        				this.puestos = [];
-		        			this.datos = [];
-		        			this.agente = {};
+	        				this.empty();
 	        				this.errors = response.data.data;
 	        			} else {
 	        				this.shown = true;
 	        				setTimeout(() => {
 		        				
-		          				this.errors = [];
-		  	        			this.puestos = [];
-		  	        			this.datos = [];
+		          				this.empty();
 		  	        		    this.agente = response.data.data;
-		  	        		    this.puestos = this.agente[0].puestolaborales;
-		  	        		    this.shown = false;
-		  	        			google.charts.setOnLoadCallback(this.drawChart);
+		  	        		    this.cuil = this.agente.cuil;
+		  	        		    this.nombre = this.agente.nombre;
+		  	        		    this.fecha_nac = this.agente.fecha_nac;
+		  	        		    this.sexo = this.agente.sexo;
+		  	        		    this.puestos_laborales = this.agente.puestolaborales
+		  	        		    console.log(this.agente);
+		  	        		 //    this.shown = false;
+		  	        			
 	        				}, 2500)
 	        				
 	        			}
@@ -139,15 +237,21 @@
 	        		dataTable.addColumn({ type: 'date', id: 'Start' });
 	        		dataTable.addColumn({ type: 'date', id: 'End' });
 
-	        		this.puestos.forEach( (value , index) => {
-	        			if (value.fecha_egreso !== null) {
-	        				fecha_egreso = new Date(value.fecha_egreso)
-	        			}else{
-	        				
-	        				fecha_egreso = new Date(2020,12,1);
-	        			}
-	        			this.datos.push(['PL: '+value.cod_laboral.toString(),'Organismo '+value.organismo_id.toString(),new Date(value.fecha_ingreso),fecha_egreso])
-	        		})
+	        		if (this.puesto_laboral.fecha_egreso) {
+	        			fecha_egreso = new Date(this.puesto_laboral.fecha_egreso);
+	        		} else {
+	        			fecha_egreso = new Date(2021,1,1);
+	        		}
+
+	        		this.fecha_ingreso = this.puesto_laboral.fecha_ingreso;
+	        		this.fecha_egreso = fecha_egreso;
+	        		this.datos.push([
+	        			'Puesto Laboral'+this.puesto_laboral.cod_laboral, 
+	        			'Organismo'+this.puesto_laboral.organismo_id,
+	        			new Date(this.puesto_laboral.fecha_ingreso),
+	        			fecha_egreso,
+	        			])
+
 
 	        		dataTable.addRows(this.datos);
 
@@ -163,7 +267,34 @@
         		    // google.visualization.events.addListener(chart, 'ready', function () {
         		    //   container.innerHTML = '<img src="' + chart.getImageURI() + '">';
         		    // });
-	        	}
+	        	},
+	        	empty:function () {
+    				this.errors = [];
+    				this.puestos_laborales = [];
+        			this.datos = [];
+        			this.agente = {};
+        			this.nombre = '';
+        			this.cuil = '';
+        			this.fecha_nac = '';
+        			this.sexo = '';
+        			this.shown = false;
+        			this.cod_laboral = '';
+        			this.fecha_ingreso = 'fecha ingreso';
+        			this.fecha_egreso = 'fecha cese';
+        			this.organismo = '';
+	        	},
+	        	historiaLaboral:function(){
+	        		console.log(this.puestos_laborales)
+	        	},
+	        	cargo:function(index){
+	        		this.datos= [];
+	        		this.puesto_laboral = this.puestos_laborales[index];
+	        		google.charts.setOnLoadCallback(this.drawChart);
+	        		console.log(this.puesto_laboral);
+
+
+
+	        	},
 	        },
 
 	    }

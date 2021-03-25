@@ -36,7 +36,7 @@
           
           Swal.fire(
               data.message,
-              'ok',
+              'Exito!!!',
               'success'
           )
         });

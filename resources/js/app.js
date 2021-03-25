@@ -79,7 +79,7 @@ Vue.component('organismo-component', require('./components/OrganismoComponent.vu
 Vue.component('historialaborales-component', require('./components/HistoriaLaboralesComponent.vue').default);
 Vue.component('panel-historialaboral', require('./components/PanelHistoriaComponent.vue').default);
 
-Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesCompnent.vue').default);
+Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesComponent.vue').default);
 
 //computos
 Vue.component('computoorigen-component', require('./components/ComputoOrigenComponent.vue').default);

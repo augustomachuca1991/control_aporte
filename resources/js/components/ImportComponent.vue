@@ -124,8 +124,7 @@
                         </td>
                         <td>
                           
-                          
-                          <button v-if="declaracion_jurada.status" class="btn btn-outline-warning rounded btn-xs" @click="aplicar(declaracion_jurada)" data-toggle="tooltip" data-placement="top" title="Aplicar Tarea">
+                          <button :id="declaracion_jurada.id" v-if="declaracion_jurada.status" class="btn btn-outline-warning rounded btn-xs" @click="aplicar(declaracion_jurada)" data-toggle="tooltip" data-placement="top" title="Aplicar Tarea">
                             <i class="fas fa-tasks"></i>
                           </button>
                           <span  v-else class="badge bg-success rounded-circle"><i class="fas fa-check"></i></span>
@@ -143,7 +142,7 @@
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
-    </div>
+   </div>
 </template>
 
 <script>
@@ -169,7 +168,6 @@
               declaraciones_juradas:[],
               dd_jj:[],
               declaracion_jurada:{},
-              isImport : false,
               isLoad: false,
               isReciente: false,
               uploadPercentage:0,
@@ -261,8 +259,13 @@
           },
           aplicar(declaracion_jurada){
 
-              
-
+                $('#'+declaracion_jurada.id)
+                .removeClass('btn-outline-warning fas fa-tasks')
+                .find('i').removeClass('fas fa-tasks')
+                .addClass('btn-outline-info border-0')
+                .prop('disabled', true)
+                //.append("Cargando <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>")
+                .append("<div class='overlay'><i class='fas fa-2x fa-sync-alt fa-spin'></i></div>");
               axios.post('api/import' , declaracion_jurada).then((response)=>{
                  this.declaracion_jurada = response.data;
                  Toast.fire({

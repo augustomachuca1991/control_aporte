@@ -36,7 +36,7 @@
 	 	  <div class="container-fluid">
 	 	    <div class="row">
 	 	      <div class="col-12 col-md-6">
-	 	        <div class="card card-maroon">
+	 	        <div class="card card-outline card-maroon">
 	 	          <div class="card-header">
 	 	            <h3 class="card-title">Periodo Liquidación</h3>
 
@@ -64,7 +64,7 @@
 	 	      </div>
 	 	      <div class="col-12 col-md-6">
 	 	        <!-- DONUT CHART -->
-	 	        <div class="card card-maroon">
+	 	        <div class="card card-outline card-maroon">
 	 	          <div class="card-header">
 	 	            <h3 class="card-title">Bucar Por Agente</h3>
 
@@ -75,8 +75,7 @@
 	 	            </div>
 	 	          </div>
 	 	          <div class="card-body">
-	 	          	<!--aqui el segundo card-->
-	 	          	otra cosa
+	 	          	<textarea></textarea>
 	 	          </div>
 	 	        </div>
 

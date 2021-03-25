@@ -106,14 +106,15 @@ class AgenteController extends Controller
     {
         
         $data = ['cuil' => $request->cuil];
-        $rules = ['cuil' => 'required|integer|exists:agentes,cuil'];
-        $message = ['cuil.integer' => 'Debe ingresar un tipo de cuil valido. Verifique',
-                    'cuil.exists' => 'El cuil ingresado no existe en nuestra base de datos.'];
+        $rules = ['cuil' => 'required|integer|exists:agentes,cuil|digits_between:10,11'];
+        $message = ['cuil.integer' => 'Debe ingresar un tipo de cuil valido. Verifique ',
+                    'cuil.exists' => 'El cuil ingresado no existe en nuestra base de datos.',
+                    'cuil.digits_between' => 'digitos minimos 10 y max 11'];
         $validator = Validator::make($data,$rules,$message);
         if ($validator->fails()) {
             return response()->json(['isError' => true ,'data' => $validator->errors()]);
         }else{
-            $agentes = Agente::with('puestolaborales')->where('cuil' , $request->cuil)->get();
+            $agentes = Agente::with('puestolaborales')->where('cuil' , $request->cuil)->first();
             return response()->json(['isError' => false ,'data' => $agentes]);
         }
     }

@@ -55,20 +55,22 @@ class FinishJob extends Notification implements ShouldQueue
      */
     public function toDatabase($notifiable)
     {
+        // return [
+        //     'data' => [
+        //         'message' => 'Tarea Completada',
+        //         'time' => now()->diffForHumans(),
+        //         'image' => 'image\ips.png',
+        //     ]
+        // ];
         return [
-            'data' => [
-                'message' => 'Tarea Completada',
-                'time' => now()->diffForHumans(),
-                'image' => 'image\ips.png',
-            ]
+            'Tarea Completa con exito',
         ];
     }
 
-    // public function toArray($notifiable)
-    // {
-    //     return [
-    //         'message' => 'Tarea Completa',
-    //         'image' => 'image\ips.png',
-    //     ];
-    // }
+    public function toArray($notifiable)
+    {
+        return [
+            'Tarea Completa con exito ar',
+        ];
+    }
 }

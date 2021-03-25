@@ -169,8 +169,8 @@ return [
     'right_sidebar' => true,
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
-    'right_sidebar_slide' => true,
-    'right_sidebar_push' => false,
+    'right_sidebar_slide' => false,
+    'right_sidebar_push' => true,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
     'right_sidebar_scrollbar_auto_hide' => 'l',
 
@@ -347,22 +347,25 @@ return [
             'icon_color' => 'navy',
             'route'        => 'categorias',
         ],
+        
+
+        [ 'header' => 'Consultas'],
+        [   'text'       => 'Computos',
+            'icon' => 'fas fa-list',
+            'icon_color' => 'maroon',
+            'route'        => 'computos',
+        ],
         [
             'text'       => 'Liquidaciones',
+            'icon' => 'fas fa-search-dollar',
             'icon_color' => 'purple',
             'route'        => 'liquidaciones',
         ],
         [
             'text'       => 'Historia Laboral',
+            'icon' => 'fas fa-calendar',
             'icon_color' => 'orange',
             'route'        => 'hlaborales',
-        ],
-
-        [ 'header' => 'Computos'],
-        [   'text'       => 'Computos',
-            'icon' => 'fas fa-list',
-            'icon_color' => 'maroon',
-            'route'        => 'computos',
         ],
     ],
 
