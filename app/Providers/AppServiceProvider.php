@@ -52,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
                             'text'        => '',
                             'url'         => '#',
                             'icon'        => 'far fa-bell',
-                            'label'       => Notification::count(),
+                            'label'       => $notificationes->count(),
                             'label_color' => 'danger',
                             'topnav_right' => true,
                             'submenu' => $menu,

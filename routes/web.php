@@ -68,6 +68,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
     Route::get('/notificaciones', 'NotificationController@index')->name('notificaciones');
 
+    Route::get('/users', 'UserController@index')->name('users');
+    Route::get('/users/locker', 'UserController@locker')->name('locker');
+
 
 
 

@@ -96,6 +96,10 @@ Vue.component('ddjj-component', require('./components/DeclaracionJuradaComponent
 //notificaticion 
 Vue.component('notification-component', require('./components/NotificacionComponent.vue').default);
 
+
+//panel lateral 
+Vue.component('panel-config', require('./components/PanelConfiguracionComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

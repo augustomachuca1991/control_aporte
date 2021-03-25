@@ -280,12 +280,12 @@ return [
         ['header' => 'Config. Personal'],
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'route'  => 'users',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'route'  => 'locker',
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
