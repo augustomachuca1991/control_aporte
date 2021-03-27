@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class LiquidacionController extends Controller
 {
+    
+
+    public $perPage = 50;
     /**
      * Display a listing of the resource.
      *
@@ -122,7 +125,8 @@ class LiquidacionController extends Controller
     public function getliquidaciones()
     {
         
-        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
+        return Liquidacion::with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        ->paginate($this->perPage);
     }
 
 
@@ -133,46 +137,46 @@ class LiquidacionController extends Controller
      * @return \Illuminate\Http\Response
      * $periodo=null, $tipo=null, $organismo=null, $jur=null, $origen=null
      */
-    public function filtro(Request $request)
-    {
+    // public function filtro(Request $request)
+    // {
         
-        $periodo = $request->periodo;
-        $tipo = $request->tipo_liquidacion;
-        $organismo = $request->organismo;
-        $jur = $request->jurisdiccion;
-        $origen = $request->origen;
-        if ($organismo) { 
-            $liquidaciones = Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($organismo){
-                $query->whereHas('organismo', function($query2) use ($organismo){
-                    $query2->where('cod_organismo' , $organismo);
-                });
-            });
-        }else{
-            if ($jur) {
-                $liquidaciones =  Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($jur){
-                    $query->whereHas('organismo', function($query2) use ($jur){
-                        $query2->whereHas('jurisdiccion',function($query3) use ($jur){
-                            $query3->where('cod_jurisdiccion' , $jur);
-                        });
-                    });
-                });
-            }else if($origen){
-                $liquidaciones =  Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($origen){
-                    $query->whereHas('organismo', function($query2) use ($origen){
-                        $query2->whereHas('jurisdiccion', function($query3) use ($origen){
-                            $query3->whereHas('origen', function($query4) use ($origen){
-                                $query4->where('cod_origen' , $origen);
-                            });
-                        });
-                    });
-                });
-            }
-        }
+    //     $periodo = $request->periodo;
+    //     $tipo = $request->tipo_liquidacion;
+    //     $organismo = $request->organismo;
+    //     $jur = $request->jurisdiccion;
+    //     $origen = $request->origen;
+    //     if ($organismo) { 
+    //         $liquidaciones = Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($organismo){
+    //             $query->whereHas('organismo', function($query2) use ($organismo){
+    //                 $query2->where('cod_organismo' , $organismo);
+    //             });
+    //         });
+    //     }else{
+    //         if ($jur) {
+    //             $liquidaciones =  Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($jur){
+    //                 $query->whereHas('organismo', function($query2) use ($jur){
+    //                     $query2->whereHas('jurisdiccion',function($query3) use ($jur){
+    //                         $query3->where('cod_jurisdiccion' , $jur);
+    //                     });
+    //                 });
+    //             });
+    //         }else if($origen){
+    //             $liquidaciones =  Liquidacion::whereHas('liquidacionOrganismo' , function($query) use ($origen){
+    //                 $query->whereHas('organismo', function($query2) use ($origen){
+    //                     $query2->whereHas('jurisdiccion', function($query3) use ($origen){
+    //                         $query3->whereHas('origen', function($query4) use ($origen){
+    //                             $query4->where('cod_origen' , $origen);
+    //                         });
+    //                     });
+    //                 });
+    //             });
+    //         }
+    //     }
 
 
-        return $liquidaciones->with(['liquidacionOrganismo','historia_laborales'])->paginate(50);
+    //     return $liquidaciones->with(['liquidacionOrganismo','historia_laborales'])->paginate(50);
         
-    }
+    // }
 
 
         
@@ -185,19 +189,19 @@ class LiquidacionController extends Controller
      * @param  \App\Liquidacion  $liquidacion
      * @return \Illuminate\Http\Response
      */
-    public function agente(Request $request)
-    {
-        $buscar = $request->search;
-        return Liquidacion::whereHas('historia_laborales', function($query) use ($buscar){
-            $query->whereHas('puesto', function($query2) use ($buscar){
-                $query2->whereHas('agente', function($query3) use ($buscar){
-                        $query3->where('nombre','like',"%".$buscar."%")
-                               ->orWhere('cuil','like',"%".$buscar."%");
-                });
-            });
-        })->with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
+    // public function agente(Request $request)
+    // {
+    //     $buscar = $request->search;
+    //     return Liquidacion::whereHas('historia_laborales', function($query) use ($buscar){
+    //         $query->whereHas('puesto', function($query2) use ($buscar){
+    //             $query2->whereHas('agente', function($query3) use ($buscar){
+    //                     $query3->where('nombre','like',"%".$buscar."%")
+    //                            ->orWhere('cuil','like',"%".$buscar."%");
+    //             });
+    //         });
+    //     })->with(['liquidacionOrganismo','historia_laborales'])->paginate($this->perPage);
                     
-    }
+    // }
 
     public function porOrigen($value)
     {
@@ -207,7 +211,7 @@ class LiquidacionController extends Controller
             });
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate(20);
+        ->paginate($this->perPage);
     }
 
 
@@ -218,7 +222,7 @@ class LiquidacionController extends Controller
             $organismos->where('jurisdiccion_id', $value);
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate(20);
+        ->paginate($this->perPage);
     }
 
 
@@ -227,7 +231,7 @@ class LiquidacionController extends Controller
     {
         return LiquidacionOrganismo::where('organismo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate(20);    
+        ->paginate($this->perPage);    
     }
 
 
@@ -244,7 +248,22 @@ class LiquidacionController extends Controller
             });
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate(20);   
+        ->paginate($this->perPage);   
+    }
+
+
+    public function porPeriodo($value)
+    {
+        return LiquidacionOrganismo::where('periodo_id', $value)
+        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        ->paginate($this->perPage);  
+    }
+
+    public function porTipo($value)
+    {
+        return LiquidacionOrganismo::where('tipo_id', $value)
+        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        ->paginate($this->perPage0);  
     }
 
 }

@@ -104,9 +104,9 @@
                     </div>
                     <div class="card-body">
                       <div  style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
-                          <filtroperiodo-component 
+                          <!-- <filtroperiodo-component 
                              @sendPeriodo="search('periodo',...arguments)">
-                          </filtroperiodo-component>
+                          </filtroperiodo-component> -->
                           <!-- <label for="periodo" class="text-muted"><i class="fas fa-search"></i>
                             Periodo Liquidaciones
                           </label>
@@ -125,6 +125,16 @@
                               </div>
                               <input type="date" class="form-control" id="Fecha">
                             </div> -->
+                            <label class="text-muted"><i class="fas fa-calendar-alt"></i> Periodo liquidacion </label>
+                            <month-picker-input
+                                :lang="'es'"
+                                :max-date="fecha_actual"
+                                :default-month="3"
+                                :default-year="2021"
+                                :input-pre-filled="true"
+                                @change="porPeriodo">
+                                  
+                            </month-picker-input>
                           
                       </div>
                     </div>
@@ -146,7 +156,7 @@
                     <div class="card-body">
                       <div style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
                           <filtertipoliquidacion-component 
-                              @sendTipo="search('tipo_liquidacion',...arguments)">
+                              @sendTipo="porTipo(...arguments)">
                           </filtertipoliquidacion-component>
                       </div>
                     </div>
@@ -172,12 +182,13 @@
                       <table v-if="shown" class="table table-hover text-nowrap">
                         <thead>
                           <tr>
-                            <th scope="col">Puesto Laboral</th>
                             <th scope="col">Agente</th>
-                            <th scope="col">Tipo Liquidacion</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Puestos Laborales</th>
                             <th scope="col">Periodo</th>
-                            <th scope="col">Jurisdiccion</th>
                             <th scope="col">Organismo</th>
+                            <th scope="col">Clase</th>
+                            <th scope="col">Categoria</th>
                             <th scope="col"></th>
                           </tr>
                         </thead>
@@ -199,7 +210,7 @@
                     </div>
                     <!-- /.card-body -->
                     <!-- /.card-body -->
-                    <div class="card-footer clearfix">
+                    <div class="card-footer">
                       total registros encontrados {{paginate.total}}
                       <ul class="pagination pagination-sm m-0 float-right">
                         <!-- <li class="page-item"><a class="page-link" href="#">&laquo;</a></li> -->
@@ -238,79 +249,29 @@
                   path:'',
                   next_page_url:'',
                 },
-                parametros:{},
+                periodo:'',
+                fecha_actual:null,
+                mes:null,
+                anio:null,
+                date: {
+                  from: null,
+                  to: null,
+                  month: null,
+                  year: null,
+                  monthIndex: null,
+                }
 
 
             };
         },
         mounted() {
-            console.log('Panel Component')
+            var milisegundos = Date.now();
+            this.fecha_actual = new Date(milisegundos);
+            this.mes = this.fecha_actual.getMonth()+1;
+            this.anio = this.fecha_actual.getFullYear();
         },
         methods:{
-            // search(index,parm){
-            //     this.shown = true;
-            //     switch (index) {
-            //       case 'periodo':
-            //         this.filtro.periodo = ''
-            //         this.filtro.periodo = parm
-            //         break;
-            //       case 'tipo_liquidacion':
-            //         this.filtro.tipo_liquidacion = ''
-            //         this.filtro.tipo_liquidacion = parm
-            //         break;
-            //       case 'origen':
-            //           this.filtro.origen = ''
-            //           this.filtro.jurisdiccion = ''
-            //           this.filtro.organismo = ''
-            //           this.filtro.origen = parm
-            //         break;
-            //       case 'jurisdiccion':
-            //           this.filtro.origen = ''
-            //           this.filtro.jurisdiccion = ''
-            //           this.filtro.organismo = ''
-            //           this.filtro.jurisdiccion = parm
-            //         break;
-            //       case 'organismo':
-            //           this.filtro.origen = ''
-            //           this.filtro.jurisdiccion = ''
-            //           this.filtro.organismo = ''
-            //           this.filtro.organismo = parm
-            //         break;
-            //     }
-            //     const params = {
-            //         periodo:this.filtro.periodo,
-            //         tipo_liquidacion:this.filtro.tipo_liquidacion,
-            //         organismo:this.filtro.organismo,
-            //         jurisdiccion:this.filtro.jurisdiccion,
-            //         origen:this.filtro.origen,
-            //     }
-
-            //     this.parametros = params;
-                    
-            //     setTimeout(() => {
-            //       axios.get('api/liquidacion/filtro', this.parametros).then((response)=>{
-            //         this.shown = false;
-            //         this.filtro.data = [];
-            //         this.filtro.condition = false
-            //         if (response.data.data.length != 0 ) {
-            //             this.filtro.data = response.data.data
-            //             this.paginate.current_page = response.data.current_page;
-            //             this.paginate.last_page = response.data.last_page;
-            //             this.paginate.total = response.data.total;
-            //             this.paginate.path = response.data.path;
-            //             this.paginate.next_page_url = response.data.next_page_url;
-            //             this.filtro.condition = true
-            //         }
-            //       }).catch(function (error) {
-            //         console.log(error);
-            //       });
-            //     }, 2000)
-            //     this.shown = true;
-            //     setTimeout(()=>{}, 2000);    
-                
-            // },
             porOrigen(param){
-              console.log('origen_id '+param)
               this.shown = true;
                 setTimeout(()=>{
                   axios.get(`api/liquidacion/origen/`+param).then((response)=>{
@@ -326,7 +287,6 @@
 
             },
             porJurisdiccion(param){
-              console.log('jurisdiccion_id '+param)
               this.shown = true;
                 setTimeout(()=>{
                   axios.get(`api/liquidacion/jurisdiccion/`+param).then((response)=>{
@@ -340,7 +300,6 @@
                 }, 2000);
             },
             porOrganismo(param){
-              console.log('organismo_id '+param)
               this.shown = true;
                 setTimeout(()=>{
                   axios.get(`api/liquidacion/organismo/`+param).then((response)=>{
@@ -374,13 +333,53 @@
             },
             getPage(page){
               axios.get(this.paginate.path+'?page='+page).then((response)=> {
-                console.log('click');
                 this.liquidaciones = response.data.data;
                 this.paginate.current_page = response.data.current_page;
                 this.paginate.last_page = response.data.last_page;
                 this.paginate.total = response.data.total;
                 this.paginate.path = response.data.path;
               })
+            },
+            porPeriodo (date) {
+                  this.date = date
+                  if (this.date.monthIndex.toString().length < 2){
+                    var mes ='0'.concat(this.date.monthIndex.toString());
+                    this.periodo = this.date.year.toString()+mes;
+                    
+                  }else{
+                    this.periodo = date.year.toString()+date.monthIndex.toString();
+                  }
+
+                  this.shown = true;
+                  setTimeout(()=>{
+                    axios.get(`api/liquidacion/periodo/`+this.periodo).then((response)=>{
+                        this.shown = false;
+                        this.liquidaciones = response.data.data;
+                        this.paginate.current_page = response.data.current_page;
+                        this.paginate.last_page = response.data.last_page;
+                        this.paginate.total = response.data.total;
+                        this.paginate.path = response.data.path;
+                    })
+
+
+
+                  },2000);
+            },
+            porTipo (param) {
+              this.shown = true;
+              setTimeout(()=>{
+                axios.get(`api/liquidacion/tipo/`+param).then((response)=>{
+                    this.shown = false;
+                    this.liquidaciones = response.data.data;
+                    this.paginate.current_page = response.data.current_page;
+                    this.paginate.last_page = response.data.last_page;
+                    this.paginate.total = response.data.total;
+                    this.paginate.path = response.data.path;
+                })
+
+
+
+              },2000);
             },
         },
 

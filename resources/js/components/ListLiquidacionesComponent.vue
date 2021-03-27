@@ -12,11 +12,12 @@
           <thead>
             <tr>
               <th scope="col">Agente</th>
+              <th scope="col">Tipo</th>
               <th scope="col">Puestos Laborales</th>
+              <th scope="col">Periodo</th>
               <th scope="col">Organismo</th>
               <th scope="col">Clase</th>
               <th scope="col">Categoria</th>
-              <th scope="col">Cargo</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -25,17 +26,46 @@
                 <td colspan="8" style="height: 200px;" class="align-middle"><p class="text-center">No se encontraron resultados</p></td>
               </tr> -->
               <tr v-for=" (liquidacion,index) in datos" :key="datos.id">
-                  <th>1</th>
-                  <td>2</td> 
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
+                  <th class="scope">
+                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
+                      {{historia_laboral.puesto.agente.nombre}}
+                      {{historia_laboral.puesto.agente.cuil }} 
+                    </div>
+                  </th>
+                  <td>
+                     <span v-if="liquidacion.tipoliquidacion.descripcion === 'SAC' " class="badge bg-warning">
+                      {{liquidacion.tipoliquidacion.descripcion}}
+                     </span>
+                     <span v-else class="badge bg-success">
+                      {{liquidacion.tipoliquidacion.descripcion}}
+                     </span>
+                  </td> 
+                  <td>
+                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
+                      {{historia_laboral.puesto.cod_laboral}}
+                    </div>
+                  </td>
+                  <td>
+                      {{liquidacion.periodo.mes}}/{{liquidacion.periodo.anio}}
+                  </td> 
+                  <td>
+                      {{liquidacion.organismo.organismo}}
+                  </td>
+                  <td>
+                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
+                      {{historia_laboral.clase.clase}}
+                    </div>
+                  </td>
+                  <td>
+                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
+                      {{historia_laboral.clase.categoria.categoria}}
+                    </div>
+                  </td>
                   <td>
                       <!-- <a :href="'#detalle'" class="btn btn-outline-success rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" v-on:click="show(liquidacion.id)">
                       <i class="fas fa-dollar-sign"></i>
                       </a>   -->
-                      <a class="btn btn-outline-success border-0 rounded-circle btn-xs" data-toggle="modal" ><i class="fas fa-dollar-sign"></i></a>
+                      <a class="btn btn-success btn-xs text-white" data-toggle="modal" ><i class="fas fa-dollar-sign"></i></a>
                   </td>
               </tr>
             </tbody>
