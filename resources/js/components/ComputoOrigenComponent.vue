@@ -1,10 +1,11 @@
 <template>
 		<div class="card">
 			<div class="card-body">
-				<div class="card-title" v-if="origenes.length !== 0">Liquidacion de {{origenes[0].periodo}} - {{origenes[0].tipo_liquidacion}}</div>
 				<ejs-grid locale='es-ES' :dataSource="origenes" :allowPaging="true" :allowSorting='true' :allowFiltering='true' :allowGrouping='true' :pageSettings='pageSettings'>
 		          <e-columns>
 		          	<e-column field='origen' headerText='Origen' textAlign='left' width=120></e-column>
+		          	<e-column field='periodo' headerText='Periodo' textAlign='Right' format='C2' width=90></e-column>
+		          	<e-column field='tipo_liquidacion' headerText='Tipo Liquidación' textAlign='Right' format='C2' width=90></e-column>
 		          	<e-column field='haber_bruto' headerText='Total Haber Bruto' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_aporte_personal' headerText='Aporte Personal' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_sueldo_basico' headerText='Basico' textAlign='Right' format='C2' width=90></e-column>

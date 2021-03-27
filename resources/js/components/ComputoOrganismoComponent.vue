@@ -2,11 +2,11 @@
 	<div class="tab-pane fade show active mh-100" id="organismo" role="tabpanel" aria-labelledby="organismo-tab" >
 		<div class="card">
 			<div class="card-body">
-				<div class="card-title" v-if="organismos.length !== 0">Liquidacion de {{organismos[0].periodo}}</div>
 				   <ejs-grid locale='es-ES' :dataSource="organismos" :allowPaging="true" :allowSorting='true' :allowFiltering='true' :allowGrouping='true' :pageSettings='pageSettings'>
 		          <e-columns>
 		          	
 		            <e-column field='organismo' headerText='Organismo' textAlign='left' width=120></e-column>
+		            <e-column field='tipo_liquidacion' headerText='Tipo Liquidación' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='haber_bruto' headerText='Haber Bruto' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_aporte_personal' headerText='Aporte Personal' textAlign='Right' format='C2' width=90></e-column>
 		            <e-column field='total_sueldo_basico' headerText='Sueldo Basico' textAlign='Right' format='C2' width=90></e-column>

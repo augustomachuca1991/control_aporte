@@ -37,13 +37,20 @@ Route::get('/computo/origen/{periodo}', 'LiquidacionOrganismoController@computoO
 Route::get('/computo/jurisdiccion/{periodo}', 'LiquidacionOrganismoController@ComputoJurisdicciones');
 Route::get('/computo/organismo/{periodo}', 'LiquidacionOrganismoController@ComputoOrganismos');
 
+Route::get('/computo/origen/tipo-liquidacion/{tipo}', 'LiquidacionOrganismoController@computoTipoLiquidacion_origen');
+Route::get('/computo/jurisdiccion/tipo-liquidacion/{tipo}', 'LiquidacionOrganismoController@computoTipoLiquidacion_jurisdiccion');
+Route::get('/computo/organismo/tipo-liquidacion/{tipo}', 'LiquidacionOrganismoController@computoTipoLiquidacion_organismo');
 
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
-Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liquidacion_detalle');
-Route::post('/liquidacion/agente/filtro','LiquidacionController@agente')->name('filtros');
-Route::post('/liquidacion/filtro','LiquidacionController@filtro')->name('buscar');
+Route::get('/liquidacion/origen/{id}', 'LiquidacionController@porOrigen');
+Route::get('/liquidacion/jurisdiccion/{id}', 'LiquidacionController@porJurisdiccion');
+Route::get('/liquidacion/organismo/{id}', 'LiquidacionController@porOrganismo');
+Route::get('/liquidacion/agente/{id}', 'LiquidacionController@porAgente');
+// Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liquidacion_detalle');
+// Route::get('/liquidacion/agente/filtro','LiquidacionController@agente')->name('filtros');
+// Route::get('/liquidacion/filtro','LiquidacionController@filtro')->name('buscar');
 
 //Files Routes
 Route::post('/import', 'ExcelController@import')->name('import');
@@ -135,9 +142,15 @@ Route::get('/origen', 'OrigenController@getOrigenes')->name('origen');
 //Notificaciones
 Route::get('/notification', 'NotificationController@getNotificaciones');
 Route::get('/notification/{id}', 'NotificationController@notReadNotifications');
-Route::put('/notification/leida/{id}', 'NotificationController@markAsReads');
+Route::post('/notification/leida/{id}', 'NotificationController@markAsReads')->name('leida');
 
 
 //Agentes
+
 //Route::get('/agente', 'AgenteController@getAgentes')->name('agente');
 Route::post('/agente', 'AgenteController@search')->name('agente_search');
+
+
+//usuarios
+
+Route::get('/users', 'UserController@getUsers');

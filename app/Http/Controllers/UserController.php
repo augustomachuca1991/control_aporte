@@ -16,4 +16,11 @@ class UserController extends Controller
     {
         return view('users.lockscreen');
     }
+
+
+
+    public function getUsers(){
+
+        return User::with('roles')->paginate(9);
+    }
 }

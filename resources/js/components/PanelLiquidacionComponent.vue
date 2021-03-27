@@ -58,9 +58,9 @@
                   <div class="card-body">
                     <div class="import">
                         <filter-component 
-                                @sendOrigen="search('origen',...arguments)" 
-                                @sendJur="search('jurisdiccion',...arguments)" 
-                                @sendOrganismo="search('organismo',...arguments)">
+                                @sendOrigen="porOrigen(...arguments)" 
+                                @sendJur="porJurisdiccion(...arguments)" 
+                                @sendOrganismo="porOrganismo(...arguments)">
                         </filter-component>
                     </div>
                   </div>
@@ -83,7 +83,7 @@
                    <div class="card-body">
                      <div class="import" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;">
                          <buscaragente-component 
-                             @buscarAgente="buscar(...arguments)">
+                             @buscarAgente="porAgente(...arguments)">
                          </buscaragente-component>
                      </div>
                    </div>
@@ -194,11 +194,26 @@
                       </table> 
                       
                       <listaliquidaciones-component v-else
-                          :filtro="filtro">
+                          :datos="liquidaciones">
                       </listaliquidaciones-component> 
-                    
                     </div>
                     <!-- /.card-body -->
+                    <!-- /.card-body -->
+                    <div class="card-footer clearfix">
+                      total registros encontrados {{paginate.total}}
+                      <ul class="pagination pagination-sm m-0 float-right">
+                        <!-- <li class="page-item"><a class="page-link" href="#">&laquo;</a></li> -->
+                        <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
+                        <li class="page-item" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
+                            <a href="#" class="page-link" @click.prevent="getPage(n)">
+                                <span >
+                                    {{ n }}
+                                </span>
+                            </a>
+                        </li>
+                        <!-- <li class="page-item"><a class="page-link" href="#">&raquo;</a></li> -->
+                      </ul>
+                    </div>
                   </div>
                   <!-- /.card -->
                 </div>
@@ -213,97 +228,160 @@
     export default {
         data(){
             return{
-                filtro:{
-                data:[],
-                periodo:'',
-                tipo_liquidacion:'',
-                origen:'',
-                jurisdiccion:'',
-                organismo:'',
-                condition:false,
-                },
+                liquidaciones:[],
+                liquidacion:{},
                 shown:false,
+                paginate:{
+                  current_page:'',
+                  last_page:'',
+                  total:'',
+                  path:'',
+                  next_page_url:'',
+                },
+                parametros:{},
+
+
             };
         },
         mounted() {
             console.log('Panel Component')
         },
         methods:{
-            search(index,parm){
-                this.shown = true;
-                switch (index) {
-                  case 'periodo':
-                    this.filtro.periodo = ''
-                    this.filtro.periodo = parm
-                    break;
-                  case 'tipo_liquidacion':
-                    this.filtro.tipo_liquidacion = ''
-                    this.filtro.tipo_liquidacion = parm
-                    break;
-                  case 'origen':
-                      this.filtro.origen = ''
-                      this.filtro.jurisdiccion = ''
-                      this.filtro.organismo = ''
-                      this.filtro.origen = parm
-                    break;
-                  case 'jurisdiccion':
-                      this.filtro.origen = ''
-                      this.filtro.jurisdiccion = ''
-                      this.filtro.organismo = ''
-                      this.filtro.jurisdiccion = parm
-                    break;
-                  case 'organismo':
-                      this.filtro.origen = ''
-                      this.filtro.jurisdiccion = ''
-                      this.filtro.organismo = ''
-                      this.filtro.organismo = parm
-                    break;
-                }
-                const params = {
-                    periodo:this.filtro.periodo,
-                    tipo_liquidacion:this.filtro.tipo_liquidacion,
-                    organismo:this.filtro.organismo,
-                    jurisdiccion:this.filtro.jurisdiccion,
-                    origen:this.filtro.origen,
-                }
+            // search(index,parm){
+            //     this.shown = true;
+            //     switch (index) {
+            //       case 'periodo':
+            //         this.filtro.periodo = ''
+            //         this.filtro.periodo = parm
+            //         break;
+            //       case 'tipo_liquidacion':
+            //         this.filtro.tipo_liquidacion = ''
+            //         this.filtro.tipo_liquidacion = parm
+            //         break;
+            //       case 'origen':
+            //           this.filtro.origen = ''
+            //           this.filtro.jurisdiccion = ''
+            //           this.filtro.organismo = ''
+            //           this.filtro.origen = parm
+            //         break;
+            //       case 'jurisdiccion':
+            //           this.filtro.origen = ''
+            //           this.filtro.jurisdiccion = ''
+            //           this.filtro.organismo = ''
+            //           this.filtro.jurisdiccion = parm
+            //         break;
+            //       case 'organismo':
+            //           this.filtro.origen = ''
+            //           this.filtro.jurisdiccion = ''
+            //           this.filtro.organismo = ''
+            //           this.filtro.organismo = parm
+            //         break;
+            //     }
+            //     const params = {
+            //         periodo:this.filtro.periodo,
+            //         tipo_liquidacion:this.filtro.tipo_liquidacion,
+            //         organismo:this.filtro.organismo,
+            //         jurisdiccion:this.filtro.jurisdiccion,
+            //         origen:this.filtro.origen,
+            //     }
+
+            //     this.parametros = params;
                     
-                setTimeout(() => {
-                  axios.post('api/liquidacion/filtro', params).then((response)=>{
-                    this.shown = false;
-                    this.filtro.data = [];
-                    this.filtro.condition = false
-                    if (response.data.length != 0 ) {
-                        this.filtro.data = response.data
-                        console.log(this.filtro.data)
-                        this.filtro.condition = true
-                    }
-                  }).catch(function (error) {
-                    console.log(error);
-                  });
-                }, 2000)
-                    
+            //     setTimeout(() => {
+            //       axios.get('api/liquidacion/filtro', this.parametros).then((response)=>{
+            //         this.shown = false;
+            //         this.filtro.data = [];
+            //         this.filtro.condition = false
+            //         if (response.data.data.length != 0 ) {
+            //             this.filtro.data = response.data.data
+            //             this.paginate.current_page = response.data.current_page;
+            //             this.paginate.last_page = response.data.last_page;
+            //             this.paginate.total = response.data.total;
+            //             this.paginate.path = response.data.path;
+            //             this.paginate.next_page_url = response.data.next_page_url;
+            //             this.filtro.condition = true
+            //         }
+            //       }).catch(function (error) {
+            //         console.log(error);
+            //       });
+            //     }, 2000)
+            //     this.shown = true;
+            //     setTimeout(()=>{}, 2000);    
                 
+            // },
+            porOrigen(param){
+              console.log('origen_id '+param)
+              this.shown = true;
+                setTimeout(()=>{
+                  axios.get(`api/liquidacion/origen/`+param).then((response)=>{
+                    this.shown = false;
+                    this.liquidaciones = response.data.data;
+                    this.paginate.current_page = response.data.current_page;
+                    this.paginate.last_page = response.data.last_page;
+                    this.paginate.total = response.data.total;
+                    this.paginate.path = response.data.path;
+                  });
+                  
+                }, 2000);
+
             },
-            buscar(datos_agente){
+            porJurisdiccion(param){
+              console.log('jurisdiccion_id '+param)
+              this.shown = true;
+                setTimeout(()=>{
+                  axios.get(`api/liquidacion/jurisdiccion/`+param).then((response)=>{
+                    this.shown = false;
+                    this.liquidaciones = response.data.data;
+                    this.paginate.current_page = response.data.current_page;
+                    this.paginate.last_page = response.data.last_page;
+                    this.paginate.total = response.data.total;
+                    this.paginate.path = response.data.path;
+                  });
+                }, 2000);
+            },
+            porOrganismo(param){
+              console.log('organismo_id '+param)
+              this.shown = true;
+                setTimeout(()=>{
+                  axios.get(`api/liquidacion/organismo/`+param).then((response)=>{
+                    this.shown = false;
+                    this.liquidaciones = response.data.data;
+                    this.paginate.current_page = response.data.current_page;
+                    this.paginate.last_page = response.data.last_page;
+                    this.paginate.total = response.data.total;
+                    this.paginate.path = response.data.path;
+                  });
+                }, 2000);
+            },
+            porAgente(param){
+                let datosAgente = param.search;
+
                 this.shown = true;
                 setTimeout(()=>{
-                  axios.post(`api/liquidacion/agente/filtro` , datos_agente).then((response)=>{
+                  axios.get(`api/liquidacion/agente/`+datosAgente).then((response)=>{
                       this.shown = false;
-                      this.filtro.data = [];
-                      this.filtro.condition = false
-                      if (response.data.length != 0 ) {
-                          this.filtro.data = response.data
-                          this.filtro.condition = true
-                      }
-                  }).catch(function (error) {
-                    console.log(error);
-                  });
+                      this.liquidaciones = response.data.data;
+                      this.paginate.current_page = response.data.current_page;
+                      this.paginate.last_page = response.data.last_page;
+                      this.paginate.total = response.data.total;
+                      this.paginate.path = response.data.path;
+                  })
 
 
 
                 },2000);
                 
-            }
+            },
+            getPage(page){
+              axios.get(this.paginate.path+'?page='+page).then((response)=> {
+                console.log('click');
+                this.liquidaciones = response.data.data;
+                this.paginate.current_page = response.data.current_page;
+                this.paginate.last_page = response.data.last_page;
+                this.paginate.total = response.data.total;
+                this.paginate.path = response.data.path;
+              })
+            },
         },
 
     }

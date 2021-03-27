@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Liquidacion;
+use App\LiquidacionOrganismo;
 use Illuminate\Http\Request;
 
 class LiquidacionController extends Controller
@@ -121,7 +122,7 @@ class LiquidacionController extends Controller
     public function getliquidaciones()
     {
         
-        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->get();
+        return Liquidacion::with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
     }
 
 
@@ -169,7 +170,7 @@ class LiquidacionController extends Controller
         }
 
 
-        return $liquidaciones->with(['liquidacionOrganismo','historia_laborales'])->get();
+        return $liquidaciones->with(['liquidacionOrganismo','historia_laborales'])->paginate(50);
         
     }
 
@@ -194,8 +195,56 @@ class LiquidacionController extends Controller
                                ->orWhere('cuil','like',"%".$buscar."%");
                 });
             });
-        })->with(['liquidacionOrganismo','historia_laborales'])->get();
+        })->with(['liquidacionOrganismo','historia_laborales'])->paginate(10);
                     
+    }
+
+    public function porOrigen($value)
+    {
+        return LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
+            $organismos->whereHas('jurisdiccion',function($jurisdicciones) use ($value){
+                $jurisdicciones->where('origen_id' , $value);
+            });
+        })
+        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        ->paginate(20);
+    }
+
+
+
+    public function porJurisdiccion($value)
+    {
+        return LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
+            $organismos->where('jurisdiccion_id', $value);
+        })
+        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        ->paginate(20);
+    }
+
+
+
+    public function porOrganismo($value)
+    {
+        return LiquidacionOrganismo::where('organismo_id', $value)
+        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        ->paginate(20);    
+    }
+
+
+    public function porAgente($value)
+    {
+        return LiquidacionOrganismo::whereHas('liquidacion',function($liquidaciones) use ($value){
+            $liquidaciones->whereHas('historia_laborales' , function($historiaslaborales) use ($value){
+                $historiaslaborales->whereHas('puesto', function($puestos) use ($value){
+                    $puestos->whereHas('agente', function($agente) use ($value){
+                            $agente->where('nombre','like',"%".$value."%")
+                                   ->orWhere('cuil','like',"%".$value."%");
+                    });
+                });
+            });
+        })
+        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        ->paginate(20);   
     }
 
 }

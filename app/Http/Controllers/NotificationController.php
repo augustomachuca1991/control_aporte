@@ -101,10 +101,10 @@ class NotificationController extends Controller
 
 
 
-    public function markAsReads($notification_id)
+    public function markAsReads(Request $request)
     {   
 
-        $notification = Notification::find($notification_id);
+        $notification = Notification::find($request->id);
         $notification->update(['read_at' => now()]);
         $notification->save();
         //return $this->getNotificaciones();

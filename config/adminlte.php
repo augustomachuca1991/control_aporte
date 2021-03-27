@@ -231,15 +231,6 @@ return [
             'url' => '#',
             'method' => 'POST',
         ],
-        // [
-        //     'text' => '',
-        //     'button' => true,
-        //     'topnav_right' => true,
-        //     'icon' => 'far fa-bell',
-        //     'url' => '#',
-        //     'label' => '1',
-        //     'label_color' => 'danger'
-        // ],
         [
             'text' => '',
             'button' => true,
@@ -279,7 +270,7 @@ return [
         ],
         ['header' => 'Config. Personal'],
         [
-            'text' => 'profile',
+            'text' => 'Usuarios',
             'route'  => 'users',
             'icon' => 'fas fa-fw fa-user',
         ],

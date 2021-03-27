@@ -19,7 +19,6 @@ var moment = require('moment'); // require
 import { GridPlugin } from "@syncfusion/ej2-vue-grids";
 import '@syncfusion/ej2-vue-grids/styles/material.css'
 
-
 //MonthPicker 
 import MonthPicker from 'vue-month-picker'
 import MonthPickerInput from 'vue-month-picker'
@@ -99,6 +98,10 @@ Vue.component('notification-component', require('./components/NotificacionCompon
 
 //panel lateral 
 Vue.component('panel-config', require('./components/PanelConfiguracionComponent.vue').default);
+
+//usuarios
+//panel lateral 
+Vue.component('users-component', require('./components/UserComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

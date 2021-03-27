@@ -12,9 +12,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        //factory(App\User::class , 1)->create()->each(function (App\User  $user){
-        //    $user->roles()->attach(1);
-        //});
+        
         $user = User::create(['name'  => 'Augusto Machuca',
 		        		  	  'email' => 'augusto_fer22@hotmail.com', 
 		        		      'password' => '$2y$10$jtFMq6os0fUXeFvtVZQqm.M1g7/AK9mTthBgXNgPH2JYSfo4Fd3cG', //12345678
@@ -25,6 +23,9 @@ class UserTableSeeder extends Seeder
                             ]);
         $user->roles()->attach(1);
         $user2->roles()->attach(1);
+        factory(App\User::class , 50)->create()->each(function (App\User  $user){
+           $user->roles()->attach(2);
+        });
 
     }
 }

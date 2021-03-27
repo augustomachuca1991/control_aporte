@@ -30,6 +30,6 @@ class LiquidacionOrganismo extends Model
 
     public function liquidacion()
     {
-        return $this->belongsTo('App\Liquidacion');
+        return $this->belongsTo('App\Liquidacion')->with('historia_laborales');
     }
 }
