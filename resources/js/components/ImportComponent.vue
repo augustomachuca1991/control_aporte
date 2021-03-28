@@ -260,10 +260,10 @@
           aplicar(declaracion_jurada){
 
                 $('#'+declaracion_jurada.id)
+                .prop('disabled', true)
                 .removeClass('btn-outline-warning fas fa-tasks')
                 .find('i').removeClass('fas fa-tasks')
                 .addClass('btn-outline-info border-0')
-                .prop('disabled', true)
                 //.append("Cargando <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>")
                 .append("<div class='overlay'><i class='fas fa-2x fa-sync-alt fa-spin'></i></div>");
               axios.post('api/import' , declaracion_jurada).then((response)=>{

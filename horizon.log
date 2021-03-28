@@ -1482,3 +1482,18 @@ Horizon started successfully.
 [2021-03-26 15:16:01][49] Processing: App\Notifications\FinishJob
 [2021-03-26 15:16:01][49] Processed:  App\Notifications\FinishJob
 Horizon started successfully.
+Horizon started successfully.
+[2021-03-28 01:26:51][50] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-03-28 01:26:51][50] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-03-28 01:26:51][51] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-28 01:27:12][51] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-28 01:27:12][52] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-28 01:27:34][52] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-28 01:27:34][53] Processing: App\Jobs\CompletedImport
+[2021-03-28 01:27:34][53] Processed:  App\Jobs\CompletedImport
+[2021-03-28 01:27:34][54] Processing: App\Events\NotificationImport
+[2021-03-28 01:27:35][54] Processed:  App\Events\NotificationImport
+[2021-03-28 01:27:35][55] Processing: App\Jobs\NotificationJob
+[2021-03-28 01:27:35][55] Processed:  App\Jobs\NotificationJob
+[2021-03-28 01:27:41][56] Processing: App\Notifications\FinishJob
+[2021-03-28 01:27:41][56] Processed:  App\Notifications\FinishJob

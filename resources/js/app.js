@@ -38,7 +38,17 @@ Vue.filter('moment', function (date) {
 
 Vue.filter('format_moment', function (date) {
    return moment(date).format('LL');
-})		
+})
+
+// Vue.filter('formatCuil', function(cuil){
+// 	value = value.toString();
+	  
+// 	  if (value.length === 10 ) {
+// 	    value = '0'+value;
+// 	  }
+
+// 	  return value.charAt(0)+value.charAt(1)+'-'+value.slice(2,-1)+'-'+value.slice(-1);
+// })		
 	
 /**
  * The following block of code may be used to automatically register your
