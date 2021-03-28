@@ -25,6 +25,6 @@ class Agente extends Model
 
     public function puestolaborales()
     {
-        return $this->hasMany('App\PuestoLaboral');
+        return $this->hasMany('App\PuestoLaboral')->with('organismo');
     } 
 } 

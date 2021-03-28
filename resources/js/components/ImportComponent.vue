@@ -7,8 +7,8 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12 col-md-6">
-            <div class="card card-olive">
-              <div class="card-header">
+            <div class="card">
+              <div class="card-header bg-gradient-gray">
                 <h3 class="card-title">Importar Excel \ CSV</h3>
 
                 <div class="card-tools">
@@ -30,7 +30,7 @@
                 </div>
                 <div class="card-footer bg-white">
                   <div>
-                    <button type="submit" name="import" id="import" class="btn btn-outline-secondary btn-block">
+                    <button type="submit" name="import" id="import" class="btn bg-gradient-gray btn-block">
                       <i class="fas fa-file-upload"></i>&nbsp;Subir
                     </button>
                   </div>
@@ -40,8 +40,8 @@
           </div>
           <div class="col-12 col-md-6">
             <!-- DONUT CHART -->
-            <div class="card card-olive">
-              <div class="card-header">
+            <div class="card">
+              <div class="card-header bg-gradient-gray">
                 <h3 class="card-title">Ultimos Archivo importado</h3>
 
                 <div class="card-tools">
@@ -80,8 +80,8 @@
           </div>
           <!-- /.col (LEFT) -->
             <div class="col-12">
-              <div class="card card-olive">
-                <div class="card-header">
+              <div class="card">
+                <div class="card-header bg-gradient-gray">
                   <h3 class="card-title">Lista de Declaraciones juradas</h3>
 
                   <div class="card-tools">

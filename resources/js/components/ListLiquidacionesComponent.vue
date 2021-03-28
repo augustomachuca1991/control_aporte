@@ -21,18 +21,18 @@
               <th scope="col"></th>
             </tr>
           </thead>
-            <tbody><!-- 
-              <tr v-if="!filtro.condition">
+            <tbody>
+              <tr v-if="isEmpty">
                 <td colspan="8" style="height: 200px;" class="align-middle"><p class="text-center">No se encontraron resultados</p></td>
-              </tr> -->
-              <tr v-for=" (liquidacion,index) in datos" :key="datos.id">
-                  <td>
+              </tr>
+              <tr v-else v-for=" (liquidacion,index) in datos" :key="datos.id">
+                  <td style="width: 12.5%;">
                     <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
                       <strong>{{historia_laboral.puesto.agente.nombre}}</strong> <br>
                       {{historia_laboral.puesto.agente.cuil | formatCuil}} 
                     </div>
                   </td>
-                  <td>
+                  <td style="width: 10%;">
                      <span v-if="liquidacion.tipoliquidacion.descripcion === 'SAC' " class="badge bg-warning">
                       {{liquidacion.tipoliquidacion.descripcion}}
                      </span>
@@ -40,7 +40,7 @@
                       {{liquidacion.tipoliquidacion.descripcion}}
                      </span>
                   </td> 
-                  <td>
+                  <td style="width: 5%;">
                     <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
                       {{historia_laboral.puesto.cod_laboral}}
                     </div>
@@ -289,7 +289,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <tr v-for="detalle in liquidacion.detalles">
+                    <tr v-for="detalle in detalles">
                       <th scope="row"><small>{{detalle.concepto_id}}</small></th>
                       <td>
                         <small>{{detalle.concepto.concepto}}</small>
@@ -313,23 +313,23 @@
                         <small  v-if="detalle.concepto.subtipo.tipocodigo.id === 6">{{detalle.importe}}</small>
                         <small v-else>-</small>
                       </td>
-                    </tr> -->
+                    </tr>
                   </tbody>
                   <tfoot class="bg-light">
                     <th scope="row" colspan="3">
                       <small>Subtotal</small>
                     </th>
                     <td>
-                      <small>$ <!-- {{liquidacion.bruto + liquidacion.bonificable + liquidacion.no_bonificable}} --></small>
+                      <small>$ {{parseInt(liquidacion.bruto) + parseInt(liquidacion.bonificable) + parseInt(liquidacion.no_bonificable)}}</small>
                     </td>
                     <td>
-                      <small>$ <!-- {{liquidacion.no_remunerativo}} --></small>
+                      <small>$ {{liquidacion.no_remunerativo}}</small>
                     </td>
                     <td>
-                      <small>$ <!-- {{liquidacion.familiar}} --></small>
+                      <small>$ {{liquidacion.familiar}}</small>
                     </td>
                     <td>
-                      <small>$ <!-- {{liquidacion.descuento}} --></small>
+                      <small>$ {{liquidacion.descuento}}</small>
                     </td>
                   </tfoot>
                 </table>
@@ -352,6 +352,7 @@
         data: function(){
             return{
                 historia_laborales:[],
+                detalles:[],
                 historia_laboral:{},
                 historialiquidacion:{},
                 liquidacionOrganismo:{},
@@ -366,19 +367,24 @@
                 agente:{},
                 estado:{},
                 shown: true,
+                isEmpty: true,
 
             }
         
         },
         mounted() {
 
-            console.log(this.datos)
+            console.log(this.datos.length)
+            if (this.datos.length > 0) {
+              this.isEmpty = false;
+            }
         }, 
         methods:{
             ver_detalle(index, liquidacionOrganismo){
               this.liquidacionOrganismo = liquidacionOrganismo;
               this.liquidacion = this.datos[index].liquidacion;
               this.historia_laboral = this.liquidacion.historia_laborales[0];
+              this.detalles = this.liquidacion.detalles;
               this.historialiquidacion = this.historia_laboral.historialiquidaciones[0];
               this.clase = this.historia_laboral.clase;
               this.categoria = this.clase.categoria;

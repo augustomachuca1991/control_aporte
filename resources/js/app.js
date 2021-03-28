@@ -37,7 +37,7 @@ Vue.filter('moment', function (date) {
 })
 
 Vue.filter('format_moment', function (date) {
-   return moment(date).format('LL');
+   return moment(date).format('L');
 })
 
 // Vue.filter('formatCuil', function(cuil){

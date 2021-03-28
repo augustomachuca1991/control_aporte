@@ -53,21 +53,21 @@
 	 	      </div>
 	 	      <!-- /.col (LEFT) -->
 	 	        <div class="col-12">
-	 	          <div class="card card-maroon">
-	 	            <div class="card-header">
+	 	          <div class="card">
+	 	            <div class="card-header bg-gradient-maroon">
 	 	              <h3 class="card-title">Computos</h3>
 
-	 	              <div class="card-tools">
+	 	              <!-- <div class="card-tools">
 	 	                <div class="input-group input-group-sm" style="width: 150px;">
 	 	                  <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar" style="background: #f4f4f4;">
 
-	 	                  <!-- <div class="input-group-append">
+	 	                  <div class="input-group-append">
 	 	                    <button type="button" class="btn btn-outline-success" disabled>
 	 	                      <i class="fas fa-search"></i>
 	 	                    </button>
-	 	                  </div> -->
+	 	                  </div>
 	 	                </div>
-	 	              </div>
+	 	              </div> -->
 	 	            </div>
 	 	            <!-- /.card-header -->
 	 	            <div class="card-body" style="background: #f4f4f4;">

@@ -254,15 +254,16 @@ return [
             'text'        => 'Excel/CSV',
             // 'url'         => 'admin/pages',
             'icon'        => 'fas fa-file-csv',
-            'icon_color' => 'success',
             'submenu'   => [
                 ['text' => 'Importar',
                 'route' => 'csv_import',
                 'icon' => 'fas fa-file-upload',
+                'icon_color' => 'gray-dark',
                 ],
                 ['text' => 'Exportar',
                 'route' => 'csv_export',
                 'icon' => 'fas fa-file-download',
+                'icon_color' => 'gray'
                 ]
             ]
             // 'label'       => 4,
@@ -273,15 +274,18 @@ return [
             'text' => 'Usuarios',
             'route'  => 'users',
             'icon' => 'fas fa-fw fa-user',
+            'icon_color' => 'indigo',
         ],
         [
             'text' => 'change_password',
             'route'  => 'locker',
             'icon' => 'fas fa-fw fa-lock',
+            'icon_color' => 'primary',
         ],
         [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
+            'icon_color' => 'info',
             'submenu' => [
                 [
                     'text' => 'level_one',
@@ -320,22 +324,22 @@ return [
         ['header' => 'Tablas'],
         [
             'text'       => 'Jurisdicciones',
-            'icon_color' => 'teal',
+            'icon_color' => 'olive',
             'route'        => 'jurisdicciones',
         ],
         [
             'text'       => 'Organismos',
-            'icon_color' => 'yellow',
+            'icon_color' => 'success',
             'route'        => 'organismos',
         ],
         [
             'text'       => 'Clases',
-            'icon_color' => 'cyan',
+            'icon_color' => 'teal',
             'route'        => 'clases',
         ],
         [
             'text'       => 'Categorias',
-            'icon_color' => 'navy',
+            'icon_color' => 'info',
             'route'        => 'categorias',
         ],
         
@@ -349,7 +353,7 @@ return [
         [
             'text'       => 'Liquidaciones',
             'icon' => 'fas fa-search-dollar',
-            'icon_color' => 'purple',
+            'icon_color' => 'pink',
             'route'        => 'liquidaciones',
         ],
         [

@@ -263,7 +263,7 @@ class LiquidacionController extends Controller
     {
         return LiquidacionOrganismo::where('tipo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage0);  
+        ->paginate($this->perPage);  
     }
 
 }

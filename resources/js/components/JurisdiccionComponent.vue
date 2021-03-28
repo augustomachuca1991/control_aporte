@@ -5,7 +5,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <form  action="" @submit.prevent="newJurisdiccion()">
-                <div class="modal-header bg-teal">
+                <div class="modal-header bg-gradient-olive">
                   <h5 class="modal-title" id="ModalLabelNewJurisdiccion">Nueva Jurisdiccion</h5>
                   <!-- {{errors}} -->
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -59,7 +59,7 @@
         <div class="modal fade" id="jurisdiccion_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditJurisdiccion" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header bg-teal">
+              <div class="modal-header bg-gradient-olive">
                 <h5 class="modal-title" id="ModalLabelEditJurisdiccion">Editar Jurisdiccion</h5>
                 <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -166,7 +166,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col col-md-3 my-2">
-                <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nueva Jurisdicción</button>
+                <button  @click="open_modal()" class="btn bg-gradient-olive btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nueva Jurisdicción</button>
               </div>
               <div class="col-md-3  offset-md-6 my-2">
                 <form class="form-inline justify-content-end">
@@ -175,8 +175,8 @@
                 </form>
               </div>
               <div class="col-12">
-                <div class="card card-teal">
-                  <div class="card-header">
+                <div class="card">
+                  <div class="card-header bg-gradient-olive">
                     <h3 class="card-title">Lista de Jurisdicciones</h3>
 
                     <!-- <div class="card-tools">
@@ -220,6 +220,20 @@
                       </tbody>
                     </table>
                   </div>
+                  <div class="card-footer">
+                    <span>total registros encontrados: {{paginate.total}}</span>
+                    <nav aria-label="Contacts Page Navigation">
+                      <ul class="pagination pagiante-xs justify-content-end m-0">
+                        <li class="page-item mx-1" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
+                            <a href="#" class="page-link bg-gradient-olive rounded-circle border-0" @click.prevent="getPage(n)">
+                                <span >
+                                    {{ n }}
+                                </span>
+                            </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
                   <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
@@ -257,6 +271,13 @@
                     search:'',
                     index:'',
                     order:false,
+                    paginate:{
+                      current_page:'',
+                      last_page:'',
+                      total:'',
+                      path:'',
+                      next_page_url:'',
+                    },
                 }
             },
         mounted() {
@@ -266,7 +287,11 @@
             getJurisdicciones(){
                             axios.get('api/jurisdiccion').then((response)=>{
                                 console.log(response.data)
-                                this.jurisdicciones = response.data;
+                                this.jurisdicciones = response.data.data;
+                                this.paginate.current_page = response.data.current_page;
+                                this.paginate.last_page = response.data.last_page;
+                                this.paginate.total = response.data.total;
+                                this.paginate.path = response.data.path;
                             })
                         },
             getOrigenes(){
@@ -396,7 +421,17 @@
               axios.get(`api/jurisdiccion/order/${column}/sort/${sort}`).then((response)=>{
                         this.jurisdicciones = response.data
               })
-            }
+            },
+
+            getPage(page){
+              axios.get(this.paginate.path+'?page='+page).then((response)=> {
+                this.jurisdicciones = response.data.data;
+                this.paginate.current_page = response.data.current_page;
+                this.paginate.last_page = response.data.last_page;
+                this.paginate.total = response.data.total;
+                this.paginate.path = response.data.path;
+              })
+            },
         },
     }
 </script>

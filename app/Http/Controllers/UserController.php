@@ -21,6 +21,6 @@ class UserController extends Controller
 
     public function getUsers(){
 
-        return User::with('roles')->paginate(9);
+        return User::withTrashed()->with('roles')->paginate(9);
     }
 }

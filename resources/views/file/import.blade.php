@@ -38,7 +38,9 @@
               data.message,
               'Exito!!!',
               'success'
-          )
+          ).then(function(){
+            window.location.reload();
+          })
         });
         //fracaso
         var channel = pusher.subscribe('canalfailed-import');
@@ -47,7 +49,9 @@
               'Error durante la importación',
               'error',
               'error'
-          )
+          ).then(function(){
+            window.location.reload();
+          })
         });
     </script>
 @stop

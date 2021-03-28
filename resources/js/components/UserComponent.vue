@@ -7,6 +7,11 @@
 		      <div v-for="(user, index) in users" :key="user.id" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
 		        <div class="card bg-light d-flex flex-fill">
 		          <div class="card-header text-muted border-bottom-0">
+	              	  <div v-if="user.deleted_at" class="ribbon-wrapper">
+                        <div class="ribbon bg-maroon">
+                          locked
+                        </div>
+                      </div>
 		            <nav class="navbar navbar-light bg-light">
 		              <p class="navbar-brand text-muted">
 		                <img src="/image/ips.png" width="30" height="30" alt="">
@@ -25,16 +30,23 @@
 		                </ul>
 		              </div>
 		              <div class="col-5 text-center">
-		                <img :src='"https://ui-avatars.com/api/?name="+user.name+"&color=7F9CF5&background=EBF4FF"' alt="user-avatar" class="img-circle img-fluid">
+		                <img :src='"https://ui-avatars.com/api/?name="+user.name+"&color=7F9CF5&background=EBF4FF"' alt="user-avatar" class="img-circle img-fluid shadow">
 		              </div>
 		            </div>
 		          </div>
-		          <div class="card-footer">
+		          <div v-if="user.deleted_at" class="card-footer">
 		            <div class="text-right">
-		              <a href="#" class="btn btn-sm bg-teal">
+		              <a href="#" class="btn btn-sm bg-gradient-maroon">
+		                <i class="fas fa-unlock"></i> desbloquear
+		              </a>
+		            </div>
+		          </div>
+		          <div v-else class="card-footer">
+		            <div class="text-right">
+		              <a href="#" class="btn btn-sm bg-gradient-teal">
 		                <i class="fas fa-edit"></i>
 		              </a>
-		              <a href="#" class="btn btn-sm btn-primary">
+		              <a href="#" class="btn btn-sm bg-gradient-primary">
 		                <i class="fas fa-user"></i> Ver Perfil
 		              </a>
 		            </div>

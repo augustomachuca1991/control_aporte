@@ -5,7 +5,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form  action="" @submit.prevent="nuevaClase()">
-            <div class="modal-header bg-info">
+            <div class="modal-header bg-gradient-teal">
               <h5 class="modal-title" id="ModalLabelNewClase">Nueva Clase</h5>
               <!-- {{errors}} -->
               <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="empty()">
@@ -61,7 +61,7 @@
     <div class="modal fade" id="clase_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditClase" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-info">
+          <div class="modal-header bg-gradient-teal">
             <h5 class="modal-title" id="ModalLabelEditClase">Editar Jurisdiccion</h5>
             <button @click="empty()" type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -126,7 +126,7 @@
         <div class="row">
          <!-- nueva clase  y buscador--> 
          <div class="col col-md-3 my-2">
-           <button @click="abrirModal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#clase_new"><i class="fa fa-plus"></i>&nbsp;Nueva clase</button>
+           <button @click="abrirModal()" class="btn bg-gradient-teal btn-block rounded-pill" data-toggle="modal" data-target="#clase_new"><i class="fa fa-plus"></i>&nbsp;Nueva clase</button>
          </div>
          <div class="col-md-3  offset-md-6 my-2">
            <form class="form-inline justify-content-end">
@@ -139,8 +139,8 @@
 
           <!-- /.col (LEFT) -->
             <div class="col-12">
-              <div class="card card-info">
-                <div class="card-header">
+              <div class="card">
+                <div class="card-header bg-gradient-teal">
                   <h3 class="card-title">Lista de Clases</h3>
 
                   <!-- <div class="card-tools">

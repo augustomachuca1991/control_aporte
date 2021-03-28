@@ -53,8 +53,8 @@
 		 	      </div>
 		 	      <!-- /.col (LEFT) -->
 		 	        <div class="col-12">
-		 	          <div class="card card-orange">
-		 	            <div class="card-header">
+		 	          <div class="card">
+		 	            <div class="card-header bg-gradient-orange">
 		 	              <h3 class="card-title text-white">Historias Laborales</h3>
 
 		 	              <!-- <div class="card-tools">
@@ -77,7 +77,7 @@
 		 	            	<div class="timeline timeline-inverse">
 		 	            	  <!-- Timeline time label -->
 		 	            	  <div class="time-label">
-		 	            	    <span class="bg-olive">{{this.fecha_ingreso }} - {{this.fecha_egreso}}  </span>
+		 	            	    <span>{{this.fecha_ingreso }} </span>
 		 	            	  </div>
 		 	            	  <div>
 		 	            	  <!-- Before each timeline item corresponds to one icon on the left scale -->
@@ -104,13 +104,13 @@
 	          			        	</div>
 
 		 	            	      <div v-else class="timeline-body">
-		 	            	      	Nombre: {{nombre}}<br>
-		 	            	        Cuil: {{cuil}}<br>
-		 	            	        Fecha de Nacimiento: {{fecha_nac}}<br>
-		 	            	        Sexo: {{sexo}}<br>
-		 	            	        Puestos Laborales:
+		 	            	      	<strong>Nombre:</strong>{{nombre}}<br>
+		 	            	        <strong>Cuil:</strong>{{cuil | formatCuil}}<br>
+		 	            	        <strong>Fecha de Nacimiento:</strong> {{fecha_nac}}<br>
+		 	            	        <strong>Sexo:</strong>{{sexo}}<br>
+		 	            	        <strong>Puestos Laborales</strong>
 		 	            	        <ul>
-		 	            	        	<li v-for="(puesto_laboral,index) in puestos_laborales" :key="puesto_laboral.id">Puesto Laboral <b>#{{puesto_laboral.cod_laboral}}</b>
+		 	            	        	<li v-for="(puesto_laboral,index) in puestos_laborales" :key="puesto_laboral.id">Puesto Laboral: #{{puesto_laboral.cod_laboral}}
 		 	            	        	<button class="btn btn-outline-info border-0 btn-xs" @click="cargo(index)">
 		 	            	        		<i class="fas fa-eye"></i>
 		 	            	        	</button>
@@ -119,7 +119,7 @@
 		 	            	      </div>
 		 	            	      <!-- Placement of additional controls. Optional -->
 		 	            	      <div class="timeline-footer">
-		 	            	        <a class="btn btn-primary btn-sm" @click="historiaLaboral()">Ver Periodo Completo</a>
+		 	            	        <a class="btn bg-gradient-navy btn-sm" @click="historiaLaboral()">Ver Periodo Completo</a>
 		 	            	        <!-- <a class="btn btn-danger btn-sm">Delete</a> -->
 		 	            	      </div>
 		 	            	    </div>
@@ -131,7 +131,7 @@
 		 	            	    <!-- Time -->
 		 	            	      <span class="time"><i class="fas fa-clock"></i> 12:05</span>
 		 	            	      <!-- Header. Optional -->
-		 	            	      <h3 class="timeline-header"><a href="#">Historia Laboral</a> sent you an email</h3>
+		 	            	      <h3 class="timeline-header"><a href="#" class="text-dark">Historia Laboral</a> sent you an email</h3>
 		 	            	      <!-- Body -->
 		 	            	      <div class="timeline-body">
 		 	            	        
@@ -140,7 +140,7 @@
 		 	            	      <!-- Placement of additional controls. Optional -->
 		 	            	      <div class="timeline-footer">
 		 	            	        <!-- <a class="btn btn-primary btn-sm">Read more</a> -->
-		 	            	        <a class="btn btn-danger btn-sm" @click="empty()"><i class="fas fa-broom"></i>&nbsp;Limpiar</a>
+		 	            	        <a class="btn bg-gradient-orange btn-sm" @click="empty()"><i class="fas fa-broom"></i>&nbsp;Limpiar</a>
 		 	            	      </div>
 		 	            	    </div>
 		 	            	  </div>
@@ -240,14 +240,14 @@
 	        		if (this.puesto_laboral.fecha_egreso) {
 	        			fecha_egreso = new Date(this.puesto_laboral.fecha_egreso);
 	        		} else {
-	        			fecha_egreso = new Date(2021,1,1);
+	        			fecha_egreso = new Date();
 	        		}
 
 	        		this.fecha_ingreso = this.puesto_laboral.fecha_ingreso;
 	        		this.fecha_egreso = fecha_egreso;
 	        		this.datos.push([
-	        			'Puesto Laboral'+this.puesto_laboral.cod_laboral, 
-	        			'Organismo'+this.puesto_laboral.organismo_id,
+	        			'PL: '+this.puesto_laboral.cod_laboral, 
+	        			'Organismo: '+this.puesto_laboral.organismo.organismo,
 	        			new Date(this.puesto_laboral.fecha_ingreso),
 	        			fecha_egreso,
 	        			])
@@ -256,7 +256,7 @@
 	        		dataTable.addRows(this.datos);
 
 	        		var option = {
-	        			colors : ['#63813f', '#80a851'],
+	        			colors : ['#ffc26c', '#ffe0b5'],
 	        			//backgroundColor :'#bcc5b1',
 
 	        		}
@@ -296,6 +296,20 @@
 
 	        	},
 	        },
+	        filters:{
+	          formatCuil:function(value){
+	              value = value.toString();
+	              if (value.length == 10 ) {
+	                value = '0'+value;
+	              }
+
+	              var last = value.slice(-1);
+	              var dni = value.slice(2,-1);
+	              var first = value.charAt(0)+value.charAt(1);
+
+	              return first+'-'+dni+'-'+last;
+	          },
+	        }
 
 	    }
 </script>
