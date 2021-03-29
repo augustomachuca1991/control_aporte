@@ -1,12 +1,12 @@
 <template>
     <div>
         <!-- Modal nuevo organismo -->
-        <div class="modal fade" id="organismo_new" tabindex="-1" role="dialog" aria-labelledby="ModalLabelNewOrganismo" aria-hidden="true">
+        <div class="modal fade" id="organismo_new" tabindex="-1" role="dialog" aria-labelledby="ModalLabelnuevo_organismo" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <form  action="" @submit.prevent="newOrganismo()">
+              <form  action="" @submit.prevent="nuevo_organismo()">
                 <div class="modal-header bg-gradient-success">
-                  <h5 class="modal-title" id="ModalLabelNewOrganismo">Nuevo Organismo</h5>
+                  <h5 class="modal-title" id="ModalLabelnuevo_organismo">Nuevo Organismo</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -33,21 +33,21 @@
                   <div class="form-group row">
                     <label for="select_origen" class="col-sm-3 col-form-label">Origen *</label>
                     <div class="col-sm-9">
-                      <select :disabled="origenes.length === 0" class="custom-select" id="select_origen" v-model="selectedOrigen" @change="selectOrigen()">
+                      <select class="custom-select" id="select_origen" v-model="selectedOrigen" @change="selectOrigenes" required>
                         <option selected disabled :value="''">Seleccione Origen...</option>
                         <option v-for="(origen,index) in origenes" :key="origen.id" :value="index">
                           {{origen.origen}}
                         </option>
-                      </select>
+                      </select><!-- 
                       <span class="errors text-danger" v-for="error in errors.origen_id" >
                           <small><em>{{error}}</em></small>
-                      </span>
+                      </span> -->
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="select_origen" class="col-sm-3 col-form-label">Jurisdiccion *</label>
                     <div class="col-sm-9">
-                      <select :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion" v-model="selectedJurisdiccion" @change="selectJurisdiccion()">
+                      <select :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion" v-model="selectedJurisdiccion" @change="selectJurisdicciones" required>
                         <option selected disabled :value="''">Seleccione Jurisdiccion...</option>
                         <option v-for="(jurisdiccion,index) in jurisdicciones" :key="jurisdiccion.id" :value="index">
                           {{jurisdiccion.jurisdiccion}}
@@ -56,7 +56,6 @@
                       <span class="errors text-danger" v-for="error in errors.jurisdiccion_id">
                           <small><em>{{error}}</em></small>
                       </span>
-                      {{this.jurisdicciones.legth}}
                     </div>
                   </div>
                 </div>
@@ -86,9 +85,9 @@
 
                     <input v-if='editMode' type="text" class="form-control" id="input_codigo_organismo_edit" placeholder="Codigo" v-model="cod_organismo" disabled>
                     <p class="text-justify" v-else>{{organismo.cod_organismo}}</p>
-                    <!-- <span class="errors text-danger" v-for="error in errors.cod_jurisdiccion">
+                    <span class="errors text-danger" v-for="error in errors.cod_organismo">
                         <small><em>{{error}}</em></small>
-                    </span> -->
+                    </span>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -96,15 +95,15 @@
                   <div class="col-sm-9">
                     <input v-if="editMode" type="text" class="form-control" id="input_organismo_edit" placeholder="Organismo" v-model="descripcion">
                     <p class="text-justify" v-else>{{organismo.organismo}}</p>
-                    <!-- <span class="errors text-danger" v-for="error in errors.jurisdiccion">
+                    <span class="errors text-danger" v-for="error in errors.organismo">
                         <small><em>{{error}}</em></small>
-                    </span> -->
+                    </span>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="input_cod_origen" class="col-sm-3 col-form-label">Origen</label>
                   <div class="col-sm-9">
-                    <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedOrigen" @change="selectOrigen()">
+                    <select v-if="editMode" class="custom-select" id="select_origen_edit" v-model="selectedOrigen" @change="selectOrigenes" required>
                       <option v-for="(origen, index) in origenes" :key="origen.id" :value="index" :selected=" index === selectedOrigen">
                         {{origen.origen}}
                       </option>
@@ -117,25 +116,20 @@
                 </div>
                 <div class="form-group row">
                   <label for="input_cod_jurisdiccion" class="col-sm-3 col-form-label">Jurisdiccion</label>
-                  <div class="col-sm-9" @change="selectJurisdiccion()">
-                    <select v-if="editMode"  :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion_edit">
-                      <option v-if="noclick" selected :value="''">
+                  <div class="col-sm-9">
+                    <select v-if="editMode"  :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion_edit" v-model="selectedJurisdiccion" @change="selectJurisdicciones" required>
+                      <!-- <option v-if="noclick" selected :value="''">
                         {{jurisdiccion.jurisdiccion}}
-                      </option>
+                      </option> -->
 
-                      <option v-else v-for="(jurisdiccion, index) in jurisdicciones" :value="index" :key="jurisdiccion.id">
+                      <option v-for="(jurisdiccion, index) in jurisdicciones" :value="index" :key="jurisdiccion.id" :selected="index ===  selectedJurisdiccion ">
                         {{jurisdiccion.jurisdiccion}}
                       </option>
                     </select> 
-                    <!-- <select v-if="editMode"  :disabled="jurisdicciones.length === 0" class="custom-select" id="select_jurisdiccion_edit" v-model="selectedJurisdiccion">
-                      <option v-for="(jurisdiccion, index) in jurisdicciones" :value="index" :key="jurisdiccion.id">
-                        {{jurisdiccion.jurisdiccion}}
-                      </option>
-                    </select> -->
                     <p class="text-justify" v-else>{{jurisdiccion.jurisdiccion}}</p>
-                    <!-- <span class="errors text-danger" v-for="error in errors.origen_id">
+                    <span class="errors text-danger" v-for="error in errors.jurisdiccion_id">
                         <small><em>{{error}}</em></small>
-                    </span> -->
+                    </span>
                   </div>
                 </div>
               </div>
@@ -200,7 +194,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col col-md-3 my-2">
-                <button  @click="open_modal()" class="btn bg-gradient-success btn-block rounded-pill" data-toggle="modal" data-target="#organismo_new"><i class="fa fa-plus"></i>&nbsp;Nuevo Organismo</button>
+                <button  @click="getOrigenes()" class="btn bg-gradient-success btn-block rounded-pill" data-toggle="modal" data-target="#organismo_new"><i class="fa fa-plus"></i>&nbsp;Nuevo Organismo</button>
               </div>
               <div class="col-md-3  offset-md-6 my-2">
                 <form class="form-inline justify-content-end">
@@ -213,17 +207,16 @@
                   <div class="card-header bg-gradient-success">
                     <h3 class="card-title">Lista de Organismos</h3>
 
-                    <!-- <div class="card-tools">
+                    <div class="card-tools">
                       <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"  @keyup="">
-
-                        <div class="input-group-append">
-                          <button type="button" class="btn btn-outline-success" disabled>
-                            <i class="fas fa-search"></i>
-                          </button>
-                        </div>
+                        <select class="form-control form-control-sm custom-select">
+                          <option value="5">5 por página</option>
+                          <option value="10">10 por página</option>
+                          <option value="25">25 por página</option>
+                          <option value="50">50 por página</option>
+                        </select>
                       </div>
-                    </div> -->
+                    </div>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body table-responsive p-0">
@@ -249,8 +242,8 @@
                           <td>{{organismo.jurisdiccion.origen.origen}}</td>
                           <td><em> {{organismo.created_at | moment}}</em></td>
                           <td>
-                            <button @click="trash(index,organismo.id)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
                             <button @click="edit(index,organismo)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#organismo_edit"><i class="fa fa-edit"></i></button>
+                            <button @click="eliminar(index)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
                           </td>
                         </tr>
                       </tbody>
@@ -260,8 +253,8 @@
                     <span>total registros encontrados: {{paginate.total}}</span>
                     <nav aria-label="Contacts Page Navigation">
                       <ul class="pagination paginate-xs justify-content-end m-0">
-                        <li class="page-item mx-1" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
-                            <a href="#" class="page-link bg-gradient-success rounded-circle border-0" @click.prevent="getPage(n)">
+                        <li class="page-item" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
+                            <a href="#" class="page-link" @click.prevent="getPage(n)">
                                 <span>
                                     {{ n }}
                                 </span>
@@ -297,19 +290,17 @@
                 origenes:[],
                 jurisdicciones:[],
                 organismos:[],
+                errors:[],
                 origen:{},
                 jurisdiccion:{},
                 organismo:{},
                 selectedOrigen:'',
                 selectedJurisdiccion:'',
+                selectedOrganismo:'',
                 cod_organismo:'',
                 descripcion:'',
                 search:'',
                 order:false,
-                errors:[],
-                cod_jurisdiccion:'',
-                cod_origen:'',
-                index_organismo: '',
                 editMode:false,
                 noclick:false,
                 paginate:{
@@ -318,6 +309,8 @@
                   total:'',
                   path:'',
                   next_page_url:'',
+                  from:'',
+                  to:'',
                 },
                 
 
@@ -330,7 +323,7 @@
         methods: {
             getOrigenes(){
                 axios.get('api/origen/').then((response)=>{
-                    this.origenes = response.data.data;
+                    this.origenes = response.data;
                 })
             },
             getJurisdicciones(){
@@ -338,22 +331,19 @@
                     this.jurisdicciones = response.data;
                 })
             },
-            selectOrigen(){
-                this.noclick = false;
+            selectOrigenes(){
                 this.jurisdicciones = [];
                 this.selectedJurisdiccion = '';
-                this.cod_origen = '';
-                if (this.selectedOrigen >= 0) {
-                    this.origen = this.origenes[this.selectedOrigen]
-                    this.cod_origen = this.origen.cod_origen
-                    this.jurisdicciones = this.origen.jurisdicciones
+                if (this.selectedOrigen !== '') {
+                  this.origen = this.origenes[this.selectedOrigen];
+                  this.jurisdicciones = this.origenes[this.selectedOrigen].jurisdicciones;
                 }
 
             },
-            selectJurisdiccion(){
-                    if (this.selectedJurisdiccion >= 0) {
-                      this.jurisdiccion = this.jurisdicciones[this.selectedJurisdiccion];
-                      this.cod_jurisdiccion = this.jurisdiccion.cod_jurisdiccion;
+            selectJurisdicciones(){
+
+                    if (this.selectedOrigen !== '') {
+                        this.jurisdiccion = this.jurisdicciones[this.selectedJurisdiccion];
                     }
 
             },
@@ -364,36 +354,24 @@
                     this.paginate.last_page = response.data.last_page;
                     this.paginate.total = response.data.total;
                     this.paginate.path = response.data.path;
+                    this.paginate.from = response.data.from;
+                    this.paginate.to = response.data.to;
                 })
             },
-            newOrganismo(){
-                let params = {
-                  cod_organismo : this.cod_organismo,
-                  organismo : this.descripcion,
-                  jurisdiccion_id : this.cod_jurisdiccion,
-                  origen_id : this.cod_origen
-                }
-                const organismo = {
-                        cod_organismo : this.cod_organismo,
-                        jurisdiccion_id : this.jurisdiccion.cod_jurisdiccion,
-                        organismo : this.descripcion,
-                        created_at: new Date(),
-                        jurisdiccion: {
-                            id : this.jurisdiccion.id,
-                            cod_jurisdiccion : this.jurisdiccion.cod_jurisdiccion,
-                            origen_id: this.origen.cod_origen,
-                            jurisdiccion: this.jurisdiccion.jurisdiccion,
-                            origen : this.origen
-                        }
-                    };
+            nuevo_organismo(){
+                let formData = new FormData();
+                formData.append('cod_organismo', this.cod_organismo);
+                formData.append('jurisdiccion_id', this.jurisdiccion.cod_jurisdiccion);
+                formData.append('organismo', this.descripcion);
 
-                axios.post('api/organismo/create',params)
+                axios.post('api/organismo/create',formData)
                               .then((response)=> {
-                                  this.organismos.unshift(organismo);
+
+                                  this.organismos.unshift(response.data);
                                   this.empty();
                                   Toast.fire({
                                     icon: 'success',
-                                    title: 'Jurisdicción '+response.data.organismo+' se creó satisfactoriamente.',
+                                    title: 'organismo '+response.data.organismo+' se creó satisfactoriamente.',
                                     background:'#E7FFD7',
                                   })
                                
@@ -402,10 +380,12 @@
                                this.errors = err.response.data.errors;
                              });
             },
-            trash(index,id){
+            eliminar(index){
+               this.organismo = this.organismos[index].organismo;
+               let id = this.organismo.id;
                swal.fire({
                  title: 'Esta seguro?',
-                 text: this.organismos[index].organismo+" esta a punto de ser eliminada!",
+                 text: this.organismo.organismo+" esta a punto de ser eliminada!",
                  icon: 'warning',
                  showCancelButton: true,
                  confirmButtonColor: '#3085d6',
@@ -435,16 +415,15 @@
                })
             },
             edit(index,organismo){
-                this.open_modal();
-                this.index_organismo = index;
+                this.getOrigenes();
+                this.selectedOrganismo = index;
                 this.organismo = organismo;
                 this.cod_organismo = this.organismo.cod_organismo;
                 this.descripcion = this.organismo.organismo;
                 this.jurisdiccion = this.organismo.jurisdiccion;
                 this.origen = this.jurisdiccion.origen;
                 this.selectedOrigen = (this.origen.id - 1);
-                this.selectedJurisdiccion = this.jurisdiccion.id;
-                this.noclick = true;
+                this.selectedJurisdiccion = (this.jurisdiccion.id-1);
             },
             update(){
               //const params = {
@@ -456,34 +435,33 @@
               //};
 
               const organismo = {
-                      cod_organismo : this.cod_organismo,
-                      jurisdiccion_id : this.jurisdiccion.cod_jurisdiccion,
-                      organismo : this.descripcion,
-                      created_at: this.organismo.created_at,
-                      jurisdiccion: {
-                          id : this.jurisdiccion.id,
-                          cod_jurisdiccion : this.jurisdiccion.cod_jurisdiccion,
-                          origen_id: this.origen.cod_origen,
-                          jurisdiccion: this.jurisdiccion.jurisdiccion,
-                          origen : this.origen
-                      }
-                  };
-              this.organismos[this.index_organismo] = organismo;
-              this.empty();
+                  jurisdiccion_id : this.jurisdiccion.cod_jurisdiccion,
+                  organismo : this.descripcion,
+              };
+              // this.organismos[this.index_organismo] = organismo;
+              // this.empty();
 
-              //axios.put(`api/organismo/update/${this.organismo.id}`,params)
-              //.then((response)=>{
-              //    this.organismos[this.index_organismo] = organismo;
-              //    this.empty();
-              //})
-              //.catch((err) => {
-              // console.log(err.response.data.errors)
-              // this.errors = err.response.data.errors;
-              //});
+              axios.put(`api/organismo/update/${this.organismo.id}`,organismo)
+              .then((response)=>{
+                 this.organismos[this.selectedOrganismo] = response.data;
+                 this.empty();
+              })
+              .catch((err) => {
+                console.log(err.response.data.errors)
+                this.errors = err.response.data.errors;
+              });
             },
             buscar(){
                 axios.get(`api/organismo/${this.search}`).then((response)=>{
-                  this.organismos = response.data;
+                  this.organismos = response.data.data;
+                  this.paginate.current_page = response.data.current_page;
+                  this.paginate.last_page = response.data.last_page;
+                  this.paginate.total = response.data.total;
+                  this.paginate.path = response.data.path;
+                  this.organismos = response.data.data;
+                  this.paginate.from = response.data.from;
+                  this.paginate.to = response.data.to;
+
                 })
             },
             sort(column){
@@ -497,15 +475,25 @@
                 }
 
                 axios.get(`api/organismo/order/${column}/sort/${sort}`).then((response)=>{
-                    this.organismos = response.data
+                    this.organismos = response.data.data;
+                    this.paginate.current_page = response.data.current_page;
+                    this.paginate.last_page = response.data.last_page;
+                    this.paginate.total = response.data.total;
+                    this.paginate.path = response.data.path;
+                    this.paginate.from = response.data.from;
+                    this.paginate.to = response.data.to;
                 })
             },
-            open_modal(){
-                this.getOrigenes();
-                //this.getJurisdicciones();
-            },
+            // open_modal(){
+            //     this.getOrigenes();
+            //     //this.getJurisdicciones();
+            // },
             empty(){
+              this.jurisdicciones = [];
+              this.origenes = [];
               this.errors = [];
+              this.organismo = {};
+              this.jurisdiccion = {};
               this.descripcion  = '';
               this.cod_organismo = '';
               this.cod_origen = '';
@@ -513,18 +501,16 @@
               this.selectedOrigen = '';
               this.selectedJurisdiccion = '';
               this.editMode = false;
+              this.noclick = false;
               this.origen = {};
-              this.jurisdiccion = {};
-              this.organismo = {};
               this.index_organismo = '';
-              this.origenes = [];
-              this.jurisdicciones = [];
               $('#organismo_new').modal('hide');
               $('#organismo_edit').modal('hide');
               
             },
             editar(){
               this.editMode = true;
+              this.noclick = true
             },
             getPage(page){
               axios.get(this.paginate.path+'?page='+page).then((response)=> {
@@ -533,6 +519,10 @@
                 this.paginate.last_page = response.data.last_page;
                 this.paginate.total = response.data.total;
                 this.paginate.path = response.data.path;
+                this.organismos = response.data.data;
+                this.paginate.from = response.data.from;
+                this.paginate.to = response.data.to;
+
               })
             },
 

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class ClaseController extends Controller
 {
+    
+    public $perPage = 15;
     /**
      * Display a listing of the resource.
      *
@@ -116,7 +118,7 @@ class ClaseController extends Controller
     }
 
     public function getClases(){
-        return Clase::with('categoria')->latest()->get();
+        return Clase::with('categoria')->latest()->paginate($this->perPage);
     }
 
 
@@ -130,7 +132,7 @@ class ClaseController extends Controller
             ->orWhereHas('categoria' , function($query) use ($search){
                 $query->where('categoria','LIKE',"%".$search."%");
             })
-            ->get();
+            ->paginate($this->perPage);
 
     }
 
@@ -142,7 +144,7 @@ class ClaseController extends Controller
             
             return Clase::with(['categoria'])
             ->orderBy($column, $order)
-            ->get();
+            ->paginate($this->perPage);
 
     }
 

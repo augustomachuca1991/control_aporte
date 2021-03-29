@@ -143,11 +143,16 @@
                 <div class="card-header bg-gradient-teal">
                   <h3 class="card-title">Lista de Clases</h3>
 
-                  <!-- <div class="card-tools">
+                  <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"">
+                      <select class="form-control form-control-sm custom-select">
+                        <option value="5">5 por página</option>
+                        <option value="10">10 por página</option>
+                        <option value="25">25 por página</option>
+                        <option value="50">50 por página</option>
+                      </select>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
@@ -178,6 +183,20 @@
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                <div class="card-footer">
+                  <span>total registros encontrados: {{paginate.total}}</span>
+                  <nav aria-label="Contacts Page Navigation">
+                    <ul class="pagination paginate-xs justify-content-end m-0">
+                      <li class="page-item" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
+                          <a href="#" class="page-link" @click.prevent="getPage(n)">
+                              <span>
+                                  {{ n }}
+                              </span>
+                          </a>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -216,6 +235,15 @@
                 selectedCategoria:'',
                 editMode: false,
                 order: false,
+                paginate:{
+                  current_page:'',
+                  last_page:'',
+                  total:'',
+                  path:'',
+                  next_page_url:'',
+                  from:'',
+                  to:'',
+                },
 
             }
       },
@@ -226,7 +254,13 @@
       methods:{
         getClases(){
           axios.get('api/clase/').then((response)=>{
-              this.clases = response.data;
+              this.clases = response.data.data;
+              this.paginate.current_page = response.data.current_page;
+              this.paginate.last_page = response.data.last_page;
+              this.paginate.total = response.data.total;
+              this.paginate.path = response.data.path;
+              this.paginate.from = response.data.from;
+              this.paginate.to = response.data.to;
           })
           .catch(function (error) {
               console.log(error);
@@ -347,7 +381,13 @@
         buscar(){
           axios.get(`api/clase/${this.search}`).then((response)=>{
               //console.log(response.data)
-              this.clases = response.data;
+              this.clases = response.data.data;
+              this.paginate.current_page = response.data.current_page;
+              this.paginate.last_page = response.data.last_page;
+              this.paginate.total = response.data.total;
+              this.paginate.path = response.data.path;
+              this.paginate.from = response.data.from;
+              this.paginate.to = response.data.to;
           })
 
         },
@@ -361,7 +401,13 @@
           }
           console.log(columna)
           axios.get(`api/clase/order/${columna}/sort/${sort}`).then((response)=>{
-              this.clases = response.data
+              this.clases = response.data.data;
+              this.paginate.current_page = response.data.current_page;
+              this.paginate.last_page = response.data.last_page;
+              this.paginate.total = response.data.total;
+              this.paginate.path = response.data.path;
+              this.paginate.from = response.data.from;
+              this.paginate.to = response.data.to;
           })
         },
         empty(){
@@ -378,6 +424,19 @@
           this.selectedClase = '';
           this.selectedCategoria = '';
           this.editMode = false;
+        },
+        getPage(page){
+          axios.get(this.paginate.path+'?page='+page).then((response)=> {
+            this.clases = response.data.data;
+            this.paginate.current_page = response.data.current_page;
+            this.paginate.last_page = response.data.last_page;
+            this.paginate.total = response.data.total;
+            this.paginate.path = response.data.path;
+            this.organismos = response.data.data;
+            this.paginate.from = response.data.from;
+            this.paginate.to = response.data.to;
+
+          })
         },
       },
       

@@ -1555,3 +1555,5 @@ Horizon started successfully.
 [2021-03-28 18:19:18][83] Processed:  App\Jobs\NotificationJob
 [2021-03-28 18:19:23][84] Processing: App\Notifications\FinishJob
 [2021-03-28 18:19:23][84] Processed:  App\Notifications\FinishJob
+Horizon started successfully.
+Horizon started successfully.

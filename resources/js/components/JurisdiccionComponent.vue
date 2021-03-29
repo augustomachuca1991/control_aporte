@@ -179,17 +179,23 @@
                   <div class="card-header bg-gradient-olive">
                     <h3 class="card-title">Lista de Jurisdicciones</h3>
 
-                    <!-- <div class="card-tools">
+                    <div class="card-tools">
                       <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"  @keyup="">
+                        <!-- <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"  @keyup="">
 
                         <div class="input-group-append">
                           <button type="button" class="btn btn-outline-success" disabled>
                             <i class="fas fa-search"></i>
                           </button>
-                        </div>
+                        </div> -->
+                        <select class="form-control form-control-sm custom-select">
+                          <option value="5">5 por página</option>
+                          <option value="10">10 por página</option>
+                          <option value="25">25 por página</option>
+                          <option value="50">50 por página</option>
+                        </select>
                       </div>
-                    </div> -->
+                    </div>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body table-responsive p-0">
@@ -223,9 +229,9 @@
                   <div class="card-footer">
                     <span>total registros encontrados: {{paginate.total}}</span>
                     <nav aria-label="Contacts Page Navigation">
-                      <ul class="pagination pagiante-xs justify-content-end m-0">
-                        <li class="page-item mx-1" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
-                            <a href="#" class="page-link bg-gradient-olive rounded-circle border-0" @click.prevent="getPage(n)">
+                      <ul class="pagination pagiante-sm justify-content-end m-0">
+                        <li class="page-item" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
+                            <a href="#" class="page-link" @click.prevent="getPage(n)">
                                 <span >
                                     {{ n }}
                                 </span>
@@ -277,6 +283,8 @@
                       total:'',
                       path:'',
                       next_page_url:'',
+                      from:'',
+                      to:'',
                     },
                 }
             },
@@ -286,17 +294,19 @@
         methods:{
             getJurisdicciones(){
                             axios.get('api/jurisdiccion').then((response)=>{
-                                console.log(response.data)
+                                //console.log(response.data)
                                 this.jurisdicciones = response.data.data;
                                 this.paginate.current_page = response.data.current_page;
                                 this.paginate.last_page = response.data.last_page;
                                 this.paginate.total = response.data.total;
                                 this.paginate.path = response.data.path;
+                                this.paginate.from = response.data.from;
+                                this.paginate.to = response.data.to;
                             })
                         },
             getOrigenes(){
                 axios.get('api/origen').then((response)=>{
-                    console.log(response.data)
+                    //console.log(response.data)
                     this.origenes = response.data;
                 })
             },
@@ -361,6 +371,8 @@
                 })
             },
             edit(index,jurisdiccion){
+                // console.log(index);
+                // console.log(this.paginate.from - 1)
                 this.getOrigenes();
                 this.jurisdiccion = jurisdiccion;
                 this.descripcion = jurisdiccion.jurisdiccion;
@@ -388,7 +400,13 @@
             },
             buscar(){
               axios.get(`api/jurisdiccion/${this.search}`).then((response)=>{
-                  this.jurisdicciones = response.data;
+                  this.jurisdicciones = response.data.data;
+                  this.paginate.current_page = response.data.current_page;
+                  this.paginate.last_page = response.data.last_page;
+                  this.paginate.total = response.data.total;
+                  this.paginate.path = response.data.path;
+                  this.paginate.from = response.data.from;
+                  this.paginate.to = response.data.to;
               })
             },
             update(){
@@ -419,7 +437,13 @@
                 sort = 'desc'
               }
               axios.get(`api/jurisdiccion/order/${column}/sort/${sort}`).then((response)=>{
-                        this.jurisdicciones = response.data
+                        this.jurisdicciones = response.data.data
+                        this.paginate.current_page = response.data.current_page;
+                        this.paginate.last_page = response.data.last_page;
+                        this.paginate.total = response.data.total;
+                        this.paginate.path = response.data.path;
+                        this.paginate.from = response.data.from;
+                        this.paginate.to = response.data.to;
               })
             },
 
@@ -430,6 +454,8 @@
                 this.paginate.last_page = response.data.last_page;
                 this.paginate.total = response.data.total;
                 this.paginate.path = response.data.path;
+                this.paginate.from = response.data.from;
+                this.paginate.to = response.data.to;
               })
             },
         },

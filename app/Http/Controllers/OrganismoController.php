@@ -9,6 +9,9 @@ use Illuminate\Validation\Rule;
 
 class OrganismoController extends Controller
 {
+    
+
+    public $perPage = 10;
     /**
      * Display a listing of the resource.
      *
@@ -43,8 +46,9 @@ class OrganismoController extends Controller
             'cod_organismo' => 'required|integer|unique:organismos,cod_organismo',
             'organismo' =>   'required',
             'jurisdiccion_id' => 'required',
-            'origen_id' => 'required'
         ]);
+        
+
         if (!$validator) {
             return $validator;
         } else {
@@ -53,7 +57,7 @@ class OrganismoController extends Controller
                 'organismo' => $request->organismo,
                 'jurisdiccion_id' => $request->jurisdiccion_id
             ]);
-            return $organismo;
+            return $this->show($organismo->id);
         }
     }
 
@@ -63,9 +67,11 @@ class OrganismoController extends Controller
      * @param  \App\Organismo  $organismo
      * @return \Illuminate\Http\Response
      */
-    public function show(Organismo $organismo)
+    public function show($id)
     {
-        //
+        $organismo = Organismo::with(['jurisdiccion'])
+                ->where('id', $id)->first();
+        return $organismo;
     }
 
     /**
@@ -88,27 +94,43 @@ class OrganismoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $date = Carbon::now()->toDateTimeString();
+        // //
+        // $date = Carbon::now()->toDateTimeString();
 
-        $validarDatos = $request->validate([
-            'cod_organismo'  =>  'required',
-            'jurisdiccion_id'       =>    'required',
-            'organismo'     =>  'required',
+        // $validarDatos = $request->validate([
+        //     'cod_organismo'  =>  'required',
+        //     'jurisdiccion_id'       =>    'required',
+        //     'organismo'     =>  'required',
+        // ]);
+
+        // $form_data = array(
+        //     'cod_organismo'       =>   $request->cod_organismo,
+        //     'jurisdiccion_id'       =>   $request->jurisdiccion_id,
+        //     'organismo'       =>   $request->organismo,
+        //     'updated_at'       =>   $date
+        // );
+
+        // try {
+        //     $organismo = Organismo::whereId($id)->update($form_data);
+        //     return response()->json(['isValid'=>true,'errors'=>'Organismo actualizado satisfactoriamente']);
+        // }catch(\Exception $e) {
+        //     return response()->json(['isValid'=>false,'errors'=>'Error al actualizar el Organismo']);
+        // }
+
+        $validator = $request->validate([
+            'jurisdiccion_id' => 'required|integer',
+            'organismo' => 'required',
         ]);
 
-        $form_data = array(
-            'cod_organismo'       =>   $request->cod_organismo,
-            'jurisdiccion_id'       =>   $request->jurisdiccion_id,
-            'organismo'       =>   $request->organismo,
-            'updated_at'       =>   $date
-        );
-
-        try {
-            $organismo = Organismo::whereId($id)->update($form_data);
-            return response()->json(['isValid'=>true,'errors'=>'Organismo actualizado satisfactoriamente']);
-        }catch(\Exception $e) {
-            return response()->json(['isValid'=>false,'errors'=>'Error al actualizar el Organismo']);
+        if (!$validator) {
+            return $validator;
+        } else {
+            $organismo = Organismo::find($id);
+            $organismo->jurisdiccion_id = $request->jurisdiccion_id;
+            $organismo->organismo = $request->organismo;
+            $organismo->updated_at = now();
+            $organismo->save();
+            return $this->show($organismo->id);
         }
     }
 
@@ -138,7 +160,7 @@ class OrganismoController extends Controller
      */
     public function getOrganismos()
     {
-        return Organismo::with(['jurisdiccion'])->paginate(10);
+        return Organismo::with(['jurisdiccion'])->paginate($this->perPage);
     }
 
     /**
@@ -154,7 +176,7 @@ class OrganismoController extends Controller
             return Organismo::with(['jurisdiccion'])
             ->where('organismo' ,'LIKE' ,"%".$search."%")
             ->orWhere('cod_organismo' ,'LIKE' ,"%".$search."%")
-            ->get();
+            ->paginate($this->perPage);
         }catch (\Exception $e){
             return 'algo salio mal';
         }
@@ -173,7 +195,7 @@ class OrganismoController extends Controller
             
             return Organismo::with(['jurisdiccion'])
             ->orderBy($column, $order)
-            ->get();
+            ->paginate($this->perPage);
         }catch (\Exception $e){
             return 'algo salio mal';
         }

@@ -9,6 +9,9 @@ use Illuminate\Validation\Rule;
 
 class JurisdiccionController extends Controller
 {
+    
+
+    public $perPage = 10;
     /**
      * Display a listing of the resource.
      *
@@ -111,7 +114,8 @@ class JurisdiccionController extends Controller
      */
     public function getJurisdicciones(Jurisdiccion $jurisdiccion)
     {
-        return Jurisdiccion::with(['categorias','origen'])->paginate(10);
+        return Jurisdiccion::with(['categorias','origen'])
+        ->paginate($this->perPage);
     }
     
     /**
@@ -122,29 +126,19 @@ class JurisdiccionController extends Controller
      */
     public function search($search)
     {
-
-        try{
             return Jurisdiccion::with(['categorias','origen'])
             ->where('jurisdiccion' ,'LIKE' ,"%".$search."%")
             ->orWhere('cod_jurisdiccion' ,'LIKE' ,"%".$search."%")
-            ->get();
-        }catch (\Exception $e){
-            return 'algo salio mal';
-        }
+            ->paginate($this->perPage);
+        
 
     }
 
     public function sort($column , $order)
     {
-
-        try{
-            
             return Jurisdiccion::with(['categorias','origen'])
             ->orderBy($column, $order)
-            ->get();
-        }catch (\Exception $e){
-            return 'algo salio mal';
-        }
+            ->paginate($this->perPage);
 
     }
 }
