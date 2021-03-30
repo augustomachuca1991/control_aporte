@@ -112,12 +112,18 @@ class JurisdiccionController extends Controller
      * @param  \App\Jurisdiccion  $jurisdiccion
      * @return \Illuminate\Http\Response
      */
-    public function getJurisdicciones(Jurisdiccion $jurisdiccion)
+    public function getJurisdicciones()
     {
         return Jurisdiccion::with(['categorias','origen'])
         ->paginate($this->perPage);
     }
     
+
+
+    public function getAllJurisdicciones()
+    {
+        return Jurisdiccion::with(['categorias','origen'])->get();
+    }
     /**
      * search the specified resource from storage.
      *

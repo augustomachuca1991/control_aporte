@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class OrigenController extends Controller
 {
+    
+    public $perPage = 10;
     /**
      * Display a listing of the resource.
      *
@@ -91,6 +93,13 @@ class OrigenController extends Controller
     public function getOrigenes()
     {
         
+        return Origen::with('Jurisdicciones')->paginate($this->perPage);
+    }
+
+
+
+    public function getAllOrigenes()
+    {
         return Origen::with('Jurisdicciones')->get();
     }
 }

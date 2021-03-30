@@ -109,7 +109,7 @@
             <span><small><em>(*) obligatorio</em></small></span>
             <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
             <button v-if="editMode" class="btn btn-info btn-sm" @click="actualizarClase()">
-              <i class="fa fa-save"></i>&nbsp;Guardar Cambbios
+              <i class="fa fa-save"></i>&nbsp;Guardar Cambios
             </button>
             <button v-else  type="button" class="btn btn-secondary btn-sm" @click="isEditar()">
               <i class="fa fa-edit"></i>&nbsp;Editar
@@ -145,7 +145,7 @@
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <select class="form-control form-control-sm custom-select">
+                      <select class="form-control form-control-sm custom-select" v-model="n_paginas" @change="paginacion">
                         <option value="5">5 por página</option>
                         <option value="10">10 por página</option>
                         <option value="25">25 por página</option>
@@ -243,7 +243,9 @@
                   next_page_url:'',
                   from:'',
                   to:'',
+                  per_page:15,
                 },
+                n_paginas:5,
 
             }
       },
@@ -268,7 +270,7 @@
           });
         },
         getCategorias(){
-          axios.get('api/categoria').then((response)=>{
+          axios.get('api/categoria/all').then((response)=>{
               this.categorias = response.data;
           })
           .catch(function (error) {
@@ -432,11 +434,18 @@
             this.paginate.last_page = response.data.last_page;
             this.paginate.total = response.data.total;
             this.paginate.path = response.data.path;
-            this.organismos = response.data.data;
+            //this.organismos = response.data.data;
             this.paginate.from = response.data.from;
             this.paginate.to = response.data.to;
 
           })
+        },
+        paginacion:function(){
+          console.log(this.n_paginas)
+          //this.paginate.current_page = this.n_paginas;
+          this.paginate.per_page = this.n_paginas;
+          this.getPage(this.n_paginas);
+
         },
       },
       

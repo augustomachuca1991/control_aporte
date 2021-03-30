@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
+    
+    public $perPage = 15;
     /**
      * Display a listing of the resource.
      *
@@ -92,13 +94,10 @@ class CategoriaController extends Controller
         $categoria =  Categoria::find($id);
         // dd($categoria);
 
-        $categoria->categoria = $request['categoria'];
+        $categoria->categoria = $request->categoria;
         $categoria->updated_at = now();
         $categoria->save();
-        $jur_id = $categoria->jurisdicciones->first()->id;
-
-        $categorias = $this->getCategorias($jur_id);
-        return $categorias;
+        return $this->show($categoria->id);
        
       
     }
@@ -124,18 +123,39 @@ class CategoriaController extends Controller
     }
 
     public function getCategorias(){
+        return Categoria::with('jurisdicciones')->paginate($this->perPage);
+    }
+
+
+    public function getAllCategorias(){
         return Categoria::with('jurisdicciones')->get();
     }
 
 
-    public function getCategoria($id){
-        $categoria =  Categoria::find($id);
-        $j_id = $categoria->jurisdicciones->first()->pivot->jurisdiccion_id;
-        $o_id = $categoria->jurisdicciones->first()->origen_id;
+    public function search($search)
+    {
 
-        return [
-            'jurisdiccion_id' => $j_id,
-            'origen_id' => $o_id
-        ];
+        
+            return Categoria::with(['jurisdicciones'])
+            ->where('categoria' ,'LIKE' ,"%".$search."%")
+            ->orWhere('cod_categoria' ,'LIKE' ,"%".$search."%")
+            ->orWhereHas('jurisdicciones' , function($query) use ($search){
+                $query->where('jurisdiccion','LIKE',"%".$search."%");
+            })
+            ->paginate($this->perPage);
+
+    }
+
+
+
+
+    public function sort($column , $order)
+    {
+            
+            return 
+            Categoria::with(['jurisdicciones'])
+            ->orderBy($column, $order)
+            ->paginate($this->perPage);
+
     }
 }

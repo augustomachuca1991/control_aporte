@@ -305,7 +305,7 @@
                             })
                         },
             getOrigenes(){
-                axios.get('api/origen').then((response)=>{
+                axios.get('api/origen/all').then((response)=>{
                     //console.log(response.data)
                     this.origenes = response.data;
                 })

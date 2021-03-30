@@ -91,15 +91,18 @@ Route::get('/periodo/{id}', 'PeriodoController@show');
 
 // Categoria
 Route::get('/categoria', 'CategoriaController@getCategorias')->name('categorias');
-Route::get('/categoria/find/{id}', 'CategoriaController@getCategoria')->name('find_categoria');
-Route::get('/categoria/{id}', 'CategoriaController@getCategorias')->name('categoria');
+Route::get('/categoria/all', 'CategoriaController@getAllCategorias')->name('categorias_all');
 Route::get('/categoria/edit/{id}', 'CategoriaController@edit')->name('edit_categoria');
 Route::put('/categoria/update/{id}', 'CategoriaController@update')->name('update_categoria');
 Route::post('/categoria/create', 'CategoriaController@store')->name('create_categoria');
 Route::delete('/categoria/delete/{id}', 'CategoriaController@destroy')->name('delete_categoria');
+Route::get('/categoria/{search}', 'CategoriaController@search')->name('categoria_search');
+Route::get('/categoria/order/{column}/sort/{sort}', 'CategoriaController@sort')->name('sort_categoria');
+
 
 // Clases
 Route::get('/clase', 'ClaseController@getClases')->name('clases');
+Route::get('/clase/all', 'ClaseController@getAllClases')->name('clases_all');
 Route::get('/clase/edit/{id}', 'ClaseController@edit')->name('edit_clase');
 Route::put('/clase/update/{id}', 'ClaseController@update')->name('update_clase');
 Route::post('/clase/create', 'ClaseController@store')->name('create_clase');
@@ -109,6 +112,7 @@ Route::get('/clase/order/{column}/sort/{sort}', 'ClaseController@sort')->name('s
 
 // Jurisdicciones
 Route::get('/jurisdiccion', 'JurisdiccionController@getJurisdicciones')->name('jurisdiccion');
+Route::get('/jurisdiccion/all', 'JurisdiccionController@getAllJurisdicciones')->name('jurisdiccion_all');
 Route::get('/jurisdiccion/{search}', 'JurisdiccionController@search')->name('jurisdiccion_search');
 Route::get('/jurisdiccion/edit/{id}', 'JurisdiccionController@edit')->name('edit_jurisdiccion');
 Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('update_jurisdiccion');
@@ -119,6 +123,7 @@ Route::get('/jurisdiccion/order/{column}/sort/{sort}', 'JurisdiccionController@s
 
 // Organismos
 Route::get('/organismo', 'OrganismoController@getOrganismos')->name('organismo');
+Route::get('/organismo/all', 'OrganismoController@getAllOrganismos')->name('organismo_all');
 Route::get('/organismo/{search}', 'OrganismoController@search')->name('organismo_search');
 Route::get('/organismo/edit/{id}', 'OrganismoController@edit')->name('edit_organismo');
 Route::put('/organismo/update/{id}', 'OrganismoController@update')->name('update_organismo');
@@ -140,6 +145,7 @@ Route::delete('/hlaborales/delete/{id}', 'HistoriaLaboralController@destroy')->n
 
 //Origenes
 Route::get('/origen', 'OrigenController@getOrigenes')->name('origen');
+Route::get('/origen/all', 'OrigenController@getAllOrigenes')->name('origen_all');
 
 //Notificaciones
 Route::get('/notification', 'NotificationController@getNotificaciones');

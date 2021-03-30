@@ -240,7 +240,7 @@
             <span><small><em>(*) obligatorio</em></small></span>
             <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
             <button v-if="editMode" class="btn btn-info btn-sm" @click="actualizarCategoria()">
-              <i class="fa fa-save"></i>&nbsp;Guardar Cambbios
+              <i class="fa fa-save"></i>&nbsp;Guardar Cambios
             </button>
             <button v-else  type="button" class="btn btn-secondary btn-sm" @click="isEditar()">
               <i class="fa fa-edit"></i>&nbsp;Editar
@@ -274,11 +274,16 @@
                 <div class="card-header bg-gradient-info">
                   <h3 class="card-title">Lista de Categorias</h3>
 
-                  <!-- <div class="card-tools">
+                  <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"">
+                      <select class="form-control form-control-sm custom-select">
+                        <option value="5">5 por página</option>
+                        <option value="10">10 por página</option>
+                        <option value="25">25 por página</option>
+                        <option value="50">50 por página</option>
+                      </select>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
@@ -301,11 +306,9 @@
                         <td>{{categoria.categoria}}</td>
                         <td>{{categoria.created_at | moment}}</td>
                         <td>
-                          <ul>
-                            <li v-for="(jurisdiccion, index) in categoria.jurisdicciones" :key="jurisdiccion.id">
-                              {{jurisdiccion.jurisdiccion}}
-                            </li>
-                          </ul>
+                          <span v-for="(jurisdiccion, index) in categoria.jurisdicciones" :key="jurisdiccion.id">
+                            {{jurisdiccion.jurisdiccion}}
+                          </span>
                         </td>
                         <td>
                           <button class="btn btn-outline-warning rounded-circle btn-xs border-0" data-toggle="modal" data-target="#categoria_edit" @click="editarCategoria(index, categoria)"><i class="fas fa-edit"></i></button>
@@ -314,6 +317,20 @@
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                <div class="card-footer">
+                  <span>total registros encontrados: {{paginate.total}}</span>
+                  <nav aria-label="Contacts Page Navigation">
+                    <ul class="pagination paginate-xs justify-content-end m-0">
+                      <li class="page-item" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
+                          <a href="#" class="page-link" @click.prevent="getPage(n)">
+                              <span>
+                                  {{ n }}
+                              </span>
+                          </a>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -353,6 +370,15 @@
                 search:'',
                 editMode: false,
                 order: false,
+                paginate:{
+                  current_page:'',
+                  last_page:'',
+                  total:'',
+                  path:'',
+                  next_page_url:'',
+                  from:'',
+                  to:'',
+                },
 
             }
       },
@@ -362,7 +388,7 @@
       },
       methods:{
         getJurisdicciones(){
-          axios.get('api/jurisdiccion').then((response)=>{
+          axios.get('api/jurisdiccion/all').then((response)=>{
               this.jurisdicciones = response.data;
           })
           .catch(function (error) {
@@ -372,7 +398,14 @@
         },
         getCategorias(){
           axios.get('api/categoria').then((response)=>{
-              this.categorias = response.data;
+              this.categorias = response.data.data;
+              this.paginate.current_page = response.data.current_page;
+              this.paginate.last_page = response.data.last_page;
+              this.paginate.total = response.data.total;
+              this.paginate.path = response.data.path;
+              this.organismos = response.data.data;
+              this.paginate.from = response.data.from;
+              this.paginate.to = response.data.to;
           })
           .catch(function (error) {
               console.log(error);
@@ -484,7 +517,14 @@
         buscar(){
           axios.get(`api/categoria/${this.search}`).then((response)=>{
               //console.log(response.data)
-              this.categorias = response.data;
+              this.categorias = response.data.data;
+              this.paginate.current_page = response.data.current_page;
+              this.paginate.last_page = response.data.last_page;
+              this.paginate.total = response.data.total;
+              this.paginate.path = response.data.path;
+              this.organismos = response.data.data;
+              this.paginate.from = response.data.from;
+              this.paginate.to = response.data.to;
           })
 
         },
@@ -498,7 +538,14 @@
           }
           console.log(columna)
           axios.get(`api/categoria/order/${columna}/sort/${sort}`).then((response)=>{
-              this.categorias = response.data
+              this.categorias = response.data.data;
+              this.paginate.current_page = response.data.current_page;
+              this.paginate.last_page = response.data.last_page;
+              this.paginate.total = response.data.total;
+              this.paginate.path = response.data.path;
+              this.organismos = response.data.data;
+              this.paginate.from = response.data.from;
+              this.paginate.to = response.data.to;
           })
         },
         empty(){
@@ -517,6 +564,19 @@
           this.selectedJurisdiccion = '';
           this.editMode = false;
         },
+        getPage(page){
+          axios.get(this.paginate.path+'?page='+page).then((response)=> {
+            this.categorias = response.data.data;
+            this.paginate.current_page = response.data.current_page;
+            this.paginate.last_page = response.data.last_page;
+            this.paginate.total = response.data.total;
+            this.paginate.path = response.data.path;
+            this.organismos = response.data.data;
+            this.paginate.from = response.data.from;
+            this.paginate.to = response.data.to;
+
+          })
+         } 
       },
       
 

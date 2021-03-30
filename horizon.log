@@ -1557,3 +1557,46 @@ Horizon started successfully.
 [2021-03-28 18:19:23][84] Processed:  App\Notifications\FinishJob
 Horizon started successfully.
 Horizon started successfully.
+Horizon started successfully.
+[2021-03-30 08:42:54][85] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-03-30 08:42:54][85] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-03-30 08:42:54][86] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 08:43:19][86] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 08:43:19][87] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 08:43:45][87] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 08:43:45][88] Processing: App\Jobs\CompletedImport
+[2021-03-30 08:43:45][88] Processed:  App\Jobs\CompletedImport
+[2021-03-30 08:43:45][89] Processing: App\Events\NotificationImport
+[2021-03-30 08:43:47][89] Processed:  App\Events\NotificationImport
+[2021-03-30 08:43:47][90] Processing: App\Jobs\NotificationJob
+[2021-03-30 08:43:47][90] Processed:  App\Jobs\NotificationJob
+[2021-03-30 08:43:53][91] Processing: App\Notifications\FinishJob
+[2021-03-30 08:43:53][91] Processed:  App\Notifications\FinishJob
+[2021-03-30 10:07:52][92] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-03-30 10:07:52][92] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-03-30 10:07:52][93] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 10:08:17][93] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 10:08:17][94] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 10:08:43][94] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 10:08:43][95] Processing: App\Jobs\CompletedImport
+[2021-03-30 10:08:43][95] Processed:  App\Jobs\CompletedImport
+[2021-03-30 10:08:43][96] Processing: App\Events\NotificationImport
+[2021-03-30 10:08:44][96] Processed:  App\Events\NotificationImport
+[2021-03-30 10:08:44][97] Processing: App\Jobs\NotificationJob
+[2021-03-30 10:08:44][97] Processed:  App\Jobs\NotificationJob
+[2021-03-30 10:08:49][98] Processing: App\Notifications\FinishJob
+[2021-03-30 10:08:49][98] Processed:  App\Notifications\FinishJob
+[2021-03-30 10:08:52][99] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-03-30 10:08:52][99] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-03-30 10:08:52][100] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 10:09:15][100] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 10:09:15][101] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 10:09:38][104] Processing: App\Jobs\NotificationJob
+[2021-03-30 10:09:38][104] Processed:  App\Jobs\NotificationJob
+[2021-03-30 10:09:38][101] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-03-30 10:09:38][102] Processing: App\Jobs\CompletedImport
+[2021-03-30 10:09:38][102] Processed:  App\Jobs\CompletedImport
+[2021-03-30 10:09:38][103] Processing: App\Events\NotificationImport
+[2021-03-30 10:09:39][103] Processed:  App\Events\NotificationImport
+[2021-03-30 10:09:44][105] Processing: App\Notifications\FinishJob
+[2021-03-30 10:09:44][105] Processed:  App\Notifications\FinishJob

@@ -136,7 +136,7 @@
               <div class="modal-footer">
                 <button v-if="editMode" type="button" class="btn btn-danger btn-sm" data-dismiss="modal" @click="empty()" >Cancelar</button>
                 <button v-if="editMode" class="btn btn-info btn-sm" @click="update()">
-                  <i class="fa fa-save"></i>&nbsp;Guardar Cambbios
+                  <i class="fa fa-save"></i>&nbsp;Guardar Cambios
                 </button>
                 <button v-else  type="button" class="btn btn-secondary btn-sm" @click="editar()">
                   <i class="fa fa-edit"></i>&nbsp;Editar
@@ -322,12 +322,12 @@
 
         methods: {
             getOrigenes(){
-                axios.get('api/origen/').then((response)=>{
+                axios.get('api/origen/all').then((response)=>{
                     this.origenes = response.data;
                 })
             },
             getJurisdicciones(){
-                axios.get('api/jurisdiccion/').then((response)=>{
+                axios.get('api/jurisdiccion/all').then((response)=>{
                     this.jurisdicciones = response.data;
                 })
             },

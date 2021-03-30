@@ -163,6 +163,16 @@ class OrganismoController extends Controller
         return Organismo::with(['jurisdiccion'])->paginate($this->perPage);
     }
 
+
+
+
+
+
+    public function getAllOrganismos()
+    {
+        return Organismo::with(['jurisdiccion'])->get();
+    }
+
     /**
      * search the specified resource from storage.
      *

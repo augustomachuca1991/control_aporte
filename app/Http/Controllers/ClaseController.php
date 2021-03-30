@@ -118,7 +118,13 @@ class ClaseController extends Controller
     }
 
     public function getClases(){
-        return Clase::with('categoria')->latest()->paginate($this->perPage);
+        return Clase::with('categoria')->paginate($this->perPage);
+    }
+
+
+
+    public function getAllClases(){
+        return Clase::with('categoria')->get();
     }
 
 

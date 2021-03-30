@@ -37,7 +37,7 @@
                 }
             },
         mounted() {
-              axios.get('api/origen').then((response)=>{
+              axios.get('api/origen/all').then((response)=>{
                   this.origenes = response.data;
                   //console.log(this.origenes[0].jurisdicciones[0].organismos.length)
               });

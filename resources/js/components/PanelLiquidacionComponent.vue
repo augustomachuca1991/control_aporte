@@ -218,8 +218,8 @@
                       <ul class="pagination pagination-sm m-0 float-right">
                         <!-- <li class="page-item"><a class="page-link" href="#">&laquo;</a></li> -->
                         <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
-                        <li class="page-item mx-1" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
-                            <a href="#" class="page-link bg-gradient-pink border-0 rounded-circle" @click.prevent="getPage(n)">
+                        <li class="page-item" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
+                            <a href="#" class="page-link" @click.prevent="getPage(n)">
                                 <span >
                                     {{ n }}
                                 </span>

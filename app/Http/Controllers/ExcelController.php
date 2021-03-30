@@ -64,20 +64,20 @@ class ExcelController extends Controller
 
     public function export(Request $request){
     	$cod_periodo = $request->periodo;
-        if ($cod_periodo != null) {
-            $name= 'Liquidacion'.strtotime(now()).'.csv';
-            $liquidaciones = new LiquidacionsExport($cod_periodo);
-            $liquidaciones
-            ->store($name,'local',\Maatwebsite\Excel\Excel::CSV, ['Content-Type' => 'text/csv'])
-            ->chain([new CompletedExport]);
-            $message = 'Exportando Archivo';
-            $status = 1;
-        } else {
-            $message ='Debe seleccionar un periodo de liquidación';
-            $status = 0;
-        }
+        // if ($cod_periodo != null) {
+        //     $name= 'Liquidacion'.strtotime(now()).'.csv';
+        //     $liquidaciones = new LiquidacionsExport($cod_periodo);
+        //     $liquidaciones
+        //     ->store($name,'local',\Maatwebsite\Excel\Excel::CSV, ['Content-Type' => 'text/csv'])
+        //     ->chain([new CompletedExport]);
+        //     $message = 'Exportando Archivo';
+        //     $status = 1;
+        // } else {
+        //     $message ='Debe seleccionar un periodo de liquidación';
+        //     $status = 0;
+        // }
     	
-        return response()->json(['message'=> $message, 'status' => $status]);
+        // return response()->json(['message'=> $message, 'status' => $status]);
     }
 
 
