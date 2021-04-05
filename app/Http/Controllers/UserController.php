@@ -23,4 +23,11 @@ class UserController extends Controller
 
         return User::withTrashed()->with('roles')->paginate(9);
     }
+
+
+    public function desbloquear($id){
+
+        //$user = User::onlyTrashed('id' ,$id);
+        return $id;
+    }
 }

@@ -36,7 +36,7 @@
 		          </div>
 		          <div v-if="user.deleted_at" class="card-footer">
 		            <div class="text-right">
-		              <a href="#" class="btn btn-sm bg-gradient-maroon">
+		              <a href="#" class="btn btn-sm bg-gradient-maroon" @click="desbloquear(user)">
 		                <i class="fas fa-unlock"></i> desbloquear
 		              </a>
 		            </div>
@@ -105,6 +105,12 @@
         			this.current_page = response.data.current_page;
         			this.last_page = response.data.last_page;
         		})
+        	},
+        	desbloquear:function(user){
+        		//console.log(user.id);
+        		axios.get(`api/users/desbloquear/`+user.id).then((response)=>{
+        			console.log(response.data)
+        		});
         	},
         },
 

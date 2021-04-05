@@ -162,3 +162,4 @@ Route::post('/agente', 'AgenteController@search')->name('agente_search');
 //usuarios
 
 Route::get('/users', 'UserController@getUsers');
+Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
