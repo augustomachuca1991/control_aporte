@@ -6,8 +6,14 @@
 
 
  @section('right-sidebar')
-
-  <panel-config></panel-config>
+	<div class="container">
+		<h5>Personalizar Panel</h5>
+		<hr class="mb-2">
+		<div class="mb-4">
+			<input type="checkbox" value="1" class="mr-1">
+			<span>Modo Nocturno</span>
+		</div>	
+	</div>
  @stop
 
  

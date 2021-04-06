@@ -77,7 +77,7 @@ class LiquidacionsImport implements
                 $liquidacion->declaracion_id = $this->declaracionjurada->id;
                 $liquidacion->bruto = $row['aporte_personal']/0.185;
                 $liquidacion->bonificable = $row['basico']+$row['antiguedad'];
-                $liquidacion->no_bonificable = 1200;
+                $liquidacion->no_bonificable = $row['adicional'];
                 $liquidacion->no_remunerativo = 1500;
                 $liquidacion->familiar = $row['hijo']+$row['esposa'];
                 $liquidacion->descuento = $row['aporte_personal']+0;
@@ -91,7 +91,7 @@ class LiquidacionsImport implements
                     'total_aporte_personal' => $row['aporte_personal'],
                     'total_sueldo_basico' => $row['basico'], 
                     'total_antiguedad' => $row['antiguedad'],
-                    'total_adicional' => 1600,
+                    'total_adicional' => $row['adicional'],
                     'total_familiar' => $liquidacion->familiar,
                     'total_hijo' => $row['hijo'],
                     'total_esposa' => $row['esposa'],

@@ -358,7 +358,7 @@ return [
         ],
         [
             'text'       => 'Historia Laboral',
-            'icon' => 'fas fa-calendar',
+            'icon' => 'fa fa-calendar',
             'icon_color' => 'orange',
             'route'        => 'hlaborales',
         ],

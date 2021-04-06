@@ -163,3 +163,5 @@ Route::post('/agente', 'AgenteController@search')->name('agente_search');
 
 Route::get('/users', 'UserController@getUsers');
 Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
+Route::delete('/users/delete/{id}', 'UserController@destroy');
+Route::get('/users/{search}', 'UserController@search');

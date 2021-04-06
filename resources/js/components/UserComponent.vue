@@ -1,6 +1,20 @@
 <template>
 	<div id="lista_usuarios">
 		<div class="card card-solid">
+			<div class="card-header">
+				<div class="card-tools">
+					<div class="input-group input-group-sm" style="width: 150px;">
+						<input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"  @keyup="buscar" v-model="search">
+
+						<!-- <div class="input-group-append">
+						  <button type="button" class="btn btn-outline-success" disabled>
+						    <i class="fas fa-search"></i>
+						  </button>
+						</div> -->
+
+					</div>
+				</div>
+			</div>
 		  <div class="card-body pb-0">
 		    <div class="row">
 		    <!--users-->
@@ -36,15 +50,15 @@
 		          </div>
 		          <div v-if="user.deleted_at" class="card-footer">
 		            <div class="text-right">
-		              <a href="#" class="btn btn-sm bg-gradient-maroon" @click="desbloquear(user)">
+		              <a href="#" class="btn btn-sm bg-gradient-maroon" @click="desbloquear(index,user)">
 		                <i class="fas fa-unlock"></i> desbloquear
 		              </a>
 		            </div>
 		          </div>
 		          <div v-else class="card-footer">
 		            <div class="text-right">
-		              <a href="#" class="btn btn-sm bg-gradient-teal">
-		                <i class="fas fa-edit"></i>
+		              <a href="#" class="btn btn-sm bg-gradient-teal" @click="bloquear(index,user)">
+		                <i class="fas fa-lock"></i>
 		              </a>
 		              <a href="#" class="btn btn-sm bg-gradient-primary">
 		                <i class="fas fa-user"></i> Ver Perfil
@@ -86,6 +100,7 @@
                     current_page:'',
                     last_page:'',
                     prev_page_url:'',
+                    search:'',
                 }
             },
         mounted() {
@@ -106,11 +121,27 @@
         			this.last_page = response.data.last_page;
         		})
         	},
-        	desbloquear:function(user){
+        	desbloquear:function(index,user){
         		//console.log(user.id);
         		axios.get(`api/users/desbloquear/`+user.id).then((response)=>{
-        			console.log(response.data)
+        			this.users[index].deleted_at = '';
+        			this.users[index] = response.data;
+        			alert('usuario desbloqueado: '+response.data)
         		});
+        	},
+        	bloquear:function(index,user){
+        		 axios.delete(`api/users/delete/`+user.id).then((response)=>{
+        			let hoy = new Date();
+        			this.users[index].deleted_at = hoy;
+        			alert('usuario bloqueado: '+response.data)
+        		 });
+        	},
+        	buscar:function(){
+        		axios.get(`api/users/${this.search}`).then((response)=>{
+        		    this.users = response.data.data;
+        		    this.current_page = response.data.current_page;
+        		    this.last_page = response.data.last_page;
+        		})
         	},
         },
 
