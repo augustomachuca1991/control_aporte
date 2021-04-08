@@ -14,6 +14,9 @@ class CategoriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function index()
     {
         return view('categorias.index');
@@ -157,5 +160,13 @@ class CategoriaController extends Controller
             ->orderBy($column, $order)
             ->paginate($this->perPage);
 
+    }
+
+
+
+
+    public function paginado($perPage){
+        $this->perPage = $perPage;
+        return $this->getCategorias();
     }
 }

@@ -209,7 +209,7 @@
 
                     <div class="card-tools">
                       <div class="input-group input-group-sm" style="width: 150px;">
-                        <select class="form-control form-control-sm custom-select">
+                        <select class="form-control form-control-sm custom-select rounded-pill">
                           <option value="5">5 por página</option>
                           <option value="10">10 por página</option>
                           <option value="25">25 por página</option>

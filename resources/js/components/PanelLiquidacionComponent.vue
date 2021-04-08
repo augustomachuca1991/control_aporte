@@ -130,8 +130,6 @@
                                 :lang="'es'"
                                 :max-date="fecha_actual"
                                 :clearable="true"
-                                :default-month="3"
-                                :default-year="2021"
                                 :input-pre-filled="true"
                                 :editable-year="true"
                                 @change="porPeriodo"
@@ -198,9 +196,15 @@
                           <tbody>
                             <tr>
                               <td colspan="8" style="height: 200px;" class="align-middle">
-                                <span class="text-center">Cargando...</span>
+                                <!-- <span class="text-center">Cargando...</span>
                                 <div class="spinner-border text-primary" role="status">
                                   <span class="sr-only">Loading...</span>
+                                </div> -->
+                                <div class="text-center content-center">
+                                  Espere...
+                                  <span>
+                                    <img height="80px" src="image/ips_loading.gif" />
+                                  </span>
                                 </div>
                               </td>
                             </tr>  

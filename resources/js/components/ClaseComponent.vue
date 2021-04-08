@@ -145,7 +145,7 @@
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <select class="form-control form-control-sm custom-select" v-model="n_paginas" @change="paginacion">
+                      <select class="form-control form-control-sm custom-select rounded-pill" v-model="n_paginas" @change="paginacion">
                         <option value="5">5 por página</option>
                         <option value="10">10 por página</option>
                         <option value="25">25 por página</option>
@@ -441,10 +441,19 @@
           })
         },
         paginacion:function(){
-          console.log(this.n_paginas)
-          //this.paginate.current_page = this.n_paginas;
-          this.paginate.per_page = this.n_paginas;
-          this.getPage(this.n_paginas);
+          //console.log(this.n_paginas)
+          axios.get(`api/clase/paginate/${this.n_paginas}`).then( (response) => {
+
+            this.clases = response.data.data;
+            this.paginate.current_page = response.data.current_page;
+            this.paginate.last_page = response.data.last_page;
+            this.paginate.total = response.data.total;
+            this.paginate.path = response.data.path;
+            //this.organismos = response.data.data;
+            this.paginate.from = response.data.from;
+            this.paginate.to = response.data.to;
+          });
+          
 
         },
       },

@@ -91,7 +91,7 @@
 		 	            	      <!-- Body -->
 		 	            	      	<!--carga-->
 	  	 	            	        <div v-if="shown">
-	  	 	            	        	<i class='fas fa-2x fa-sync-alt fa-spin'></i>
+	  	 	            	        	<!-- <i class='fas fa-2x fa-sync-alt fa-spin'></i> -->
 	          			        		<!-- <div class="spinner-grow text-dark" style="width: 3rem; height: 3rem;" role="status">
 	          			        		  <span class="sr-only">Loading...</span>
 	          			        		</div>
@@ -101,6 +101,12 @@
 	          			        		<div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
 	          			        		  <span class="sr-only">Loading...</span>
 	          			        		</div> -->
+	          			        		<div class="text-center content-center my-5">
+      			        		          Espere...
+      			        		          <span>
+      			        		            <img height="80px" src="image/ips_loading.gif" />
+      			        		          </span>
+      			        		        </div>
 	          			        	</div>
 
 		 	            	      <div v-else class="timeline-body">
