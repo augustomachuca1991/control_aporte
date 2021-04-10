@@ -67,6 +67,7 @@ class LiquidacionsImport implements
                    'familiar' => $row['familiar'],
                    'hijo' => $row['hijo'],
                    'esposa' => $row['esposa'],
+                   'detalle' => $row['detalle']
                    // 'otros' => $row['otros'],
                    // 'cod_funcion' => $row['cod_funcion'],
                    // 'funcion' => $row['funcion'],
@@ -186,15 +187,31 @@ class LiquidacionsImport implements
 
 
                 //Conceptos de liquidaciones
-                $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
-                $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
-                $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
-                $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
-                $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
-                $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
-                $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
-                $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
-                $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
+                $name_array = explode( '|', $row['detalle']);
+                $detalles = array_chunk($name_array, 5, false);
+                for ($i=0; $i < count($detalles) ; $i++) {
+                    for ($j=0; $j < count($detalles[$i]) ; $j++) { 
+                        
+                        // $resultado[$i]['cod'] = $detalles[$i][0];
+                        // $resultado[$i]['concepto'] = $detalles[$i][1];
+                        // $resultado[$i]['unidad'] = $detalles[$i][2];
+                        // $resultado[$i]['tipo'] = $detalles[$i][3];
+                        // $resultado[$i]['importe'] = $detalles[$i][4];
+                        
+                     
+                     }
+                    $liquidacion->conceptos()->attach($detalles[$i][0],['unidad' => $detalles[$i][2],'importe' => $detalles[$i][4]]);
+                }
+
+                // $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
+                // $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
+                // $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
+                // $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
+                // $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
+                // $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
+                // $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
+                // $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
+                // $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
                     
 
 

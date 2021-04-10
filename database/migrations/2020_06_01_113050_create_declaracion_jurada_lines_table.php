@@ -44,6 +44,7 @@ class CreateDeclaracionJuradaLinesTable extends Migration
             $table->decimal('hijo',8,2)->unsigned()->nullable();
             $table->decimal('esposa',8,2)->unsigned()->nullable();
             $table->decimal('otro',8,2)->unsigned()->nullable();
+            $table->string('detalle');
             $table->bigInteger('cod_funcion')->unsigned()->nullable();
             $table->string('funcion')->nullable();
             $table->softDeletes(); 

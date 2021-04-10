@@ -323,6 +323,16 @@ return [
         ],
         ['header' => 'Tablas'],
         [
+            'text'       => 'Categorias',
+            'icon_color' => 'info',
+            'route'        => 'categorias',
+        ],
+        [
+            'text'       => 'Clases',
+            'icon_color' => 'teal',
+            'route'        => 'clases',
+        ],
+        [
             'text'       => 'Jurisdicciones',
             'icon_color' => 'olive',
             'route'        => 'jurisdicciones',
@@ -333,14 +343,9 @@ return [
             'route'        => 'organismos',
         ],
         [
-            'text'       => 'Clases',
-            'icon_color' => 'teal',
-            'route'        => 'clases',
-        ],
-        [
-            'text'       => 'Categorias',
-            'icon_color' => 'info',
-            'route'        => 'categorias',
+            'text'       => 'Periodos',
+            'icon_color' => 'lime',
+            'url'        => '#',
         ],
         
 

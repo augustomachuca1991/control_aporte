@@ -35,6 +35,7 @@ class DeclaracionJuradaLine extends Model
     	'aporte_estatal',
     	'basico',
     	'antiguedad',
+        'detalle'
     	// 'adicionales',
     	// 'familiar',
     	// 'hijo',

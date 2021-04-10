@@ -32,7 +32,8 @@ class AppServiceProvider extends ServiceProvider
             if ($notificationes->count() > 0) {
                 foreach ($notificationes as $key) {
                     $menu[] = [
-                        'text' => $key->data.' '.$key->created_at->diffForHumans(),
+                        //'text' => $key->data.' '.$key->created_at->diffForHumans(),
+                        'text' => json_encode($key->data),
                         'url'  => '#',
                         'icon' => 'fas  fa-bell',
                         'icon_color'   => 'maroon',

@@ -26,10 +26,23 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 
-	// Route::get('/getadmin', function(){
-	// 	return Auth::id();
-	// 	//return User::find(1);
-	// });
+	Route::get('/pipe/{detalle}', function($detalle){
+
+
+		$name_array = explode( '|', $detalle);
+		$detalles = array_chunk($name_array, 5, false);
+		for ($i=0; $i < count($detalles) ; $i++) {
+			for ($j=0; $j < count($detalles[$i]) ; $j++) { 
+			 	$resultado[$i]['cod'] = $detalles[$i][0];
+			 	$resultado[$i]['concepto'] = $detalles[$i][1];
+			 	$resultado[$i]['unidad'] = $detalles[$i][2];
+			 	$resultado[$i]['tipo'] = $detalles[$i][3];
+			 	$resultado[$i]['monto'] = $detalles[$i][4];
+			 }
+			
+		}
+		return $resultado;
+	});
 
 	Route::get('/dashboard', function(){
 		return view('admin.index');
