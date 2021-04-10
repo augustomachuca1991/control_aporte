@@ -125,8 +125,8 @@ class LiquidacionController extends Controller
     public function getliquidaciones()
     {
         
-        return Liquidacion::with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);
+        return LiquidacionOrganismo::with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        ->paginate($this->perPage)->onEachSide(1);
     }
 
 
@@ -211,7 +211,7 @@ class LiquidacionController extends Controller
             });
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);
+        ->paginate($this->perPage)->onEachSide(1);
     }
 
 
@@ -222,7 +222,7 @@ class LiquidacionController extends Controller
             $organismos->where('jurisdiccion_id', $value);
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);
+        ->paginate($this->perPage)->onEachSide(1);
     }
 
 
@@ -231,7 +231,7 @@ class LiquidacionController extends Controller
     {
         return LiquidacionOrganismo::where('organismo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);    
+        ->paginate($this->perPage)->onEachSide(1);    
     }
 
 
@@ -248,7 +248,7 @@ class LiquidacionController extends Controller
             });
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);   
+        ->paginate($this->perPage)->onEachSide(1);   
     }
 
 
@@ -256,14 +256,14 @@ class LiquidacionController extends Controller
     {
         return LiquidacionOrganismo::where('periodo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);  
+        ->paginate($this->perPage)->onEachSide(1);  
     }
 
     public function porTipo($value)
     {
         return LiquidacionOrganismo::where('tipo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);  
+        ->paginate($this->perPage)->onEachSide(1);  
     }
 
 }

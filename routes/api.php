@@ -98,6 +98,7 @@ Route::post('/categoria/create', 'CategoriaController@store')->name('create_cate
 Route::delete('/categoria/delete/{id}', 'CategoriaController@destroy')->name('delete_categoria');
 Route::get('/categoria/{search}', 'CategoriaController@search')->name('categoria_search');
 Route::get('/categoria/order/{column}/sort/{sort}', 'CategoriaController@sort')->name('sort_categoria');
+Route::get('/categoria/paginate/{n_paginas}', 'CategoriaController@paginado');
 
 
 // Clases
@@ -109,6 +110,7 @@ Route::post('/clase/create', 'ClaseController@store')->name('create_clase');
 Route::delete('/clase/delete/{id}', 'ClaseController@destroy')->name('delete_clase');
 Route::get('/clase/{search}', 'ClaseController@search')->name('clase_search');
 Route::get('/clase/order/{column}/sort/{sort}', 'ClaseController@sort')->name('sort_clase');
+Route::get('/clase/paginate/{n_paginas}', 'ClaseController@paginado');
 
 // Jurisdicciones
 Route::get('/jurisdiccion', 'JurisdiccionController@getJurisdicciones')->name('jurisdiccion');

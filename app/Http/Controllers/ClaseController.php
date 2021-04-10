@@ -8,7 +8,14 @@ use Illuminate\Http\Request;
 class ClaseController extends Controller
 {
     
-    public $perPage = 15;
+    public $perPage = 10;
+
+
+
+
+    
+
+
     /**
      * Display a listing of the resource.
      *
@@ -152,6 +159,13 @@ class ClaseController extends Controller
             ->orderBy($column, $order)
             ->paginate($this->perPage);
 
+    }
+
+
+
+    public function paginado($perPage){
+        $this->perPage = $perPage;
+        return $this->getClases();
     }
 
 
