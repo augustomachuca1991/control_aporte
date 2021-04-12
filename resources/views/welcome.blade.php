@@ -8,64 +8,17 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <!--fontawesome-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 
         <!-- Styles -->
+        <link rel="stylesheet" type="text/css" href="{{asset('css/custom.css')}}">
         <style>
-            html, body {
-                background-color:#92bf56; 
-                font-family: 'Cairo', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-                color: #FFFFFF;
-
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #FFFFFF;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
+            
         </style>
     </head>
    <body>
-        <div class="flex-center position-ref full-height">
+        <!-- <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -73,7 +26,7 @@
                     @else
                         <a href="{{ route('login') }}">Iniciar Sesión</a>
 
-                        @if (Route::has('register'))
+                        @if (Route::has('register'))apo
                             <a href="{{ route('register') }}">Registrar</a>
                         @endif
                     @endauth
@@ -97,6 +50,56 @@
                     <a href="https://www.facebook.com/ips.corrientes/">Facebook</a>
                 </div>
             </div>
+        </div> -->
+
+        <div class="hero">
+            <nav>
+                <a href="{{ url('/') }}"><img src="image/logo-ips-header.png" class="logo"></a>
+                @if (Route::has('login'))
+                <ul>
+                    <!-- <li><a href="">ABOUT</a></li>
+                    <li><a href="">PORTFOLIO</a></li>
+                    <li><a href="">CONCTAC</a></li>
+                    <li><a href="">READ ME</a></li> -->
+                    @auth
+                        <li><a href="{{route('home') }}">HOME</a></li>
+                    @else
+                        <li><a href="{{ route('login') }}">INGRESAR</a></li>
+
+                        @if (Route::has('register'))
+                            <li><a href="{{ route('register') }}">REGISTRAR</a></li>
+                        @endif
+                    @endauth
+                </ul>
+                @endif
+                <img src="image/moon.png" id="icon">
+            </nav>
+
+            <div class="info">
+                <h1> Sistema de <span>Control</span> de Aporte</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod <br>   
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <br>
+                quis nostrud exercitation</p>
+                <a href="">Ingresar</a>
+            </div>
+
+            <div class="img-box">
+                <img src="image/pattern-ips1.png" class="back-img" >
+                <img src="image/apple.png" class="main-img">
+            </div>
+
+
+            <div class="social-links">
+                <a href="https://twitter.com/ipscorrientes"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.facebook.com/ips.corrientes/"><i class="fab fa-facebook-f"></i></a>
+                <a href=""><i class="fab fa-instagram"></i></a>
+            </div>
         </div>
+
+
+
+
+
+        <script type="text/javascript" src="{{asset('js/custom.js')}}"></script>
     </body>
 </html>

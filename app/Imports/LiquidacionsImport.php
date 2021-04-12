@@ -192,17 +192,21 @@ class LiquidacionsImport implements
                 for ($i=0; $i < count($detalles) ; $i++) {
                     for ($j=0; $j < count($detalles[$i]) ; $j++) { 
                         
-                        // $resultado[$i]['cod'] = $detalles[$i][0];
-                        // $resultado[$i]['concepto'] = $detalles[$i][1];
-                        // $resultado[$i]['unidad'] = $detalles[$i][2];
-                        // $resultado[$i]['tipo'] = $detalles[$i][3];
-                        // $resultado[$i]['importe'] = $detalles[$i][4];
+                        $resultado[$i]['cod'] = $detalles[$i][0];
+                        $resultado[$i]['concepto'] = $detalles[$i][1];
+                        $resultado[$i]['unidad'] = $detalles[$i][2];
+                        $resultado[$i]['tipo'] = $detalles[$i][3];
+                        $resultado[$i]['importe'] = $detalles[$i][4];
                         
                      
                      }
-                    $liquidacion->conceptos()->attach($detalles[$i][0],['unidad' => $detalles[$i][2],'importe' => $detalles[$i][4]]);
-                }
+                    
 
+                    $liquidacion->conceptos()->attach( $resultado[$i]['cod'],[
+                        'unidad' => $resultado[$i]['unidad'],
+                        'importe' => $resultado[$i]['importe']
+                    ]);
+                }
                 // $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
                 // $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
                 // $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
