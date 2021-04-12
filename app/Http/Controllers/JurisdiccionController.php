@@ -147,4 +147,10 @@ class JurisdiccionController extends Controller
             ->paginate($this->perPage);
 
     }
+
+
+    public function paginado($perPage){
+        $this->perPage = $perPage;
+        return $this->getJurisdicciones();
+    }
 }

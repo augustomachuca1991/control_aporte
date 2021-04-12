@@ -241,5 +241,29 @@ class LiquidacionOrganismoController extends Controller
 
     }
 
+
+
+    public function periodoAnual($anio)
+    {
+        
+        $periodo_anual = LiquidacionOrganismo::whereHas('periodo', function( $periodos) use ($anio){
+            $periodos->where('anio', $anio)->selectRaw('
+                     mes AS mes,
+                     periodos.periodo AS periodo,
+                     tipo_liquidacions.descripcion AS tipo_liquidacion,
+                     SUM(haber_bruto) AS haber_bruto,
+                     SUM(total_aporte_personal) AS total_aporte_personal,
+                     SUM(total_sueldo_basico) AS total_sueldo_basico, 
+                     SUM(total_antiguedad) AS total_antiguedad, 
+                     SUM(total_adicional) AS total_adicional,
+                     SUM(total_familiar) AS total_familiar,
+                     SUM(total_hijo) AS total_hijo,
+                     SUM(total_esposa) AS total_esposa')
+        ->groupBy('organismo','periodo','tipo_liquidacion');
+        })->get();
+        return $periodo_anual;
+
+    }
+
 }
 

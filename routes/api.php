@@ -40,7 +40,7 @@ Route::get('/computo/organismo/{periodo}', 'LiquidacionOrganismoController@Compu
 Route::get('/computo/origen/tipo-liquidacion/{tipo}', 'LiquidacionOrganismoController@computoTipoLiquidacion_origen');
 Route::get('/computo/jurisdiccion/tipo-liquidacion/{tipo}', 'LiquidacionOrganismoController@computoTipoLiquidacion_jurisdiccion');
 Route::get('/computo/organismo/tipo-liquidacion/{tipo}', 'LiquidacionOrganismoController@computoTipoLiquidacion_organismo');
-
+Route::get('/computo/periodo-anual/{anio}', 'LiquidacionOrganismoController@periodoAnual');
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
@@ -121,7 +121,7 @@ Route::put('/jurisdiccion/update/{id}', 'JurisdiccionController@update')->name('
 Route::post('/jurisdiccion/create', 'JurisdiccionController@store')->name('create_jurisdiccion');
 Route::delete('/jurisdiccion/delete/{id}', 'JurisdiccionController@destroy')->name('delete_jurisdiccion');
 Route::get('/jurisdiccion/order/{column}/sort/{sort}', 'JurisdiccionController@sort')->name('sort_jurisdiccion');
-
+Route::get('/jurisdiccion/paginate/{n_paginas}', 'JurisdiccionController@paginado');
 
 // Organismos
 Route::get('/organismo', 'OrganismoController@getOrganismos')->name('organismo');

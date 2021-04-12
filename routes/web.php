@@ -30,18 +30,34 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 		$name_array = explode( '|', $detalle);
-		$detalles = array_chunk($name_array, 5, false);
+		$detalles = array_chunk($name_array, 6, false);
 		for ($i=0; $i < count($detalles) ; $i++) {
 			for ($j=0; $j < count($detalles[$i]) ; $j++) { 
 			 	$resultado[$i]['cod'] = $detalles[$i][0];
 			 	$resultado[$i]['concepto'] = $detalles[$i][1];
-			 	$resultado[$i]['unidad'] = $detalles[$i][2];
+			 	$resultado[$i]['subtipo'] = $detalles[$i][2];
 			 	$resultado[$i]['tipo'] = $detalles[$i][3];
-			 	$resultado[$i]['monto'] = $detalles[$i][4];
+			 	$resultado[$i]['unidad'] = $detalles[$i][4];
+			 	$resultado[$i]['importe'] = $detalles[$i][5];
 			 }
 			
 		}
 		return $resultado;
+
+
+
+		 //    01|sueldo basico|1|1|30 dias|50000|
+			// 02|antiguedad|2|1|5 anios|15000|
+			// 03|presentismo|3|2|null|1500|
+			// 04|por titulo|4|2|30 porciento|1200|
+			// 05|esposa|8|5|null|3500|
+			// 06|jubilacion|9|6|18.5 porciento|9250|
+			// 07|obra social|11|6|3 porciento|1500|
+			// 08|resolucion n52009|5|4|null| 3000
+
+		    // 01|sueldo basico|1|1|30 dias|50000|02|antiguedad|2|1|5 anios|15000|03|presentismo|3|2|null|1500|04|por titulo|4|2|30 porciento|1200|05|esposa|8|5|null|3500|06|jubilacion|9|6|18.5 porciento|9250|07|obra social|11|6|3 porciento|1500|08|resolucion n52009|5|4|null|3000
+
+
 	});
 
 	Route::get('/dashboard', function(){

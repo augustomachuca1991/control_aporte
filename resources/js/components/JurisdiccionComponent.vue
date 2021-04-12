@@ -188,7 +188,7 @@
                             <i class="fas fa-search"></i>
                           </button>
                         </div> -->
-                        <select class="form-control form-control-sm custom-select rounded-pill">
+                        <select class="form-control form-control-sm custom-select rounded-pill" v-model="n_paginas" @change="paginacion">
                           <option value="5">5 por página</option>
                           <option value="10">10 por página</option>
                           <option value="25">25 por página</option>
@@ -286,6 +286,7 @@
                       from:'',
                       to:'',
                     },
+                    n_paginas:5,
                 }
             },
         mounted() {
@@ -457,6 +458,22 @@
                 this.paginate.from = response.data.from;
                 this.paginate.to = response.data.to;
               })
+            },
+            paginacion:function(){
+              console.log(this.n_paginas)
+              axios.get(`api/jurisdiccion/paginate/${this.n_paginas}`).then( (response) => {
+
+                this.jurisdicciones = response.data.data;
+                this.paginate.current_page = response.data.current_page;
+                this.paginate.last_page = response.data.last_page;
+                this.paginate.total = response.data.total;
+                this.paginate.path = response.data.path;
+                //this.organismos = response.data.data;
+                this.paginate.from = response.data.from;
+                this.paginate.to = response.data.to;
+              });
+              
+
             },
         },
     }

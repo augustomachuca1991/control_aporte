@@ -18,7 +18,7 @@
         <!-- AREA CHART -->
         <div class="card card-olive">
           <div class="card-header">
-            <h3 class="card-title">Area Chart</h3>
+            <h3 class="card-title">Periodos Anuales</h3>
 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -182,10 +182,10 @@
       var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 
       var areaChartData = {
-        labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels  : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
         datasets: [
           {
-            label               : 'Digital Goods',
+            label               : 'Sisper',
             backgroundColor     : 'rgba(60,141,188,0.9)',
             borderColor         : 'rgba(60,141,188,0.8)',
             pointRadius          : false,
@@ -193,10 +193,10 @@
             pointStrokeColor    : 'rgba(60,141,188,1)',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : [28, 48, 40, 19, 86, 27, 90]
+            data                : [28, 48, 40, 19, 86, 27, 90, 52, 74,88,10,12]
           },
           {
-            label               : 'Electronics',
+            label               : 'Municipio',
             backgroundColor     : 'rgba(210, 214, 222, 1)',
             borderColor         : 'rgba(210, 214, 222, 1)',
             pointRadius         : false,
@@ -204,7 +204,18 @@
             pointStrokeColor    : '#c1c7d1',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : [65, 59, 80, 81, 56, 55, 40]
+            data                : [65, 59, 80, 81, 56, 55, 40, 52, 74,88,200,12]
+          },
+          {
+            label               : 'Entidades Autonomas',
+            backgroundColor     : 'rgba(210, 314, 155, 1)',
+            borderColor         : 'rgba(210, 314, 155, 1)',
+            pointRadius         : false,
+            pointColor          : 'rgba(210, 314, 155, 1)',
+            pointStrokeColor    : '#81d7d1',
+            pointHighlightFill  : '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data                : [99, 68, 102, 25, 70, 55, 1000, 52, 74,88,101,12]
           },
         ]
       }

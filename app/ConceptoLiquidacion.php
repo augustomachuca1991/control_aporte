@@ -11,6 +11,7 @@ class ConceptoLiquidacion extends Model
 
     protected $dates = ['deleted_at'];
     protected $fillable = [
+        'cod_concepto',
         'concepto',
         'organismo_id',
         'subtipo_id'

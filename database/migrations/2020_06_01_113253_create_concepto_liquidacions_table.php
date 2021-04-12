@@ -15,6 +15,7 @@ class CreateConceptoLiquidacionsTable extends Migration
     {
         Schema::create('concepto_liquidacions', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('cod_concepto')->unsigned();
             $table->string('concepto');
             
             $table->bigInteger('organismo_id')->unsigned();
