@@ -13,6 +13,9 @@ class Liquidacion extends Model
     protected $fillable = [
         'declaracion_id',
         'bruto',
+        'basico',
+        'aporte_personal',
+        'haberes_con_aporte',
         'bonificable',
         'no_bonificable',
         'no_remunerativo',

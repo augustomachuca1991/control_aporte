@@ -97,6 +97,9 @@ class LiquidacionsImport implements
                 }
 
 
+
+                $liquidacion = new Liquidacion();
+                $liquidacion->declaracion_id = $this->declaracionjurada->id;
                 for ($i=0; $i < count($conceptos) ; $i++) { 
                     $concepto = ConceptoLiquidacion::where('cod_concepto', $conceptos[$i]['cod'])
                     ->where('organismo_id',$row['cod_organismo']);
@@ -109,13 +112,70 @@ class LiquidacionsImport implements
                         $new_concepto->subtipo_id = $conceptos[$i]['subtipo'];
                         $new_concepto->save();
                     }
+
+
+                    if ($conceptos[$i]['subtipo'] <= 2) { //remunerativo
+                        # code...
+                        if ($conceptos[$i]['subtipo'] == 1) {
+                            $liquidacion->basico = $conceptos[$i]['importe'];
+
+                        }
+                        
+                        $liquidacion->remunerativo += $conceptos[$i]['importe'];
+                    } else if($conceptos[$i]['subtipo'] > 2 && $conceptos[$i]['subtipo'] <= 5 ){ //adicionales
+                        
+                        if ($conceptos[$i]['tipo'] == 2) { //remunerativo bonificable
+                            # code...
+                            $liquidacion->bonificable += $conceptos[$i]['importe'];
+
+                        }else if ($conceptos[$i]['tipo'] == 3) {//remunerativo no bonificable
+                            # code...
+                            $liquidacion->no_bonificable += $conceptos[$i]['importe'];
+
+                        }else if ($conceptos[$i]['tipo'] == 4) {//no remunerativo no bonificable
+                            # code...
+                            $liquidacion->no_remunerativo += $conceptos[$i]['importe'];
+                        }
+
+                    } else if ($conceptos[$i]['subtipo'] > 5 && $conceptos[$i]['subtipo'] <= 8 ) { // adicionales sociales
+                        # code...
+                        $liquidacion->familiar += $conceptos[$i]['importe'];
+
+                    }elseif ($conceptos[$i]['subtipo'] > 8 && $conceptos[$i]['subtipo'] <= 11) { // descuento
+                        if ($conceptos[$i]['subtipo'] == 9) {
+                            # code...
+                            $liquidacion->aporte_personal = $conceptos[$i]['importe'];
+                            
+                            
+                            // $liquidacion->bruto = $conceptos[$i]['importe']/0.185;
+                        }
+                        //la sama
+                        $liquidacion->descuento += $conceptos[$i]['importe'];
+
+
+                    }
+                    //haberes con aporte = basico + descuento
+                    //bruto = bonificable + remunerativo + no remunerativo;
                     
+                    
+                    
+                }
+                
+                
+                $liquidacion->save();
+                for ($i=0; $i < count($conceptos) ; $i++) { 
+                    # code...
+                    $liquidacion->conceptos()->attach( $conceptos[$i]['cod'],[
+                        'unidad' => $conceptos[$i]['unidad'],
+                        'importe' => $conceptos[$i]['importe']
+                    ]);
                 }
 
 
 
 
                 // Nueva Liquidacion-------------------------------------------------------------
+                
                 // $liquidacion = new Liquidacion();
                 // $liquidacion->declaracion_id = $this->declaracionjurada->id;
                 // $liquidacion->bruto = $row['aporte_personal']/0.185;
