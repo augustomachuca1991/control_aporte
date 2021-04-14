@@ -226,91 +226,91 @@ class LiquidacionsImport implements
                 ]);
 
                 //Nueva Categoria, Clase y Jurisdiccion-------------------------------------------------------------------
-                // $categoria = Categoria::where('cod_categoria', $declaracionjurada_detalle->cod_categoria);
-                // if ($categoria->doesntExist()) {
-                //     $categoria1 = Categoria::create([
-                //         'cod_categoria' => $declaracionjurada_detalle->cod_categoria,
-                //         'categoria' => $declaracionjurada_detalle->categoria,
-                //     ]);
-                //     //Clase------------------------------------------------------------------------
-                //     $clase1 = New Clase();
-                //     $clase1->cod_clase = $declaracionjurada_detalle->cod_clase;
-                //     $clase1->categoria_id = $categoria1->id;
-                //     $clase1->clase = $declaracionjurada_detalle->clase;
-                //     $clase1->save();
-                //     //Jurisdiccion------------------------------------------------------------------
-                //     $jurisdiccion = Jurisdiccion::where('cod_jurisdiccion', $declaracionjurada_detalle->cod_jurisdiccion);
-                //     if ($jurisdiccion->doesntExist()) {
-                //         $jurisdiccion1 = Jurisdiccion::create([
-                //             'cod_jurisdiccion' => $declaracionjurada_detalle->cod_jurisdiccion,
-                //             'jurisdiccion' => $declaracionjurada_detalle->jurisdiccion,
-                //             'origen_id' => $declaracionjurada_detalle->cod_origen,
-                //         ]);
-                //     }else{
-                //         $jurisdiccion1 = $jurisdiccion->first();
-                //     }
-                //     $categoria1->jurisdicciones()->attach($jurisdiccion1->id);
-                // }else{
-                //     $categoria1 = $categoria->first();
-                //     $clase = Clase::where('cod_clase', $declaracionjurada_detalle->cod_clase);
-                //     if ($clase->doesntExist()) {
-                //         $clase1 = Clase::create([
-                //             'cod_clase' => $declaracionjurada_detalle->cod_clase,
-                //             'clase' => $declaracionjurada_detalle->clase,
-                //             'categoria_id' => $categoria1->cod_categoria,
-                //         ]);
-                //     } else {
-                //         $clase1 = $clase->first();
-                //     }
-                // }
+                $categoria = Categoria::where('cod_categoria', $declaracionjurada_detalle->cod_categoria);
+                if ($categoria->doesntExist()) {
+                    $categoria1 = Categoria::create([
+                        'cod_categoria' => $declaracionjurada_detalle->cod_categoria,
+                        'categoria' => $declaracionjurada_detalle->categoria,
+                    ]);
+                    //Clase------------------------------------------------------------------------
+                    $clase1 = New Clase();
+                    $clase1->cod_clase = $declaracionjurada_detalle->cod_clase;
+                    $clase1->categoria_id = $categoria1->id;
+                    $clase1->clase = $declaracionjurada_detalle->clase;
+                    $clase1->save();
+                    //Jurisdiccion------------------------------------------------------------------
+                    $jurisdiccion = Jurisdiccion::where('cod_jurisdiccion', $declaracionjurada_detalle->cod_jurisdiccion);
+                    if ($jurisdiccion->doesntExist()) {
+                        $jurisdiccion1 = Jurisdiccion::create([
+                            'cod_jurisdiccion' => $declaracionjurada_detalle->cod_jurisdiccion,
+                            'jurisdiccion' => $declaracionjurada_detalle->jurisdiccion,
+                            'origen_id' => $declaracionjurada_detalle->cod_origen,
+                        ]);
+                    }else{
+                        $jurisdiccion1 = $jurisdiccion->first();
+                    }
+                    $categoria1->jurisdicciones()->attach($jurisdiccion1->id);
+                }else{
+                    $categoria1 = $categoria->first();
+                    $clase = Clase::where('cod_clase', $declaracionjurada_detalle->cod_clase);
+                    if ($clase->doesntExist()) {
+                        $clase1 = Clase::create([
+                            'cod_clase' => $declaracionjurada_detalle->cod_clase,
+                            'clase' => $declaracionjurada_detalle->clase,
+                            'categoria_id' => $categoria1->cod_categoria,
+                        ]);
+                    } else {
+                        $clase1 = $clase->first();
+                    }
+                }
 
 
                 //Agentes------------------------------------------------------------------
-                // $agente = Agente::where('cuil', $declaracionjurada_detalle->cuil);
-                // if ($agente->doesntExist()) {
-                //     $agente1 = Agente::create([
-                //         'nombre' => $declaracionjurada_detalle->nombre,
-                //         'cuil' => $declaracionjurada_detalle->cuil,
-                //         'fecha_nac' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_nac)),
-                //         'sexo' => $declaracionjurada_detalle->sexo,
-                //     ]);
-                // }else{
-                //     $agente1 = $agente->first();
-                // }
+                $agente = Agente::where('cuil', $declaracionjurada_detalle->cuil);
+                if ($agente->doesntExist()) {
+                    $agente1 = Agente::create([
+                        'nombre' => $declaracionjurada_detalle->nombre,
+                        'cuil' => $declaracionjurada_detalle->cuil,
+                        'fecha_nac' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_nac)),
+                        'sexo' => $declaracionjurada_detalle->sexo,
+                    ]);
+                }else{
+                    $agente1 = $agente->first();
+                }
 
 
                 //Puesto Laboral----------------------------------------------------------------------------------
-                // $puesto_laboral = PuestoLaboral::where('cod_laboral', $declaracionjurada_detalle->puesto_laboral);
-                // if ($puesto_laboral->doesntExist()) {
-                //     $agente1->organismos()->attach($this->declaracionjurada->organismo_id,[
-                //         'cod_laboral' => $declaracionjurada_detalle->puesto_laboral,
-                //         'fecha_ingreso' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_ingreso)),
-                //         'fecha_egreso' => null,
-                //     ]);
-                //     $puesto_laboral1 = $agente1->puestolaborales->first();
-                // } else{
-                //     $puesto_laboral1 = $puesto_laboral->first();
-                // }
+                $puesto_laboral = PuestoLaboral::where('cod_laboral', $declaracionjurada_detalle->puesto_laboral);
+                if ($puesto_laboral->doesntExist()) {
+                    $agente1->organismos()->attach($this->declaracionjurada->organismo_id,[
+                        'cod_laboral' => $declaracionjurada_detalle->puesto_laboral,
+                        'fecha_ingreso' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_ingreso)),
+                        'fecha_egreso' => null,
+                    ]);
+                    $puesto_laboral1 = $agente1->puestolaborales->first();
+                } else{
+                    $puesto_laboral1 = $puesto_laboral->first();
+                }
                 
 
                 //puesto laborales-------------------------------------------------------------------------------------
-                // $puesto_laboral1->clases()->attach($clase1->id,[
-                //     'fecha_inicio' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_ingreso)),
-                //     'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
-                // ]);
+                $puesto_laboral1->clases()->attach($clase1->id,[
+                    'fecha_inicio' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_ingreso)),
+                    'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
+                ]);
 
                 
-                //$historia_laboral = $puesto_laboral1->historialaborales->first();
-                // $historia_laboral = HistoriaLaboral::where('puesto_id', $declaracionjurada_detalle->puesto_laboral)
-                //                                      ->where('clase_id' , $declaracionjurada_detalle->cod_clase)
-                //                                      ->first();
+                $historia_laboral = $puesto_laboral1->historialaborales->first();
+                $historia_laboral = HistoriaLaboral::where('puesto_id', $declaracionjurada_detalle->puesto_laboral)
+                                                     ->where('clase_id' , $declaracionjurada_detalle->cod_clase)
+                                                     ->first();
 
                 
                 //liquidaciones con Historias laborales-----------------------------------------------------------------
-                // $liquidacion->historia_laborales()->attach($historia_laboral->id,[ 
-                //     'estado_id' => $declaracionjurada_detalle->cod_estado , 
-                //     'funcion_id' => null
-                // ]);
+                $liquidacion->historia_laborales()->attach($historia_laboral->id,[ 
+                    'estado_id' => $declaracionjurada_detalle->cod_estado , 
+                    'funcion_id' => null
+                ]);
 
 
                 //Conceptos de liquidaciones

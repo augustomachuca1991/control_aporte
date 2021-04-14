@@ -211,7 +211,7 @@ class LiquidacionController extends Controller
             });
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage)->onEachSide(1);
+        ->paginate($this->perPage);
     }
 
 
@@ -222,7 +222,7 @@ class LiquidacionController extends Controller
             $organismos->where('jurisdiccion_id', $value);
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage)->onEachSide(1);
+        ->paginate($this->perPage);
     }
 
 
@@ -231,7 +231,7 @@ class LiquidacionController extends Controller
     {
         return LiquidacionOrganismo::where('organismo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage)->onEachSide(1);    
+        ->paginate($this->perPage);    
     }
 
 
@@ -248,7 +248,7 @@ class LiquidacionController extends Controller
             });
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage)->onEachSide(1);   
+        ->paginate($this->perPage);   
     }
 
 
@@ -256,14 +256,20 @@ class LiquidacionController extends Controller
     {
         return LiquidacionOrganismo::where('periodo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage)->onEachSide(1);  
+        ->paginate($this->perPage);  
     }
 
     public function porTipo($value)
     {
         return LiquidacionOrganismo::where('tipo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage)->onEachSide(1);  
+        ->paginate($this->perPage);  
+    }
+
+
+    public function hl()
+    {
+        return Liquidacion::with('historia_laborales')->get();
     }
 
 }

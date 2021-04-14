@@ -50,6 +50,10 @@ Route::get('/liquidacion/organismo/{id}', 'LiquidacionController@porOrganismo');
 Route::get('/liquidacion/agente/{id}', 'LiquidacionController@porAgente');
 Route::get('/liquidacion/periodo/{id}', 'LiquidacionController@porPeriodo');
 Route::get('/liquidacion/tipo/{id}', 'LiquidacionController@porTipo');
+
+Route::get('/liquidacion/hl', 'LiquidacionController@hl');
+
+
 // Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liquidacion_detalle');
 // Route::get('/liquidacion/agente/filtro','LiquidacionController@agente')->name('filtros');
 // Route::get('/liquidacion/filtro','LiquidacionController@filtro')->name('buscar');
