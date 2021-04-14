@@ -122,6 +122,7 @@ class LiquidacionsImport implements
                         }
                         
                         $liquidacion->remunerativo += $conceptos[$i]['importe'];
+                        $liquidacion->bruto += $conceptos[$i]['importe'];
                     } else if($conceptos[$i]['subtipo'] > 2 && $conceptos[$i]['subtipo'] <= 5 ){ //adicionales
                         
                         if ($conceptos[$i]['tipo'] == 2) { //remunerativo bonificable
@@ -137,6 +138,8 @@ class LiquidacionsImport implements
                             $liquidacion->no_remunerativo += $conceptos[$i]['importe'];
                         }
 
+                        $liquidacion->bruto += $conceptos[$i]['importe'];
+
                     } else if ($conceptos[$i]['subtipo'] > 5 && $conceptos[$i]['subtipo'] <= 8 ) { // adicionales sociales
                         # code...
                         $liquidacion->familiar += $conceptos[$i]['importe'];
@@ -149,7 +152,7 @@ class LiquidacionsImport implements
                             
                             // $liquidacion->bruto = $conceptos[$i]['importe']/0.185;
                         }
-                        //la sama
+
                         $liquidacion->descuento += $conceptos[$i]['importe'];
 
 
@@ -209,18 +212,18 @@ class LiquidacionsImport implements
                 // }
 
                 //Liquidacion Organismos-------------------------------------------------------
-                // $liquidacion->organismos()->attach($this->declaracionjurada->organismo_id ,[
-                //     'periodo_id' => $this->declaracionjurada->periodo_id , 
-                //     'tipo_id' => $this->declaracionjurada->tipoliquidacion_id,
-                //     'haber_bruto' => $liquidacion->bruto,
-                //     'total_aporte_personal' => $row['aporte_personal'],
-                //     'total_sueldo_basico' => $row['basico'], 
-                //     'total_antiguedad' => $row['antiguedad'],
-                //     'total_adicional' => $row['adicional'],
-                //     'total_familiar' => $liquidacion->familiar,
-                //     'total_hijo' => $row['hijo'],
-                //     'total_esposa' => $row['esposa'],
-                // ]);
+                $liquidacion->organismos()->attach($this->declaracionjurada->organismo_id ,[
+                    'periodo_id' => $this->declaracionjurada->periodo_id , 
+                    'tipo_id' => $this->declaracionjurada->tipoliquidacion_id,
+                    'haber_bruto' => $liquidacion->bruto,
+                    'total_aporte_personal' => $liquidacion->aporte_personal,
+                    'total_sueldo_basico' => $liquidacion->basico, 
+                    'total_antiguedad' => ($liquidacion->remunerativo - $liquidacion->basico),
+                    'total_adicional' => 1,
+                    'total_familiar' => 2,
+                    'total_hijo' => 3,
+                    'total_esposa' => 4,
+                ]);
 
                 //Nueva Categoria, Clase y Jurisdiccion-------------------------------------------------------------------
                 // $categoria = Categoria::where('cod_categoria', $declaracionjurada_detalle->cod_categoria);
