@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<!-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -43,5 +43,40 @@
             </div>
         </div>
     </div>
+</div> -->
+<div class="col-2">
+    <img src="{{asset('image/email-5.png')}}">
 </div>
+<div class="col-2">
+    <!-- <h1>Give Your Workout <br> A New Style!</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco</p>
+
+    <form>
+        <input type="text" name="" placeholder="e-mail">
+        <input type="password" name="" placeholder="password">
+        <a href="" class="btn"> LOGIN &#8594;</a>
+    </form> -->
+
+    @if (session('status'))
+        <div>
+            {{ session('status') }}
+        </div>
+    @endif
+    <div class="form-container">
+      <div class="form-btn">
+      <span>{{ __('Reset Password') }}</span>
+          <hr id="Indicator">  
+      </div>
+      <form  method="POST" action="{{ route('password.email') }}">
+        @csrf
+          <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="&#xf1fa; email">
+          @error('email')
+              <i>{{ $message }}</i>
+          @enderror
+          <button type="submit" class="btn"> {{ __('Send Password Reset Link') }} &#8594;</button>
+      </form>  
+    </div>
+</div> 
 @endsection

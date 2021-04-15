@@ -250,6 +250,7 @@ return [
             'route'  => 'home',
             'icon' => 'fas fs-fw fa-home'
         ],
+        ['header' => 'Documentos'],
         [
             'text'        => 'Excel/CSV',
             // 'url'         => 'admin/pages',
@@ -265,9 +266,49 @@ return [
                 'icon' => 'fas fa-file-download',
                 'icon_color' => 'gray'
                 ]
-            ]
+            ],
+
             // 'label'       => 4,
             // 'label_color' => 'warning',
+        ],
+        [
+            'text'    => 'Documentos',
+            'icon'    => 'fas fa-folder',
+            'icon_color' => 'warning',
+            'submenu' => [
+                [
+                    'text' => 'Declaraciones Juradas',
+                    'url'  => '#',
+                ],
+                // [
+                //     'text'    => 'level_one',
+                //     'url'     => '#',
+                //     'submenu' => [
+                //         [
+                //             'text' => 'level_two',
+                //             'url'  => '#',
+                //         ],
+                //         [
+                //             'text'    => 'level_two',
+                //             'url'     => '#',
+                //             'submenu' => [
+                //                 [
+                //                     'text' => 'level_three',
+                //                     'url'  => '#',
+                //                 ],
+                //                 [
+                //                     'text' => 'level_three',
+                //                     'url'  => '#',
+                //                 ],
+                //             ],
+                //         ],
+                //     ],
+                // ],
+                [
+                    'text' => 'Archivos',
+                    'url'  => '#',
+                ],
+            ],
         ],
         ['header' => 'Config. Personal'],
         [
@@ -282,45 +323,7 @@ return [
             'icon' => 'fas fa-fw fa-lock',
             'icon_color' => 'primary',
         ],
-        [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
-            'icon_color' => 'info',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
-        ],
+        
         ['header' => 'Tablas'],
         [
             'text'       => 'Categorias',
