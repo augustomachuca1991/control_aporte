@@ -71,7 +71,7 @@
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod <br>   
                                     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <br>
                                     quis nostrud exercitation</p>
-                                    <a href="">Ingresar</a>
+                                    <a href="{{route('login')}}">Ingresar</a>
                                 </div>
                                 <div class="social-links">
                                     <a href=""><i class="fab fa-twitter"></i></a>
@@ -81,7 +81,10 @@
                                 </div>
                             </div>
                             <div class="col-2">
-                                <img src="image/apple1.png">
+                                <div class="img-box">
+                                    
+                                    <img class="main-img"src="image/apple1.png">
+                                </div>
                             </div>
                              
                        </div> 

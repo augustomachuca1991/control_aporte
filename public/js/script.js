@@ -1,14 +1,3 @@
-// var icon = document.getElementById('icon');
-
-// icon.onclick = function() {
-//     console.log('modo oscuro');
-//     document.body.classList.toggle('dark-theme');
-//     if (document.body.classList.contains('dark-theme')) {
-//         icon.src = "image/sun.png";
-//     } else {
-//         icon.src = "image/moon.png";
-//     }
-// }
 
 var MenuItems = document.getElementById("MenuItems");
 
@@ -27,12 +16,13 @@ var icon = document.getElementById('icon');
 var menu = document.getElementById('menu-toggle')
 
 icon.onclick = function() {
+    console.log('cambio de aspecto')
     document.body.classList.toggle('dark-theme');
     if (document.body.classList.contains('dark-theme')) {
-        icon.src = "image/sun.png";
-        menu.src = "image/menu-light.png"
+        icon.src = "../image/sun.png";
+        menu.src = "../image/menu-light.png"
     } else {
-        icon.src = "image/moon.png";
-        menu.src = "image/menu.png"
+        icon.src = "../image/moon.png";
+        menu.src = "../image/menu.png"
     }
 }
