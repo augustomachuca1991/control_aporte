@@ -170,7 +170,7 @@ return [
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
     'right_sidebar_slide' => false,
-    'right_sidebar_push' => true,
+    'right_sidebar_push' => false,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
     'right_sidebar_scrollbar_auto_hide' => 'l',
 
@@ -231,15 +231,15 @@ return [
             'url' => '#',
             'method' => 'POST',
         ],
-        [
-            'text' => '',
-            'button' => true,
-            'topnav_right' => true,
-            'icon' => 'fas fa-envelope-open-text',
-            'url' => '#',
-            'label' => '+9',
-            'label_color' => 'danger'
-        ],
+        // [
+        //     'text' => '',
+        //     'button' => true,
+        //     'topnav_right' => true,
+        //     'icon' => 'fas fa-envelope-open-text',
+        //     'url' => '#',
+        //     'label' => '+9',
+        //     'label_color' => 'danger'
+        // ],
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
