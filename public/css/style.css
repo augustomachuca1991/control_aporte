@@ -22,6 +22,10 @@ body{
     background: var(--primary-color);
 }
 
+.fontAwesome {
+  font-family: Helvetica, 'FontAwesome', sans-serif;
+}
+
 .navbar{
     display: flex;
     align-items: center;
@@ -71,6 +75,7 @@ p{
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-around;
+    padding-top: 100px;
 }
 
 .col-2{
@@ -88,6 +93,44 @@ p{
     line-height: 60px;
     margin: 25px 0;
     color: var(--secondary-color);
+}
+
+.img-box{
+    width: 40%;
+    height: 80%;
+    position: absolute;
+    bottom: 100px;
+    right: 100px;
+}
+
+.img-box img{
+    height: 80%;
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+    transition: bottom 1s, left 1s;
+}
+
+.img-box .main-img{
+    width: 100%;
+    height: auto;
+    min-width: 400px;
+}
+
+
+.img-box .back-img{
+    width: 80%;
+    height: auto;
+    min-width: 700px;
+}
+
+.img-box:hover .back-img{
+    bottom: 25px;
+}
+
+.img-box:hover .main-img{
+    left: 54%;
 }
 
 .btn{
@@ -109,6 +152,8 @@ p{
 .header{
     /*background: radial-gradient(#f3fff1, #FFF);*/
     background: var(--primary-color);
+    /*background-image: url(../image/logo-ips-header.png);*/
+
 }
 
 .header .row{
@@ -187,6 +232,35 @@ p{
     background: radial-gradient(#f3fff1, #FFF);*/
 }
 
+
+/*.alert>.start-icon {
+    margin-right: 0;
+    min-width: 20px;
+    text-align: center;
+}
+
+.alert>.start-icon {
+    margin-right: 5px;
+}
+
+.alert-simple.alert-success
+{
+  border: 1px solid rgba(36, 241, 6, 0.46);
+    background-color: rgba(7, 149, 66, 0.12156862745098039);
+    box-shadow: 0px 0px 2px #259c08;
+    color: #0ad406;
+  text-shadow: 2px 1px #00040a;
+  transition:0.5s;
+  cursor:pointer;
+}
+.alert-success:hover{
+  background-color: rgba(7, 149, 66, 0.35);
+  transition:0.5s;
+}*/
+
+
+
+
 .form-container{
     background: var(--primary-color);
     width: 300px;
@@ -214,9 +288,8 @@ p{
     max-width: 300px;
     padding: 0 20px;
     position: absolute;
-    top:130px;
+    top:80px;
 }
-
 
 form input{
     width: 100%;
@@ -333,13 +406,27 @@ form i{
 
 /*---------------------------media query for menu 600px --------------------------*/
 
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 900px){
     .row{
         text-align: center;
+        margin-bottom: 100px;
+        padding-top: 0;
     }
 
     .col-2{
         flex-basis: 100%;
+    }
+
+
+    .img-box{
+        position: relative;
+        width: 100%;
+        margin-left: 100px;
+    }
+
+    .img-box img{
+        position: relative;
+        margin: auto;
     }
 
 }
