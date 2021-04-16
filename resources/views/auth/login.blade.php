@@ -14,11 +14,11 @@
       </div>
       <form method="POST" action="{{ route('login') }}">
         @csrf
-          <input id="email" type="email" name="email" class="fontAwesome @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="&#xf1fa; email" >
+          <input id="email" type="email" name="email" class="fontAwesome @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="&#xf1fa; correo electronico" >
           @error('email')
               <i>{{ $message }}</i>
           @enderror
-          <input id="password" type="password" name="password" placeholder="&#xf084; password" class="fontAwesome @error('password') is-invalid @enderror" required autocomplete="current-password">
+          <input id="password" type="password" name="password" placeholder="&#xf084; contraseña" class="fontAwesome @error('password') is-invalid @enderror" required autocomplete="current-password">
           @error('password')
               <i>{{ $message }}</i>
           @enderror

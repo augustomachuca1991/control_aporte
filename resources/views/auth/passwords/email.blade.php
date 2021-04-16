@@ -60,7 +60,7 @@
       </div>
       <form  method="POST" action="{{ route('password.email') }}">
         @csrf
-          <input id="email" type="email" class="fontAwesome @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="&#xf1fa; email">
+          <input id="email" type="email" class="fontAwesome @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="&#xf1fa; correo electronico">
           @error('email')
               <i>{{ $message }}</i>
           @enderror

@@ -22,7 +22,7 @@
 
         <input type="hidden" name="token" value="{{ $token }}">
 
-          <input id="email" type="email" class="fontAwesome @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus placeholder="&#xf1fa; email">
+          <input id="email" type="email" class="fontAwesome @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus placeholder="&#xf1fa; correo electronico">
           @error('email')
               <i>{{ $message }}</i>
           @enderror
@@ -32,7 +32,7 @@
                   <i>{{ $message }}</i>
           @enderror
 
-          <input id="password-confirm" type="password" class="fontAwesome" name="password_confirmation" required autocomplete="new-password" placeholder="&#xf084;  confirmar password">
+          <input id="password-confirm" type="password" class="fontAwesome" name="password_confirmation" required autocomplete="new-password" placeholder="&#xf084;  confirmar contraseña">
 
 
           <button type="submit" class="btn"> {{ __('Reset Password') }} &#8594;</button>

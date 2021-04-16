@@ -13,20 +13,20 @@
       </div>
       <form method="POST" action="{{ route('register') }}">
         @csrf
-          <input id="name" type="text" class="fontAwesome @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="&#xf007; name" >
+          <input id="name" type="text" class="fontAwesome @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="&#xf007; nombre completo" >
           @error('name')
               <i>{{ $message }}</i>
           @enderror
-          <input id="email" type="email" class="fontAwesome @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="&#xf1fa; email">
+          <input id="email" type="email" class="fontAwesome @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="&#xf1fa; correo electronico">
           @error('email')
               <i>{{ $message }}</i>
           @enderror
-          <input id="password" type="password" class="fontAwesome @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="&#xf084; password">
+          <input id="password" type="password" class="fontAwesome @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="&#xf084; contraseña">
           @error('password')
               <i>{{ $message }}</i>
           @enderror
 
-          <input id="password-confirm" type="password"  name="password_confirmation"  class="fontAwesome" required autocomplete="new-password" placeholder="&#xf084; confirmar password">
+          <input id="password-confirm" type="password"  name="password_confirmation"  class="fontAwesome" required autocomplete="new-password" placeholder="&#xf084; confirmar contraseña">
           <button type="submit" class="btn"> {{ __('Register') }}&#8594;</button>
           <!-- <a href="">Forgot Password?</a> -->
       </form>  
