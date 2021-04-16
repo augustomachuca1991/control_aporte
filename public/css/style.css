@@ -252,15 +252,9 @@ form a{
 }
 
 form i{
-    font-size:10px;
+    font-size: 9px;
     color: #f95154;
-    line-height: 0 ;
     font-weight: bold;
-    
-}
-
-.form-error{
-    margin-top: 0;
 }
 
 

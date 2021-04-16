@@ -278,7 +278,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Declaraciones Juradas',
-                    'url'  => '#',
+                    'route'  => 'ddjj',
                 ],
                 // [
                 //     'text'    => 'level_one',

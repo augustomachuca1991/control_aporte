@@ -20,11 +20,11 @@
 			      <thead>
 			        <tr>
 			          <th scope="col">Usuario</th>
-			          <th scope="col">Generado</th>
+			          <th scope="col">Fecha de Importacion</th>
 			          <th scope="col">Organismo</th>
-			          <th scope="col">Tipo</th>
+			          <th scope="col">Tipo Liquidacion</th>
 			          <th scope="col">Periodo</th>
-			          <th scope="col">Rectificativa</th>
+			          <th scope="col">Archivo</th>
 			          <th scope="col"></th>
 			          <!--<th scope="col">Accion</th> -->
 			        </tr>
@@ -39,15 +39,14 @@
 			          <td>{{declaracion_jurada.organismo.organismo | capitalize}}</td>
 			          <td>{{declaracion_jurada.tipoliquidacion.descripcion}}</td>
 			          <td>{{declaracion_jurada.periodo.periodo}}</td>
-			          <td v-if="declaracion_jurada.secuencia === null">Original</td>
-			          <td v-else>Nº{{declaracion_jurada.secuencia}}</td>
+			          <td>{{declaracion_jurada.nombre_archivo}}</td>
 			          <td>
 			              <a class="btn btn-outline-info text-info btn-sm border-0" data-toggle="tooltip" data-placement="bottom" title="Descargar declaracion jurada" @click="download(declaracion_jurada.path)">
 			              	<i class="fas fa-download"></i>
 			              </a>
-			              <!-- <a class="btn btn-outline-primary btn-sm text-primary" @click="getDetalle(declaracion_jurada.id)" data-toggle="modal" data-target=".bd-example-modal-lg">
+			              <a class="btn btn-outline-primary btn-sm text-primary border-0" @click="getDetalles(declaracion_jurada.id)">
 			              	<i class="far fa-eye"></i>
-			              </a>  -->
+			              </a> 
 			          </td>
 			        </tr>
 			      </tbody>
@@ -69,6 +68,50 @@
 					aplicadas <i class="fas fa-check"></i>
 				</a> -->
 		</div>
+
+		<table v-if="detalles.length > 0" class="table">
+			<thead>
+			  <tr>
+			    <th scope="col">Fila</th>
+			    <th scope="col">nombre</th>
+			    <th scope="col">cuil</th>
+			    <th scope="col">fecha nac</th>
+			    <th scope="col">Puesto laboral</th>
+			    <th scope="col">cargo</th>
+			    <th scope="col">fecha ingreso</th>
+			    <th scope="col">cod categoria</th>
+			    <th scope="col">categoria</th>
+			    <th scope="col">cod clase</th>
+			    <th scope="col">clase</th>
+			    <th scope="col">cod estado</th>
+			    <th scope="col">estado</th>
+			    <th scope="col">cod organismo</th>
+			    <th scope="col">organismo</th><!-- 
+			    <th scope="col">conceptos</th> -->
+			    <!--<th scope="col">Accion</th> -->
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr v-for="(detalle,index) in detalles" :key="detalle.id">
+			    <th scope="col">{{index+1}}</th>
+			    <td scope="col">{{detalle.nombre}}</td>
+			    <td scope="col">{{detalle.cuil}}</td>
+			    <td scope="col">{{detalle.fecha_nac | format_moment}}</td>
+			    <td scope="col">{{detalle.puesto_laboral}}</td>
+			    <td scope="col">{{detalle.cargo}}</td>
+			    <td scope="col">{{detalle.fecha_ingreso | format_moment}}</td>
+			    <td scope="col">{{detalle.cod_categoria}}</td>
+			    <td scope="col">{{detalle.categoria}}</td>
+			    <td scope="col">{{detalle.cod_clase}}</td>
+			    <td scope="col">{{detalle.clase}}</td>
+			    <td scope="col">{{detalle.cod_estado}}</td>
+			    <td scope="col">{{detalle.estado}}</td>
+			    <td scope="col">{{detalle.cod_organismo}}</td>
+			    <td scope="col">{{detalle.organismo}}</td><!-- 
+			    <td scope="col">{{detalle.detalle}}</td> -->
+			  </tr>
+			</tbody>
+		</table>
 	</div>
 </template>
 
@@ -113,10 +156,10 @@
   		  			  		fileLink.click()
   		  	       		})
   		  },
-  		  buscar(){
-  		    axios.get(`api/declaracion_jurada/${this.search}`).then((response)=>{
+  		  getDetalles(id){
+  		    axios.get(`api/declaracion_jurada/${id}`).then((response)=>{
   		        //console.log(response.data)
-  		        this.declaraciones_juradas = response.data;
+  		        this.detalles = response.data.ddjj_lines;
   		    })
   		  },
 

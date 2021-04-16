@@ -6,7 +6,7 @@
 		 	      <div class="col-12 col-md-6">
 		 	        <div class="card card-outline card-orange">
 		 	          <div class="card-header">
-		 	            <h3 class="card-title">Periodo Liquidación</h3>
+		 	            <h3 class="card-title">Buscar por Puestos Laborales</h3>
 
 		 	            <div class="card-tools">
 		 	              <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -16,16 +16,8 @@
 		 	          </div>
 		 	            <div class="card-body" style="min-height: 135px; height: 135px; max-height: 135px; max-width: 100%;">
 		 	              <div>
-		 	                  <!--calendar-->
-		 	                  		    <!-- <label for="exampleInputEmail1">Periodo liquidacion <i class="fas fa-calendar-alt"></i></label>
-		 	                      		<month-picker-input v-model='anio'
-		 	                              :lang="'es'"
-		 	                              :max-date="fecha_actual"
-		 	                              :default-month="6"
-		 	                              :default-year="2020"
-		 	                              :input-pre-filled="true"
-		 	                              @change="showDate"
-		 	                            	></month-picker-input> -->
+		 	              		<label>Puesto Laboral</label>
+		 	                  <input type="search" name="periodo">
 		 	              </div>
 		 	            </div>
 		 	        </div>
