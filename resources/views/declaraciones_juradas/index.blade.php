@@ -10,7 +10,7 @@
 @stop
 
 @section('content_header')
-    <h1 class="text-secondary h1-responsive">Panel de Historia Laboral</h1>
+    <h1 class="text-secondary h1-responsive">Declaraciones Juradas</h1>
 @stop
 
 

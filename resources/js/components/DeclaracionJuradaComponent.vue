@@ -69,49 +69,62 @@
 				</a> -->
 		</div>
 
-		<table v-if="detalles.length > 0" class="table">
-			<thead>
-			  <tr>
-			    <th scope="col">Fila</th>
-			    <th scope="col">nombre</th>
-			    <th scope="col">cuil</th>
-			    <th scope="col">fecha nac</th>
-			    <th scope="col">Puesto laboral</th>
-			    <th scope="col">cargo</th>
-			    <th scope="col">fecha ingreso</th>
-			    <th scope="col">cod categoria</th>
-			    <th scope="col">categoria</th>
-			    <th scope="col">cod clase</th>
-			    <th scope="col">clase</th>
-			    <th scope="col">cod estado</th>
-			    <th scope="col">estado</th>
-			    <th scope="col">cod organismo</th>
-			    <th scope="col">organismo</th><!-- 
-			    <th scope="col">conceptos</th> -->
-			    <!--<th scope="col">Accion</th> -->
-			  </tr>
-			</thead>
-			<tbody>
-			  <tr v-for="(detalle,index) in detalles" :key="detalle.id">
-			    <th scope="col">{{index+1}}</th>
-			    <td scope="col">{{detalle.nombre}}</td>
-			    <td scope="col">{{detalle.cuil}}</td>
-			    <td scope="col">{{detalle.fecha_nac | format_moment}}</td>
-			    <td scope="col">{{detalle.puesto_laboral}}</td>
-			    <td scope="col">{{detalle.cargo}}</td>
-			    <td scope="col">{{detalle.fecha_ingreso | format_moment}}</td>
-			    <td scope="col">{{detalle.cod_categoria}}</td>
-			    <td scope="col">{{detalle.categoria}}</td>
-			    <td scope="col">{{detalle.cod_clase}}</td>
-			    <td scope="col">{{detalle.clase}}</td>
-			    <td scope="col">{{detalle.cod_estado}}</td>
-			    <td scope="col">{{detalle.estado}}</td>
-			    <td scope="col">{{detalle.cod_organismo}}</td>
-			    <td scope="col">{{detalle.organismo}}</td><!-- 
-			    <td scope="col">{{detalle.detalle}}</td> -->
-			  </tr>
-			</tbody>
-		</table>
+
+
+					<table class="table" v-if="detalles.length > 0">
+						<thead>
+						  <tr>
+						    <th scope="col">#</th>
+						    <th>NOMBRE</th>
+						    <th>CUIL</th>
+						    <th>FECHA DE NACIMIENTO</th>
+						    <th>PUESTO LABORAL</th>
+						    <th>CARGO</th>
+						    <th>FECHA INGRESO</th>
+						    <th>COD CATEGORIA</th>
+						    <th>CATEGORIA</th>
+						    <th>COD CLASE</th>
+						    <th>CLASE</th>
+						    <th>COD ESTADO</th>
+						    <th>ESTADO</th>
+						    <th>COD ORGANISMO</th>
+						    <th>ORGANISMO</th>
+						  </tr>
+						</thead>
+						<tbody v-for="(detalle,index) in detalles" :key="detalle.id">
+								<tr class="accordion-toggle collapsed table-light" id="accordion1" data-toggle="collapse" data-parent="#accordion1" :href="'#collapse'+detalle.id">
+									<td class="expand-button text-primary">
+										
+									</td>
+									<th scope="row">{{detalle.nombre}}</th>
+									<td>{{detalle.cuil}}</td>
+									<td>{{detalle.fecha_nac | format_moment}}</td>
+									<td>{{detalle.puesto_laboral}}</td>
+									<td>{{detalle.cargo}}</td>
+									<td>{{detalle.fecha_ingreso | format_moment}}</td>
+									<td>{{detalle.cod_categoria}}</td>
+									<td>{{detalle.categoria}}</td>
+									<td>{{detalle.cod_clase}}</td>
+									<td>{{detalle.clase}}</td>
+									<td>{{detalle.cod_estado}}</td>
+									<td>{{detalle.estado}}</td>
+									<td>{{detalle.cod_organismo}}</td>
+									<td>{{detalle.organismo}}</td>
+								</tr>
+								<tr class="hide-table-padding">
+									<td colspan="15">
+										<div :id="'collapse'+detalle.id" class="collapse in p-3">
+										  <div class="row">
+										    <div class="col-3">Detalle Concepto:</div>
+										    <div class="col-9">{{detalle.detalle}}</div>
+										  </div>
+										</div>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+
+
 	</div>
 </template>
 
