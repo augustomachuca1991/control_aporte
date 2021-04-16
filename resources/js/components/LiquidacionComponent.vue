@@ -250,9 +250,9 @@
               <table class="table table-sm table-borderless table-fixed">
                 <caption class="justify-content-end" v-model="liquidacion">
                   
-                  <small>
+                  <!-- <small>
                     Total Neto $ {{(liquidacion.bruto + liquidacion.bonificable + liquidacion.no_bonificable + liquidacion.no_remunerativo + liquidacion.familiar) - liquidacion.descuento}}
-                  </small>
+                  </small> -->
                 </caption>
                 <thead class="bg-light" >
                   <tr>
@@ -297,7 +297,7 @@
                     <small>Subtotal</small>
                   </th>
                   <td>
-                    <small>$ {{liquidacion.bruto + liquidacion.bonificable + liquidacion.no_bonificable}}</small>
+                    <small>$ {{liquidacion}}</small>
                   </td>
                   <td>
                     <small>$ {{liquidacion.no_remunerativo}}</small>

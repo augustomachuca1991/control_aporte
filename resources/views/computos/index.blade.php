@@ -1,6 +1,3 @@
-
-
-
 @extends('adminlte::page')
 
 @section('title', 'Computos')

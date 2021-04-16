@@ -274,7 +274,7 @@
                   <caption class="justify-content-end">
                     
                     <small>
-                      Total Neto $ {{(parseInt(liquidacion.bruto) + parseInt(liquidacion.bonificable) + parseInt(liquidacion.no_bonificable) + parseInt(liquidacion.no_remunerativo) + parseInt(liquidacion.familiar)) - parseInt(liquidacion.descuento)}}
+                      Total Neto $ {{(parseInt(liquidacion.bruto) + parseInt(liquidacion.familiar) - parseInt(liquidacion.descuento))}}
                     </small>
                   </caption>
                   <thead class="bg-light" >
@@ -319,8 +319,10 @@
                     <th scope="row" colspan="3">
                       <small>Subtotal</small>
                     </th>
-                    <td>
-                      <small>$ {{parseInt(liquidacion.bruto) + parseInt(liquidacion.bonificable) + parseInt(liquidacion.no_bonificable)}}</small>
+                    <td >
+
+                      <small v-if="liquidacion.no_remunerativo">$ {{parseInt(liquidacion.bruto) - parseInt(liquidacion.no_remunerativo)}}</small>
+                      <small v-else >$ {{parseInt(liquidacion.bruto) - 0}}</small>
                     </td>
                     <td>
                       <small>$ {{liquidacion.no_remunerativo}}</small>

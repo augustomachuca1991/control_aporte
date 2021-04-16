@@ -348,7 +348,7 @@ return [
         [
             'text'       => 'Periodos',
             'icon_color' => 'lime',
-            'url'        => '#',
+            'route'        => 'periodos',
         ],
         
 

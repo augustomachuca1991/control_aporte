@@ -59,6 +59,10 @@ Route::get('/home', 'HomeController@index')->name('home');
     //-------- Historia Laborales Controller------------
     Route::get('/hlaborales', 'HistoriaLaboralController@index')->name('hlaborales');
 
+
+    //---------- Periodos Controller -------------------------
+    Route::get('/periodos', 'PeriodoController@index')->name('periodos');
+
     Route::get('/notificaciones', 'NotificationController@index')->name('notificaciones');
 
     Route::get('/users', 'UserController@index')->name('users');
