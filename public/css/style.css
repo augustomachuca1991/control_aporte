@@ -26,12 +26,108 @@ body{
   font-family: Helvetica, 'FontAwesome', sans-serif;
 }
 
+
+.center-box{
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center-box div{
+    width: 650px;
+    height: 60px;
+    overflow: hidden;
+    margin: 8px 0;
+    color: #555;
+    border-radius: 5px;
+
+}
+
+.center-box span{
+    float: left;
+    width: 40px;
+    height: 60px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+}
+
+.center-box p{
+    float: left;
+    margin: 0;
+    padding: 0 6px;
+    font-size: 16px;
+    font-weight: 100px;
+    line-height: 60px;
+    color: #65956f;
+
+
+}
+
+.m-success{
+    background: #d4edda;
+}
+
+.m-success span{
+    background: #27ae60;
+    color: #65956f;
+}
+
+.m-success p{
+    color: #65956f;
+}
+
+
+.m-warning{
+    background: #fff3cd;
+}
+
+.m-warning span{
+    background: #d2be82;
+    color: #b49b52;
+}
+
+.m-warning p{
+    color: #b49b52;
+}
+
+
+.m-danger{
+    background: #f8d7da;
+}
+
+.m-danger span{
+    background: #ca969b;
+    color: #721c24;
+}
+
+.m-danger p{
+    color: #721c24;
+}
+
+.m-info{
+    background: #d1ecf1;
+}
+
+.m-info span{
+    background: #9cc3c9;
+    color: #0c5460;
+}
+
+.m-info p{
+    color: #0c5460;
+}
+
 .navbar{
     display: flex;
     align-items: center;
     padding: 20px;
     
 }
+
+
+
 
 nav{
     flex: 1;
@@ -264,7 +360,7 @@ p{
 .form-container{
     background: var(--primary-color);
     width: 300px;
-    height: 400px;
+    height: 450px;
     position: relative;
     text-align: center;
     padding: 20px 0;
@@ -288,12 +384,12 @@ p{
     max-width: 300px;
     padding: 0 20px;
     position: absolute;
-    top:80px;
+    top: 100px;
 }
 
 form input{
     width: 100%;
-    height: 30px;
+    height: 40px;
     margin: 10px 0;
     padding: 0 10px;
     border: 1px solid #ccc;
@@ -311,7 +407,8 @@ form .btn{
 }
 
 form .btn:hover{
-    background: #ccc;
+    background: var(--secondary-color);
+    color: var(--primary-color);
 }
 
 form .btn:focus{

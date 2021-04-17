@@ -3,9 +3,10 @@
 @section('content')
 
 <div class="col-2">
-    <img src="image/register.png" style="opacity: 0.7;">
+    <img src="image/register.png" style="opacity: 0.5;">
 </div>
 <div class="col-2">
+
     <div class="form-container">
       <div class="form-btn">
       <span>{{ __('Register') }}</span>

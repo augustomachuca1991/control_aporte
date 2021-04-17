@@ -17,7 +17,6 @@
 @section('content')
   <div id="app">
     <panel-component></panel-component>
-    @include('modal.detalle')  
   </div>
 @stop
 

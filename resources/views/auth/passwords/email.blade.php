@@ -1,58 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+<!-- <div class="center-box">
+  <div class="m-info">
+      <span>
+          <i class="fa fa-info"></i>
+      </span>
+      <p>¡Te hemos enviado por correo el enlace para restablecer tu contraseña!</p>
+  </div>  
+</div>
+<div class="center-box">
+  <div class="m-success">
+      <span>
+          <i class="fa fa-check"></i>
+      </span>
+      <p>¡Te hemos enviado por correo el enlace para restablecer tu contraseña!</p>
+  </div>  
+</div>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+<div class="center-box">
+  <div class="m-warning">
+      <span>
+          <i class="fa fa-exclamation-triangle"></i>
+      </span>
+      <p>¡Te hemos enviado por correo el enlace para restablecer tu contraseña!</p>
+  </div>  
+</div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="center-box">
+  <div class="m-danger">
+      <span>
+          <i class="fa fa-times"></i>
+      </span>
+      <p>¡Te hemos enviado por correo el enlace para restablecer tu contraseña!</p>
+  </div>  
 </div> -->
+
+
+@if (session('status'))
+    <div class="center-box">
+      <div class="m-success">
+          <span>
+              <i class="fa fa-check"></i>
+          </span>
+          <p>{{ session('status') }}</p>
+      </div>  
+    </div>
+@endif
 <div class="col-2">
     <img src="{{asset('image/email-5.png')}}">
 </div>
 <div class="col-2">
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
+    <!-- <div class="alert alert-success">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    </div> -->
+    
+    
     <div class="form-container">
       <div class="form-btn">
       <span>{{ __('Reset Password') }}</span>
