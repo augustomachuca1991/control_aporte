@@ -4,7 +4,7 @@
         <div class="modal fade" id="periodo_new" tabindex="-1" role="dialog" aria-labelledby="ModalLabelNewPeriodo" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <form  action="" @submit.prevent="">
+              <form  action="" @submit.prevent="nuevo_periodo">
                 <div class="modal-header" style="background: radial-gradient(#f3fff1, #ccc);">
                   <h5 class="modal-title" id="ModalLabelNewPeriodo">Nuevo Periodo</h5>
                   <!-- {{errors}} -->
@@ -50,7 +50,7 @@
                 </div>
                 <div class="modal-footer">
                   <span><small><em>(*) obligatorio</em></small></span>
-                  <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
+                  <button type="button" class="btn btn-primary btn-sm" @click="nuevo_periodo"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
                 </div>
               </form>
             </div>
@@ -162,7 +162,7 @@
                           <td>{{periodo.mes}}</td>
                           <td>{{periodo.anio}}</td>
                           <td>
-                            <button class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
+                            <button class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0" @click="eliminar(index, periodo)"><i class="fa fa-trash"></i></button>
                             <button class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#periodo_edit"><i class="fa fa-edit"></i></button>
                           </td>
                         </tr>
@@ -211,6 +211,7 @@
                     periodos:[],
                     mes:'',
                     anio:'',
+                    cod_periodo:'',
                     paginate:{
                       current_page:'',
                       last_page:'',
@@ -241,44 +242,104 @@
                             })
                         },
             selectMes(){
-                console.log(this.mes)
+                this.codPerido();
             },
             selectAnio(){
-              if (this.mes < 10) {
+              this.codPerido();
+            },
+            nuevo_periodo(){
+                console.log(this.cod_periodo)
+                
 
-                console.log(this.anio+'0'+this.mes);
+                if (this.mes && this.anio) {
+                  let periodo = {
+                    cod_periodo: this.cod_periodo,
+                    mes: this.mes,
+                    anio: this.anio,
+                    periodo : this.nombreMes(this.mes)+' de '+this.anio ,
+
+                  }
+                  this.periodos.push(periodo);
+                  this.empty();
+                } else {
+                  alert('todos los campos son obligatorio');
+                }
+                
+            },
+            codPerido(){
+              if (this.mes < 10) {
+                this.cod_periodo = this.anio+'0'+this.mes
               }else{
-                console.log(this.anio+""+this.mes);
+                this.cod_periodo = this.anio+""+this.mes;
               }
             },
-        //     newJurisdiccion(){
-        //         let codigo_origen = '';
-        //         if (this.selectedOrigen >= 0) {
-        //           this.origen = this.origenes[this.selectedOrigen];
-        //           codigo_origen = this.origenes[this.selectedOrigen].cod_origen;
-        //         }
-        //         const params = {
-        //             cod_jurisdiccion : this.cod_jurisdiccion,
-        //             jurisdiccion : this.descripcion,
-        //             origen_id : codigo_origen,
-        //             created_at: new Date(),
-        //             origen: this.origen,
-        //         };
-        //         axios.post('api/jurisdiccion/create',params)
-        //                          .then((response)=> {
-        //                            this.jurisdicciones.unshift(params);
-        //                            this.empty();
-        //                             Toast.fire({
-        //                               icon: 'success',
-        //                               title: 'Jurisdicción '+response.data.jurisdiccion+' se creó satisfactoriamente.',
-        //                               background:'#E7FFD7',
-        //                             })
-                                   
-        //                          }).catch((err) => {
-        //                            console.log(err.response.data.errors)
-        //                            this.errors = err.response.data.errors;
-        //                          });
-        //     },
+            empty(){
+              $('#periodo_new').modal('hide');
+              $('#periodo_edit').modal('hide');
+              this.cod_periodo = '';
+              this.mes = '';
+              this.anio = '';
+            },
+            nombreMes(mes){
+              switch (mes) {
+                case 1:
+                  return 'Enero'
+                  break;
+                case 2:
+                  return 'Febrero'
+                  break;
+                case 3:
+                  return 'Marzo'
+                  break;
+                case 4:
+                  return 'Abril'
+                  break;
+                case 5:
+                  return 'Mayo'
+                  break;
+                case 6:
+                  return 'Junio'
+                  break;
+                case 7:
+                  return 'Julio'
+                  break;
+                case 8:
+                  return 'Agosto'
+                  break;
+                case 9:
+                  return 'Septiembre'
+                  break;
+                case 10:
+                  return 'Octubre'
+                  break;
+                case 11:
+                  return 'Noviembre'
+                  break;
+                case 12:
+                  return 'Diciembre'
+                  break;
+                default:
+                    return 'no corresponde a un mes'
+                    break;
+              }
+
+            },
+            eliminar(index, periodo){
+              swal.fire({
+                  title: 'Esta seguro?',
+                  text: periodo.periodo+" esta a punto de ser eliminada!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Si, eliminar!'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    this.periodos.splice(index, 1);
+                    alert('se elimino correctamente')
+                  }
+                })
+            }
         //     trash(index,id){
         //         swal.fire({
         //           title: 'Esta seguro?',
