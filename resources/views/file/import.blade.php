@@ -13,6 +13,10 @@
     <h1 class="text-secondary h1-responsive">Importar Archivo</h1>
 @stop
 
+ @section('right-sidebar')
+  @include('layouts.right_sidebar')
+ @stop
+
 
 @section('content')
   <div id="app">

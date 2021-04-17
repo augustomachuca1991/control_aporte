@@ -8,6 +8,10 @@
     <h1 class="text-secondary h1-responsive">Exportar Archivo</h1>
 @stop
 
+ @section('right-sidebar')
+  @include('layouts.right_sidebar')
+ @stop
+
 @section('content')
     <div id="app">
       <export-component></export-component>

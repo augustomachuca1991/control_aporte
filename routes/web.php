@@ -63,6 +63,9 @@ Route::get('/home', 'HomeController@index')->name('home');
     //---------- Periodos Controller -------------------------
     Route::get('/periodos', 'PeriodoController@index')->name('periodos');
 
+    //---------- Conceptos Controller -------------------------
+    Route::get('/conceptos', 'ConceptoLiquidacionController@index')->name('conceptos');
+
     Route::get('/notificaciones', 'NotificationController@index')->name('notificaciones');
 
     Route::get('/users', 'UserController@index')->name('users');

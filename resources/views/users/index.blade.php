@@ -5,21 +5,16 @@
 
 
 
- @section('right-sidebar')
-	<div class="container">
-		<h5>Personalizar Panel</h5>
-		<hr class="mb-2">
-		<div class="mb-4">
-			<input type="checkbox" value="1" class="mr-1">
-			<span>Modo Nocturno</span>
-		</div>	
-	</div>
- @stop
+
 
  
  @section('css')
      <!-- <link rel="stylesheet" href="/css/admin_custom.css"> -->
      <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+ @stop
+
+ @section('right-sidebar')
+ 	@include('layouts.right_sidebar')
  @stop
 
  @section('content_header')

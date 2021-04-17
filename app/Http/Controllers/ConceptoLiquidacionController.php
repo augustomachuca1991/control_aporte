@@ -15,6 +15,7 @@ class ConceptoLiquidacionController extends Controller
     public function index()
     {
         //
+        return view('conceptos.index');
     }
 
     /**

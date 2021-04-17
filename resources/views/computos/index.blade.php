@@ -9,6 +9,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 @stop
 
+ @section('right-sidebar')
+	@include('layouts.right_sidebar')
+ @stop
+
 @section('content_header')
     <h1 class="text-secondary h1-responsive">Panel de Computos</h1>
 @stop

@@ -12,6 +12,11 @@
 @stop
 
 
+ @section('right-sidebar')
+    @include('layouts.right_sidebar')
+ @stop
+
+
 @section('content')
   <div id="app">
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
