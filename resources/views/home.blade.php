@@ -6,6 +6,11 @@
 @section('plugins.Sweetalert2', true)
 @section('plugins.Chartjs', true)
 
+
+ @section('right-sidebar')
+  @include('layouts.right_sidebar')
+ @stop
+
 @section('content_header')
     <h1>Panel de Control</h1>
 @stop

@@ -59,7 +59,83 @@
 
        
 
-
+        <!-- Modal editar Periodo -->
+        <div class="modal fade" id="periodo_edit" tabindex="-1" role="dialog" aria-labelledby="ModalLabelEditPeriodo" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form  action="" @submit.prevent="nuevo_periodo">
+                <div class="modal-header" style="background: radial-gradient(#f3fff1, #ccc);">
+                  <h5 class="modal-title" id="ModalLabelEditPeriodo">Nuevo Periodo</h5>
+                  <!-- {{errors}} -->
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="empty">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  
+                  
+                  <!-- <div class="form-group row">
+                    <label for="select_mes" class="col-sm-3 col-form-label">Mes *</label>
+                    <div class="col-sm-9">
+                      <select class="custom-select" id="select_mes" v-model="mes" @change="selectMes">
+                        <option selected disabled :value="''">Seleccione Mes...</option>
+                        <option :value="1">Enero</option>
+                        <option :value="2">Febrero</option>
+                        <option :value="3">Marzo</option>
+                        <option :value="4">Abril</option>
+                        <option :value="5">Mayo</option>
+                        <option :value="6">Junio</option>
+                        <option :value="7">Julio</option>
+                        <option :value="8">Agosto</option>
+                        <option :value="9">Septiembre</option>
+                        <option :value="10">Octubre</option>
+                        <option :value="11">Noviembre</option>
+                        <option :value="12">Diciembre</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="select_mes" class="col-sm-3 col-form-label">Año *</label>
+                    <div class="col-sm-9">
+                      <select :disabled="mes == ''" class="custom-select" id="select_mes" v-model="anio" @change="selectAnio">
+                        <option selected disabled :value="''">Seleccione Año...</option>
+                        <option :value="2020">2020</option>
+                        <option :value="2021">2021</option>
+                        <option :value="2022">2022</option>
+                        <option :value="2023">2023</option>
+                      </select>
+                    </div>
+                  </div> -->
+                  <p>Indice: {{index}}</p>
+                  <p>Periodo: {{periodo.periodo}}</p>
+                  <p>Codigo Periodo: {{cod_periodo}}</p>
+                  <p>Mes: {{mes}}</p>
+                  <p>Año: {{anio}}</p>
+                    <month-picker-input
+                        v-if="isEdit"
+                        :lang="'es'"
+                        :max-date="fecha_actual"
+                        :clearable="true"
+                        :input-pre-filled="true"
+                        :editable-year="true"
+                        @change="actualizar"
+                        @clear>
+                          
+                    </month-picker-input>
+                </div>
+                <div class="modal-footer" v-if="isEdit">
+                  
+                  <span><small><em>(*) obligatorio</em></small></span>
+                  <button type="button" class="btn btn-primary btn-sm" @click="actualizar"><i class="fa fa-edit"></i>&nbsp;Guardar Cambios</button>
+                </div>
+                <div class="modal-footer" v-else>
+                  <button type="button" class="btn btn-danger btn-sm" @click="empty"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                  <button type="button" class="btn btn-secondary btn-sm" @click="editMode"><i class="fa fa-edit"></i>&nbsp;Editar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
         <!--Table-->
         <!-- <div class="row">
@@ -163,7 +239,7 @@
                           <td>{{periodo.anio}}</td>
                           <td>
                             <button class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0" @click="eliminar(index, periodo)"><i class="fa fa-trash"></i></button>
-                            <button class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#periodo_edit"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#periodo_edit" @click="editar(index, periodo)"><i class="fa fa-edit"></i></button>
                           </td>
                         </tr>
                       </tbody>
@@ -209,9 +285,20 @@
         data: function() {
                 return {
                     periodos:[],
+                    periodo:{},
+                    index:'',
                     mes:'',
                     anio:'',
                     cod_periodo:'',
+                    fecha_actual:null,
+                    isEdit: false,
+                    date: {
+                      from: null,
+                      to: null,
+                      month: null,
+                      year: null,
+                      monthIndex: null,
+                    },
                     paginate:{
                       current_page:'',
                       last_page:'',
@@ -225,6 +312,10 @@
                 }
             },
         mounted() {
+              var milisegundos = Date.now();
+              this.fecha_actual = new Date(milisegundos);
+              this.mes = this.fecha_actual.getMonth()+1;
+              this.anio = this.fecha_actual.getFullYear();
               this.getPeriodos();
               console.log('componente periodo')
         },
@@ -279,6 +370,7 @@
               this.cod_periodo = '';
               this.mes = '';
               this.anio = '';
+              this.isEdit = false;
             },
             nombreMes(mes){
               switch (mes) {
@@ -339,39 +431,35 @@
                     alert('se elimino correctamente')
                   }
                 })
-            }
-        //     trash(index,id){
-        //         swal.fire({
-        //           title: 'Esta seguro?',
-        //           text: this.jurisdicciones[index].jurisdiccion+" esta a punto de ser eliminada!",
-        //           icon: 'warning',
-        //           showCancelButton: true,
-        //           confirmButtonColor: '#3085d6',
-        //           cancelButtonColor: '#d33',
-        //           confirmButtonText: 'Si, eliminar!'
-        //         }).then((result) => {
-        //           if (result.isConfirmed) {
-        //             this.jurisdicciones.splice(index, 1);
-        //             axios.delete(`api/jurisdiccion/delete/${id}`)
-        //             .then((response)=>{
-        //                 if (response.data.isValid) {
-        //                     Toast.fire({
-        //                       icon: 'success',
-        //                       title: response.data.errors,
-        //                       background:'#E7FFD7',
-        //                     })
+            },
+            editar(index,periodo){
+                this.index = index
+                 this.periodo = periodo;
+                 this.mes = periodo.mes;
+                 this.anio = periodo.anio;
+                 this.cod_periodo = periodo.cod_periodo;
+             },
+            editMode(){
+              this.isEdit = true;
+            },
+            actualizar(date){
+              this.date = date
+              if (this.date.monthIndex.toString().length < 2){
+                var mes ='0'.concat(this.date.monthIndex.toString());
+                this.cod_periodo = this.date.year.toString()+mes;
+                
+              }else{
+                this.cod_periodo = date.year.toString()+date.monthIndex.toString();
+              }
 
-        //                 }else{
-        //                     Toast.fire({
-        //                       icon: 'error',
-        //                       title: 'Atencion!!! Algo Salio Mal.',
-        //                       background:'#FCDBCD',
-        //                     })
-        //                 }
-        //             })
-        //           }
-        //         })
-        //     },
+              this.periodo ={
+                cod_periodo: this.cod_periodo,
+                mes: '12',
+                anio: '1999',
+                periodo: this.nombreMes(this.date.monthIndex)+' de '+this.date.year,
+              }
+              this.periodos[this.index] = this.periodo;
+            },
         //     edit(index,jurisdiccion){
         //         // console.log(index);
         //         // console.log(this.paginate.from - 1)
