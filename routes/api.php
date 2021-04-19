@@ -90,8 +90,12 @@ Route::get('/tipocodigo', 'TipoCodigoController@getTipo')->name('tipocodigo');
 Route::get('/tipoliquidacion', 'TipoLiquidacionController@getTipoLiquidacion')->name('tipoliquidacion');
 
 //Periodos
-Route::get('/periodo', 'PeriodoController@getPeriodo')->name('periodo');
-Route::get('/periodo/{id}', 'PeriodoController@show');
+Route::get('/periodo', 'PeriodoController@getPeriodos')->name('periodo');
+Route::put('/periodo/update/{id}', 'PeriodoController@update')->name('update_periodo');
+Route::post('/periodo/create', 'PeriodoController@store')->name('create_periodo');
+Route::delete('/periodo/delete/{id}', 'PeriodoController@destroy')->name('delete_periodo');
+Route::get('/periodo/{search}', 'PeriodoController@search')->name('periodo_search');
+Route::get('/periodo/paginate/{n_paginas}', 'PeriodoController@paginado');
 
 // Categoria
 Route::get('/categoria', 'CategoriaController@getCategorias')->name('categorias');

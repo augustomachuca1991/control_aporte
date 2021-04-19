@@ -11,6 +11,15 @@ class Periodo extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $fillable = [
+        'cod_periodo',
+        'periodo',
+        'mes',
+        'anio',
+    ];
+
+    //relashionships
+
     public function liquidaciones()
     {
     	return $this->belongsToMany('App\Liquidacion','liquidacion_organismo','id', 'periodo_id');
@@ -29,5 +38,18 @@ class Periodo extends Model
     public function liquidacionOrganismo()
     {
         return $this->hasMany('App\LiquidacionOrganismo')->with(['organismo','liquidacion','tipoLiquidacion']);
+    }
+
+
+
+    //buscador
+
+    public function scopeFiltroPeriodo($query, $search){
+        if(!empty($search)){
+            $query->where('cod_periodo' ,'LIKE' ,"%".$search."%")
+            ->orWhere('periodo' ,'LIKE' ,"%".$search."%")
+            ->orWhere('mes' ,'LIKE' ,"%".$search."%")
+            ->orWhere('anio' ,'LIKE' ,"%".$search."%");
+        }
     }
 }

@@ -129,11 +129,8 @@
                             <month-picker-input
                                 :lang="'es'"
                                 :max-date="fecha_actual"
-                                :clearable="true"
-                                :input-pre-filled="true"
-                                :editable-year="true"
-                                @change="porPeriodo"
-                                @clear>
+                                :no-default="true"
+                                @change="porPeriodo">
                                   
                             </month-picker-input>
                           

@@ -8,49 +8,29 @@
                 <div class="modal-header" style="background: radial-gradient(#f3fff1, #ccc);">
                   <h5 class="modal-title" id="ModalLabelNewPeriodo">Nuevo Periodo</h5>
                   <!-- {{errors}} -->
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="empty">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  
-                  
-                  <div class="form-group row">
-                    <label for="select_mes" class="col-sm-3 col-form-label">Mes *</label>
-                    <div class="col-sm-9">
-                      <select class="custom-select" id="select_mes" v-model="mes" @change="selectMes">
-                        <option selected disabled :value="''">Seleccione Mes...</option>
-                        <option :value="1">Enero</option>
-                        <option :value="2">Febrero</option>
-                        <option :value="3">Marzo</option>
-                        <option :value="4">Abril</option>
-                        <option :value="5">Mayo</option>
-                        <option :value="6">Junio</option>
-                        <option :value="7">Julio</option>
-                        <option :value="8">Agosto</option>
-                        <option :value="9">Septiembre</option>
-                        <option :value="10">Octubre</option>
-                        <option :value="11">Noviembre</option>
-                        <option :value="12">Diciembre</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="select_mes" class="col-sm-3 col-form-label">Año *</label>
-                    <div class="col-sm-9">
-                      <select :disabled="mes == ''" class="custom-select" id="select_mes" v-model="anio" @change="selectAnio">
-                        <option selected disabled :value="''">Seleccione Año...</option>
-                        <option :value="2020">2020</option>
-                        <option :value="2021">2021</option>
-                        <option :value="2022">2022</option>
-                        <option :value="2023">2023</option>
-                      </select>
-                    </div>
-                  </div>
+                                     
+                   <div class="form-group">
+                     <label for="selectPeriodo">Elija un Nuevo Periodo</label>
+                     <month-picker-input
+                         id="selectPeriodo"
+                         :lang="'es'"
+                         :no-default="true"
+                         :max-date="fecha_actual"
+                         @change="nuevo_periodo">
+                           
+                     </month-picker-input>
+                     <span class="errors text-danger" v-for="error in errores.cod_periodo">
+                         <small><em>{{error}}</em></small>
+                     </span>
+                   </div>
                 </div>
                 <div class="modal-footer">
-                  <span><small><em>(*) obligatorio</em></small></span>
-                  <button type="button" class="btn btn-primary btn-sm" @click="nuevo_periodo"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
+                  <button type="button" class="btn btn-primary btn-sm" @click="nuevo"><i class="fa fa-plus"></i>&nbsp;Nuevo</button>
                 </div>
               </form>
             </div>
@@ -106,27 +86,50 @@
                       </select>
                     </div>
                   </div> -->
-                  <p>Indice: {{index}}</p>
-                  <p>Periodo: {{periodo.periodo}}</p>
-                  <p>Codigo Periodo: {{cod_periodo}}</p>
-                  <p>Mes: {{mes}}</p>
-                  <p>Año: {{anio}}</p>
+                  <div class="form-group">
+                    <label for="descripcion">Periodo</label>
+                    <p id="descripcion">{{periodo.periodo}}</p>
+                    <span class="errors text-danger" v-for="error in errores.periodo">
+                        <small><em>{{error}}</em></small>
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    <label for="cod_periodo">Codigo Periodo</label>
+                    <p id="cod_periodo">{{periodo.cod_periodo}}</p>
+                    <span class="errors text-danger" v-for="error in errores.cod_periodo">
+                        <small><em>{{error}}</em></small>
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    <label for="mes">Mes</label>
+                    <p id="mes">{{periodo.mes}}</p>
+                    <span class="errors text-danger" v-for="error in errores.mes">
+                        <small><em>{{error}}</em></small>
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    <label for="anio">Año</label>
+                    <p id="anio">{{periodo.anio}}</p>
+                    <span class="errors text-danger" v-for="error in errores.anio">
+                        <small><em>{{error}}</em></small>
+                    </span>
+                  </div>
+                  <div class="form-group" v-if="isEdit">
+                    <label for="selectPeriodo">Elija un Periodo</label>
                     <month-picker-input
+                        id="selectPeriodo"
                         v-if="isEdit"
                         :lang="'es'"
+                        :no-default="true"
                         :max-date="fecha_actual"
-                        :clearable="true"
-                        :input-pre-filled="true"
-                        :editable-year="true"
-                        @change="actualizar"
-                        @clear>
+                        @change="actualizar">
                           
                     </month-picker-input>
+                  </div>
+                    
                 </div>
                 <div class="modal-footer" v-if="isEdit">
-                  
-                  <span><small><em>(*) obligatorio</em></small></span>
-                  <button type="button" class="btn btn-primary btn-sm" @click="actualizar"><i class="fa fa-edit"></i>&nbsp;Guardar Cambios</button>
+                  <button type="button" class="btn btn-primary btn-sm" @click="confimarCambios"><i class="fa fa-edit"></i>&nbsp;Guardar Cambios</button>
                 </div>
                 <div class="modal-footer" v-else>
                   <button type="button" class="btn btn-danger btn-sm" @click="empty"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
@@ -190,7 +193,7 @@
               <div class="col-md-3  offset-md-6 my-2">
                 <form class="form-inline justify-content-end">
                       <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
-                      <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search">
+                      <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="buscador" @keyup="buscarPeriodo()">
                 </form>
               </div>
               <div class="col-12">
@@ -207,7 +210,7 @@
                             <i class="fas fa-search"></i>
                           </button>
                         </div> -->
-                        <select class="form-control form-control-sm custom-select rounded-pill">
+                        <select class="form-control form-control-sm custom-select rounded-pill" v-model="n_paginas" @change="paginacion">
                           <option value="5">5 por página</option>
                           <option value="10">10 por página</option>
                           <option value="25">25 por página</option>
@@ -245,7 +248,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <!-- <div class="card-footer">
+                  <div class="card-footer">
                     <span>total registros encontrados: {{paginate.total}}</span>
                     <nav aria-label="Contacts Page Navigation">
                       <ul class="pagination pagiante-sm justify-content-end m-0">
@@ -258,7 +261,7 @@
                         </li>
                       </ul>
                     </nav>
-                  </div> -->
+                  </div>
                   <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
@@ -285,8 +288,10 @@
         data: function() {
                 return {
                     periodos:[],
+                    errores:[],
                     periodo:{},
                     index:'',
+                    id: '',
                     mes:'',
                     anio:'',
                     cod_periodo:'',
@@ -308,14 +313,16 @@
                       from:'',
                       to:'',
                     },
-                    n_paginas:5,
+                    n_paginas: 10,
+                    buscador:'',
+                    setTimeoutBuscador:'',
                 }
             },
         mounted() {
               var milisegundos = Date.now();
               this.fecha_actual = new Date(milisegundos);
-              this.mes = this.fecha_actual.getMonth()+1;
-              this.anio = this.fecha_actual.getFullYear();
+              // this.mes = this.fecha_actual.getMonth()+1;
+              // this.anio = this.fecha_actual.getFullYear();
               this.getPeriodos();
               console.log('componente periodo')
         },
@@ -323,39 +330,64 @@
             getPeriodos(){
                             axios.get('api/periodo').then((response)=>{
                                 console.log(response.data)
-                                this.periodos = response.data;
-                                // this.paginate.current_page = response.data.current_page;
-                                // this.paginate.last_page = response.data.last_page;
-                                // this.paginate.total = response.data.total;
-                                // this.paginate.path = response.data.path;
-                                // this.paginate.from = response.data.from;
-                                // this.paginate.to = response.data.to;
+                                this.periodos = response.data.data;
+                                this.paginate.current_page = response.data.current_page;
+                                this.paginate.last_page = response.data.last_page;
+                                this.paginate.total = response.data.total;
+                                this.paginate.path = response.data.path;
+                                this.paginate.from = response.data.from;
+                                this.paginate.to = response.data.to;
                             })
                         },
-            selectMes(){
-                this.codPerido();
-            },
-            selectAnio(){
-              this.codPerido();
-            },
-            nuevo_periodo(){
-                console.log(this.cod_periodo)
-                
+            nuevo(){
 
-                if (this.mes && this.anio) {
-                  let periodo = {
-                    cod_periodo: this.cod_periodo,
-                    mes: this.mes,
-                    anio: this.anio,
-                    periodo : this.nombreMes(this.mes)+' de '+this.anio ,
-
-                  }
-                  this.periodos.push(periodo);
+              axios.post('api/periodo/create', this.periodo).then( (response) => {
+                  
+                  this.periodos.unshift(this.periodo);
                   this.empty();
-                } else {
-                  alert('todos los campos son obligatorio');
-                }
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'Periodo '+response.data.periodo+' ha sido registrado',
+                    background:'#E7FFD7',
+                  })
+              }).catch((err) => {
+                 console.log(err.response.data.errors)
+                 this.errores = err.response.data.errors;
+              });
+
+            },
+            nuevo_periodo(date){
+                // console.log(this.cod_periodo)
                 
+
+                // if (this.mes && this.anio) {
+                //   let periodo = {
+                //     cod_periodo: this.cod_periodo,
+                //     mes: this.mes,
+                //     anio: this.anio,
+                //     periodo : this.nombreMes(this.mes)+' de '+this.anio ,
+
+                //   }
+                //   this.periodos.push(periodo);
+                //   this.empty();
+                // } else {
+                //   alert('todos los campos son obligatorio');
+                // }
+
+                this.date = date
+                if (this.date.monthIndex.toString().length < 2){
+                  var mes ='0'.concat(this.date.monthIndex.toString());
+                  this.cod_periodo = this.date.year.toString()+mes;
+                  
+                }else{
+                  this.cod_periodo = date.year.toString()+date.monthIndex.toString();
+                }
+                this.periodo = {
+                  cod_periodo: this.cod_periodo,
+                  mes: this.date.monthIndex.toString(),
+                  anio: this.date.year.toString(),
+                  periodo: this.nombreMes(this.date.monthIndex)+' de '+this.date.year,
+                }
             },
             codPerido(){
               if (this.mes < 10) {
@@ -367,10 +399,15 @@
             empty(){
               $('#periodo_new').modal('hide');
               $('#periodo_edit').modal('hide');
+              this.errores = [];
+              this.periodo = {};
+              this.id = '';
               this.cod_periodo = '';
               this.mes = '';
               this.anio = '';
+              this.index = '';
               this.isEdit = false;
+
             },
             nombreMes(mes){
               switch (mes) {
@@ -427,13 +464,23 @@
                   confirmButtonText: 'Si, eliminar!'
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    this.periodos.splice(index, 1);
-                    alert('se elimino correctamente')
+                    axios.delete(`api/periodo/delete/${periodo.id}`).then( (response)=>{
+                      var nombre = response.data;
+                      this.periodos.splice(index, 1);
+                      Toast.fire({
+                        icon: 'success',
+                        title: 'Periodo '+nombre+' ha sido borrado',
+                        background:'#E7FFD7',
+                      })
+                    });
+                    //this.periodos.splice(index, 1);
+                    
                   }
                 })
             },
             editar(index,periodo){
-                this.index = index
+                 this.index = index;
+                 this.id = periodo.id;
                  this.periodo = periodo;
                  this.mes = periodo.mes;
                  this.anio = periodo.anio;
@@ -453,12 +500,64 @@
               }
 
               this.periodo ={
+                id: this.id,
                 cod_periodo: this.cod_periodo,
-                mes: '12',
-                anio: '1999',
+                mes: this.date.monthIndex.toString(),
+                anio: this.date.year.toString(),
                 periodo: this.nombreMes(this.date.monthIndex)+' de '+this.date.year,
               }
-              this.periodos[this.index] = this.periodo;
+              //this.periodos[this.index] = this.periodo;
+            },
+            confimarCambios(){
+              axios.put(`api/periodo/update/${this.periodo.id}`, this.periodo).then( (response) => {
+                console.log(response.data)
+                this.periodo = response.data
+                this.periodos[this.index] = this.periodo;
+                this.empty();
+                Toast.fire({
+                  icon: 'success',
+                  title: 'Periodo Actualizado',
+                  background:'#E7FFD7',
+                })
+              }).catch((err) => {
+                 console.log(err.response.data.errors)
+                 this.errores = err.response.data.errors;
+              });
+
+              
+            },
+            getPage(page){
+              axios.get(this.paginate.path+'?page='+page).then((response)=> {
+                this.asignar(response);
+
+              })
+            },
+            paginacion:function(){
+              //console.log(this.n_paginas)
+              axios.get(`api/periodo/paginate/${this.n_paginas}`).then( (response) => {
+                this.asignar(response);
+              });
+              
+
+            },
+            buscarPeriodo(){
+
+              clearTimeout(this.setTimeoutBuscador);
+              this.setTimeoutBuscador = setTimeout( ()=>{
+                axios.get(`api/periodo/${this.buscador}`).then( (response)=>{
+                  this.asignar(response);
+                  
+                })
+              }, 1000)
+            },
+            asignar(response){
+                this.periodos = response.data.data;
+                this.paginate.current_page = response.data.current_page;
+                this.paginate.last_page = response.data.last_page;
+                this.paginate.total = response.data.total;
+                this.paginate.path = response.data.path;
+                this.paginate.from = response.data.from;
+                this.paginate.to = response.data.to;
             },
         //     edit(index,jurisdiccion){
         //         // console.log(index);
