@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class ConceptoLiquidacionController extends Controller
 {
+    
+
+    public $perPage = 10;
     /**
      * Display a listing of the resource.
      *
@@ -84,8 +87,8 @@ class ConceptoLiquidacionController extends Controller
         //
     }
 
-    public function getConcepto()
+    public function getConceptos()
     {
-        return ConceptoLiquidacion::with('subtipo')->get();
+        return ConceptoLiquidacion::with(['organismo','subtipo'])->paginate($this->perPage);
     }
 }

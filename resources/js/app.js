@@ -76,7 +76,7 @@ Vue.component('filtertipoliquidacion-component', require('./components/FiltroTip
 Vue.component('buscaragente-component', require('./components/BuscarAgenteComponent.vue').default);
 Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
 Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
-//Vue.component('clase-component', require('./components/ClaseComponent.vue').default);
+Vue.component('concepto-component', require('./components/ConceptoComponent.vue').default);
 Vue.component('filtroclase-component', require('./components/FiltroClaseComponent.vue').default);
 Vue.component('clase-component', require('./components/ClaseComponent.vue').default);
 Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);

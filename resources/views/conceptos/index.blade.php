@@ -20,8 +20,7 @@
 
 @section('content')
   <div id="app">
-    <!-- <clase-component></clase-component> -->
-    <h1>hola mundo</h1>   
+    <concepto-component></concepto-component> 
   </div>
 @stop
 

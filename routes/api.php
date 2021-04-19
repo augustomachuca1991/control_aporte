@@ -78,7 +78,7 @@ Route::delete('/agente_organismo/delete/{id}', 'PuestoLaboralController@destroy'
 
 
 //Conceptos
-Route::get('/concepto', 'ConceptoLiquidacionController@getConcepto')->name('concepto');
+Route::get('/concepto', 'ConceptoLiquidacionController@getConceptos')->name('concepto');
 
 //Subtipos Codigos
 Route::get('/subtipo', 'SubtipoCodigoController@getSubtipo')->name('subtipo');
@@ -95,6 +95,7 @@ Route::put('/periodo/update/{id}', 'PeriodoController@update')->name('update_per
 Route::post('/periodo/create', 'PeriodoController@store')->name('create_periodo');
 Route::delete('/periodo/delete/{id}', 'PeriodoController@destroy')->name('delete_periodo');
 Route::get('/periodo/{search}', 'PeriodoController@search')->name('periodo_search');
+Route::get('/periodo/order/{column}/sort/{sort}', 'PeriodoController@sort')->name('sort_periodo');
 Route::get('/periodo/paginate/{n_paginas}', 'PeriodoController@paginado');
 
 // Categoria

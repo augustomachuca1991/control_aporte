@@ -131,9 +131,18 @@ class PeriodoController extends Controller
 
     public function search($search)
     {
+        return Periodo::filtroPeriodo($search)
+                ->paginate($this->perPage);
 
-        
-            return Periodo::filtroPeriodo($search)->paginate($this->perPage);
+    }
+
+
+
+    public function sort($column , $order)
+    {
+            
+            return Periodo::orderBy($column, $order)
+                    ->paginate($this->perPage);
 
     }
 

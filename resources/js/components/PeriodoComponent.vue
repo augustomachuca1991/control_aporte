@@ -224,10 +224,10 @@
                     <table class="table table-hover text-nowrap">
                       <thead>
                         <tr>
-                          <th>Cod Periodo <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
-                          <th scope="col">Periodo <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
-                          <th scope="col">Mes <a href="#" class="text-dark""><small><i class="fas fa-sort"></i></small></a></th>
-                          <th scope="col">Año <a href="#" class="text-dark"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th>Cod Periodo <a href="#" class="text-dark" @click="sort('cod_periodo')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Periodo <a href="#" class="text-dark" @click="sort('periodo')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Mes <a href="#" class="text-dark" @click="sort('mes')"><small><i class="fas fa-sort"></i></small></a></th>
+                          <th scope="col">Año <a href="#" class="text-dark" @click="sort('anio')"><small><i class="fas fa-sort"></i></small></a></th>
                           <th scope="col"></th>
                         </tr>
                       </thead>
@@ -297,6 +297,7 @@
                     cod_periodo:'',
                     fecha_actual:null,
                     isEdit: false,
+                    order: false,
                     date: {
                       from: null,
                       to: null,
@@ -338,7 +339,8 @@
                                 this.paginate.from = response.data.from;
                                 this.paginate.to = response.data.to;
                             })
-                        },
+            
+            },
             nuevo(){
 
               axios.post('api/periodo/create', this.periodo).then( (response) => {
@@ -357,23 +359,7 @@
 
             },
             nuevo_periodo(date){
-                // console.log(this.cod_periodo)
                 
-
-                // if (this.mes && this.anio) {
-                //   let periodo = {
-                //     cod_periodo: this.cod_periodo,
-                //     mes: this.mes,
-                //     anio: this.anio,
-                //     periodo : this.nombreMes(this.mes)+' de '+this.anio ,
-
-                //   }
-                //   this.periodos.push(periodo);
-                //   this.empty();
-                // } else {
-                //   alert('todos los campos son obligatorio');
-                // }
-
                 this.date = date
                 if (this.date.monthIndex.toString().length < 2){
                   var mes ='0'.concat(this.date.monthIndex.toString());
@@ -388,6 +374,7 @@
                   anio: this.date.year.toString(),
                   periodo: this.nombreMes(this.date.monthIndex)+' de '+this.date.year,
                 }
+            
             },
             codPerido(){
               if (this.mes < 10) {
@@ -395,6 +382,7 @@
               }else{
                 this.cod_periodo = this.anio+""+this.mes;
               }
+            
             },
             empty(){
               $('#periodo_new').modal('hide');
@@ -407,6 +395,9 @@
               this.anio = '';
               this.index = '';
               this.isEdit = false;
+              this.buscador = '';
+              this.setTimeoutBuscador = "";
+              this.order = false;
 
             },
             nombreMes(mes){
@@ -473,10 +464,10 @@
                         background:'#E7FFD7',
                       })
                     });
-                    //this.periodos.splice(index, 1);
                     
                   }
                 })
+            
             },
             editar(index,periodo){
                  this.index = index;
@@ -485,9 +476,12 @@
                  this.mes = periodo.mes;
                  this.anio = periodo.anio;
                  this.cod_periodo = periodo.cod_periodo;
-             },
+            
+            },
             editMode(){
+              
               this.isEdit = true;
+            
             },
             actualizar(date){
               this.date = date
@@ -506,7 +500,7 @@
                 anio: this.date.year.toString(),
                 periodo: this.nombreMes(this.date.monthIndex)+' de '+this.date.year,
               }
-              //this.periodos[this.index] = this.periodo;
+            
             },
             confimarCambios(){
               axios.put(`api/periodo/update/${this.periodo.id}`, this.periodo).then( (response) => {
@@ -524,21 +518,20 @@
                  this.errores = err.response.data.errors;
               });
 
-              
             },
             getPage(page){
               axios.get(this.paginate.path+'?page='+page).then((response)=> {
                 this.asignar(response);
 
               })
+            
             },
             paginacion:function(){
-              //console.log(this.n_paginas)
+              
               axios.get(`api/periodo/paginate/${this.n_paginas}`).then( (response) => {
                 this.asignar(response);
               });
-              
-
+            
             },
             buscarPeriodo(){
 
@@ -548,7 +541,8 @@
                   this.asignar(response);
                   
                 })
-              }, 1000)
+              }, 1000);
+
             },
             asignar(response){
                 this.periodos = response.data.data;
@@ -559,110 +553,21 @@
                 this.paginate.from = response.data.from;
                 this.paginate.to = response.data.to;
             },
-        //     edit(index,jurisdiccion){
-        //         // console.log(index);
-        //         // console.log(this.paginate.from - 1)
-        //         this.getOrigenes();
-        //         this.jurisdiccion = jurisdiccion;
-        //         this.descripcion = jurisdiccion.jurisdiccion;
-        //         this.cod_jurisdiccion = jurisdiccion.cod_jurisdiccion;
-        //         this.origen = jurisdiccion.origen;
-        //         this.selectedOrigen = (this.origen.cod_origen-1);
-        //         this.index = index;
-        //     },
-        //     open_modal(){
-        //         this.getOrigenes();
-        //     },
-        //     editar(){
-        //         this.editMode = true;
-        //     },
-        //     empty(){
-        //       $('#jurisdiccion_new').modal('hide');
-        //       $('#jurisdiccion_edit').modal('hide');
-        //       this.errors = [];
-        //       this.descripcion  = '';
-        //       this.cod_jurisdiccion = '';
-        //       this.cod_origen = '';
-        //       this.selectedOrigen = '';
-        //       this.editMode = false;
-        //       this.origen = {};
-        //     },
-        //     buscar(){
-        //       axios.get(`api/jurisdiccion/${this.search}`).then((response)=>{
-        //           this.jurisdicciones = response.data.data;
-        //           this.paginate.current_page = response.data.current_page;
-        //           this.paginate.last_page = response.data.last_page;
-        //           this.paginate.total = response.data.total;
-        //           this.paginate.path = response.data.path;
-        //           this.paginate.from = response.data.from;
-        //           this.paginate.to = response.data.to;
-        //       })
-        //     },
-        //     update(){
-        //       const params = {
-        //           cod_jurisdiccion : this.cod_jurisdiccion,
-        //           jurisdiccion : this.descripcion,
-        //           origen_id : this.origenes[this.selectedOrigen].cod_origen,
-        //           created_at: this.jurisdiccion.created_at,
-        //           origen: this.origenes[this.selectedOrigen],
-        //       };
+            sort(columna){
+              this.order = !this.order;
+              let sort;
+              if (this.order) {
+                sort = 'asc'
+              }else{
+                sort = 'desc'
+              }
+              console.log(columna)
+              axios.get(`api/periodo/order/${columna}/sort/${sort}`).then((response)=>{
+                  this.asignar(response);
+              })
 
-        //       axios.put(`api/jurisdiccion/update/${this.jurisdiccion.id}`,params)
-        //       .then((response)=>{
-        //           this.jurisdicciones[this.index] = params;
-        //           this.empty();
-        //       })
-        //       .catch((err) => {
-        //        console.log(err.response.data.errors)
-        //        this.errors = err.response.data.errors;
-        //       });
-        //     },
-        //     sort(column){
-        //       this.order = !this.order;
-        //       let sort;
-        //       if (this.order) {
-        //         sort = 'asc'
-        //       }else{
-        //         sort = 'desc'
-        //       }
-        //       axios.get(`api/jurisdiccion/order/${column}/sort/${sort}`).then((response)=>{
-        //                 this.jurisdicciones = response.data.data
-        //                 this.paginate.current_page = response.data.current_page;
-        //                 this.paginate.last_page = response.data.last_page;
-        //                 this.paginate.total = response.data.total;
-        //                 this.paginate.path = response.data.path;
-        //                 this.paginate.from = response.data.from;
-        //                 this.paginate.to = response.data.to;
-        //       })
-        //     },
-
-        //     getPage(page){
-        //       axios.get(this.paginate.path+'?page='+page).then((response)=> {
-        //         this.jurisdicciones = response.data.data;
-        //         this.paginate.current_page = response.data.current_page;
-        //         this.paginate.last_page = response.data.last_page;
-        //         this.paginate.total = response.data.total;
-        //         this.paginate.path = response.data.path;
-        //         this.paginate.from = response.data.from;
-        //         this.paginate.to = response.data.to;
-        //       })
-        //     },
-        //     paginacion:function(){
-        //       console.log(this.n_paginas)
-        //       axios.get(`api/jurisdiccion/paginate/${this.n_paginas}`).then( (response) => {
-
-        //         this.jurisdicciones = response.data.data;
-        //         this.paginate.current_page = response.data.current_page;
-        //         this.paginate.last_page = response.data.last_page;
-        //         this.paginate.total = response.data.total;
-        //         this.paginate.path = response.data.path;
-        //         //this.organismos = response.data.data;
-        //         this.paginate.from = response.data.from;
-        //         this.paginate.to = response.data.to;
-        //       });
+            },
               
-
-        //     },
          },
     }
 </script>

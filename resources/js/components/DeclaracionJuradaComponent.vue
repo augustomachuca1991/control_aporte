@@ -116,7 +116,7 @@
 										<div :id="'collapse'+detalle.id" class="collapse in p-3">
 										  <div class="row">
 										    <div class="col-3">Detalle Concepto:</div>
-										    <div class="col-9">{{detalle.detalle}}</div>
+										    <div class="col-9">{{detalle.detalle | pipe}}</div>
 										  </div>
 										</div>
 									</td>
@@ -173,14 +173,27 @@
   		    axios.get(`api/declaracion_jurada/${id}`).then((response)=>{
   		        //console.log(response.data)
   		        this.detalles = response.data.ddjj_lines;
+
   		    })
   		  },
 
 		},
-		//filters: {
-		//  moment: function (date) {
-		//    return moment(date ,"YYYYMMDD").locale('es').fromNow();
-		//  }
-		//}
+		filters: {
+			 pipe: function (detalle) {
+			   
+			   var conceptos = detalle.split('|');
+			   var index = 0;
+		       var arrayLength = conceptos.length;
+		       var tempArray = [];
+		       
+		       for (index = 0; index < arrayLength; index += 6) {
+		           let concepto = conceptos.slice(index, index+6);
+		           // Do something if you want with the group
+		           tempArray.push(concepto);
+		       }
+
+		       return tempArray;
+			 }
+		}
     }
 </script>

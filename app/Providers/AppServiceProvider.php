@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use Illuminate\Support\Facades\Auth;
 use App\Notification;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
                     //$event->menu->add('MAIN NAVIGATION');
-            $notificationes = Notification::all();
+            $notificationes = Notification::where('notifiable_id', Auth::id())->get();
             if ($notificationes->count() > 0) {
                 foreach ($notificationes as $key) {
                     $menu[] = [

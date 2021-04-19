@@ -243,7 +243,7 @@
                   next_page_url:'',
                   from:'',
                   to:'',
-                  per_page:15,
+                  per_page:'',
                 },
                 n_paginas:5,
 
