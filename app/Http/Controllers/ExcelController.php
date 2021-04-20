@@ -53,8 +53,8 @@ class ExcelController extends Controller
         
         //Importa el archivo
         $import = new LiquidacionsImport($declaracionjurada);
-        $import->queue($file)->chain([new CompletedImport,new NotificationJob($user)]);
-
+        // $import->queue($file)->chain([new CompletedImport,new NotificationJob($user)]);
+        $import->queue($file);
         return $declaracionjurada;
         
     }

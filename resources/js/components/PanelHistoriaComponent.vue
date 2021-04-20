@@ -15,10 +15,15 @@
 		 	            </div>
 		 	          </div>
 		 	            <div class="card-body" style="min-height: 135px; height: 135px; max-height: 135px; max-width: 100%;">
-		 	              <div>
-		 	              		<label>Puesto Laboral</label>
-		 	                  <input type="search" name="periodo">
-		 	              </div>
+		 	              	<form @submit.prevent="buscar()" method="POST">
+	 	              	      <label for="peusto_laboral" class="text-muted"><i class="fas fa-search"></i> Buscar Puesto Laboral</label>
+	 	              	      <div class="input-group">
+	 	              	        <input type="text" class="form-control" placeholder="Buscar... " aria-label="Recipient's username" aria-describedby="button-addon2" name="puesto_laboral" id="search">
+	 	              	        <div class="input-group-append">
+	 	              	          <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-address-card"></i></button>
+	 	              	        </div>
+	 	              	      </div>
+	 	              	    </form>
 		 	            </div>
 		 	        </div>
 		 	      </div>

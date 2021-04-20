@@ -50,7 +50,7 @@
         var channel = pusher.subscribe('canalfailed-import');
         channel.bind('eventfailed-import', function(data) {
           Swal.fire(
-              'Error durante la importación',
+              data.message,
               'error',
               'error'
           ).then(function(){

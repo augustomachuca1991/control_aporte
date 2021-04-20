@@ -2,11 +2,13 @@
 
 namespace App\Imports;
 
-use App\{DeclaracionJurada,Liquidacion,DeclaracionJuradaLine,Categoria,Clase,Jurisdiccion,Agente, PuestoLaboral,HistoriaLaboral,ConceptoLiquidacion};
+use App\{DeclaracionJurada,Liquidacion,DeclaracionJuradaLine,Categoria,Clase,Jurisdiccion,Agente, PuestoLaboral,HistoriaLaboral,ConceptoLiquidacion,User};
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Jobs\{ImportFailedJob,CompletedImport,NotificationJob};
 use App\Events\{NotificationImport,FailedImport};
 use Maatwebsite\Excel\Validators\Failure;
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,WithValidation,SkipsOnError,SkipsErrors,SkipsOnFailure,SkipsFailures};
 use Exception;
 
@@ -301,9 +303,9 @@ class LiquidacionsImport implements
 
                 
                 $historia_laboral = $puesto_laboral1->historialaborales->first();
-                $historia_laboral = HistoriaLaboral::where('puesto_id', $declaracionjurada_detalle->puesto_laboral)
-                                                     ->where('clase_id' , $declaracionjurada_detalle->cod_clase)
-                                                     ->first();
+                // $historia_laboral = HistoriaLaboral::where('puesto_id', $declaracionjurada_detalle->puesto_laboral)
+                //                                      ->where('clase_id' , $declaracionjurada_detalle->cod_clase)
+                //                                      ->first();
 
                 
                 //liquidaciones con Historias laborales-----------------------------------------------------------------
@@ -352,7 +354,10 @@ class LiquidacionsImport implements
 
 
             }//end foreach
-
+            $user = User::find($this->declaracionjurada->user_id);
+            CompletedImport::dispatch()
+            ->chain([new NotificationJob($user)])
+            ->delay(now()->addSeconds(5));
         } catch (Exception $e) {
             $this->failed($e);
         } catch(\ErrorException $e){
@@ -447,7 +452,8 @@ class LiquidacionsImport implements
 
     public function onError(\Throwable $e)
     {
-        event(new FailedImport('Error: '+$e->getMessage()));
+        //event(new FailedImport('Error: '+$e->getMessage()));
+        $this->failed($e);
     }
 
 
@@ -487,14 +493,20 @@ class LiquidacionsImport implements
     {
         return [
             ImportFailed::class => function(ImportFailed $event) {
-                event(new FailedImport('Algo Salio mal'));
+                //event(new FailedImport('Algo Salio mal'));
+                $this->failed($event);
+            },
+            AfterImport::class => function(AfterImport $event) {
+                //$creator = $event->reader->getProperties()->getCreator();
+                CompletedImport::dispatch()->delay(now()->addSeconds(5));
             },
         ];
     }
 
     public function failed($exception)
     {
-        \Log::debug('excepcion personalizado:'.$exception->getMessage());
+        \Log::debug($exception);
+        ImportFailedJob::dispatch($this->declaracionjurada);
         event(new FailedImport($exception->getMessage()));
         // etc...
     }

@@ -8,7 +8,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 //use Illuminate\Bus\Batchable;
-// use App\{DeclaracionJurada,Liquidacion};
+use App\{DeclaracionJurada,Liquidacion};
+//use App\Events\FailedImport;
 
 class LiquidacionJob implements ShouldQueue
 {
@@ -20,15 +21,15 @@ class LiquidacionJob implements ShouldQueue
      * @return void
      */
     //public $declaracionjurada_id;
-    // protected $declaracionjurada;
+    protected $declaracionjurada;
     // public $tries = 3;
 
     public function __construct(DeclaracionJurada $declaracionjurada)
     {
-        // $this->declaracionjurada = $declaracionjurada;
-        // $this->onConnection('redis');
+        $this->declaracionjurada = $declaracionjurada;
+        $this->onConnection('redis');
         // $this->onQueue('processing liquidacion');
-        //$this->declaracionjurada_id = $declaracionjurada_id;
+        // $this->declaracionjurada_id = $declaracionjurada_id;
     }
 
     /**
@@ -38,6 +39,16 @@ class LiquidacionJob implements ShouldQueue
      */
     public function handle()
     {
-        //
+        //if ($this->declaracionjurada->has('ddjj_lines')) {
+            # code...
+            foreach($this->declaracionjurada->ddjj_lines as $ddjj_line)
+            {
+                $ddjj_line->delete();
+            };
+        //}
+        $this->declaracionjurada->delete();
+        //event(new FailedImport('borrar declaracion jurada'));
+
+
     }
 }
