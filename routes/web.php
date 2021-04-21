@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\PuestoLaboral;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+	Route::get('/puestos_laborales', function(){
+		$puesto = PuestoLaboral::where('cod_laboral',2)->first();
+		return $puesto->historialaborales;
+	});
 
 	Route::get('/dashboard', function(){
 		return view('admin.index');

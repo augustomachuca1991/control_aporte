@@ -99,7 +99,7 @@ class LiquidacionsImport implements
                 }
 
 
-
+                //Conceptos de Liquidacion
                 $liquidacion = new Liquidacion();
                 $liquidacion->declaracion_id = $this->declaracionjurada->id;
                 for ($i=0; $i < count($conceptos) ; $i++) { 
@@ -289,7 +289,7 @@ class LiquidacionsImport implements
                         'fecha_ingreso' => date("Y-m-d", strtotime($declaracionjurada_detalle->fecha_ingreso)),
                         'fecha_egreso' => null,
                     ]);
-                    $puesto_laboral1 = $agente1->puestolaborales->first();
+                    $puesto_laboral1 = $agente1->puestolaborales->where('cod_laboral',$declaracionjurada_detalle->puesto_laboral)->first();
                 } else{
                     $puesto_laboral1 = $puesto_laboral->first();
                 }
@@ -302,11 +302,14 @@ class LiquidacionsImport implements
                 ]);
 
                 
-                $historia_laboral = $puesto_laboral1->historialaborales->first();
+                //$historia_laboral = $puesto_laboral1->historialaborales->first();
                 // $historia_laboral = HistoriaLaboral::where('puesto_id', $declaracionjurada_detalle->puesto_laboral)
                 //                                      ->where('clase_id' , $declaracionjurada_detalle->cod_clase)
                 //                                      ->first();
 
+                $historia_laboral = HistoriaLaboral::where('puesto_id', $puesto_laboral1->id)
+                                                    ->where('clase_id' , $clase1->id)
+                                                    ->first();
                 
                 //liquidaciones con Historias laborales-----------------------------------------------------------------
                 $liquidacion->historia_laborales()->attach($historia_laboral->id,[ 
@@ -431,7 +434,7 @@ class LiquidacionsImport implements
     */
     public function chunkSize(): int
     {
-        return 500;
+        return 1000;
     }
 
 

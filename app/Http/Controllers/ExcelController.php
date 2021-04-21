@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\LiquidacionsExport;
 use App\Imports\LiquidacionsImport;
-use App\Jobs\{CompletedImport,CompletedExport,NotificationJob};
+use App\Jobs\DeleteFileJob;
 use App\{DeclaracionJurada,Periodo,TipoLiquidacion,Organismo,User};
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -53,8 +53,9 @@ class ExcelController extends Controller
         
         //Importa el archivo
         $import = new LiquidacionsImport($declaracionjurada);
+        $deleteFileJob = new DeleteFileJob($declaracionjurada->path);
         // $import->queue($file)->chain([new CompletedImport,new NotificationJob($user)]);
-        $import->queue($file);
+        $import->queue($file)->chain([$deleteFileJob]);
         return $declaracionjurada;
         
     }

@@ -71,7 +71,13 @@
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod <br>   
                                     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <br>
                                     quis nostrud exercitation</p>
-                                    <a href="{{route('login')}}">Ingresar</a>
+                                    @if (Route::has('login'))
+                                        @auth
+                                            <a href="{{route('home')}}">Volver</a>
+                                        @else
+                                            <a href="{{route('login')}}">Ingresar</a>
+                                        @endauth
+                                    @endif
                                 </div>
                                 <div class="social-links">
                                     <a href=""><i class="fab fa-twitter"></i></a>
@@ -83,7 +89,7 @@
                             <div class="col-2">
                                 <div class="img-box">
                                     
-                                    <img class="main-img"src="image/apple1.png">
+                                    <img class="main-img"src="image/apple2.png">
                                 </div>
                             </div>
                              
