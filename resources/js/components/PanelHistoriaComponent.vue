@@ -15,15 +15,18 @@
 		 	            </div>
 		 	          </div>
 		 	            <div class="card-body" style="min-height: 135px; height: 135px; max-height: 135px; max-width: 100%;">
-		 	              	<form @submit.prevent="buscar()" method="POST">
+		 	              	<form @submit.prevent="buscarPuesto()" method="POST">
 	 	              	      <label for="peusto_laboral" class="text-muted"><i class="fas fa-search"></i> Buscar Puesto Laboral</label>
 	 	              	      <div class="input-group">
-	 	              	        <input type="text" class="form-control" placeholder="Buscar... " aria-label="Recipient's username" aria-describedby="button-addon2" name="puesto_laboral" id="search">
+	 	              	        <input  class="form-control" placeholder="Buscar... " aria-label="Recipient's username" aria-describedby="button-addon2" name="puesto_laboral" id="puesto_laboral" v-model="cod_laboral">
 	 	              	        <div class="input-group-append">
 	 	              	          <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-address-card"></i></button>
 	 	              	        </div>
 	 	              	      </div>
 	 	              	    </form>
+        		           	<span class="errors text-danger" v-for="error in errors.puesto_laboral">    
+                             <small><em>{{error}}</em></small>
+                          	</span>	
 		 	            </div>
 		 	        </div>
 		 	      </div>
@@ -31,7 +34,7 @@
 		 	        <!-- DONUT CHART -->
 		 	        <div class="card card-outline card-orange">
 		 	          <div class="card-header">
-		 	            <h3 class="card-title">Bucar Por Agente</h3>
+		 	            <h3 class="card-title">Bucar Por Cuil</h3>
 
 		 	            <div class="card-tools">
 		 	              <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -128,7 +131,7 @@
 		 	            	    </div>
 		 	            	  </div>
 		 	            	  <!-- The last icon means the story is complete -->
-		 	            	  <div>
+		 	            	  <div v-if="!puesto_laboral">
 		 	            	    <i class="fas fa-clock bg-gray"></i>
 		 	            	    <div class="timeline-item">
 		 	            	    <!-- Time -->
@@ -183,6 +186,7 @@
 	                    datos: [],
 	        		  	puestos_laborales: [],
 	        		  	puesto_laboral:{},
+	        		  	cod_laboral:'',
 	        		  	errors: [],
 	        		  	shown: false,
 	        		  	fecha_ingreso: 'fecha ingreso',
@@ -297,6 +301,32 @@
 
 
 
+	        	},
+	        	buscarPuesto(){
+	        		axios.get(`api/hlaborales/${this.cod_laboral}`).then( (response) => {
+	        			//alert(JSON.stringify(response.data));
+	        			if (response.data.isError) {
+	        				this.empty();
+	        				this.errors = response.data.data;
+	        			} else {
+	        				this.shown = true;
+	        				setTimeout(() => {
+		        				
+		          				this.empty();
+		  	        		    this.puestos_laborales.push(response.data.data.puesto);
+		  	        		    //this.puesto_laboral = response.data.data.puesto;
+		  	        		    this.agente = this.puesto_laboral.agente;
+		  	        		    this.cuil = this.agente.cuil;
+		  	        		    this.nombre = this.agente.nombre;
+		  	        		    this.fecha_nac = this.agente.fecha_nac;
+		  	        		    this.sexo = this.agente.sexo;
+		  	        		    //console.log(this.agente);
+		  	        		 //    this.shown = false;
+		  	        			
+	        				}, 2500)
+	        				
+	        			}
+	        		});
 	        	},
 	        },
 	        filters:{

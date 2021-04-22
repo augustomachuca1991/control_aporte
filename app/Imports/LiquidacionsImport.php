@@ -434,7 +434,7 @@ class LiquidacionsImport implements
     */
     public function chunkSize(): int
     {
-        return 1000;
+        return 500;
     }
 
 

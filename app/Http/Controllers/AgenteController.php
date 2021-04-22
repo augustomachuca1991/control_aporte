@@ -109,7 +109,7 @@ class AgenteController extends Controller
         $rules = ['cuil' => 'required|integer|exists:agentes,cuil|digits_between:10,11'];
         $message = ['cuil.integer' => 'Debe ingresar un tipo de cuil valido. Verifique ',
                     'cuil.exists' => 'El cuil ingresado no existe en nuestra base de datos.',
-                    'cuil.digits_between' => 'digitos minimos 10 y max 11'];
+                    'cuil.digits_between' => 'digitos minimos 10 y max 11 (sin guiones)'];
         $validator = Validator::make($data,$rules,$message);
         if ($validator->fails()) {
             return response()->json(['isError' => true ,'data' => $validator->errors()]);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\HistoriaLaboral;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HistoriaLaboralController extends Controller
 {
@@ -92,15 +93,24 @@ class HistoriaLaboralController extends Controller
             return [];
         }
     }
-    public function getHistoriaLaboral($id)
+    public function search($search)
     {
-        try{
-            //return HistoriaLaboral::with('agente')->where('id',$id)->get();
-            //return HistoriaLaboral::all();
-            return HistoriaLaboral::find($id);
-        }catch (\Exception $e){
-            return [];
+        // return HistoriaLaboral::whereHas('puesto', function($puestos) use ($search){
+        //     $puestos->where('cod_laboral',$search);
+        // })->with('puesto')->first();
+        $data = ['puesto_laboral' => $search];
+        $rules = ['puesto_laboral' => 'required|integer|exists:agente_organismo,cod_laboral'];
+        $message = ['puesto_laboral.integer' => 'Debe ingresar un codigo de puesto laboral válido',
+                    'puesto_laboral.exists' => 'EL puesto laboral no existe. Verifique',
+                    'puesto_laboral.required' => 'Debe completar el campo'];
+        $validator = Validator::make($data,$rules,$message);
+        if ($validator->fails()) {
+            return response()->json(['isError' => true ,'data' => $validator->errors()]);
+        }else{
+            $historialaboral = HistoriaLaboral::buscarPorPuesto($search)->first();
+            return response()->json(['isError' => false ,'data' => $historialaboral]);
         }
+        
     }
 
     public function puestoHistoriaLaboralSelected($id){

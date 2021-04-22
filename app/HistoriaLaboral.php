@@ -38,5 +38,13 @@ class HistoriaLaboral extends Model
         return $this->hasMany('App\HistoriaLiquidacion', 'h_laboral_id', 'id')->with('estado')->with('funcion');
     }
 
+    public function scopeBuscarPorPuesto($query, $search){
+        if(!empty($search)){
+            $query->whereHas('puesto', function($puestos) use ($search){
+                    $puestos->where('cod_laboral',$search);
+                })->with('puesto');
+        }
+    }
+
 
 }

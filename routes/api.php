@@ -67,14 +67,13 @@ Route::post('/export', 'ExcelController@export')->name('export');
 //Puestos Laborales
 Route::get('/puesto', 'PuestoLaboralController@getpuestoLaboral')->name('puesto_laboral');
 
-
 // agente_organismo
-Route::get('/agente_organismo', 'PuestoLaboralController@index')->name('puesto_laboral');
-Route::get('/agente_organismo/{id}', 'PuestoLaboralController@getPuestoLaboralSelected')->name('puesto_laboral');
-Route::get('/agente_organismo/edit/{id}', 'PuestoLaboralController@edit')->name('edit_puesto_laboral');
-Route::put('/agente_organismo/update/{id}', 'PuestoLaboralController@update')->name('update_puesto_laboral');
-Route::post('/agente_organismo/create', 'PuestoLaboralController@store')->name('create_puesto_laboral');
-Route::delete('/agente_organismo/delete/{id}', 'PuestoLaboralController@destroy')->name('delete_puesto_laboral');
+// Route::get('/agente_organismo', 'PuestoLaboralController@index')->name('puesto_laboral');
+// Route::get('/agente_organismo/{id}', 'PuestoLaboralController@getPuestoLaboralSelected')->name('puesto_laboral');
+// Route::get('/agente_organismo/edit/{id}', 'PuestoLaboralController@edit')->name('edit_puesto_laboral');
+// Route::put('/agente_organismo/update/{id}', 'PuestoLaboralController@update')->name('update_puesto_laboral');
+// Route::post('/agente_organismo/create', 'PuestoLaboralController@store')->name('create_puesto_laboral');
+// Route::delete('/agente_organismo/delete/{id}', 'PuestoLaboralController@destroy')->name('delete_puesto_laboral');
 
 
 //Conceptos
@@ -146,7 +145,7 @@ Route::get('/organismo/order/{column}/sort/{sort}', 'OrganismoController@sort')-
 
 // Historias Laborales
 Route::get('/hlaborales', 'HistoriaLaboralController@getHistoriaLaborales')->name('historialaboral');
-Route::get('/hlaborales_id/{id}', 'HistoriaLaboralController@getHistoriaLaboral')->name('id_historialaboral');
+Route::get('/hlaborales/{search}', 'HistoriaLaboralController@search')->name('historialaboral_search');
 Route::get('/hlaborales_puesto/{id}', 'HistoriaLaboralController@puestoHistoriaLaboralSelected')->name('puesto_historialaboral');
 Route::get('/hlaborales/edit/{id}', 'HistoriaLaboralController@edit')->name('edit_historialaboral');
 Route::put('/hlaborales/update/{id}', 'HistoriaLaboralController@update')->name('update_historialaboral');
