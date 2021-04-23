@@ -32,4 +32,36 @@ class LiquidacionOrganismo extends Model
     {
         return $this->belongsTo('App\Liquidacion')->with('historia_laborales')->with('detalles');
     }
+
+
+    public function scopeBuscarLiquidacion($query, $search)
+    {
+        # code...
+        if(!empty($search)){
+            $query->where('liquidacion_id' ,'LIKE' ,"%".$search."%");
+            // ->orWhere('periodo' ,'LIKE' ,"%".$search."%")
+            // ->orWhere('mes' ,'LIKE' ,"%".$search."%")
+            // ->orWhere('anio' ,'LIKE' ,"%".$search."%");
+
+        }
+    }
+
+
+    public function scopeBuscarPorAgente($query , $value)
+    {
+        if(!empty($value)){
+            $query->whereHas('liquidacion',function($liquidaciones) use ($value){
+                $liquidaciones->whereHas('historia_laborales' , function($historiaslaborales) use ($value){
+                    $historiaslaborales->whereHas('puesto', function($puestos) use ($value){
+                        $puestos->whereHas('agente', function($agente) use ($value){
+                                $agente->where('nombre','like',"%".$value."%")
+                                       ->orWhere('cuil','like',"%".$value."%");
+                        });
+                    });
+                });
+            });
+        }
+        
+
+    }
 }

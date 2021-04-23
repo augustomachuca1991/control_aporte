@@ -44,13 +44,14 @@ Route::get('/computo/periodo-anual/{anio}', 'LiquidacionOrganismoController@peri
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
-Route::get('/liquidacion/origen/{id}', 'LiquidacionController@porOrigen');
-Route::get('/liquidacion/jurisdiccion/{id}', 'LiquidacionController@porJurisdiccion');
-Route::get('/liquidacion/organismo/{id}', 'LiquidacionController@porOrganismo');
-Route::get('/liquidacion/agente/{id}', 'LiquidacionController@porAgente');
-Route::get('/liquidacion/periodo/{id}', 'LiquidacionController@porPeriodo');
-Route::get('/liquidacion/tipo/{id}', 'LiquidacionController@porTipo');
-
+Route::post('/liquidacion/origen/{id}', 'LiquidacionController@porOrigen');
+Route::post('/liquidacion/jurisdiccion/{id}', 'LiquidacionController@porJurisdiccion');
+Route::post('/liquidacion/organismo/{id}', 'LiquidacionController@porOrganismo');
+Route::post('/liquidacion/agente/{id}', 'LiquidacionController@porAgente');
+Route::post('/liquidacion/periodo/{id}', 'LiquidacionController@porPeriodo');
+Route::post('/liquidacion/tipo/{id}', 'LiquidacionController@porTipo');
+Route::get('/liquidacion/{search}', 'LiquidacionController@search');
+Route::get('/liquidacion/paginate/{n_paginas}', 'LiquidacionController@paginado');
 Route::get('/liquidacion/hl', 'LiquidacionController@hl');
 
 
@@ -145,7 +146,8 @@ Route::get('/organismo/order/{column}/sort/{sort}', 'OrganismoController@sort')-
 
 // Historias Laborales
 Route::get('/hlaborales', 'HistoriaLaboralController@getHistoriaLaborales')->name('historialaboral');
-Route::get('/hlaborales/{search}', 'HistoriaLaboralController@search')->name('historialaboral_search');
+Route::get('/hlaborales/puesto/{search}', 'HistoriaLaboralController@search_puesto')->name('historialaboral_search_puesto');
+Route::get('/hlaborales/cuil/{search}', 'HistoriaLaboralController@search_cuil')->name('historialaboral_search_cuil');
 Route::get('/hlaborales_puesto/{id}', 'HistoriaLaboralController@puestoHistoriaLaboralSelected')->name('puesto_historialaboral');
 Route::get('/hlaborales/edit/{id}', 'HistoriaLaboralController@edit')->name('edit_historialaboral');
 Route::put('/hlaborales/update/{id}', 'HistoriaLaboralController@update')->name('update_historialaboral');

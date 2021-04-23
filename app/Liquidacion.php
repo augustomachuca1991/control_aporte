@@ -111,6 +111,18 @@ class Liquidacion extends Model
 
 
 
+    public function scopeBuscarLiquidacion($query, $search)
+    {
+        # code...
+        if(!empty($search)){
+            $query->where('liquidacion_id' ,'LIKE' ,"%".$search."%");
+            // ->orWhere('periodo' ,'LIKE' ,"%".$search."%")
+            // ->orWhere('mes' ,'LIKE' ,"%".$search."%")
+            // ->orWhere('anio' ,'LIKE' ,"%".$search."%");
+
+        }
+    }
+
     public function scopeName($query, $name){
 
       if($name)

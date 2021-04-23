@@ -47,4 +47,15 @@ class HistoriaLaboral extends Model
     }
 
 
+    public function scopeBuscarPorCuil($query, $search){
+        if(!empty($search)){
+            $query->whereHas('puesto', function($puestos) use ($search){
+                    $puestos->whereHas('agente',function($agentes) use ($search){
+                        $agentes->where('cuil' , $search);
+                    });
+            })->with('puesto');
+        }
+    }
+
+
 }

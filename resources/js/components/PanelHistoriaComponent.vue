@@ -18,7 +18,7 @@
 		 	              	<form @submit.prevent="buscarPuesto()" method="POST">
 	 	              	      <label for="peusto_laboral" class="text-muted"><i class="fas fa-search"></i> Buscar Puesto Laboral</label>
 	 	              	      <div class="input-group">
-	 	              	        <input  class="form-control" placeholder="Buscar... " aria-label="Recipient's username" aria-describedby="button-addon2" name="puesto_laboral" id="puesto_laboral" v-model="cod_laboral">
+	 	              	        <input  class="form-control" placeholder="Buscar... " aria-label="Recipient's username" aria-describedby="button-addon2" name="puesto_laboral" id="puesto_laboral" v-model="cod_laboral" required>
 	 	              	        <div class="input-group-append">
 	 	              	          <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-address-card"></i></button>
 	 	              	        </div>
@@ -85,7 +85,7 @@
 		 	            	    <!-- Timeline item -->
 		 	            	    <div class="timeline-item">
 		 	            	    <!-- Time -->
-		 	            	      <span class="time"><i class="fas fa-clock"></i> 12:05</span>
+		 	            	      <span class="time"><i class="fas fa-clock"></i> {{this.fecha_ingreso}}</span>
 		 	            	      <!-- Header. Optional -->
 		 	            	      <h3 class="timeline-header"><a href="#">Datos Personales</a> {{nombre}}</h3>
 		 	            	      <!-- Body -->
@@ -125,19 +125,22 @@
 		 	            	      </div>
 		 	            	      <!-- Placement of additional controls. Optional -->
 		 	            	      <div class="timeline-footer">
-		 	            	        <a class="btn bg-gradient-navy btn-sm" @click="historiaLaboral()">Ver Periodo Completo</a>
+		 	            	        <a v-if="puestos_laborales.length > 1" class="btn bg-gradient-navy btn-sm" @click="historiaLaboral()">Historia Laboral</a>
+		 	            	        <span class="errors text-danger" v-for="error in errors.historialaborales">    
+			  	                     <small><em>{{error}}</em></small>
+			  	                  	</span>	
 		 	            	        <!-- <a class="btn btn-danger btn-sm">Delete</a> -->
 		 	            	      </div>
 		 	            	    </div>
 		 	            	  </div>
 		 	            	  <!-- The last icon means the story is complete -->
-		 	            	  <div v-if="!puesto_laboral">
+		 	            	  <div v-if="puestos_laborales.length > 0">
 		 	            	    <i class="fas fa-clock bg-gray"></i>
 		 	            	    <div class="timeline-item">
 		 	            	    <!-- Time -->
 		 	            	      <span class="time"><i class="fas fa-clock"></i> 12:05</span>
 		 	            	      <!-- Header. Optional -->
-		 	            	      <h3 class="timeline-header"><a href="#" class="text-dark">Historia Laboral</a> sent you an email</h3>
+		 	            	      <h3 class="timeline-header"><a href="#" class="text-dark">Historia Laboral</a> cronologia</h3>
 		 	            	      <!-- Body -->
 		 	            	      <div class="timeline-body">
 		 	            	        
@@ -145,7 +148,7 @@
 		 	            	      </div>
 		 	            	      <!-- Placement of additional controls. Optional -->
 		 	            	      <div class="timeline-footer">
-		 	            	        <!-- <a class="btn btn-primary btn-sm">Read more</a> -->
+		 	            	        <a class="btn bg-gradient-secondary btn-sm"><i class="fas fa-print"></i> Imprimir</a>
 		 	            	        <a class="btn bg-gradient-orange btn-sm" @click="empty()"><i class="fas fa-broom"></i>&nbsp;Limpiar</a>
 		 	            	      </div>
 		 	            	    </div>
@@ -232,50 +235,60 @@
 	                   console.log(err.response.data)
 	                 });
 	        	},
-	        	drawChart:function() {
+	        	drawChart:function(puesto_laboral) {
 	        		
-	        		var fecha_egreso;
+	        		
 	        		var container = document.getElementById('timeline');
-	        		var chart = new google.visualization.Timeline(container);
-	        		var dataTable = new google.visualization.DataTable();
+					var chart = new google.visualization.Timeline(container);
 
+
+	        		var dataTable = new google.visualization.DataTable();
 	        		dataTable.addColumn({ type: 'string', id: 'Puesto_laboral' });
 	        		dataTable.addColumn({ type: 'string', id: 'Name' });
 	        		dataTable.addColumn({ type: 'date', id: 'Start' });
 	        		dataTable.addColumn({ type: 'date', id: 'End' });
 
-	        		if (this.puesto_laboral.fecha_egreso) {
-	        			fecha_egreso = new Date(this.puesto_laboral.fecha_egreso);
+
+	        		var fecha_egreso;
+	        		if (puesto_laboral.fecha_egreso) {
+	        			fecha_egreso = new Date(puesto_laboral.fecha_egreso);
 	        		} else {
 	        			fecha_egreso = new Date();
 	        		}
 
-	        		this.fecha_ingreso = this.puesto_laboral.fecha_ingreso;
+
+	        		this.fecha_ingreso = puesto_laboral.fecha_ingreso;
 	        		this.fecha_egreso = fecha_egreso;
 	        		this.datos.push([
-	        			'PL: '+this.puesto_laboral.cod_laboral, 
-	        			'Organismo: '+this.puesto_laboral.organismo.organismo,
-	        			new Date(this.puesto_laboral.fecha_ingreso),
-	        			fecha_egreso,
+		        			'PL: '+puesto_laboral.cod_laboral, 
+		        			puesto_laboral.organismo.organismo,
+		        			new Date(puesto_laboral.fecha_ingreso),
+		        			fecha_egreso,
 	        			])
 
 
 	        		dataTable.addRows(this.datos);
 
 	        		var option = {
-	        			colors : ['#ffc26c', '#ffe0b5'],
-	        			//backgroundColor :'#bcc5b1',
+	        			colors : ['#fd9036', '#fd7e14'],
+	        			backgroundColor :'#fff',
 
 	        		}
+
+        		    // google.visualization.events.addListener(chart, 'ready', function () {
+        		    //   container.innerHTML = '<a href="' + chart.getImageURI() + '"></a>';
+        		    //   console.log(container.innerHTML);
+
+
+        		    // });
+
 
 
 	        		chart.draw(dataTable , option);
 
-        		    // google.visualization.events.addListener(chart, 'ready', function () {
-        		    //   container.innerHTML = '<img src="' + chart.getImageURI() + '">';
-        		    // });
 	        	},
 	        	empty:function () {
+	        		//this.drawChart.clearChart();
     				this.errors = [];
     				this.puestos_laborales = [];
         			this.datos = [];
@@ -291,19 +304,29 @@
         			this.organismo = '';
 	        	},
 	        	historiaLaboral:function(){
-	        		console.log(this.puestos_laborales)
+	        		//console.log(JSON.stringify(this.puestos_laborales));
+	        		if(this.puestos_laborales.length > 0){
+	        			this.datos= [];
+	        			this.puestos_laborales.forEach( puesto => {
+	        				google.charts.setOnLoadCallback(this.drawChart(puesto));
+
+	        			})
+	        		}else{
+	        			this.errors = {'historialaborales':['No existen puestos laborales por mostrar']};
+	        		}
+	        		
 	        	},
 	        	cargo:function(index){
 	        		this.datos= [];
 	        		this.puesto_laboral = this.puestos_laborales[index];
-	        		google.charts.setOnLoadCallback(this.drawChart);
-	        		console.log(this.puesto_laboral);
+	        		google.charts.setOnLoadCallback(this.drawChart(this.puesto_laboral));
+	        		//console.log(this.puesto_laboral);
 
 
 
 	        	},
 	        	buscarPuesto(){
-	        		axios.get(`api/hlaborales/${this.cod_laboral}`).then( (response) => {
+	        		axios.get(`api/hlaborales/puesto/${this.cod_laboral}`).then( (response) => {
 	        			//alert(JSON.stringify(response.data));
 	        			if (response.data.isError) {
 	        				this.empty();
@@ -315,7 +338,7 @@
 		          				this.empty();
 		  	        		    this.puestos_laborales.push(response.data.data.puesto);
 		  	        		    //this.puesto_laboral = response.data.data.puesto;
-		  	        		    this.agente = this.puesto_laboral.agente;
+		  	        		    this.agente = response.data.data.puesto.agente;
 		  	        		    this.cuil = this.agente.cuil;
 		  	        		    this.nombre = this.agente.nombre;
 		  	        		    this.fecha_nac = this.agente.fecha_nac;
@@ -328,6 +351,7 @@
 	        			}
 	        		});
 	        	},
+
 	        },
 	        filters:{
 	          formatCuil:function(value){

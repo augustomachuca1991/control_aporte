@@ -93,11 +93,11 @@ class HistoriaLaboralController extends Controller
             return [];
         }
     }
-    public function search($search)
+    
+
+    public function search_puesto($search)
     {
-        // return HistoriaLaboral::whereHas('puesto', function($puestos) use ($search){
-        //     $puestos->where('cod_laboral',$search);
-        // })->with('puesto')->first();
+        
         $data = ['puesto_laboral' => $search];
         $rules = ['puesto_laboral' => 'required|integer|exists:agente_organismo,cod_laboral'];
         $message = ['puesto_laboral.integer' => 'Debe ingresar un codigo de puesto laboral válido',
@@ -108,6 +108,27 @@ class HistoriaLaboralController extends Controller
             return response()->json(['isError' => true ,'data' => $validator->errors()]);
         }else{
             $historialaboral = HistoriaLaboral::buscarPorPuesto($search)->first();
+            return response()->json(['isError' => false ,'data' => $historialaboral]);
+        }
+        
+    }
+
+
+    public function search_cuil($search)
+    {
+        // return HistoriaLaboral::whereHas('puesto', function($puestos) use ($search){
+        //     $puestos->where('cod_laboral',$search);
+        // })->with('puesto')->first();
+        $data = ['cuil' => $search];
+        $rules = ['cuil' => 'required|integer|exists:agentes,cuil'];
+        $message = ['cuil.integer' => 'Debe ingresar solo cuil numerico sin guiones',
+                    'cuil.exists' => 'EL cuil ingresado no existe en nuestros registros. Verifique',
+                    'cuil.required' => 'Debe completar el campo'];
+        $validator = Validator::make($data,$rules,$message);
+        if ($validator->fails()) {
+            return response()->json(['isError' => true ,'data' => $validator->errors()]);
+        }else{
+            $historialaboral = HistoriaLaboral::buscarPorCuil($search)->first();
             return response()->json(['isError' => false ,'data' => $historialaboral]);
         }
         
