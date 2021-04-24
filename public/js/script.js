@@ -15,14 +15,32 @@ function menutoggle() {
 var icon = document.getElementById('icon');
 var menu = document.getElementById('menu-toggle')
 
+if(localStorage.getItem("theme") == null){
+    localStorage.setItem("theme", "light");
+}
+
+let localData = localStorage.getItem("theme");
+
+if( localData == "light"){
+    icon.src = "../image/moon.png";
+    menu.src = "../image/menu.png";
+    document.body.classList.remove("dark-theme"); 
+}else if(localData == "dark"){
+    icon.src = "../image/sun.png";
+    menu.src = "../image/menu-light.png"
+    document.body.classList.add("dark-theme"); 
+}
+
 icon.onclick = function() {
     console.log('cambio de aspecto')
     document.body.classList.toggle('dark-theme');
     if (document.body.classList.contains('dark-theme')) {
         icon.src = "../image/sun.png";
-        menu.src = "../image/menu-light.png"
+        menu.src = "../image/menu-light.png";
+        localStorage.setItem("theme" , "dark");
     } else {
         icon.src = "../image/moon.png";
-        menu.src = "../image/menu.png"
+        menu.src = "../image/menu.png";
+        localStorage.setItem("theme" , "dark");
     }
 }
