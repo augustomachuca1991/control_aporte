@@ -15,14 +15,14 @@
         <!--fontaweson-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
         <!--custom style-->
-        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
     </head>
     <body>
         <div class="header">
             <div class="container">
                 <div class="navbar">
                     <div class="logo">
-                        <a href="index.html"><img src="image/logo-ips-header.png" width="250px"></a>
+                        <a href="{{ url('/') }}"><img src="{{asset('image/logo-ips-header.png')}}" width="250px"></a>
                     </div>
                     <nav>
                         @if (Route::has('login'))
@@ -58,8 +58,8 @@
                         @endif -->
                         
                     </nav>
-                    <img src="image/moon.png" id="icon" width="30px" height="30px">
-                    <img src="image/menu.png" id="menu-toggle"  class="menu-icon" onclick="menutoggle()">
+                    <img src="{{asset('image/moon.png')}}" id="icon" width="30px" height="30px">
+                    <img src="{{asset('image/menu.png')}}" id="menu-toggle"  class="menu-icon" onclick="menutoggle()">
                 </div>
 
                 <div class="account-page">
@@ -89,7 +89,7 @@
                             <div class="col-2">
                                 <div class="img-box">
                                     
-                                    <img class="main-img"src="image/apple2.png">
+                                    <img class="main-img"src="{{asset('image/apple2.png')}}">
                                 </div>
                             </div>
                              
@@ -102,6 +102,6 @@
 
 
         <!--script dark mode-->
-        <script src="js/script.js" type="text/javascript"></script>
+        <script src="{{asset('js/script.js')}}" type="text/javascript"></script>
     </body>
 </html>

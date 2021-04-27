@@ -139,12 +139,23 @@ class LiquidacionsImport implements
                             # code...
                             $liquidacion->no_remunerativo += $conceptos[$i]['importe'];
                         }
-
+                        $liquidacion->adicionales += $conceptos[$i]['importe'];
                         $liquidacion->bruto += $conceptos[$i]['importe'];
 
                     } else if ($conceptos[$i]['subtipo'] > 5 && $conceptos[$i]['subtipo'] <= 8 ) { // adicionales sociales
                         # code...
-                        $liquidacion->familiar += $conceptos[$i]['importe'];
+                        if($conceptos[$i]['subtipo'] == 6){
+
+                            $liquidacion->familiar += $conceptos[$i]['importe'];
+
+                        }elseif($conceptos[$i]['subtipo'] == 7){
+
+                            $liquidacion->hijo += $conceptos[$i]['importe'];
+
+                        }else{
+
+                            $liquidacion->esposa += $conceptos[$i]['importe'];
+                        }
 
                     }elseif ($conceptos[$i]['subtipo'] > 8 && $conceptos[$i]['subtipo'] <= 11) { // descuento
                         if ($conceptos[$i]['subtipo'] == 9) {
@@ -221,10 +232,10 @@ class LiquidacionsImport implements
                     'total_aporte_personal' => $liquidacion->aporte_personal,
                     'total_sueldo_basico' => $liquidacion->basico, 
                     'total_antiguedad' => ($liquidacion->remunerativo - $liquidacion->basico),
-                    'total_adicional' => 1,
-                    'total_familiar' => 2,
-                    'total_hijo' => 3,
-                    'total_esposa' => 4,
+                    'total_adicional' => $liquidacion->adicionales,
+                    'total_familiar' => $liquidacion->familiar,
+                    'total_hijo' => $liquidacion->hijo,
+                    'total_esposa' => $liquidacion->esposa,
                 ]);
 
                 //Nueva Categoria, Clase y Jurisdiccion-------------------------------------------------------------------

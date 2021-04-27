@@ -277,29 +277,29 @@
             pointStrokeColor    : 'rgba(60,141,188,1)',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : [28, 48, 40, 19, 86, 27, 90, 52, 74,88,10,12]
+            data                : [28, 48, 40, 19, 86, 27, 90, 52, 74,33,10,12]
           },
           {
             label               : 'Municipio',
-            backgroundColor     : 'rgba(210, 214, 222, 1)',
+            backgroundColor     : 'rgba(210, 214, 222, 2)',
             borderColor         : 'rgba(210, 214, 222, 1)',
             pointRadius         : false,
-            pointColor          : 'rgba(210, 214, 222, 1)',
+            pointColor          : 'rgba(210, 214, 222, 0)',
             pointStrokeColor    : '#c1c7d1',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : [65, 59, 80, 81, 56, 55, 40, 52, 74,88,200,12]
+            data                : [65, 59, 80, 81, 56, 55, 80, 52, 74,102,23,35]
           },
           {
             label               : 'Entidades Autonomas',
-            backgroundColor     : 'rgba(210, 314, 155, 1)',
-            borderColor         : 'rgba(210, 314, 155, 1)',
+            backgroundColor     : 'rgba(210, 128, 198, 9)',
+            borderColor         : 'rgba(210, 128, 198, 1)',
             pointRadius         : false,
-            pointColor          : 'rgba(210, 314, 155, 1)',
-            pointStrokeColor    : '#81d7d1',
+            pointColor          : 'rgba(210, 128, 198, 0)',
+            pointStrokeColor    : '#b1d7d1',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : [99, 68, 102, 25, 70, 55, 1000, 52, 74,88,101,12]
+            data                : [99, 68, 102, 25, 70, 55, 68, 52, 74,88,101,105]
           },
         ]
       }
@@ -337,10 +337,10 @@
       var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
       var lineChartOptions = $.extend(true, {}, areaChartOptions)
       var lineChartData = $.extend(true, {}, areaChartData)
-      lineChartData.datasets[0].fill = false;
-      lineChartData.datasets[1].fill = false;
+      lineChartData.datasets.forEach( dataSet => {
+        dataSet.fill = false;
+      });
       lineChartOptions.datasetFill = false
-
       var lineChart = new Chart(lineChartCanvas, {
         type: 'line',
         data: lineChartData,

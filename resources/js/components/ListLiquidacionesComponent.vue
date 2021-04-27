@@ -322,13 +322,13 @@
                     <td >
 
                       <small v-if="liquidacion.no_remunerativo">$ {{parseInt(liquidacion.bruto) - parseInt(liquidacion.no_remunerativo)}}</small>
-                      <small v-else >$ {{parseInt(liquidacion.bruto) - 0}}</small>
+                      <small v-else >$ {{parseInt(liquidacion.bruto)}}</small>
                     </td>
                     <td>
                       <small>$ {{liquidacion.no_remunerativo}}</small>
                     </td>
                     <td>
-                      <small>$ {{liquidacion.familiar}}</small>
+                      <small>$ {{parseInt(liquidacion.familiar) + parseInt(liquidacion.hijo) + parseInt(liquidacion.esposa)}}</small>
                     </td>
                     <td>
                       <small>$ {{liquidacion.descuento}}</small>

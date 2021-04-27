@@ -25,7 +25,10 @@ class CreateLiquidacionsTable extends Migration
             $table->decimal('bonificable',8,2)->unsigned()->nullable();
             $table->decimal('no_bonificable',8,2)->unsigned()->nullable();
             $table->decimal('no_remunerativo',8,2)->unsigned()->nullable();
+            $table->decimal('adicionales',8,2)->unsigned()->nullable();
             $table->decimal('familiar',8,2)->unsigned()->nullable();
+            $table->decimal('hijo',8,2)->unsigned()->nullable();
+            $table->decimal('esposa',8,2)->unsigned()->nullable();
             $table->decimal('descuento',8,2)->unsigned()->nullable();
             $table->softDeletes(); 
             $table->timestamps();

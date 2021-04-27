@@ -387,7 +387,7 @@
 
 
 
-              },this,timeOut);
+              },this.timeOut);
             },
             buscarLiquidacion(){
                this.shown = true;
