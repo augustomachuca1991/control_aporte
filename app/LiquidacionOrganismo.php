@@ -64,4 +64,101 @@ class LiquidacionOrganismo extends Model
         
 
     }
+
+
+
+    public function scopeComputoOrigen($query, $periodo){
+
+        $query->where('periodo_id', $periodo)
+        ->join('organismos', 'liquidacion_organismo.organismo_id', '=', 'organismos.cod_organismo')
+        ->join('jurisdiccions', 'organismos.jurisdiccion_id', '=', 'jurisdiccions.cod_jurisdiccion')
+        ->join('origens', 'jurisdiccions.origen_id', '=', 'origens.cod_origen')
+        ->join('periodos', 'liquidacion_organismo.periodo_id', '=', 'periodos.cod_periodo')
+        ->join('tipo_liquidacions', 'liquidacion_organismo.tipo_id', '=', 'tipo_liquidacions.id')
+        ->selectRaw('
+                     origens.origen AS origen,
+                     periodos.periodo AS periodo,
+                     tipo_liquidacions.descripcion AS tipo_liquidacion,
+                     SUM(haber_bruto) AS haber_bruto,
+                     SUM(total_aporte_personal) AS total_aporte_personal,
+                     SUM(total_sueldo_basico) AS total_sueldo_basico, 
+                     SUM(total_antiguedad) AS total_antiguedad, 
+                     SUM(total_adicional) AS total_adicional,
+                     SUM(total_familiar) AS total_familiar,
+                     SUM(total_hijo) AS total_hijo,
+                     SUM(total_esposa) AS total_esposa')
+        ->groupBy('origen','periodo','tipo_liquidacion');
+
+    }
+
+
+    public function scopeComputoJurisdiccion($query, $periodo){
+
+        $query->where('periodo_id', $periodo)
+        ->join('organismos', 'liquidacion_organismo.organismo_id', '=', 'organismos.cod_organismo')
+        ->join('jurisdiccions', 'organismos.jurisdiccion_id', '=', 'jurisdiccions.cod_jurisdiccion')
+        ->join('periodos', 'liquidacion_organismo.periodo_id', '=', 'periodos.cod_periodo')
+        ->join('tipo_liquidacions', 'liquidacion_organismo.tipo_id', '=', 'tipo_liquidacions.id')
+        ->selectRaw('
+                     jurisdiccions.jurisdiccion AS jurisdiccion,
+                     periodos.periodo AS periodo,
+                     tipo_liquidacions.descripcion AS tipo_liquidacion,
+                     SUM(haber_bruto) AS haber_bruto,
+                     SUM(total_aporte_personal) AS total_aporte_personal,
+                     SUM(total_sueldo_basico) AS total_sueldo_basico, 
+                     SUM(total_antiguedad) AS total_antiguedad, 
+                     SUM(total_adicional) AS total_adicional,
+                     SUM(total_familiar) AS total_familiar,
+                     SUM(total_hijo) AS total_hijo,
+                     SUM(total_esposa) AS total_esposa')
+        ->groupBy('jurisdiccion','periodo','tipo_liquidacion');
+
+    }
+
+
+
+    public function scopeComputoOrganismo($query, $periodo){
+
+        $query->where('periodo_id', $periodo)
+        ->join('organismos', 'liquidacion_organismo.organismo_id', '=', 'organismos.cod_organismo')
+        ->join('periodos', 'liquidacion_organismo.periodo_id', '=', 'periodos.cod_periodo')
+        ->join('tipo_liquidacions', 'liquidacion_organismo.tipo_id', '=', 'tipo_liquidacions.id')
+        ->selectRaw('
+                     organismos.organismo AS organismo,
+                     periodos.periodo AS periodo,
+                     tipo_liquidacions.descripcion AS tipo_liquidacion,
+                     SUM(haber_bruto) AS haber_bruto,
+                     SUM(total_aporte_personal) AS total_aporte_personal,
+                     SUM(total_sueldo_basico) AS total_sueldo_basico, 
+                     SUM(total_antiguedad) AS total_antiguedad, 
+                     SUM(total_adicional) AS total_adicional,
+                     SUM(total_familiar) AS total_familiar,
+                     SUM(total_hijo) AS total_hijo,
+                     SUM(total_esposa) AS total_esposa')
+        ->groupBy('organismo','periodo','tipo_liquidacion');
+    }
+
+
+
+    public function scopePeriodoAnual($query, $anio){
+
+        $query->join('periodos', function($join) use ($anio){
+            $join->on('liquidacion_organismo.periodo_id', '=', 'periodos.cod_periodo')
+                ->where('liquidacion_organismo.deleted_at', '=', null)
+                ->where('periodos.anio', '=', $anio)
+                ->where('periodos.deleted_at', '=', null);
+        })
+        ->selectRaw('
+                     periodos.anio as anual,
+                     periodos.mes as mes,
+                     SUM(haber_bruto) AS haber_bruto,
+                     SUM(total_aporte_personal) AS total_aporte_personal,
+                     SUM(total_sueldo_basico) AS total_sueldo_basico, 
+                     SUM(total_antiguedad) AS total_antiguedad, 
+                     SUM(total_adicional) AS total_adicional,
+                     SUM(total_familiar) AS total_familiar,
+                     SUM(total_hijo) AS total_hijo,
+                     SUM(total_esposa) AS total_esposa')
+        ->groupBy('anual','mes');
+    }
 }
