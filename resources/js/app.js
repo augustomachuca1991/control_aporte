@@ -113,6 +113,8 @@ Vue.component('panel-config', require('./components/PanelConfiguracionComponent.
 //panel lateral 
 Vue.component('users-component', require('./components/UserComponent.vue').default);
 
+Vue.component('home-component', require('./components/HomeComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
