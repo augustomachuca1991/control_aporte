@@ -164,8 +164,8 @@ class LiquidacionsImport implements
                     }
 
 
-                    if ($conceptos[$i]['subtipo'] <= 2) { //remunerativo
-                        # code...
+                    if ($conceptos[$i]['subtipo'] <= 2) {
+
                         if ($conceptos[$i]['subtipo'] == 1) {
                             $liquidacion->basico = $conceptos[$i]['importe'];
 
@@ -173,25 +173,25 @@ class LiquidacionsImport implements
                         
                         $liquidacion->remunerativo += $conceptos[$i]['importe'];
                         $liquidacion->bruto += $conceptos[$i]['importe'];
-                    } else if($conceptos[$i]['subtipo'] > 2 && $conceptos[$i]['subtipo'] <= 5 ){ //adicionales
+                    } else if($conceptos[$i]['subtipo'] > 2 && $conceptos[$i]['subtipo'] <= 5 ){
                         
-                        if ($conceptos[$i]['tipo'] == 2) { //remunerativo bonificable
-                            # code...
+                        if ($conceptos[$i]['tipo'] == 2) {
+
                             $liquidacion->bonificable += $conceptos[$i]['importe'];
 
-                        }else if ($conceptos[$i]['tipo'] == 3) {//remunerativo no bonificable
-                            # code...
+                        }else if ($conceptos[$i]['tipo'] == 3) {
+
                             $liquidacion->no_bonificable += $conceptos[$i]['importe'];
 
-                        }else if ($conceptos[$i]['tipo'] == 4) {//no remunerativo no bonificable
-                            # code...
+                        }else if ($conceptos[$i]['tipo'] == 4) {
+
                             $liquidacion->no_remunerativo += $conceptos[$i]['importe'];
                         }
                         $liquidacion->adicionales += $conceptos[$i]['importe'];
                         $liquidacion->bruto += $conceptos[$i]['importe'];
 
-                    } else if ($conceptos[$i]['subtipo'] > 5 && $conceptos[$i]['subtipo'] <= 8 ) { // adicionales sociales
-                        # code...
+                    } else if ($conceptos[$i]['subtipo'] > 5 && $conceptos[$i]['subtipo'] <= 8 ) { 
+
                         if($conceptos[$i]['subtipo'] == 6){
 
                             $liquidacion->familiar += $conceptos[$i]['importe'];
@@ -207,25 +207,20 @@ class LiquidacionsImport implements
 
                     }elseif ($conceptos[$i]['subtipo'] > 8 && $conceptos[$i]['subtipo'] <= 11) { // descuento
                         if ($conceptos[$i]['subtipo'] == 9) {
-                            # code...
+
                             $liquidacion->aporte_personal = $conceptos[$i]['importe'];
-                            
-                            
-                            // $liquidacion->bruto = $conceptos[$i]['importe']/0.185;
+                             // $liquidacion->bruto = $conceptos[$i]['importe']/0.185;
                         }
 
                         $liquidacion->descuento += $conceptos[$i]['importe'];
 
-
                     }
-                    //haberes con aporte = basico + descuento
-                    //bruto = bonificable + remunerativo + no remunerativo;
-                    
-                    
-                    
                 }
-                
-                
+
+                    
+                    
+                    
+
                 $liquidacion->save();
                 for ($i=0; $i < count($conceptos) ; $i++) { 
                     # code...
@@ -235,42 +230,6 @@ class LiquidacionsImport implements
                     ]);
                 }
 
-
-
-
-                // Nueva Liquidacion-------------------------------------------------------------
-                
-                // $liquidacion = new Liquidacion();
-                // $liquidacion->declaracion_id = $this->declaracionjurada->id;
-                // $liquidacion->bruto = $row['aporte_personal']/0.185;
-                // $liquidacion->bonificable = $row['basico']+$row['antiguedad'];
-                // $liquidacion->no_bonificable = $row['adicional'];
-                // $liquidacion->no_remunerativo = 1500;
-                // $liquidacion->familiar = $row['hijo']+$row['esposa'];
-                // $liquidacion->descuento = $row['aporte_personal']+0;
-                // $liquidacion->save();
-
-                //Conceptos de liquidaciones
-                // $name_array = explode( '|', $row['detalle']);
-                // $detalles = array_chunk($name_array, 5, false);
-                // for ($i=0; $i < count($detalles) ; $i++) {
-                //     for ($j=0; $j < count($detalles[$i]) ; $j++) { 
-                        
-                //         $resultado[$i]['cod'] = $detalles[$i][0];
-                //         $resultado[$i]['concepto'] = $detalles[$i][1];
-                //         $resultado[$i]['unidad'] = $detalles[$i][2];
-                //         $resultado[$i]['tipo'] = $detalles[$i][3];
-                //         $resultado[$i]['importe'] = $detalles[$i][4];
-                        
-                     
-                //      }
-                    
-
-                //     $liquidacion->conceptos()->attach( $resultado[$i]['cod'],[
-                //         'unidad' => $resultado[$i]['unidad'],
-                //         'importe' => $resultado[$i]['importe']
-                //     ]);
-                // }
 
                 //Liquidacion Organismos-------------------------------------------------------
                 $liquidacion->organismos()->attach($this->declaracionjurada->organismo_id ,[
@@ -360,61 +319,16 @@ class LiquidacionsImport implements
                     'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
                 ]);
 
-                
-                //$historia_laboral = $puesto_laboral1->historialaborales->first();
-                // $historia_laboral = HistoriaLaboral::where('puesto_id', $declaracionjurada_detalle->puesto_laboral)
-                //                                      ->where('clase_id' , $declaracionjurada_detalle->cod_clase)
-                //                                      ->first();
-
                 $historia_laboral = HistoriaLaboral::where('puesto_id', $puesto_laboral1->id)
                                                     ->where('clase_id' , $clase1->id)
                                                     ->first();
                 
-                //liquidaciones con Historias laborales-----------------------------------------------------------------
+                //liquidaciones con Historias laborales------------------
                 $liquidacion->historia_laborales()->attach($historia_laboral->id,[ 
                     'estado_id' => $declaracionjurada_detalle->cod_estado , 
                     'funcion_id' => null
                 ]);
-
-
-                //Conceptos de liquidaciones
-                // $name_array = explode( '|', $row['detalle']);
-                // $detalles = array_chunk($name_array, 5, false);
-                // for ($i=0; $i < count($detalles) ; $i++) {
-                //     for ($j=0; $j < count($detalles[$i]) ; $j++) { 
-                        
-                //         $resultado[$i]['cod'] = $detalles[$i][0];
-                //         $resultado[$i]['concepto'] = $detalles[$i][1];
-                //         $resultado[$i]['unidad'] = $detalles[$i][2];
-                //         $resultado[$i]['tipo'] = $detalles[$i][3];
-                //         $resultado[$i]['importe'] = $detalles[$i][4];
-                        
-                     
-                //      }
-                    
-
-                //     $liquidacion->conceptos()->attach( $resultado[$i]['cod'],[
-                //         'unidad' => $resultado[$i]['unidad'],
-                //         'importe' => $resultado[$i]['importe']
-                //     ]);
-                // }
-
-
-                // $liquidacion->conceptos()->attach(1,['unidad' => '30 dias','importe' => 50000]);
-                // $liquidacion->conceptos()->attach(2,['unidad' => '34 años','importe' => 20000]);
-                // $liquidacion->conceptos()->attach(3,['unidad' => null,     'importe' => 50000]);
-                // $liquidacion->conceptos()->attach(4,['unidad' => '30 %',   'importe' => 10000]);
-                // $liquidacion->conceptos()->attach(5,['unidad' => null,     'importe' => 50000]);
-                // $liquidacion->conceptos()->attach(6,['unidad' => '18,5 %', 'importe' => 9250]);
-                // $liquidacion->conceptos()->attach(7,['unidad' => '5%',     'importe' => 2500]);
-                // $liquidacion->conceptos()->attach(8,['unidad' => '1',      'importe' => 1000]);
-                // $liquidacion->conceptos()->attach(9,['unidad' => null,     'importe' => 100]);
-                    
-
-
-
-
-
+            
             }//end foreach
             $user = User::find($this->declaracionjurada->user_id);
             CompletedImport::dispatch()
@@ -429,6 +343,15 @@ class LiquidacionsImport implements
         }
         
     }
+
+
+                
+                    
+
+
+
+
+
 
 
 
