@@ -7,7 +7,8 @@ use App\{DeclaracionJurada,Periodo,TipoLiquidacion,Organismo,User};
 use Illuminate\Http\Request;
 use App\Jobs\LiquidacionJob;
 use Illuminate\Support\Facades\Auth;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class DeclaracionJuradaController extends Controller
 {
@@ -195,7 +196,7 @@ class DeclaracionJuradaController extends Controller
      */
     public function download(Request $request)
     {
-        $pathToFile = \Storage::url('app/'.$request->path);
+        $pathToFile = Storage::url('app/'.$request->path);
         $header = ['Content-Type' => 'text/csv'];
         return response()->download('..'.$pathToFile, 'descarga.csv',$header);
     }

@@ -267,7 +267,7 @@
         		      pointStrokeColor    : 'rgba(60,141,188,1)',
         		      pointHighlightFill  : '#fff',
         		      pointHighlightStroke: 'rgba(60,141,188,1)',
-        		      data                : this.total_aportes,
+        		      data                : [29, 83, 12, 88, 88, 62, 80, 52, 59,100,29,28]
         		    },
         		    {
         		      label               : 'Municipio',

@@ -8,7 +8,7 @@
   
     <!-- <div class="table-responsive">-->
       <!-- <paginate class="center" name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">  -->
-        <table <table class="table table-hover text-nowrap">
+        <table class="table table-hover text-nowrap">
           <thead>
             <tr>
               <th scope="col">Agente</th>
@@ -25,9 +25,9 @@
               <tr v-if="isEmpty">
                 <td colspan="8" style="height: 200px;" class="align-middle"><p class="text-center">No se encontraron resultados</p></td>
               </tr>
-              <tr v-else v-for=" (liquidacion,index) in datos" :key="datos.id">
+              <tr v-else v-for=" (liquidacion,index) in datos" :key="liquidacion.id">
                   <td style="width: 12.5%;">
-                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
+                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales" :key="historia_laboral.id">
                       <strong>{{historia_laboral.puesto.agente.nombre}}</strong> <br>
                       {{historia_laboral.puesto.agente.cuil | formatCuil}} 
                     </div>
@@ -41,7 +41,7 @@
                      </span>
                   </td> 
                   <td style="width: 5%;">
-                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
+                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales" :key="historia_laboral.id">
                       {{historia_laboral.puesto.cod_laboral}}
                     </div>
                   </td>
@@ -52,12 +52,12 @@
                       {{liquidacion.organismo.organismo}}
                   </td>
                   <td>
-                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
+                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales" :key="historia_laboral.id">
                       {{historia_laboral.clase.clase}}
                     </div>
                   </td>
                   <td>
-                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales">
+                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales" :key="historia_laboral.id">
                       {{historia_laboral.clase.categoria.categoria}}
                     </div>
                   </td>
@@ -289,7 +289,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="detalle in detalles">
+                    <tr v-for="detalle in detalles" :key="detalle.id">
                       <th scope="row"><small>{{detalle.concepto_id}}</small></th>
                       <td>
                         <small>{{detalle.concepto.concepto}}</small>

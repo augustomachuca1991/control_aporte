@@ -8,9 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Jobs\{ImportFailedJob,CompletedImport,NotificationJob};
 use App\Events\{NotificationImport,FailedImport};
 use Maatwebsite\Excel\Validators\Failure;
-use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\{AfterImport,ImportFailed};
 use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,WithValidation,SkipsOnError,SkipsErrors,SkipsOnFailure,SkipsFailures};
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class LiquidacionsImport implements 
     ToCollection,
@@ -28,6 +29,9 @@ class LiquidacionsImport implements
 
     
     protected $declaracionjurada;
+    public $tries = 3;
+
+    
 
     public function __construct(DeclaracionJurada $declaracionjurada)
     {
@@ -35,10 +39,54 @@ class LiquidacionsImport implements
     }
     
 
-    public $tries = 3;
-    //public $timeout = 180;
+
+
+
+
     public function collection(Collection $rows)
     {
+        
+        // DB::transaction(function(){
+        //     return tap(
+        //         try{
+        //             DeclaracionJuradaLine::create([
+        //                'declaracionjurada_id' => $this->declaracionjurada->id,
+        //                'nombre' => $row['nombre'],
+        //                'cuil' => $row['cuil'],
+        //                'fecha_nac' => date("Y-m-d", strtotime($row['fecha_nac'])),
+        //                'sexo' => $row['sexo'],
+        //                'puesto_laboral' => $row['puesto_laboral'],
+        //                'cargo' => $row['cargo'],
+        //                'fecha_ingreso' =>  date("Y-m-d", strtotime($row['fecha_ingreso'])),
+        //                'cod_categoria' => $row['cod_categoria'],
+        //                'categoria' => $row['categoria'],
+        //                'cod_clase' => $row['cod_clase'],
+        //                'clase' => $row['clase'],
+        //                'cod_estado' => $row['cod_estado'],
+        //                'estado' => $row['estado'],
+        //                'cod_jurisdiccion' => $row['cod_jurisdiccion'],
+        //                'jurisdiccion' => $row['jurisdiccion'],
+        //                'cod_organismo' => $row['cod_organismo'],
+        //                'organismo' => $row['organismo'],
+        //                'detalle' => $row['detalle'],
+        //             ])
+
+        //         }catch (Exception $e) {
+        //             $this->failed($e);
+        //         } catch(\ErrorException $e){
+        //             $this->failed($e);
+        //         } catch(Throwable $e){
+        //             $this->failed($e);
+        //         }
+        //         , function (DeclaracionJurada $declaracionjurada) {
+
+        //         });
+        // });
+
+
+
+
+
         try {
             foreach ($rows as $row) {
                 $declaracionjurada_detalle = DeclaracionJuradaLine::create([
@@ -376,7 +424,7 @@ class LiquidacionsImport implements
             $this->failed($e);
         } catch(\ErrorException $e){
             $this->failed($e);
-        } catch(Throwable $e){
+        } catch(\Throwable $e){
             $this->failed($e);
         }
         

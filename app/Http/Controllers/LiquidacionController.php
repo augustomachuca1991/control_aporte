@@ -126,7 +126,7 @@ class LiquidacionController extends Controller
     {
         
         return LiquidacionOrganismo::with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage)->onEachSide(1);
+        ->get();
     }
 
 

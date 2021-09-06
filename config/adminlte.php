@@ -261,11 +261,11 @@ return [
                 'icon' => 'fas fa-file-upload',
                 'icon_color' => 'gray-dark',
                 ],
-                ['text' => 'Exportar',
-                'route' => 'csv_export',
-                'icon' => 'fas fa-file-download',
-                'icon_color' => 'gray'
-                ]
+                // ['text' => 'Exportar',
+                // 'route' => 'csv_export',
+                // 'icon' => 'fas fa-file-download',
+                // 'icon_color' => 'gray'
+                // ]
             ],
 
             // 'label'       => 4,
@@ -304,10 +304,10 @@ return [
                 //         ],
                 //     ],
                 // ],
-                [
-                    'text' => 'Archivos',
-                    'url'  => '#',
-                ],
+                // [
+                //     'text' => 'Archivos',
+                //     'url'  => '#',
+                // ],
             ],
         ],
         ['header' => 'Config. Personal'],

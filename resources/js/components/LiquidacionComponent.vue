@@ -32,12 +32,12 @@
                 <td>No se encontraron resultados</td>
               </tr>
               <tr v-else v-for="liquidacion in paginated('liquidacions')" :key="liquidacion.id">
-                  <th scope="row" v-for="historia_laboral in liquidacion.historia_laborales">00{{historia_laboral.puesto.cod_laboral}}</th>
-                  <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
-                  <td v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}</td>
-                  <td v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.periodo}}</td>
-                  <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
-                  <td v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</td>
+                  <th scope="row" v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">00{{historia_laboral.puesto.cod_laboral}}</th>
+                  <td v-for="tipoliquidacion in liquidacion.liquidacion_organismo" :key="tipoliquidacion.id">{{tipoliquidacion.tipoliquidacion.descripcion}}</td>
+                  <td v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">{{historia_laboral.puesto.agente.nombre}}</td>
+                  <td v-for="periodo in liquidacion.liquidacion_organismo" :key="periodo.id">{{periodo.periodo.periodo}}</td>
+                  <td v-for="organismo in liquidacion.liquidacion_organismo" :key="organismo.id">{{organismo.organismo.jurisdiccion.jurisdiccion}}</td>
+                  <td v-for="organismo in liquidacion.liquidacion_organismo" :key="organismo.id">{{organismo.organismo.organismo}}</td>
                   <td>
                       <a :href="'#detalle'" class="btn btn-outline-success rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" v-on:click="show(liquidacion.id)">
                       <i class="fas fa-dollar-sign"></i>
@@ -59,7 +59,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div> -->
-  <nav aria-label="Page navigation example"> 
+  <!-- <nav aria-label="Page navigation example"> 
     <paginate-links 
       for="liquidacions" 
       :async="true"
@@ -73,16 +73,16 @@
       :hide-single-page="true"
       @change="onLangsPageChange">
     </paginate-links>
-  </nav>
+  </nav> -->
    
     
 
     <!--modal-->
-    <div id="detalle" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" v-model="liquidacion">
+    <div id="detalle" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel" v-for="periodo in liquidacion.liquidacion_organismo">Periodo -&nbsp;{{periodo.periodo.periodo}}</h5>
+            <h5 class="modal-title" id="exampleModalLabel" v-for="periodo in liquidacion.liquidacion_organismo" :key="periodo.id">Periodo -&nbsp;{{periodo.periodo.periodo}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="empty()">
               <span class="btn btn-danger" aria-hidden="true">&times;</span>
             </button>
@@ -104,7 +104,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.jurisdiccion.jurisdiccion}}</small> 
+                          <small v-for="organismo in liquidacion.liquidacion_organismo" :key="organismo.id">{{organismo.organismo.jurisdiccion.jurisdiccion}}</small> 
                       </div>
                     </div> 
 
@@ -117,7 +117,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small v-for="organismo in liquidacion.liquidacion_organismo">{{organismo.organismo.organismo}}</small> 
+                          <small v-for="organismo in liquidacion.liquidacion_organismo" :key="organismo.id">{{organismo.organismo.organismo}}</small> 
                       </div> 
                     </div>
 
@@ -143,7 +143,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                        <small v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.mes}}</small>
+                        <small v-for="periodo in liquidacion.liquidacion_organismo" :key="periodo.id">{{periodo.periodo.mes}}</small>
                       </div> 
                     </div>
                 </div> 
@@ -155,7 +155,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                             <small v-for="periodo in liquidacion.liquidacion_organismo">{{periodo.periodo.anio}}</small>
+                             <small v-for="periodo in liquidacion.liquidacion_organismo" :key="periodo.id">{{periodo.periodo.anio}}</small>
                       </div> 
                     </div>
                 </div>      
@@ -170,7 +170,7 @@
                     </div>    
                     <div class="row">
                       <div class="col">
-                           <small v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.nombre}}
+                           <small v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">{{historia_laboral.puesto.agente.nombre}}
                            </small>
                       </div> 
                     </div>
@@ -183,7 +183,7 @@
                     </div> 
                     <div class="row">
                       <div class="col">
-                          <small v-for="historia_laboral in liquidacion.historia_laborales">{{historia_laboral.puesto.agente.cuil}}</small> 
+                          <small v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">{{historia_laboral.puesto.agente.cuil}}</small> 
                       </div> 
                     </div>
                 </div> 
@@ -195,7 +195,7 @@
                     </div> 
                     <div class="row">
                       <div class="col">
-                          <small v-for="historia_laboral in liquidacion.historia_laborales">
+                          <small v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">
                                {{historia_laboral.puesto.cod_laboral}}
                           </small>
                       </div> 
@@ -209,7 +209,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small v-for="historia_laboral in liquidacion.historia_laborales">
+                          <small v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">
                             {{historia_laboral.fecha_ingreso}}
                           </small> 
                       </div>
@@ -223,7 +223,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small v-for="historia_laboral in liquidacion.historia_laborales">
+                          <small v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">
                             {{historia_laboral.historialiquidaciones[0].estado.estado}}
                           </small> 
                       </div> 
@@ -237,7 +237,7 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                          <small v-for="historia_laboral in liquidacion.historia_laborales">
+                          <small v-for="historia_laboral in liquidacion.historia_laborales" :key="historia_laboral.id">
                             <p v-if="historia_laboral.historialiquidaciones[0].funcion === null">-</p>
                             <p v-else>{{historia_laboral.historialiquidaciones[0].funcion.funcion}}</p>
                           </small> 
@@ -248,7 +248,7 @@
             <!--table-->
             <div class="table-responsive shadow p-3 mb-5 bg-white rounded">
               <table class="table table-sm table-borderless table-fixed">
-                <caption class="justify-content-end" v-model="liquidacion">
+                <caption class="justify-content-end">
                   
                   <!-- <small>
                     Total Neto $ {{(liquidacion.bruto + liquidacion.bonificable + liquidacion.no_bonificable + liquidacion.no_remunerativo + liquidacion.familiar) - liquidacion.descuento}}
@@ -266,7 +266,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="detalle in liquidacion.detalles">
+                  <tr v-for="detalle in liquidacion.detalles" :key="detalle.id">
                     <th scope="row"><small>{{detalle.concepto_id}}</small></th>
                     <td>
                       <small>{{detalle.concepto.concepto}}</small>
@@ -292,7 +292,7 @@
                     </td>
                   </tr>
                 </tbody>
-                <tfoot class="bg-light" v-model="liquidacion">
+                <tfoot class="bg-light">
                   <th scope="row" colspan="3">
                     <small>Subtotal</small>
                   </th>

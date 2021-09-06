@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -49,7 +48,6 @@
                                 <li><a href="{{route('home') }}">HOME</a></li>
                             @else
                                 <li><a href="{{ route('login') }}">INGRESAR</a></li>
-
                                 @if (Route::has('register'))
                                     <li><a href="{{ route('register') }}">REGISTRAR</a></li>
                                 @endif
