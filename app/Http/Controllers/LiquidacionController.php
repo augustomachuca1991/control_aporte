@@ -125,8 +125,7 @@ class LiquidacionController extends Controller
     public function getliquidaciones()
     {
         
-        return LiquidacionOrganismo::with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->get();
+        return LiquidacionOrganismo::with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])->get();
     }
 
 
@@ -214,7 +213,7 @@ class LiquidacionController extends Controller
             });
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);
+        ->get();
     }
 
 
@@ -227,7 +226,7 @@ class LiquidacionController extends Controller
             $organismos->where('jurisdiccion_id', $value);
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);
+        ->get();
     }
 
 
@@ -238,7 +237,7 @@ class LiquidacionController extends Controller
 
         return LiquidacionOrganismo::where('organismo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);    
+        ->get();    
     }
 
 
@@ -248,7 +247,7 @@ class LiquidacionController extends Controller
 
         return LiquidacionOrganismo::buscarPorAgente($value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);   
+        ->get();   
     }
 
 
@@ -258,7 +257,7 @@ class LiquidacionController extends Controller
 
         return LiquidacionOrganismo::where('periodo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);  
+        ->get();  
     }
 
     public function porTipo(Request $request, $value)
@@ -267,7 +266,7 @@ class LiquidacionController extends Controller
 
         return LiquidacionOrganismo::where('tipo_id', $value)
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->paginate($this->perPage);  
+        ->get();  
     }
 
 
@@ -275,7 +274,7 @@ class LiquidacionController extends Controller
 
         return LiquidacionOrganismo::buscarLiquidacion($search)
                 ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-                ->paginate($this->perPage);
+                ->get();
 
     }
 

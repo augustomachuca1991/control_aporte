@@ -120,89 +120,100 @@
                 </div>
             </div>
         </div>
-        <select
-            class="form-control mb-5"
-            name="perPage"
-            id="perPage"
-            v-model="perPage"
-        >
-            <option value="5">Por pagína 5</option>
-            <option value="10">Por pagína 10</option>
-            <option value="25">Por pagína 25</option>
-            <option value="50">Por pagína 50</option>
-            <option value="100">Por pagína 100</option>
-        </select>
+        
 
-        <paginate name="liquidacions" :list="liquidaciones" :per="perPage">
-            <li
+        
+          <!-- <div v-if="shown" class="text-center content-center">
+                                  Espere...
+                                  <span>
+                                    <img height="80px" src="image/ips_loading.gif" />
+                                  </span>
+                                </div> -->
+        <listaliquidaciones-component
+            :datos="liquidaciones">
+        </listaliquidaciones-component> 
+
+        <!-- <paginate name="liquidacions" :list="liquidaciones" :per="perPage">
+            <div
+                class="card w-100 card-outline card-pink"
                 v-for="liquidacion in paginated('liquidacions')"
                 :key="liquidacion.id"
             >
-                <p>
-                    <label for="agente">Agente</label>
-                    {{
-                        liquidacion.liquidacion.historia_laborales[0].puesto
-                            .agente.nombre
-                    }}
-                    -
-                    {{
-                        liquidacion.liquidacion.historia_laborales[0].puesto
-                            .agente.cuil
-                    }}
-                </p>
-                <p>
-                    <label for="tipo">Tipo de Liquidacion</label>
-                    {{ liquidacion.tipoliquidacion.descripcion }}
-                </p>
-                <p>
-                    <label for="periodo">Periodo</label>
-                    {{ liquidacion.periodo.cod_periodo }} -
-                    <label for="codigo">Cod</label>
-                    {{ liquidacion.periodo.periodo }}
-                </p>
-                <p>
-                    <label for="organismo">Organismo</label>
-                    {{ liquidacion.organismo.organismo }} -
-                    {{ liquidacion.organismo.jurisdiccion.jurisdiccion }}
-                    -
-                    {{ liquidacion.organismo.jurisdiccion.origen.origen }}
-                </p>
-                <p
-                    v-for="clases in liquidacion.liquidacion.historia_laborales"
-                    :key="clases.id"
-                >
-                    <label for="clase">Clase</label>
-                    {{ clases.clase.clase }}
-                </p>
-                <p
-                    v-for="categorias in liquidacion.liquidacion
-                        .historia_laborales"
-                    :key="categorias.id"
-                >
-                    <label for="categorias">Categoria</label>
-                    {{ categorias.clase.categoria.categoria }}
-                </p>
-                <label for="puestos">Puestos Laborales</label>
-                <select name="puestos_laborales" :id="liquidacion.id">
-                    <option
-                        v-for="puesto_laboral in liquidacion.liquidacion
+                <div class="card-header">
+                    <h5 class="card-title text-capitalize">
+                        {{
+                            liquidacion.liquidacion.historia_laborales[0].puesto
+                                .agente.nombre
+                        }}
+                        -
+                        {{
+                            liquidacion.liquidacion.historia_laborales[0].puesto
+                                .agente.cuil
+                        }}
+                    </h5>
+                    <p
+                        class="d-flex justify-content-end text-muted text-capitalize"
+                    >
+                        Periodo - {{ liquidacion.periodo.periodo }}
+                    </p>
+                </div>
+                <div class="card-body">
+                    <p
+                        class="card-text"
+                        v-for="clases in liquidacion.liquidacion
                             .historia_laborales"
-                        :key="puesto_laboral.id"
-                        >{{ puesto_laboral.puesto.cod_laboral }}</option
+                        :key="clases.id"
                     >
-                </select>
-                <p>
-                    <a
-                        :href="'#detalle'"
-                        class="btn btn-outline-success rounded-circle btn-sm mb-1 my-lg-0 border-0"
-                        data-toggle="modal"
-                        v-on:click="ver_detalle(index, liquidacion)"
+                        <label for="clase">Clase</label>
+                        {{ clases.clase.clase }}
+                    </p>
+
+                    <p
+                        class="card-text"
+                        v-for="categorias in liquidacion.liquidacion
+                            .historia_laborales"
+                        :key="categorias.id"
                     >
-                        <i class="fas fa-dollar-sign"></i>
-                    </a>
-                </p>
-                <hr>
-            </li>
+                        <label for="categorias">Categoria</label>
+                        {{ categorias.clase.categoria.categoria }}
+                    </p>
+                    <p class="card-text">
+                        <label for="puestos">Puestos Laborales</label>
+                        <span
+                            v-for="puesto_laboral in liquidacion.liquidacion
+                                .historia_laborales"
+                            :key="puesto_laboral.id"
+                            >{{ puesto_laboral.puesto.cod_laboral }}
+                        </span>
+                    </p>
+                    <div class="text-right">
+                        <p class="mb-0">
+                            Tipo - {{ liquidacion.tipoliquidacion.descripcion }}
+                        </p>
+                        <footer class="blockquote-footer">
+                            <cite title="Source Title text-capitalize">
+                                {{ liquidacion.organismo.organismo }}
+                                -
+                                {{
+                                    liquidacion.organismo.jurisdiccion
+                                        .jurisdiccion
+                                }}
+                                -
+                                {{
+                                    liquidacion.organismo.jurisdiccion.origen
+                                        .origen
+                                }}</cite
+                            >
+                        </footer>
+                    </div>
+
+                    <p class="card-text">
+                        <a href="#" class="btn btn-success"
+                            ><i class="fas fa-dollar-sign"></i
+                        ></a>
+                    </p>
+                </div>
+            </div>
         </paginate>
         <paginate-links
             for="liquidacions"
@@ -210,7 +221,8 @@
                 prev: '<<',
                 next: '>>'
             }"
-        ></paginate-links>
+        ></paginate-links> -->
+       
     </div>
 </template>
 
@@ -218,9 +230,29 @@
 export default {
     data() {
         return {
-            liquidaciones: [],
-            paginate: ["liquidacions"],
-            perPage: "5"
+            liquidaciones:[],
+                liquidacion:{},
+                shown:false,
+                periodo:'',
+                fecha_actual:null,
+                mes:null,
+                anio:null,
+                date: {
+                  from: null,
+                  to: null,
+                  month: null,
+                  year: null,
+                  monthIndex: null,
+                },
+                timeOut:1000,
+                filtro:{
+                  origen:'',
+                  jurisdiccion:'',
+                  organismo:'',
+                  tipo:'',
+                  periodo:'',
+                  agente:'',
+                }
         };
     },
     mounted() {
@@ -228,7 +260,7 @@ export default {
         this.fecha_actual = new Date(milisegundos);
         this.mes = this.fecha_actual.getMonth() + 1;
         this.anio = this.fecha_actual.getFullYear();
-        this.getLiquidaciones();
+        //this.getLiquidaciones();
     },
     methods: {
         porOrigen(param) {
@@ -283,11 +315,11 @@ export default {
                     });
             }, this.timeOut);
         },
-        getPage(page) {
-            axios.get(this.paginate.path + "?page=" + page).then(response => {
-                this.asignar(response);
-            });
-        },
+        // getPage(page) {
+        //     axios.get(this.paginate.path + "?page=" + page).then(response => {
+        //         this.asignar(response);
+        //     });
+        // },
         porPeriodo(date) {
             this.date = date;
             if (this.date.monthIndex.toString().length < 2) {
@@ -341,13 +373,15 @@ export default {
                 });
         },
         asignar(response) {
-            this.liquidaciones = response.data.data;
-            this.paginate.current_page = response.data.current_page;
-            this.paginate.last_page = response.data.last_page;
-            this.paginate.total = response.data.total;
-            this.paginate.path = response.data.path;
+            //console.log(response.data);
+            this.liquidaciones = response.data;
+            //console.log(this.liquidaciones);
+            // this.paginate.current_page = response.data.current_page;
+            // this.paginate.last_page = response.data.last_page;
+            // this.paginate.total = response.data.total;
+            // this.paginate.path = response.data.path;
         },
-        getLiquidaciones: function() {
+        getLiquidaciones() {
             axios.get(`api/liquidacion`).then(response => {
                 this.liquidaciones = response.data;
             });
@@ -355,26 +389,3 @@ export default {
     }
 };
 </script>
-
-<style>
-.paginate-links {
-    width: 100%;
-    list-style: none;
-    text-align: center;
-}
-.paginate-links li {
-    display: inline;
-    background-color: #e83e8c;
-    color: white;
-    padding: 0.5rem;
-    margin-left: 0.3rem;
-    margin-right: 0.3rem;
-    cursor: pointer;
-    border-radius: 3px;
-}
-.paginate-result {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 1rem;
-}
-</style>

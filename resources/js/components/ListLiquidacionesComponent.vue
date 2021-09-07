@@ -1,107 +1,116 @@
 <template>
-  <div id="lista_liquidaciones">
-    <!--<label>Liquidaciones {{filtro.data}} </label>-->
-    <!-- <paginate name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">
+  <div v-if="datos.length" id="lista_liquidaciones">
     
-    <paginate> -->
-    <!--table-->
-  
-    <!-- <div class="table-responsive">-->
-      <!-- <paginate class="center" name="liquidacions" :list="filtro.data" :per="10" ref="paginator" tag="tbody">  -->
-        <table class="table table-hover text-nowrap">
-          <thead>
-            <tr>
-              <th scope="col">Agente</th>
-              <th scope="col">Tipo</th>
-              <th scope="col">Puestos Laborales</th>
-              <th scope="col">Periodo</th>
-              <th scope="col">Organismo</th>
-              <th scope="col">Clase</th>
-              <th scope="col">Categoria</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-            <tbody>
-              <tr v-if="isEmpty">
-                <td colspan="8" style="height: 200px;" class="align-middle"><p class="text-center">No se encontraron resultados</p></td>
-              </tr>
-              <tr v-else v-for=" (liquidacion,index) in datos" :key="liquidacion.id">
-                  <td style="width: 12.5%;">
-                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales" :key="historia_laboral.id">
-                      <strong>{{historia_laboral.puesto.agente.nombre}}</strong> <br>
-                      {{historia_laboral.puesto.agente.cuil | formatCuil}} 
-                    </div>
-                  </td>
-                  <td style="width: 10%;">
-                     <span v-if="liquidacion.tipoliquidacion.descripcion === 'SAC' " class="badge bg-warning">
-                      {{liquidacion.tipoliquidacion.descripcion}}
-                     </span>
-                     <span v-else class="badge bg-success">
-                      {{liquidacion.tipoliquidacion.descripcion}}
-                     </span>
-                  </td> 
-                  <td style="width: 5%;">
-                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales" :key="historia_laboral.id">
-                      {{historia_laboral.puesto.cod_laboral}}
-                    </div>
-                  </td>
-                  <td>
-                      {{liquidacion.periodo.mes}}/{{liquidacion.periodo.anio}}
-                  </td> 
-                  <td>
-                      {{liquidacion.organismo.organismo}}
-                  </td>
-                  <td>
-                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales" :key="historia_laboral.id">
-                      {{historia_laboral.clase.clase}}
-                    </div>
-                  </td>
-                  <td>
-                    <div v-for="historia_laboral in liquidacion.liquidacion.historia_laborales" :key="historia_laboral.id">
-                      {{historia_laboral.clase.categoria.categoria}}
-                    </div>
-                  </td>
-                  <td>
-                      <a :href="'#detalle'" class="btn btn-outline-success rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" v-on:click="ver_detalle(index,liquidacion)">
-                      <i class="fas fa-dollar-sign"></i>
+    <select
+            class="mb-5"
+            name="perPage"
+            id="perPage"
+            v-model="perPage"
+        >
+            <option value="5">Por pagína 5</option>
+            <option value="10">Por pagína 10</option>
+            <option value="25">Por pagína 25</option>
+            <option value="50">Por pagína 50</option>
+            <option value="100">Por pagína 100</option>
+        </select>
+
+        <paginate ref="paginator" name="liquidacions" :list="datos" :per="perPage">
+            <div
+                class="card w-100 card-outline card-pink"
+                v-for="(liquidacion,index) in paginated('liquidacions')"
+                :key="liquidacion.id"
+            >
+                <div class="card-header">
+                    <h5 class="card-title text-capitalize">
+                        {{
+                            liquidacion.liquidacion.historia_laborales[0].puesto
+                                .agente.nombre
+                        }}
+                        -
+                        {{
+                            liquidacion.liquidacion.historia_laborales[0].puesto
+                                .agente.cuil
+                        }}
+                    </h5>
+                    <p class="d-flex justify-content-end text-muted text-capitalize">
+                        Periodo - {{ liquidacion.periodo.periodo }}
+                    </p>
+                </div>
+                <div class="card-body">
+                    <p
+                        class="card-text"
+                        v-for="clases in liquidacion.liquidacion
+                            .historia_laborales"
+                        :key="clases.id"
+                    >
+                        <label for="clase">Clase</label>
+                        {{ clases.clase.clase }}
+                    </p>
+
+                    <p
+                        class="card-text"
+                        v-for="categorias in liquidacion.liquidacion
+                            .historia_laborales"
+                        :key="categorias.id"
+                    >
+                        <label for="categorias">Categoria</label>
+                        {{ categorias.clase.categoria.categoria }}
+                    </p>
+                    <p class="card-text">
+                        <label for="puestos">Puestos Laborales</label>
+                        <span
+                            v-for="puesto_laboral in liquidacion.liquidacion
+                                .historia_laborales"
+                            :key="puesto_laboral.id"
+                            >{{ puesto_laboral.puesto.cod_laboral }}
+                        </span>
+                    </p>
+                    <p class="card-text">
+                        <!-- <a href="#" class="btn btn-success"
+                            ><i class="fas fa-dollar-sign"></i
+                        ></a> -->
+                        <a :href="'.detalle'" class="btn btn-success" data-toggle="modal" v-on:click="ver_detalle(index,liquidacion)">
+                        <i class="fas fa-dollar-sign"></i>
                       </a>  
-                      <!-- <a class="btn btn-success btn-xs text-white" data-toggle="modal" ><i class="fas fa-dollar-sign"></i></a> -->
-                  </td>
-              </tr>
-            </tbody>
-        </table>
+                    </p>
+                    <div class="text-right">
+                        <p class="mb-0">
+                            Tipo - {{ liquidacion.tipoliquidacion.descripcion }}
+                        </p>
+                        <footer class="blockquote-footer">
+                            <cite title="Source Title text-capitalize">
+                                {{ liquidacion.organismo.organismo }}
+                                -
+                                {{
+                                    liquidacion.organismo.jurisdiccion
+                                        .jurisdiccion
+                                }}
+                                -
+                                {{
+                                    liquidacion.organismo.jurisdiccion.origen
+                                        .origen
+                                }}</cite
+                            >
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </paginate>
+        <paginate-links
+            for="liquidacions"
+            :hide-single-page="true"
+            :async="true"
+            :limit="3"
+            @change="onLiquidacionsPageChange"
+        ></paginate-links>
+        <span class="d-flex justify-content-end text-muted text-sm" v-if="$refs.paginator">
+          Mostrando {{$refs.paginator.pageItemsCount}} Resultados
+        </span>
         
-      <!-- </paginate> -->
-    <!--</div> -->
-   <!--  <div v-if="shown">
-      <div class="spinner-grow text-dark" style="width: 3rem; height: 3rem;" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-      <div class="spinner-grow text-info" style="width: 3rem; height: 3rem;" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-      <div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div> -->
-  <!-- <nav aria-label="Page navigation example"> 
-    <paginate-links 
-      for="liquidacions" 
-      :async="true"
-      :limit="3" 
-      :show-step-links="true"
-      :step-links="{
-        next: '»',
-        prev: '«'
-      }"
-      :classes="{'ul': 'pagination', 'li': 'page-item', 'a': 'page-link'}"
-      :hide-single-page="true"
-      @change="onLangsPageChange">
-    </paginate-links>
-  </nav> -->
+      
 
   <!--modal-->
-      <div id="detalle" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div id="detalle_liquidacion" class="detalle modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -353,6 +362,9 @@
         props:['datos'],
         data: function(){
             return{
+                liquidaciones: [],
+                paginate: ["liquidacions"],
+                perPage: "5",
                 historia_laborales:[],
                 detalles:[],
                 historia_laboral:{},
@@ -379,6 +391,8 @@
             console.log(this.datos.length)
             if (this.datos.length > 0) {
               this.isEmpty = false;
+              //this.liquidaciones = this.datos;
+              //console.log('lista liquidaciones: '+this.datos);
             }
         }, 
         methods:{
@@ -414,6 +428,10 @@
                 this.puesto = {};
                 this.agente = {};
                 this.estado = {};
+            },
+            onLiquidacionsPageChange (toPage, fromPage) {
+              console.log('to page'+ toPage);
+              console.log('from Page'+ fromPage);
             }
         },
         filters:{
@@ -434,25 +452,28 @@
     }
 </script>
 
-<style type="text/css">
-    tr.hide-table-padding td {
-      padding: 0;
-    }
-
-    .expand-button {
-        position: relative;
-    }
-
-    .accordion-toggle .expand-button:after
-    {
-      position: absolute;
-      left:.75rem;
-      top: 50%;
-      transform: translate(0, -50%);
-      content: '-';
-    }
-    .accordion-toggle.collapsed .expand-button:after
-    {
-      content: '+';
-    }
+<style>
+.paginate-links {
+    width: 100%;
+    list-style: none;
+    text-align: center;
+}
+.paginate-links li {
+    display: inline;
+    background-color: #e83e8c;
+    color: white;
+    padding: 0.5rem;
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+    cursor: pointer;
+    border-radius: 3px;
+}
+.paginate-result {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.blockquote {
+    border-left-color: #e83e8c;
+}
 </style>
