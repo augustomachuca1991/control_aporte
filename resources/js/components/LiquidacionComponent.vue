@@ -59,7 +59,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div> -->
-  <!-- <nav aria-label="Page navigation example"> 
+  <nav aria-label="Page navigation example"> 
     <paginate-links 
       for="liquidacions" 
       :async="true"
@@ -73,7 +73,7 @@
       :hide-single-page="true"
       @change="onLangsPageChange">
     </paginate-links>
-  </nav> -->
+  </nav>
    
     
 

@@ -123,106 +123,21 @@
         
 
         
-          <!-- <div v-if="shown" class="text-center content-center">
-                                  Espere...
-                                  <span>
-                                    <img height="80px" src="image/ips_loading.gif" />
-                                  </span>
-                                </div> -->
-        <listaliquidaciones-component
-            :datos="liquidaciones">
-        </listaliquidaciones-component> 
-
-        <!-- <paginate name="liquidacions" :list="liquidaciones" :per="perPage">
-            <div
-                class="card w-100 card-outline card-pink"
-                v-for="liquidacion in paginated('liquidacions')"
-                :key="liquidacion.id"
-            >
-                <div class="card-header">
-                    <h5 class="card-title text-capitalize">
-                        {{
-                            liquidacion.liquidacion.historia_laborales[0].puesto
-                                .agente.nombre
-                        }}
-                        -
-                        {{
-                            liquidacion.liquidacion.historia_laborales[0].puesto
-                                .agente.cuil
-                        }}
-                    </h5>
-                    <p
-                        class="d-flex justify-content-end text-muted text-capitalize"
-                    >
-                        Periodo - {{ liquidacion.periodo.periodo }}
-                    </p>
-                </div>
-                <div class="card-body">
-                    <p
-                        class="card-text"
-                        v-for="clases in liquidacion.liquidacion
-                            .historia_laborales"
-                        :key="clases.id"
-                    >
-                        <label for="clase">Clase</label>
-                        {{ clases.clase.clase }}
-                    </p>
-
-                    <p
-                        class="card-text"
-                        v-for="categorias in liquidacion.liquidacion
-                            .historia_laborales"
-                        :key="categorias.id"
-                    >
-                        <label for="categorias">Categoria</label>
-                        {{ categorias.clase.categoria.categoria }}
-                    </p>
-                    <p class="card-text">
-                        <label for="puestos">Puestos Laborales</label>
-                        <span
-                            v-for="puesto_laboral in liquidacion.liquidacion
-                                .historia_laborales"
-                            :key="puesto_laboral.id"
-                            >{{ puesto_laboral.puesto.cod_laboral }}
-                        </span>
-                    </p>
-                    <div class="text-right">
-                        <p class="mb-0">
-                            Tipo - {{ liquidacion.tipoliquidacion.descripcion }}
-                        </p>
-                        <footer class="blockquote-footer">
-                            <cite title="Source Title text-capitalize">
-                                {{ liquidacion.organismo.organismo }}
-                                -
-                                {{
-                                    liquidacion.organismo.jurisdiccion
-                                        .jurisdiccion
-                                }}
-                                -
-                                {{
-                                    liquidacion.organismo.jurisdiccion.origen
-                                        .origen
-                                }}</cite
-                            >
-                        </footer>
-                    </div>
-
-                    <p class="card-text">
-                        <a href="#" class="btn btn-success"
-                            ><i class="fas fa-dollar-sign"></i
-                        ></a>
-                    </p>
-                </div>
+          
+        <div v-if="shown" class="card">
+            <h5 class="card-header card-outline card-pink">Liquidaciones</h5>
+            <div class="card-body">
+                <p class="text-center">cargando...
+                  <span>
+                  <img height="80px" src="image/ips_loading.gif" />
+                </span>
+                </p>
+                
             </div>
-        </paginate>
-        <paginate-links
-            for="liquidacions"
-            :simple="{
-                prev: '<<',
-                next: '>>'
-            }"
-        ></paginate-links> -->
-       
+        </div>
+        <listaliquidaciones-component v-else
+            :datos="liquidaciones">
+        </listaliquidaciones-component>
     </div>
 </template>
 
