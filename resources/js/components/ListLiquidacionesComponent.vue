@@ -492,7 +492,7 @@ export default {
             estado: {},
             shown: true,
             isEmpty: false,
-            page: '',
+            page:0,
         };
     },
     mounted() {
@@ -505,8 +505,7 @@ export default {
     },
     methods: {
         ver_detalle(index, liquidacionOrganismo) {
-          let indice = ((this.page * this.perPage) + index) - this.page 
-            console.log('index es'  + indice)
+            index= this.page + parseInt(index)
             this.liquidacionOrganismo = liquidacionOrganismo;
             this.liquidacion = this.datos[index].liquidacion;
             this.historia_laboral = this.liquidacion.historia_laborales[0];
@@ -539,9 +538,8 @@ export default {
             this.estado = {};
         },
         onLiquidacionsPageChange(toPage, fromPage) {
-            this.page = toPage; 
-            console.log("to page" + toPage);
-            console.log("from Page" + fromPage);
+            
+            this.page = this.perPage*(toPage-1); 
             
         }
     },

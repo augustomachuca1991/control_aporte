@@ -55,6 +55,7 @@ Route::get('/liquidacion/paginate/{n_paginas}', 'LiquidacionController@paginado'
 Route::get('/liquidacion/hl', 'LiquidacionController@hl');
 
 
+
 // Route::get('/liquidacion/detalle/{id}', 'LiquidacionController@show')->name('liquidacion_detalle');
 // Route::get('/liquidacion/agente/filtro','LiquidacionController@agente')->name('filtros');
 // Route::get('/liquidacion/filtro','LiquidacionController@filtro')->name('buscar');
