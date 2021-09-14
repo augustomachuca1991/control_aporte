@@ -8,8 +8,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Jobs\{ImportFailedJob,CompletedImport,NotificationJob};
 use App\Events\{NotificationImport,FailedImport};
 use Maatwebsite\Excel\Validators\Failure;
-use Maatwebsite\Excel\Events\{AfterImport,ImportFailed};
-use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,WithValidation,SkipsOnError,SkipsErrors,SkipsOnFailure,SkipsFailures,RemembersChunkOffset};
+use Maatwebsite\Excel\Events\{AfterImport,ImportFailed, BeforeImport};
+use Maatwebsite\Excel\Concerns\{ToCollection,WithHeadingRow,WithBatchInserts,WithChunkReading,Importable,WithCustomCsvSettings,WithEvents,WithValidation,SkipsOnError,SkipsErrors,SkipsOnFailure,SkipsFailures,RemembersChunkOffset,RemembersRowNumber};
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -27,11 +27,12 @@ class LiquidacionsImport implements
     
     //WithBatchInserts
 {
-    use Importable, SkipsErrors, SkipsFailures, RemembersChunkOffset;
+    use Importable, SkipsErrors, SkipsFailures, RemembersChunkOffset, RemembersRowNumber;
 
     
     protected $declaracionjurada;
     public $tries = 3;
+    public $totalRows;
 
     
 
@@ -49,7 +50,12 @@ class LiquidacionsImport implements
     {
         
         try {
+            $chunkOffset = $this->getChunkOffset();
+            $count = 0;
+                
+            $cicles = intdiv($this->totalRows , $rows->count());
             foreach ($rows as $row) {
+                $count += $count;
                 $declaracionjurada_detalle = DeclaracionJuradaLine::create([
                    'declaracionjurada_id' => $this->declaracionjurada->id,
                    'nombre' => $row['nombre'],
@@ -290,13 +296,20 @@ class LiquidacionsImport implements
                     'funcion_id' => null
                 ]);
             
+            
             }//end foreach
-            $chunkOffset = $this->getChunkOffset();
-            logger('chunckOffset');
+            Log::channel('daily')->info('data import ' , [
+                'chuckOffset' => $chunkOffset-2,
+                'totalRows' => $this->totalRows,
+            ]);
             $user = User::find($this->declaracionjurada->user_id);
-            CompletedImport::dispatch()
+            if ($cicles == $count) {
+                CompletedImport::dispatch()
             ->chain([new NotificationJob($user)])
             ->delay(now()->addSeconds(5));
+            }
+            
+            
         } catch (Exception $e) {
             $this->failed($e);
         } catch(\ErrorException $e){
@@ -379,7 +392,7 @@ class LiquidacionsImport implements
     */
     public function chunkSize(): int
     {
-        return 500;
+        return 100;
     }
 
 
@@ -448,6 +461,18 @@ class LiquidacionsImport implements
                 //$creator = $event->reader->getProperties()->getCreator();
                 CompletedImport::dispatch()->delay(now()->addSeconds(5));
             },
+
+            BeforeImport::class => function (BeforeImport $event) {
+                $totalRows = $event->getReader()->getTotalRows();
+
+                if (!empty($totalRows)) {
+                    //echo $totalRows['Worksheet'];
+                    $this->totalRows = $totalRows['Worksheet'];
+                    Log::channel('daily')->info('data import ' , [
+                        'totalRow' => $totalRows['Worksheet']
+                    ]);
+                }
+            }
         ];
     }
 
