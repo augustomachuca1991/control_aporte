@@ -14,7 +14,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
-class LiquidacionsImport implements 
+class LiquidacionsImport implements
     ToCollection,
     WithChunkReading,
     ShouldQueue,
@@ -24,23 +24,24 @@ class LiquidacionsImport implements
     SkipsOnFailure,
     WithEvents,
     WithValidation
-    
+
     //WithBatchInserts
 {
     use Importable, SkipsErrors, SkipsFailures, RemembersChunkOffset, RemembersRowNumber;
 
-    
+
     protected $declaracionjurada;
     public $tries = 3;
     public $totalRows;
+    public $countCicles = 0;
 
-    
+
 
     public function __construct(DeclaracionJurada $declaracionjurada)
     {
       $this->declaracionjurada = $declaracionjurada;
     }
-    
+
 
 
 
@@ -48,14 +49,12 @@ class LiquidacionsImport implements
 
     public function collection(Collection $rows)
     {
-        
+
         try {
-            $chunkOffset = $this->getChunkOffset();
-            $count = 0;
-                
+            $chunkOffset = $this->getChunkOffset()-2;
+            $count = ($chunkOffset/100)+1;
             $cicles = intdiv($this->totalRows , $rows->count());
             foreach ($rows as $row) {
-                $count += $count;
                 $declaracionjurada_detalle = DeclaracionJuradaLine::create([
                    'declaracionjurada_id' => $this->declaracionjurada->id,
                    'nombre' => $row['nombre'],
@@ -85,7 +84,7 @@ class LiquidacionsImport implements
                    // 'familiar' => $row['familiar'],
                    // 'hijo' => $row['hijo'],
                    // 'esposa' => $row['esposa'],
-                   
+
                    // 'otros' => $row['otros'],
                    // 'cod_funcion' => $row['cod_funcion'],
                    // 'funcion' => $row['funcion'],
@@ -100,9 +99,9 @@ class LiquidacionsImport implements
 
                 $detalles = explode( '|', $row['detalle']);
                 $detalle = array_chunk($detalles, 6, false);
-                for ($i=0; $i < count($detalle) ; $i++) { 
+                for ($i=0; $i < count($detalle) ; $i++) {
                     # code...
-                    for ($j=0; $j < count($detalle[$i]); $j++) { 
+                    for ($j=0; $j < count($detalle[$i]); $j++) {
                         # code...
                         $conceptos[$i]['cod'] = $detalle[$i][0];
                         $conceptos[$i]['concepto'] = $detalle[$i][1];
@@ -117,7 +116,7 @@ class LiquidacionsImport implements
                 //Conceptos de Liquidacion
                 $liquidacion = new Liquidacion();
                 $liquidacion->declaracion_id = $this->declaracionjurada->id;
-                for ($i=0; $i < count($conceptos) ; $i++) { 
+                for ($i=0; $i < count($conceptos) ; $i++) {
                     $concepto = ConceptoLiquidacion::where('cod_concepto', $conceptos[$i]['cod'])
                     ->where('organismo_id',$row['cod_organismo']);
                     if ($concepto->doesntExist()) {
@@ -137,11 +136,11 @@ class LiquidacionsImport implements
                             $liquidacion->basico = $conceptos[$i]['importe'];
 
                         }
-                        
+
                         $liquidacion->remunerativo += $conceptos[$i]['importe'];
                         $liquidacion->bruto += $conceptos[$i]['importe'];
                     } else if($conceptos[$i]['subtipo'] > 2 && $conceptos[$i]['subtipo'] <= 5 ){
-                        
+
                         if ($conceptos[$i]['tipo'] == 2) {
 
                             $liquidacion->bonificable += $conceptos[$i]['importe'];
@@ -157,7 +156,7 @@ class LiquidacionsImport implements
                         $liquidacion->adicionales += $conceptos[$i]['importe'];
                         $liquidacion->bruto += $conceptos[$i]['importe'];
 
-                    } else if ($conceptos[$i]['subtipo'] > 5 && $conceptos[$i]['subtipo'] <= 8 ) { 
+                    } else if ($conceptos[$i]['subtipo'] > 5 && $conceptos[$i]['subtipo'] <= 8 ) {
 
                         if($conceptos[$i]['subtipo'] == 6){
 
@@ -184,12 +183,12 @@ class LiquidacionsImport implements
                     }
                 }
 
-                    
-                    
-                    
+
+
+
 
                 $liquidacion->save();
-                for ($i=0; $i < count($conceptos) ; $i++) { 
+                for ($i=0; $i < count($conceptos) ; $i++) {
                     # code...
                     $liquidacion->conceptos()->attach( $conceptos[$i]['cod'],[
                         'unidad' => $conceptos[$i]['unidad'],
@@ -200,11 +199,11 @@ class LiquidacionsImport implements
 
                 //Liquidacion Organismos-------------------------------------------------------
                 $liquidacion->organismos()->attach($this->declaracionjurada->organismo_id ,[
-                    'periodo_id' => $this->declaracionjurada->periodo_id , 
+                    'periodo_id' => $this->declaracionjurada->periodo_id ,
                     'tipo_id' => $this->declaracionjurada->tipoliquidacion_id,
                     'haber_bruto' => $liquidacion->bruto,
                     'total_aporte_personal' => $liquidacion->aporte_personal,
-                    'total_sueldo_basico' => $liquidacion->basico, 
+                    'total_sueldo_basico' => $liquidacion->basico,
                     'total_antiguedad' => ($liquidacion->remunerativo - $liquidacion->basico),
                     'total_adicional' => $liquidacion->adicionales,
                     'total_familiar' => $liquidacion->familiar,
@@ -278,7 +277,7 @@ class LiquidacionsImport implements
                 } else{
                     $puesto_laboral1 = $puesto_laboral->first();
                 }
-                
+
 
                 //puesto laborales-------------------------------------------------------------------------------------
                 $puesto_laboral1->clases()->attach($clase1->id,[
@@ -289,18 +288,19 @@ class LiquidacionsImport implements
                 $historia_laboral = HistoriaLaboral::where('puesto_id', $puesto_laboral1->id)
                                                     ->where('clase_id' , $clase1->id)
                                                     ->first();
-                
+
                 //liquidaciones con Historias laborales------------------
-                $liquidacion->historia_laborales()->attach($historia_laboral->id,[ 
-                    'estado_id' => $declaracionjurada_detalle->cod_estado , 
+                $liquidacion->historia_laborales()->attach($historia_laboral->id,[
+                    'estado_id' => $declaracionjurada_detalle->cod_estado ,
                     'funcion_id' => null
                 ]);
-            
-            
+
+
             }//end foreach
             Log::channel('daily')->info('data import ' , [
-                'chuckOffset' => $chunkOffset-2,
+                'chuckOffset' => $chunkOffset,
                 'totalRows' => $this->totalRows,
+                'cicles' => $count,
             ]);
             $user = User::find($this->declaracionjurada->user_id);
             if ($cicles == $count) {
@@ -308,8 +308,8 @@ class LiquidacionsImport implements
             ->chain([new NotificationJob($user)])
             ->delay(now()->addSeconds(5));
             }
-            
-            
+
+
         } catch (Exception $e) {
             $this->failed($e);
         } catch(\ErrorException $e){
@@ -317,12 +317,12 @@ class LiquidacionsImport implements
         } catch(\Throwable $e){
             $this->failed($e);
         }
-        
+
     }
 
 
-                
-                    
+
+
 
 
 
@@ -373,26 +373,26 @@ class LiquidacionsImport implements
     |--------------------------------------------------------------------------
     |
     | Lee el archivo en bloques
-    |  
+    |
     */
     // public function batchSize(): int
     // {
     //     return 500;
     // }
-    
-    
-    
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Insert por bloque
     |--------------------------------------------------------------------------
     |
     | Inserta por bloque
-    | 
+    |
     */
     public function chunkSize(): int
     {
-        return 100;
+        return 300;
     }
 
 
@@ -406,9 +406,9 @@ class LiquidacionsImport implements
     }
 
 
-    
 
-    
+
+
 
 
     public function onError(\Throwable $e)
@@ -424,7 +424,7 @@ class LiquidacionsImport implements
             $row="";
             $columna= "";
             $errores = "";
-            $valores = "";  
+            $valores = "";
             foreach ($failures as $failure ) {
                 $row = "Fila: ".(string)$failure->row()."<br>";
                 $columna = "Columna: ".$failure->attribute()."<br>";
@@ -445,8 +445,8 @@ class LiquidacionsImport implements
             $this->failed($e);
             //\Log::info('Throwable:'.$exception->getMessage());
         }
-        
-        
+
+
     }
 
 
@@ -459,17 +459,22 @@ class LiquidacionsImport implements
             },
             AfterImport::class => function(AfterImport $event) {
                 //$creator = $event->reader->getProperties()->getCreator();
+                $creator = $event->reader;
+                if (!empty($creator)) {
+                    //echo $totalRows['Worksheet'];
+                    Log::channel('daily')->info('after import' , [
+                        'creator' => $creator
+                    ]);
+                }
                 CompletedImport::dispatch()->delay(now()->addSeconds(5));
             },
 
             BeforeImport::class => function (BeforeImport $event) {
                 $totalRows = $event->getReader()->getTotalRows();
-
                 if (!empty($totalRows)) {
-                    //echo $totalRows['Worksheet'];
-                    $this->totalRows = $totalRows['Worksheet'];
-                    Log::channel('daily')->info('data import ' , [
-                        'totalRow' => $totalRows['Worksheet']
+                    $this->totalRows = $totalRows['Worksheet']-1;
+                    Log::channel('daily')->info('before import' , [
+                        'total Rows' => $this->totalRows
                     ]);
                 }
             }
