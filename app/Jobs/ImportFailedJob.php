@@ -38,7 +38,7 @@ class ImportFailedJob implements ShouldQueue
         foreach($this->declaracionjurada->ddjj_lines as $ddjj_line)
         {
             $ddjj_line->delete();
-        };
+        }
         $this->declaracionjurada->delete();
     }
 }

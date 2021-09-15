@@ -28,37 +28,37 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Dispatcher $events)
     {
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $event->menu->add('MAIN NAVIGATION');
+            $event->menu->add('© Copyright 2021');
             $notificationes = Notification::where('notifiable_id', Auth::id())->get();
             if ($notificationes->count() > 0) {
                 foreach ($notificationes as $key) {
                     $menu[] = [
                         //'text' => $key->data.' '.$key->created_at->diffForHumans(),
-                        'text' => json_encode($key->data),
+                        'text' => $key->data,
                         'url'  => '#',
                         'icon' => 'fas  fa-bell',
-                        'icon_color'   => 'maroon',
+                        'icon_color' => 'maroon',
                     ];
                 }
-            }else{
+            } else {
                 $menu[] = [
-                        'text' => 'sin notificaciones',
-                        'url'  => '#',
-                        'icon' => 'fas  fa-file-csv',
-                        // 'shift'   => 'ml-4',
-                    ];
+                    'text' => 'sin notificaciones',
+                    'url'  => '#',
+                    'icon' => 'fas  fa-file-csv',
+                    // 'shift'   => 'ml-4',
+                ];
             }
 
 
-                $event->menu->add([
-                            'text'        => '',
-                            'url'         => '#',
-                            'icon'        => 'far fa-bell',
-                            'label'       => $notificationes->count(),
-                            'label_color' => 'danger',
-                            'topnav_right' => true,
-                            'submenu' => $menu,
-                        ]);
-                });
+            $event->menu->add([
+                'text'        => '',
+                'url'         => '#',
+                'icon'        => 'far fa-bell',
+                'label'       => $notificationes->count(),
+                'label_color' => 'danger',
+                'topnav_right' => true,
+                'submenu' => $menu,
+            ]);
+        });
     }
 }

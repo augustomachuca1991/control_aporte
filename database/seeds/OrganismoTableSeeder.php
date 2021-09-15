@@ -54,7 +54,7 @@ class OrganismoTableSeeder extends Seeder
 			            ['cod_organismo'=> 38, 'jurisdiccion_id' => 28, 'organismo' => 'San Cosme',   'created_at' => now()],
 			        	['cod_organismo'=> 39, 'jurisdiccion_id' => 29, 'organismo' => 'Bella Vista', 'created_at' => now()],
 			            
-			            ['cod_organismo'=> 40, 'jurisdiccion_id' => 30, 'organismo' => 'D.P.E.C',     'created_at' => now()],
+			            ['cod_organismo'=> 40, 'jurisdiccion_id' => 30, 'organismo' => 'dpec',     'created_at' => now()],
 
 			    	];
     	Organismo::insert($organismos);

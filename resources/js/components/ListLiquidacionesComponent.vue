@@ -310,11 +310,9 @@
                                 <caption class="justify-content-end">
                                     <small>
                                         Total Neto $
-                                        {{
-                                            parseInt(liquidacion.bruto) +
-                                                parseInt(liquidacion.familiar) -
-                                                parseInt(liquidacion.descuento)
-                                        }}
+                                        {{(liquidacion.bruto | convertNumber) +
+                                        (liquidacion.familiar | convertNumber) +
+                                        (liquidacion.descuento | convertNumber)}}
                                     </small>
                                 </caption>
                                 <thead class="bg-light">
@@ -366,7 +364,7 @@
                                                     detalle.concepto.subtipo
                                                         .tipocodigo.id < 4
                                                 "
-                                                >{{ detalle.importe }}</small
+                                                >{{ detalle.importe | convertNumber}}</small
                                             >
                                             <small v-else>-</small>
                                         </td>
@@ -376,7 +374,7 @@
                                                     detalle.concepto.subtipo
                                                         .tipocodigo.id === 4
                                                 "
-                                                >{{ detalle.importe }}</small
+                                                >{{ detalle.importe | convertNumber }}</small
                                             >
                                             <small v-else>-</small>
                                         </td>
@@ -386,7 +384,7 @@
                                                     detalle.concepto.subtipo
                                                         .tipocodigo.id === 5
                                                 "
-                                                >{{ detalle.importe }}</small
+                                                >{{ detalle.importe | convertNumber}}</small
                                             >
                                             <small v-else>-</small>
                                         </td>
@@ -396,7 +394,7 @@
                                                     detalle.concepto.subtipo
                                                         .tipocodigo.id === 6
                                                 "
-                                                >{{ detalle.importe }}</small
+                                                >{{ detalle.importe  | convertNumber}}</small
                                             >
                                             <small v-else>-</small>
                                         </td>
@@ -407,46 +405,17 @@
                                         <small>Subtotal</small>
                                     </th>
                                     <td>
-                                        <small
-                                            v-if="liquidacion.no_remunerativo"
-                                            >$
-                                            {{
-                                                parseInt(liquidacion.bruto) -
-                                                    parseInt(
-                                                        liquidacion.no_remunerativo
-                                                    )
-                                            }}</small
-                                        >
-                                        <small v-else
-                                            >$
-                                            {{
-                                                parseInt(liquidacion.bruto)
-                                            }}</small
-                                        >
+                                        <small>$ {{(liquidacion.bruto | convertNumber) -(liquidacion.no_remunerativo | convertNumber)}}
+                                        </small>
                                     </td>
                                     <td>
-                                        <small
-                                            >$
-                                            {{
-                                                liquidacion.no_remunerativo
-                                            }}</small
-                                        >
+                                        <small>$ {{liquidacion.no_remunerativo | convertNumber}}</small>
                                     </td>
                                     <td>
-                                        <small
-                                            >$
-                                            {{
-                                                parseInt(liquidacion.familiar) +
-                                                    parseInt(liquidacion.hijo) +
-                                                    parseInt(liquidacion.esposa)
-                                            }}</small
-                                        >
+                                        <small>$ {{ (liquidacion.familiar | convertNumber) + (liquidacion.hijo | convertNumber) + (liquidacion.esposa | convertNumber)}}</small>
                                     </td>
                                     <td>
-                                        <small
-                                            >$
-                                            {{ liquidacion.descuento }}</small
-                                        >
+                                        <small>$ {{ liquidacion.descuento | convertNumber }}</small>
                                     </td>
                                 </tfoot>
                             </table>
@@ -505,7 +474,7 @@ export default {
     },
     methods: {
         ver_detalle(index, liquidacionOrganismo) {
-            index= this.page + parseInt(index)
+            index = this.page + parseInt(index)
             this.liquidacionOrganismo = liquidacionOrganismo;
             this.liquidacion = this.datos[index].liquidacion;
             this.historia_laboral = this.liquidacion.historia_laborales[0];
@@ -555,6 +524,14 @@ export default {
             var first = value.charAt(0) + value.charAt(1);
 
             return first + "-" + dni + "-" + last;
+        },
+        convertNumber: function(value) {
+            
+            if (value == "" || value == null ) {
+                value = "0";
+            }
+
+            return parseFloat(value);
         }
     }
 };
