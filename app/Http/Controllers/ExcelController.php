@@ -43,7 +43,6 @@ class ExcelController extends Controller
         //recupero usuario autenticado y declaracion jurada;
         $user = User::find( $request->user['id']);
         $declaracionjurada = DeclaracionJurada::find($request->id);
-        $declaracionjurada->update(['status' => false]);
 
 
         //recupero path del archivo a importar;
@@ -53,9 +52,9 @@ class ExcelController extends Controller
         
         //Importa el archivo
         $import = new LiquidacionsImport($declaracionjurada);
-        $deleteFileJob = new DeleteFileJob($declaracionjurada->path);
+        //$deleteFileJob = new DeleteFileJob($declaracionjurada);
         // $import->queue($file)->chain([new CompletedImport,new NotificationJob($user)]);
-        $import->queue($file)->chain([$deleteFileJob]);
+        $import->queue($file);
         return $declaracionjurada;
         
     }

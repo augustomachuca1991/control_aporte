@@ -2,19 +2,20 @@
 
 namespace App\Jobs;
 
-use App\DeclaracionJurada;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\DeclaracionJurada;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
-class DeleteFileJob implements ShouldQueue
+
+class DeleteFileImportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    
     public $declaracionJurada;
     /**
      * Create a new job instance.
@@ -34,7 +35,9 @@ class DeleteFileJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::channel('daily')->info($this->declaracionJurada);
         Storage::delete($this->declaracionJurada->path);
-        $this->declaracionjurada->update(['status' => false]);
+        $this->declaracionJurada->status = false;
+        $this->declaracionJurada->save();
     }
 }
