@@ -27,7 +27,7 @@ class LiquidacionsImport implements
 
 //WithBatchInserts
 {
-    use Importable, SkipsErrors, SkipsFailures, RemembersChunkOffset, RemembersRowNumber;
+    use Importable, SkipsErrors, RemembersChunkOffset, RemembersRowNumber;
 
 
     protected $declaracionjurada;
@@ -47,7 +47,7 @@ class LiquidacionsImport implements
     public function collection(Collection $rows)
     {
 
-        
+
             $chunkOffset = $this->getChunkOffset() - 2;
             $count = ($chunkOffset / 100) + 1;
             $cicles = intdiv($this->totalRows, $rows->count());
@@ -284,18 +284,13 @@ class LiquidacionsImport implements
                     'funcion_id' => null
                 ]);
             } //end foreach
-            // Log::channel('daily')->info('data import ', [
-            //     'chuckOffset' => $chunkOffset,
-            //     'totalRows' => $this->totalRows,
-            //     'cicles' => $count,
-            // ]);
             $user = User::find($this->declaracionjurada->user_id);
             if ($cicles == $count) {
                 CompletedImport::dispatch()
                     ->chain([new NotificationJob($user)])
                     ->delay(now()->addSeconds(5));
             }
-        
+
     }
 
 
@@ -392,7 +387,8 @@ class LiquidacionsImport implements
     public function onError(\Throwable $e)
     {
         //event(new FailedImport('Error: '+$e->getMessage()));
-        $this->failed($e);
+        //$this->failed($e);
+
     }
 
 
@@ -412,24 +408,20 @@ class LiquidacionsImport implements
             //     }
             // }
             if (!empty($failures)) {
-                foreach ($failures[0] as $key => $failure) {
-                    // $errors[$key]=[
-                    //     'row' => $failure->row(),
-                    //     'attribute' => $failure->attribute(),
-                    //     'errors' => $failure->errors(),
-                    //     //'values' => $failure->values(),
-                    // ];
-                    Log::channel('daily')->error('onFailure', [
+                foreach ($failures as $failure) {
+                    Log::channel('daily')->info('fallos', [
+                        'message' => $failure->toArray()[0],
                         'row' => $failure->row(),
                         'attribute' => $failure->attribute(),
                         'errors' => $failure->errors(),
                         'values' => $failure->values(),
                     ]);
-                    //Log::channel('daily')->error($errors);
-                    event(new FailedImport('Fila '+$failure->row()+' Columna'+$failure->attribute()+' Errores'+$failure->errors()));
+
+                    $this->failed($failure->toArray()[0]);
                 }
+
             }
-            
+
     }
 
 
@@ -437,14 +429,14 @@ class LiquidacionsImport implements
     {
         return [
             ImportFailed::class => function (ImportFailed $event) {
-                
+
                 if (!empty($event)) {
                     Log::channel('daily')->error('failed import', [
                         'import failed' => $event->getException()->getMessage(),
                     ]);
-                    
+                    //event(new FailedImport($this->message));
+
                 }
-                //$this->failed($event);
             },
 
             // AfterImport::class => function (AfterImport $event) {
@@ -469,13 +461,13 @@ class LiquidacionsImport implements
         ];
     }
 
-    public function failed($exception)
+    public function failed($message)
     {
-        Log::channel('daily')->error('failed exception', [
-            'exception por failed' => $exception->getMessage()
+        Log::channel('daily')->info('fallo', [
+            'message' => $message
         ]);
-        // ImportFailedJob::dispatch($this->declaracionjurada);
-        // event(new FailedImport('por failed '.$exception->getMessage()));
+         ImportFailedJob::dispatch($this->declaracionjurada);
+         event(new FailedImport($message));
         // etc...
     }
 }

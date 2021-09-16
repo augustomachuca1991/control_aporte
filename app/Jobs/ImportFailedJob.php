@@ -13,7 +13,7 @@ class ImportFailedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    
+
     protected $declaracionjurada;
     /**
      * Create a new job instance.
@@ -39,6 +39,6 @@ class ImportFailedJob implements ShouldQueue
         {
             $ddjj_line->delete();
         }
-        $this->declaracionjurada->delete();
+        $this->declaracionjurada->forceDelete();
     }
 }
