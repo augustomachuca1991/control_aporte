@@ -282,7 +282,7 @@ class LiquidacionsImport implements
                 'estado_id' => $declaracionjurada_detalle->cod_estado,
                 'funcion_id' => null
             ]);
-        } //end foreach
+        }
         $user = User::find($this->declaracionjurada->user_id);
         if ($cicles == $count) {
             $deleteFileJob = new DeleteFileImportJob($this->declaracionjurada);

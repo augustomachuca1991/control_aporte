@@ -196,9 +196,9 @@ class DeclaracionJuradaController extends Controller
      */
     public function download(Request $request)
     {
-        $pathToFile = Storage::url('app/'.$request->path);
+        $pathToFile = storage_path('app/'.$request->path);
         $header = ['Content-Type' => 'text/csv'];
-        return response()->download('..'.$pathToFile, 'descarga.csv',$header);
+        return response()->download($pathToFile, 'descarga.csv',$header);
     }
 
 

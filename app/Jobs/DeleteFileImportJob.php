@@ -36,7 +36,7 @@ class DeleteFileImportJob implements ShouldQueue
     public function handle()
     {
         Log::channel('daily')->info($this->declaracionJurada);
-        Storage::delete($this->declaracionJurada->path);
+        //Storage::delete($this->declaracionJurada->path);
         $this->declaracionJurada->status = false;
         $this->declaracionJurada->save();
     }

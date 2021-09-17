@@ -1,13 +1,13 @@
 <template>
     <div v-if="datos.length" id="lista_liquidaciones">
-        <select class="mb-5" name="perPage" id="perPage" v-model="perPage">
+        <select class="mb-5" name="perPage"  v-model="perPage">
             <option value="5">Por pagína 5</option>
             <option value="10">Por pagína 10</option>
             <option value="25">Por pagína 25</option>
             <option value="50">Por pagína 50</option>
             <option value="100">Por pagína 100</option>
         </select>
-
+        <!-- {{ fLangs }} -->
         <paginate class="pl-0"
             ref="paginator"
             name="liquidacions"
@@ -93,7 +93,12 @@
             for="liquidacions"
             :hide-single-page="true"
             :async="true"
-            :limit="3"
+            :limit="5"
+            :step-links="{
+				    	next: '»',
+				    	prev: '«'
+				  	}"
+			:classes="{'ul': 'pagination', 'li': 'page-item', 'a': 'page-link'}"
             @change="onLiquidacionsPageChange"
         ></paginate-links>
         <span
@@ -472,6 +477,12 @@ export default {
             //console.log('lista liquidaciones: '+this.datos);
         }
     },
+    computed: {
+        // fLangs () {
+        //     const re = new RegExp(this.searchLangs, 'i')
+        //     return this.langs.filter(lang => lang.match(re))
+        // }
+    },
     methods: {
         ver_detalle(index, liquidacionOrganismo) {
             index = this.page + parseInt(index)
@@ -538,7 +549,7 @@ export default {
 </script>
 
 <style>
-.paginate-links {
+/* .paginate-links {
     width: 100%;
     list-style: none;
     text-align: center;
@@ -557,5 +568,5 @@ export default {
     width: 100%;
     text-align: center;
     margin-bottom: 1rem;
-}
+} */
 </style>
