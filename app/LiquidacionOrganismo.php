@@ -30,7 +30,7 @@ class LiquidacionOrganismo extends Model
 
     public function liquidacion()
     {
-        return $this->belongsTo('App\Liquidacion')->with('historia_laborales')->with('detalles');
+        return $this->belongsTo('App\Liquidacion','liquidacion_id' , 'id')->with('historia_laborales')->with('detalles');
     }
 
 
@@ -160,5 +160,16 @@ class LiquidacionOrganismo extends Model
                      SUM(total_hijo) AS total_hijo,
                      SUM(total_esposa) AS total_esposa')
         ->groupBy('anual','mes');
+    }
+
+    public function scopeLiquidacionesRectificadas($query){
+        
+            $query->whereHas('liquidacion', function($liquidaciones){
+                $liquidaciones->whereHas('declaracionjurada',function($declaracionJurada){
+                    $declaracionJurada->where('secuencia', 'max(secuencia)');
+                });
+                
+            })
+            ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo']);
     }
 }

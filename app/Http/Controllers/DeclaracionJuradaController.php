@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Storage;
 
 class DeclaracionJuradaController extends Controller
 {
+    public $organismo_id;
+    public $periodo_id;
+    public $tipoliquidacion_id;
+    public $secuencia;
+    
     /**
      * Display a listing of the resource.
      *
@@ -73,7 +78,7 @@ class DeclaracionJuradaController extends Controller
                 'archivo' => 'file|mimes:csv,txt',
                 'original_name' => 'unique:declaracion_juradas,nombre_archivo',
                 'nombre' => 'required|array|max:4',
-                'organismo' => 'exists:organismos,organismo',
+                'organismo' => 'exists:organismos,cod_organismo',
                 'periodo' => 'exists:periodos,cod_periodo',
                 'tipo_liquidacion' => 'exists:tipo_liquidacions,descripcion',
                 'secuencia' => 'integer|nullable'
@@ -85,7 +90,7 @@ class DeclaracionJuradaController extends Controller
                 'nombre.required' => 'Nombre Requerido',
                 'nombre.array' => 'El nombre no cumple con el formato. El mismo debe ser ej: organimo_periodo_tipoliquidacion_secuencia.csv',
                 'nombre.max' => 'El nombre no cumple con el formato. El mismo debe tener como maximo 4 elementos',
-                'organismo.exists' => 'El organismo no existe o no esta escrito correctamente',
+                'organismo.exists' => 'El cod organismo no existe o no esta escrito correctamente',
                 'periodo.exists' => 'El codigo de periodo no existe',
                 'tipo_liquidacion.exists' => 'Tipo de Liquidacion no existe. Verifique',
                 'secuencia.integer' => 'El numero secuencia debe ser un entero',
@@ -98,22 +103,37 @@ class DeclaracionJuradaController extends Controller
                 $mensajes = $validator->errors()->first();
                 return response()->json(['data' => $mensajes , 'status' => false]);
             }else{
-
-                $organismo_id = Organismo::where('organismo',$name[0])->first()->cod_organismo;
-                $periodo_id = $name[1];
-                $tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
-                $secuencia = 1;
-                $new_declaracionjurada = DeclaracionJurada::create([
-                               'user_id' => $user_id,
-                               'periodo_id' => $periodo_id,
-                               'tipoliquidacion_id' => $tipoliquidacion_id,
-                               'organismo_id' => $organismo_id,
-                               'secuencia' => $secuencia,
-                               'path' => $file_storage,
-                               'nombre_archivo' => $original_name,
-                               'status' => true,
-                           ]);
-                $declaracionjurada = $this->show($new_declaracionjurada->id);
+                
+                $this->organismo_id = Organismo::where('cod_organismo',$name[0])->first()->cod_organismo;
+                $this->periodo_id = $name[1];
+                $this->tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
+                $this->secuencia = $name[3];
+                $declaracionJurada_exist = DeclaracionJurada::where('periodo_id', $this->periodo_id)->where('tipoliquidacion_id', $this->tipoliquidacion_id)->where('organismo_id',$this->organismo_id);
+                if ($declaracionJurada_exist->doesntExist()) {
+                    $new_declaracionjurada = DeclaracionJurada::create([
+                        'user_id' => $user_id,
+                        'periodo_id' => $this->periodo_id,
+                        'tipoliquidacion_id' => $this->tipoliquidacion_id,
+                        'organismo_id' => $this->organismo_id,
+                        'secuencia' => $this->secuencia,
+                        'path' => $file_storage,
+                        'nombre_archivo' => $original_name,
+                        'status' => true,
+                        'rectificar' => false,
+                    ]);
+                    $declaracionjurada = $this->show($new_declaracionjurada->id);
+                }else{
+                    $declaracionJurada_exist->first()->update([
+                        'user_id' => $user_id,
+                        'secuencia' => $this->secuencia,
+                        'nombre_archivo' => $original_name,
+                        'path' => $file_storage,
+                        'status' => true,
+                        'rectificar' => true,
+                    ]);
+                    $declaracionjurada = $this->show($declaracionJurada_exist->first()->id);
+                }
+                
 
                 return response()->json(['data' => $declaracionjurada, 'status' => true]);
             }

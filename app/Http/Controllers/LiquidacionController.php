@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DeclaracionJurada;
 use App\Liquidacion;
 use App\LiquidacionOrganismo;
 use Illuminate\Http\Request;
@@ -206,7 +207,19 @@ class LiquidacionController extends Controller
     {
 
         
-        
+        // return LiquidacionOrganismo::whereHas('liquidacion', function($liquidaciones){
+        //     $liquidaciones->whereHas('declaracionjurada',function($declaracionJurada){
+        //         $declaracionJurada->max('secuencia');
+        //     });
+            
+        // })
+        // ->whereHas('organismo', function($organismos) use ($value){
+        //     $organismos->whereHas('jurisdiccion',function($jurisdicciones) use ($value){
+        //         $jurisdicciones->where('origen_id' , $value);
+        //     });
+        // })
+        // ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
+        // ->get();
         return LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
             $organismos->whereHas('jurisdiccion',function($jurisdicciones) use ($value){
                 $jurisdicciones->where('origen_id' , $value);
@@ -322,6 +335,13 @@ class LiquidacionController extends Controller
         }
         return $query;
     }
+
+    public function secuencia()
+    {
+        
+        return LiquidacionOrganismo::liquidacionesRectificadas()->get();
+    }
+
 
 }
         

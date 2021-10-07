@@ -110,6 +110,12 @@ class Liquidacion extends Model
     }
 
 
+    public function declaracionjurada()
+    {
+        return $this->belongsTo('App\DeclaracionJurada','declaracion_id','id')->with('ddjj_lines');
+    }
+
+
 
     public function scopeBuscarLiquidacion($query, $search)
     {

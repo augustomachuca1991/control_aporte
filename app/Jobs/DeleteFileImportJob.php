@@ -8,8 +8,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\DeclaracionJurada;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 
 
 class DeleteFileImportJob implements ShouldQueue
@@ -35,9 +33,10 @@ class DeleteFileImportJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::channel('daily')->info($this->declaracionJurada);
+        //Log::channel('daily')->info($this->declaracionJurada);
         //Storage::delete($this->declaracionJurada->path);
         $this->declaracionJurada->status = false;
+        $this->declaracionJurada->rectificar = false;
         $this->declaracionJurada->save();
     }
 }

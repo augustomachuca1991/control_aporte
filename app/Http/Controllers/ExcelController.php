@@ -41,7 +41,7 @@ class ExcelController extends Controller
     public function import(Request $request){
 
         //recupero usuario autenticado y declaracion jurada;
-        $user = User::find( $request->user['id']);
+        //$user = User::find( $request->user['id']);
         $declaracionjurada = DeclaracionJurada::find($request->id);
 
 
