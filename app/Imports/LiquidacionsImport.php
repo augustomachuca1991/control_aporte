@@ -151,14 +151,14 @@ class LiquidacionsImport implements
                             ->where('organismo_id', $ddjj_line['cod_organismo']);
                         if ($is_concepto->doesntExist()) {
 
-                            $this->concepto_id  = ConceptoLiquidacion::insertGetId([
+                            $this->concepto_id[$i]  = ConceptoLiquidacion::insertGetId([
                                 'cod_concepto' => $this->conceptos[$i]['cod'],
                                 'concepto' => $this->conceptos[$i]['concepto'],
                                 'organismo_id' => $ddjj_line['cod_organismo'],
                                 'subtipo_id' => $this->conceptos[$i]['subtipo']
                             ]);
                         }else{
-                            $this->concepto_id = $is_concepto->first()->id;
+                            $this->concepto_id[$i] = $is_concepto->first()->id;
                         }
 
                     if ($this->conceptos[$i]['subtipo'] <= 2) {
@@ -399,7 +399,7 @@ class LiquidacionsImport implements
     protected function liquidacion_conceptos($liquidacion){
 
         for ($i = 0; $i < count($this->conceptos); $i++) {
-            $liquidacion->conceptos()->attach($this->concepto_id, [
+            $liquidacion->conceptos()->attach($this->concepto_id[$i], [
                 'unidad' => $this->conceptos[$i]['unidad'],
                 'importe' => $this->conceptos[$i]['importe']
             ]);
