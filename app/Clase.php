@@ -20,6 +20,6 @@ class Clase extends Model
 
     public function puestolaborales(){
 
-        return $this->belongsToMany( 'App\PuestoLaboral', 'historia_laborals', 'id', 'clase_id');
+        return $this->belongsToMany( 'App\PuestoLaboral', 'historia_laborals', 'id', 'clase_id')->withPivot('id');
     }
 }

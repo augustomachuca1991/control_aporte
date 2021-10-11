@@ -11,10 +11,17 @@ class PuestoLaboral extends Model
 
     protected $table = 'agente_organismo';
     protected $dates = ['deleted_at'];
+    protected $fillable = [
+        'cod_laboral',
+        'organismo_id',
+        'agente_id',
+        'fecha_ingreso',
+        'fecha_egreso'
+    ];
 
     public function clases(){
 
-        return $this->belongsToMany( 'App\Clase', 'historia_laborals','puesto_id','clase_id')->with('Categoria');
+        return $this->belongsToMany( 'App\Clase', 'historia_laborals','puesto_id','clase_id')->with('Categoria')->withPivot('id');
     }
 
     public function agente()
@@ -30,6 +37,6 @@ class PuestoLaboral extends Model
     public function historialaborales()
     {
         return $this->hasMany('App\HistoriaLaboral' ,'puesto_id');
-    } 
+    }
 
 }

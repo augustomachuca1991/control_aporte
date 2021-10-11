@@ -16,6 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class LiquidarJob implements ShouldQueue
 {
@@ -29,7 +30,7 @@ class LiquidarJob implements ShouldQueue
     protected $jurisdiccion_id;
     protected $agente;
     protected $puesto_laboral;
-    protected $historia_laboral;
+    protected $historia_laboral_id;
     /**
      * Create a new job instance.
      *
@@ -38,6 +39,7 @@ class LiquidarJob implements ShouldQueue
     public function __construct(DeclaracionJurada $declaracionjurada)
     {
         $this->declaracionjurada = $declaracionjurada;
+        $this->onConnection('redis');
     }
 
     /**
@@ -56,7 +58,7 @@ class LiquidarJob implements ShouldQueue
                 $is_concepto = ConceptoLiquidacion::where('cod_concepto', $this->conceptos[$i]['cod'])
                         ->where('organismo_id', $ddjj_line['cod_organismo']);
                     if ($is_concepto->doesntExist()) {
-                        
+
                         $this->concepto_id = ConceptoLiquidacion::insertGetId([
                             'cod_concepto' => $this->conceptos[$i]['cod'],
                             'concepto' => $this->conceptos[$i]['concepto'],
@@ -98,7 +100,7 @@ class LiquidarJob implements ShouldQueue
                     }
 
                 } elseif ($this->conceptos[$i]['subtipo'] > 8 && $this->conceptos[$i]['subtipo'] <= 11) { // descuento
-                    
+
                     if ($this->conceptos[$i]['subtipo'] == 9) {
                         $liquidacion->aporte_personal = $this->conceptos[$i]['importe'];
                         // $liquidacion->bruto = $this->conceptos[$i]['importe']/0.185;
@@ -107,18 +109,14 @@ class LiquidarJob implements ShouldQueue
                 }
             }
             $liquidacion->save();
-            
+
             $this->liquidacion_conceptos($liquidacion);
             $this->liquidacion_organismo($liquidacion);
             $this->categoria_clase($ddjj_line);
             $this->puesto_laboral($ddjj_line);
-            
-            $this->historia_laboral = HistoriaLaboral::where('puesto_id', $this->puesto_laboral->id)
-                ->where('clase_id', $this->clase_id)
-                ->first();
 
-            
-            $liquidacion->historia_laborales()->attach($this->historia_laboral->id, [
+
+            $liquidacion->historia_laborales()->attach($this->historia_laboral_id, [
                 'estado_id' => $ddjj_line->cod_estado,
                 'funcion_id' => null
             ]);
@@ -184,7 +182,7 @@ class LiquidarJob implements ShouldQueue
                 'categoria_id' => $this->categoria_id,
                 'clase' => $ddjj_line->clase
             ]);
-            
+
             $is_jurisdiccion = Jurisdiccion::where('cod_jurisdiccion', $ddjj_line->cod_jurisdiccion);
             if ($is_jurisdiccion->doesntExist()) {
                 $this->jurisdiccion_id = Jurisdiccion::insertGetId([
@@ -214,7 +212,7 @@ class LiquidarJob implements ShouldQueue
 
 
     protected function agente($ddjj_line){
-        
+
         $is_agente = Agente::where('cuil', $ddjj_line->cuil);
         if ($is_agente->doesntExist()) {
             $this->agente = Agente::create([
@@ -247,10 +245,11 @@ class LiquidarJob implements ShouldQueue
             'fecha_inicio' => date("Y-m-d", strtotime($ddjj_line->fecha_ingreso)),
             'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
         ]);
-        
-    }
-    
 
-        
+        $this->historia_laboral_id = $this->puesto_laboral->clases->first()->pivot->id;
+    }
+
+
+
 
 }
