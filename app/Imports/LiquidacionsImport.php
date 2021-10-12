@@ -30,6 +30,7 @@ class LiquidacionsImport implements
 
     protected $declaracionjurada;
     protected $declaracionjuradaline;
+    protected $liquidacion;
     protected $conceptos;
     protected $concepto_id;
     protected $categoria_id;
@@ -86,7 +87,7 @@ class LiquidacionsImport implements
                         'updated_at' => now()
                     ]);
                 }else{
-                    
+
                     $this->declaracionjuradaline = DeclaracionJuradaLine::create([
                         'declaracionjurada_id' => $this->declaracionjurada->id,
                         'nombre' => $value['nombre'],
@@ -109,36 +110,33 @@ class LiquidacionsImport implements
                         'detalle' => $value['detalle'],
                     ]);
                 }
-                Log::channel('daily')->error('declaracion jurada line', [
-                    '$declaracionjuradaline' => $this->declaracionjuradaline,
+
+
+                $this->agente($this->declaracionjuradaline);
+                $this->agente->update([
+                    'nombre' => $this->declaracionjuradaline->nombre,
+                    'cuil' => $this->declaracionjuradaline->cuil,
+                    'fecha_nac' => date("Y-m-d", strtotime($this->declaracionjuradaline->fecha_nac)),
+                    'sexo' => $this->declaracionjuradaline->sexo,
+                    'updated_at' => now()
                 ]);
-                
 
-                // $this->agente($this->declaracionjuradaline);
-                // $this->agente->update([
-                //     'nombre' => $this->declaracionjuradaline->nombre,
-                //     'cuil' => $this->declaracionjuradaline->cuil,
-                //     'fecha_nac' => date("Y-m-d", strtotime($this->declaracionjuradaline->fecha_nac)),
-                //     'sexo' => $this->declaracionjuradaline->sexo,
-                //     'updated_at' => now()
-                // ]);
+                // $this->detalle_conceptos($this->declaracionjuradaline->detalle);
 
-                // $this->detalle_conceptos($ddjj_line->detalle);
-                
-                // if ($this->declaracionjurada->liquidaciones[$row]) {
-                //     $liquidacion = $this->declaracionjurada->liquidaciones[$row];
+                // if (!empty($this->declaracionjurada->liquidaciones[$row])) {
+                //     $this->liquidacion = $this->declaracionjurada->liquidaciones[$row];
                 // }else{
-                //     $liquidacion = new Liquidacion();
+                //     $this->liquidacion = new Liquidacion();
                 // }
                 // for ($i = 0; $i < count($this->conceptos); $i++) {
                 //     $is_concepto = ConceptoLiquidacion::where('cod_concepto', $this->conceptos[$i]['cod'])
-                //             ->where('organismo_id', $ddjj_line->cod_organismo);
+                //             ->where('organismo_id', $this->declaracionjuradaline ->cod_organismo);
                 //     if ($is_concepto->doesntExist()) {
 
                 //         $this->concepto_id[$i]  = ConceptoLiquidacion::insertGetId([
                 //             'cod_concepto' => $this->conceptos[$i]['cod'],
                 //             'concepto' => $this->conceptos[$i]['concepto'],
-                //             'organismo_id' => $ddjj_line->cod_organismo,
+                //             'organismo_id' => $this->declaracionjuradaline ->cod_organismo,
                 //             'subtipo_id' => $this->conceptos[$i]['subtipo']
                 //         ]);
                 //     }else{
@@ -148,44 +146,44 @@ class LiquidacionsImport implements
                 //     if ($this->conceptos[$i]['subtipo'] <= 2) {
 
                 //         if ($this->conceptos[$i]['subtipo'] == 1) {
-                //             $liquidacion->basico = $this->conceptos[$i]['importe'];
+                //             $this->liquidacion->basico = $this->conceptos[$i]['importe'];
                 //         }
-                //         $liquidacion->remunerativo += $this->conceptos[$i]['importe'];
-                //         $liquidacion->bruto += $this->conceptos[$i]['importe'];
+                //         $this->liquidacion->remunerativo += $this->conceptos[$i]['importe'];
+                //         $this->liquidacion->bruto += $this->conceptos[$i]['importe'];
 
                 //     } else if ($this->conceptos[$i]['subtipo'] > 2 && $this->conceptos[$i]['subtipo'] <= 5) {
 
                 //         if ($this->conceptos[$i]['tipo'] == 2) {
-                //             $liquidacion->bonificable += $this->conceptos[$i]['importe'];
+                //             $this->liquidacion->bonificable += $this->conceptos[$i]['importe'];
                 //         } else if ($this->conceptos[$i]['tipo'] == 3) {
-                //             $liquidacion->no_bonificable += $this->conceptos[$i]['importe'];
+                //             $this->liquidacion->no_bonificable += $this->conceptos[$i]['importe'];
                 //         } else if ($this->conceptos[$i]['tipo'] == 4) {
-                //             $liquidacion->no_remunerativo += $this->conceptos[$i]['importe'];
+                //             $this->liquidacion->no_remunerativo += $this->conceptos[$i]['importe'];
                 //         }
-                //         $liquidacion->adicionales += $this->conceptos[$i]['importe'];
-                //         $liquidacion->bruto += $this->conceptos[$i]['importe'];
+                //         $this->liquidacion->adicionales += $this->conceptos[$i]['importe'];
+                //         $this->liquidacion->bruto += $this->conceptos[$i]['importe'];
 
                 //     } else if ($this->conceptos[$i]['subtipo'] > 5 && $this->conceptos[$i]['subtipo'] <= 8) {
 
                 //         if ($this->conceptos[$i]['subtipo'] == 6) {
-                //             $liquidacion->familiar += $this->conceptos[$i]['importe'];
+                //             $this->liquidacion->familiar += $this->conceptos[$i]['importe'];
                 //         } else if ($this->conceptos[$i]['subtipo'] == 7) {
-                //             $liquidacion->hijo += $this->conceptos[$i]['importe'];
+                //             $this->liquidacion->hijo += $this->conceptos[$i]['importe'];
                 //         } else {
-                //             $liquidacion->esposa += $this->conceptos[$i]['importe'];
+                //             $this->liquidacion->esposa += $this->conceptos[$i]['importe'];
                 //         }
 
                 //     } elseif ($this->conceptos[$i]['subtipo'] > 8 && $this->conceptos[$i]['subtipo'] <= 11) { // descuento
 
                 //         if ($this->conceptos[$i]['subtipo'] == 9) {
-                //             $liquidacion->aporte_personal = $this->conceptos[$i]['importe'];
-                //             // $liquidacion->bruto = $this->conceptos[$i]['importe']/0.185;
+                //             $this->liquidacion->aporte_personal = $this->conceptos[$i]['importe'];
+                //             // $this->liquidacion->bruto = $this->conceptos[$i]['importe']/0.185;
                 //         }
-                //         $liquidacion->descuento += $this->conceptos[$i]['importe'];
+                //         $this->liquidacion->descuento += $this->conceptos[$i]['importe'];
                 //     }
                 // }
-                // $liquidacion->updated_at = now();
-                // $liquidacion->save();
+                // $this->liquidacion->updated_at = now();
+                // $this->liquidacion->save();
 
             }
         }else{
@@ -285,7 +283,7 @@ class LiquidacionsImport implements
             }
 
         }
-        
+
         if ($cicles == $count) {
             $deleteFileJob = new DeleteFileImportJob($this->declaracionjurada);
             CompletedImport::dispatch()->chain([new NotificationJob(User::find($this->declaracionjurada->user_id)), $deleteFileJob]);
@@ -536,13 +534,13 @@ class LiquidacionsImport implements
 
     protected function agente($ddjj_line){
 
-        $is_agente = Agente::where('cuil', $ddjj_line->cuil);
+        $is_agente = Agente::where('cuil', $ddjj_line['cuil']);
         if ($is_agente->doesntExist()) {
             $this->agente = Agente::create([
-                'nombre' => $ddjj_line->nombre,
-                'cuil' => $ddjj_line->cuil,
-                'fecha_nac' => date("Y-m-d", strtotime($ddjj_line->fecha_nac)),
-                'sexo' => $ddjj_line->sexo,
+                'nombre' => $ddjj_line['nombre'],
+                'cuil' => $ddjj_line['cuil'],
+                'fecha_nac' => date("Y-m-d", strtotime($ddjj_line['fecha_nac'])),
+                'sexo' => $ddjj_line['sexo'],
             ]);
         } else {
             $this->agente = $is_agente->first();
