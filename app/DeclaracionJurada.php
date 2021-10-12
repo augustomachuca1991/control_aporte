@@ -17,6 +17,11 @@ class DeclaracionJurada extends Model
         return $this->hasMany('App\DeclaracionJuradaLine','declaracionjurada_id','id');
     }
 
+    public function liquidaciones()
+    {
+        return $this->hasMany('App\Liquidacion')->with('detalles');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');

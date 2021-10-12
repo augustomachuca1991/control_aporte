@@ -31,18 +31,6 @@ class DeclaracionJuradaLine extends Model
     	'cod_organismo',
     	'organismo',
         'detalle'
-    	// 'haber_bruto',
-    	// 'aporte_personal',
-    	// 'aporte_estatal',
-    	// 'basico',
-    	// 'antiguedad',
-    	// 'adicionales',
-    	// 'familiar',
-    	// 'hijo',
-    	// 'esposa',
-    	// 'otros',
-    	// 'cod_funcion',
-    	// 'funcion'
     ];
     
 }

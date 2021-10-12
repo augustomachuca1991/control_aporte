@@ -29,6 +29,7 @@ class LiquidacionsImport implements
 
 
     protected $declaracionjurada;
+    protected $declaracionjuradaline;
     protected $conceptos;
     protected $concepto_id;
     protected $categoria_id;
@@ -62,62 +63,134 @@ class LiquidacionsImport implements
 
         if ($this->declaracionjurada->rectificar) {
             foreach ($rows as $row => $value) {
-
-                // $this->declaracionjurada->ddjj_lines[$row]->nombre = $value['nombre'];
-                // $this->declaracionjurada->ddjj_lines[$row]->cuil = $value['cuil'];
-                // $this->declaracionjurada->ddjj_lines[$row]->fecha_nac = date("Y-m-d", strtotime($value['fecha_nac']));
-                // $this->declaracionjurada->ddjj_lines[$row]->sexo = $value['sexo'];
-                // $this->declaracionjurada->ddjj_lines[$row]->puesto_laboral = $value['puesto_laboral'];
-                // $this->declaracionjurada->ddjj_lines[$row]->cargo = $value['cargo'];
-                // $this->declaracionjurada->ddjj_lines[$row]->fecha_ingreso = date("Y-m-d", strtotime($value['fecha_ingreso']));
-                // $this->declaracionjurada->ddjj_lines[$row]->cod_categoria = $value['cod_categoria'];
-                // $this->declaracionjurada->ddjj_lines[$row]->categoria = $value['categoria'];
-                // $this->declaracionjurada->ddjj_lines[$row]->cod_clase = $value['cod_clase'];
-                // $this->declaracionjurada->ddjj_lines[$row]->clase = $value['clase'];
-                // $this->declaracionjurada->ddjj_lines[$row]->cod_estado = $value['cod_estado'];
-                // $this->declaracionjurada->ddjj_lines[$row]->estado = $value['estado'];
-                // $this->declaracionjurada->ddjj_lines[$row]->cod_jurisdiccion = $value['cod_jurisdiccion'];
-                // $this->declaracionjurada->ddjj_lines[$row]->jurisdiccion = $value['jurisdiccion'];
-                // $this->declaracionjurada->ddjj_lines[$row]->cod_organismo = $value['cod_organismo'];
-                // $this->declaracionjurada->ddjj_lines[$row]->organismo = $value['organismo'];
-                // $this->declaracionjurada->ddjj_lines[$row]->detalle = $value['detalle'];
-
-                // $this->declaracionjurada->ddjj_lines[$row]->save();
-
-                $this->declaracionjurada->ddjj_lines[$row]->update([
-                    'nombre' => $value['nombre'],
-                    'cuil' => $value['cuil'],
-                    'fecha_nac' => date("Y-m-d", strtotime($value['fecha_nac'])),
-                    'sexo' => $value['sexo'],
-                    'puesto_laboral' => $value['puesto_laboral'],
-                    'cargo' => $value['cargo'],
-                    'fecha_ingreso' =>  date("Y-m-d", strtotime($value['fecha_ingreso'])),
-                    'cod_categoria' => $value['cod_categoria'],
-                    'categoria' => $value['categoria'],
-                    'cod_clase' => $value['cod_clase'],
-                    'clase' => $value['clase'],
-                    'cod_estado' => $value['cod_estado'],
-                    'estado' => $value['estado'],
-                    'cod_jurisdiccion' => $value['cod_jurisdiccion'],
-                    'jurisdiccion' => $value['jurisdiccion'],
-                    'cod_organismo' => $value['cod_organismo'],
-                    'organismo' => $value['organismo'],
-                    'detalle' => $value['detalle'],
-                    'updated_at' => now()
+                if (!empty($this->declaracionjurada->ddjj_lines[$row])) {
+                    $this->declaracionjuradaline = $this->declaracionjurada->ddjj_lines[$row]->update([
+                        'nombre' => $value['nombre'],
+                        'cuil' => $value['cuil'],
+                        'fecha_nac' => date("Y-m-d", strtotime($value['fecha_nac'])),
+                        'sexo' => $value['sexo'],
+                        'puesto_laboral' => $value['puesto_laboral'],
+                        'cargo' => $value['cargo'],
+                        'fecha_ingreso' =>  date("Y-m-d", strtotime($value['fecha_ingreso'])),
+                        'cod_categoria' => $value['cod_categoria'],
+                        'categoria' => $value['categoria'],
+                        'cod_clase' => $value['cod_clase'],
+                        'clase' => $value['clase'],
+                        'cod_estado' => $value['cod_estado'],
+                        'estado' => $value['estado'],
+                        'cod_jurisdiccion' => $value['cod_jurisdiccion'],
+                        'jurisdiccion' => $value['jurisdiccion'],
+                        'cod_organismo' => $value['cod_organismo'],
+                        'organismo' => $value['organismo'],
+                        'detalle' => $value['detalle'],
+                        'updated_at' => now()
+                    ]);
+                }else{
+                    
+                    $this->declaracionjuradaline = DeclaracionJuradaLine::create([
+                        'declaracionjurada_id' => $this->declaracionjurada->id,
+                        'nombre' => $value['nombre'],
+                        'cuil' => $value['cuil'],
+                        'fecha_nac' => date("Y-m-d", strtotime($value['fecha_nac'])),
+                        'sexo' => $value['sexo'],
+                        'puesto_laboral' => $value['puesto_laboral'],
+                        'cargo' => $value['cargo'],
+                        'fecha_ingreso' =>  date("Y-m-d", strtotime($value['fecha_ingreso'])),
+                        'cod_categoria' => $value['cod_categoria'],
+                        'categoria' => $value['categoria'],
+                        'cod_clase' => $value['cod_clase'],
+                        'clase' => $value['clase'],
+                        'cod_estado' => $value['cod_estado'],
+                        'estado' => $value['estado'],
+                        'cod_jurisdiccion' => $value['cod_jurisdiccion'],
+                        'jurisdiccion' => $value['jurisdiccion'],
+                        'cod_organismo' => $value['cod_organismo'],
+                        'organismo' => $value['organismo'],
+                        'detalle' => $value['detalle'],
+                    ]);
+                }
+                Log::channel('daily')->error('declaracion jurada line', [
+                    '$declaracionjuradaline' => $this->declaracionjuradaline,
                 ]);
+                
 
-                $this->agente($this->declaracionjurada->ddjj_lines[$row]);
-                $this->agente->update([
-                    'nombre' => $this->declaracionjurada->ddjj_lines[$row]->nombre,
-                    'cuil' => $this->declaracionjurada->ddjj_lines[$row]->cuil,
-                    'fecha_nac' => date("Y-m-d", strtotime($this->declaracionjurada->ddjj_lines[$row]->fecha_nac)),
-                    'sexo' => $this->declaracionjurada->ddjj_lines[$row]->sexo
-                ]);
+                // $this->agente($this->declaracionjuradaline);
+                // $this->agente->update([
+                //     'nombre' => $this->declaracionjuradaline->nombre,
+                //     'cuil' => $this->declaracionjuradaline->cuil,
+                //     'fecha_nac' => date("Y-m-d", strtotime($this->declaracionjuradaline->fecha_nac)),
+                //     'sexo' => $this->declaracionjuradaline->sexo,
+                //     'updated_at' => now()
+                // ]);
+
+                // $this->detalle_conceptos($ddjj_line->detalle);
+                
+                // if ($this->declaracionjurada->liquidaciones[$row]) {
+                //     $liquidacion = $this->declaracionjurada->liquidaciones[$row];
+                // }else{
+                //     $liquidacion = new Liquidacion();
+                // }
+                // for ($i = 0; $i < count($this->conceptos); $i++) {
+                //     $is_concepto = ConceptoLiquidacion::where('cod_concepto', $this->conceptos[$i]['cod'])
+                //             ->where('organismo_id', $ddjj_line->cod_organismo);
+                //     if ($is_concepto->doesntExist()) {
+
+                //         $this->concepto_id[$i]  = ConceptoLiquidacion::insertGetId([
+                //             'cod_concepto' => $this->conceptos[$i]['cod'],
+                //             'concepto' => $this->conceptos[$i]['concepto'],
+                //             'organismo_id' => $ddjj_line->cod_organismo,
+                //             'subtipo_id' => $this->conceptos[$i]['subtipo']
+                //         ]);
+                //     }else{
+                //         $this->concepto_id[$i] = $is_concepto->first()->id;
+                //     }
+
+                //     if ($this->conceptos[$i]['subtipo'] <= 2) {
+
+                //         if ($this->conceptos[$i]['subtipo'] == 1) {
+                //             $liquidacion->basico = $this->conceptos[$i]['importe'];
+                //         }
+                //         $liquidacion->remunerativo += $this->conceptos[$i]['importe'];
+                //         $liquidacion->bruto += $this->conceptos[$i]['importe'];
+
+                //     } else if ($this->conceptos[$i]['subtipo'] > 2 && $this->conceptos[$i]['subtipo'] <= 5) {
+
+                //         if ($this->conceptos[$i]['tipo'] == 2) {
+                //             $liquidacion->bonificable += $this->conceptos[$i]['importe'];
+                //         } else if ($this->conceptos[$i]['tipo'] == 3) {
+                //             $liquidacion->no_bonificable += $this->conceptos[$i]['importe'];
+                //         } else if ($this->conceptos[$i]['tipo'] == 4) {
+                //             $liquidacion->no_remunerativo += $this->conceptos[$i]['importe'];
+                //         }
+                //         $liquidacion->adicionales += $this->conceptos[$i]['importe'];
+                //         $liquidacion->bruto += $this->conceptos[$i]['importe'];
+
+                //     } else if ($this->conceptos[$i]['subtipo'] > 5 && $this->conceptos[$i]['subtipo'] <= 8) {
+
+                //         if ($this->conceptos[$i]['subtipo'] == 6) {
+                //             $liquidacion->familiar += $this->conceptos[$i]['importe'];
+                //         } else if ($this->conceptos[$i]['subtipo'] == 7) {
+                //             $liquidacion->hijo += $this->conceptos[$i]['importe'];
+                //         } else {
+                //             $liquidacion->esposa += $this->conceptos[$i]['importe'];
+                //         }
+
+                //     } elseif ($this->conceptos[$i]['subtipo'] > 8 && $this->conceptos[$i]['subtipo'] <= 11) { // descuento
+
+                //         if ($this->conceptos[$i]['subtipo'] == 9) {
+                //             $liquidacion->aporte_personal = $this->conceptos[$i]['importe'];
+                //             // $liquidacion->bruto = $this->conceptos[$i]['importe']/0.185;
+                //         }
+                //         $liquidacion->descuento += $this->conceptos[$i]['importe'];
+                //     }
+                // }
+                // $liquidacion->updated_at = now();
+                // $liquidacion->save();
 
             }
         }else{
             foreach ($rows as $row) {
-                DeclaracionJuradaLine::create([
+                $ddjj_line = DeclaracionJuradaLine::create([
                     'declaracionjurada_id' => $this->declaracionjurada->id,
                     'nombre' => $row['nombre'],
                     'cuil' => $row['cuil'],
@@ -139,27 +212,23 @@ class LiquidacionsImport implements
                     'detalle' => $row['detalle'],
                 ]);
 
-            }
-
-            foreach ($this->declaracionjurada->ddjj_lines as $ddjj_line) {
-                // $this->agente($ddjj_line);
-                $this->detalle_conceptos($ddjj_line['detalle']);
+                $this->detalle_conceptos($ddjj_line->detalle);
                 $liquidacion = new Liquidacion();
                 $liquidacion->declaracion_id = $this->declaracionjurada->id;
                 for ($i = 0; $i < count($this->conceptos); $i++) {
                     $is_concepto = ConceptoLiquidacion::where('cod_concepto', $this->conceptos[$i]['cod'])
                             ->where('organismo_id', $ddjj_line['cod_organismo']);
-                        if ($is_concepto->doesntExist()) {
+                    if ($is_concepto->doesntExist()) {
 
-                            $this->concepto_id[$i]  = ConceptoLiquidacion::insertGetId([
-                                'cod_concepto' => $this->conceptos[$i]['cod'],
-                                'concepto' => $this->conceptos[$i]['concepto'],
-                                'organismo_id' => $ddjj_line['cod_organismo'],
-                                'subtipo_id' => $this->conceptos[$i]['subtipo']
-                            ]);
-                        }else{
-                            $this->concepto_id[$i] = $is_concepto->first()->id;
-                        }
+                        $this->concepto_id[$i]  = ConceptoLiquidacion::insertGetId([
+                            'cod_concepto' => $this->conceptos[$i]['cod'],
+                            'concepto' => $this->conceptos[$i]['concepto'],
+                            'organismo_id' => $ddjj_line['cod_organismo'],
+                            'subtipo_id' => $this->conceptos[$i]['subtipo']
+                        ]);
+                    }else{
+                        $this->concepto_id[$i] = $is_concepto->first()->id;
+                    }
 
                     if ($this->conceptos[$i]['subtipo'] <= 2) {
 
@@ -214,10 +283,9 @@ class LiquidacionsImport implements
                     'funcion_id' => null
                 ]);
             }
+
         }
-        //LiquidarJob::dispatch($this->declaracionjurada);
-
-
+        
         if ($cicles == $count) {
             $deleteFileJob = new DeleteFileImportJob($this->declaracionjurada);
             CompletedImport::dispatch()->chain([new NotificationJob(User::find($this->declaracionjurada->user_id)), $deleteFileJob]);
@@ -263,7 +331,7 @@ class LiquidacionsImport implements
     */
     public function batchSize(): int
     {
-        return 50;
+        return 200;
     }
 
 
@@ -278,7 +346,7 @@ class LiquidacionsImport implements
     */
     public function chunkSize(): int
     {
-        return 50;
+        return 200;
     }
 
 
