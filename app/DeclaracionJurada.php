@@ -19,7 +19,7 @@ class DeclaracionJurada extends Model
 
     public function liquidaciones()
     {
-        return $this->hasMany('App\Liquidacion')->with('detalles');
+        return $this->hasMany('App\Liquidacion','declaracion_id','id')->with('detalles');
     }
 
     public function user()

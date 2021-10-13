@@ -147,7 +147,7 @@ class DeclaracionJuradaController extends Controller
      */
     public function show($id)
     {
-        $declaracionjurada = DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion','ddjj_lines'])
+        $declaracionjurada = DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion','ddjj_lines', 'liquidaciones'])
                             ->where('id', $id)->first();
         return $declaracionjurada;
     }
