@@ -205,28 +205,20 @@ class LiquidacionController extends Controller
 
     public function porOrigen(Request $request, $value)
     {
-
-        
-        // return LiquidacionOrganismo::whereHas('liquidacion', function($liquidaciones){
-        //     $liquidaciones->whereHas('declaracionjurada',function($declaracionJurada){
-        //         $declaracionJurada->max('secuencia');
-        //     });
-            
-        // })
-        // ->whereHas('organismo', function($organismos) use ($value){
-        //     $organismos->whereHas('jurisdiccion',function($jurisdicciones) use ($value){
-        //         $jurisdicciones->where('origen_id' , $value);
-        //     });
-        // })
-        // ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        // ->get();
-        return LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
+        $liquidaciones = LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
             $organismos->whereHas('jurisdiccion',function($jurisdicciones) use ($value){
                 $jurisdicciones->where('origen_id' , $value);
             });
         })
         ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
         ->get();
+        return $liquidaciones;
+        // return LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
+        //     $organismos->whereHas('jurisdiccion',function($jurisdicciones) use ($value){
+        //         $jurisdicciones->where('origen_id' , $value);
+        //     });
+        // })
+        // ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])->get();
     }
 
 

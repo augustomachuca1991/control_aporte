@@ -342,11 +342,33 @@ export default {
                         );
                         this.isReciente = true;
                     } else {
-                        Toast.fire({
-                            icon: "error",
-                            title: response.data.data,
-                            background: "#FCDBCD"
-                        });
+                        if(response.data.confirm){
+                            swal.fire({
+                            title: "Atención! Esta a punto de rectificar, Los cambios seran de forma permanentes.",
+                            showCancelButton: true,
+                            confirmButtonText: 'Save',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.rectificar(response.data.data)
+                                    // this.declaracion_jurada = response.data.data
+
+                                    // Toast.fire({
+                                    //     icon: "success",
+                                    //     title:"rectificacion con exitó",
+                                    //     background: "#E7FFD7"
+                                    // });
+                                }else{
+                                    window.location.reload();
+                                }
+                            })
+                        }else{
+                            Toast.fire({
+                                icon: "error",
+                                title: response.data.data,
+                                background: "#FCDBCD"
+                            });
+                        }
+                        
                     }
                     this.isLoad = false;
                 })
@@ -381,6 +403,22 @@ export default {
                     title: "importando: " + response.data.nombre_archivo
                 });
             });
+        },
+        rectificar(declaracionjurada){
+            const data = {
+                id : declaracionjurada.id,
+                user_id : declaracionjurada.user_id,
+                secuencia : declaracionjurada.secuencia,
+                nombre_archivo : declaracionjurada.nombre_archivo,
+                path : declaracionjurada.path,
+                status : true,
+                rectificar : true,
+              };
+
+            axios.put(`api/declaracion_jurada/update/`+data.id ,data)
+              .then((response)=>{
+                 this.declaraciones_juradas.unshift(response.data);
+              });
         },
         buscar() {
             axios

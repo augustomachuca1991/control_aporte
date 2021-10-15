@@ -89,28 +89,28 @@
                   <div class="form-group">
                     <label for="descripcion">Periodo</label>
                     <p id="descripcion">{{periodo.periodo}}</p>
-                    <span class="errors text-danger" v-for="error in errores.periodo">
+                    <span class="errors text-danger" v-for="error in errores.periodo" :key="error.id">
                         <small><em>{{error}}</em></small>
                     </span>
                   </div>
                   <div class="form-group">
                     <label for="cod_periodo">Codigo Periodo</label>
                     <p id="cod_periodo">{{periodo.cod_periodo}}</p>
-                    <span class="errors text-danger" v-for="error in errores.cod_periodo">
+                    <span class="errors text-danger" v-for="error in errores.cod_periodo" :key="error.id">
                         <small><em>{{error}}</em></small>
                     </span>
                   </div>
                   <div class="form-group">
                     <label for="mes">Mes</label>
                     <p id="mes">{{periodo.mes}}</p>
-                    <span class="errors text-danger" v-for="error in errores.mes">
+                    <span class="errors text-danger" v-for="error in errores.mes" :key="error.id">
                         <small><em>{{error}}</em></small>
                     </span>
                   </div>
                   <div class="form-group">
                     <label for="anio">Año</label>
                     <p id="anio">{{periodo.anio}}</p>
-                    <span class="errors text-danger" v-for="error in errores.anio">
+                    <span class="errors text-danger" v-for="error in errores.anio" :key="error.id">
                         <small><em>{{error}}</em></small>
                     </span>
                   </div>
@@ -252,7 +252,7 @@
                     <span>total registros encontrados: {{paginate.total}}</span>
                     <nav aria-label="Contacts Page Navigation">
                       <ul class="pagination pagiante-sm justify-content-end m-0">
-                        <li class="page-item" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page">
+                        <li class="page-item" :class="{ 'active': (paginate.current_page === n) }" v-for="n in paginate.last_page" :key="n.id">
                             <a href="#" class="page-link" @click.prevent="getPage(n)">
                                 <span >
                                     {{ n }}

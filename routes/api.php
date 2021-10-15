@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Declaraciones Juradas
 Route::get('/declaracion_jurada' , 'DeclaracionJuradaController@getDeclaracionesJuradas');
 Route::post('/declaracion_jurada/create', 'DeclaracionJuradaController@store');
+Route::put('/declaracion_jurada/update/{id}', 'DeclaracionJuradaController@update');
 Route::get('/declaracion_jurada/{id}', 'DeclaracionJuradaController@show');
 //Route::delete('declaracion_jurada/aplicar/{id}' , 'DeclaracionJuradaController@destroy');
 //Declaraciones Juradas detalle

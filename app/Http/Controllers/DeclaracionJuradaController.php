@@ -54,9 +54,7 @@ class DeclaracionJuradaController extends Controller
         $original_name = $file->getClientOriginalName();
         $count = count($name);
         
-
-
-
+        
         //validamos si existe si la cadena contiene numero de secuencia
         if ($count === 3) {
             $name[3] = null;
@@ -100,17 +98,18 @@ class DeclaracionJuradaController extends Controller
 
             // si no pasa la validacion arroja mensaje caso contrario crea una nueva declaracion jurada
             if ($validator->fails()) {
-                $mensajes = $validator->errors()->first();
-                return response()->json(['data' => $mensajes , 'status' => false]);
+                $data = $validator->errors()->first();
+                $status = false;
+                $confirm = false;
             }else{
                 
                 $this->organismo_id = Organismo::where('cod_organismo',$name[0])->first()->cod_organismo;
                 $this->periodo_id = $name[1];
                 $this->tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
                 $this->secuencia = $name[3];
-                $declaracionJurada_exist = DeclaracionJurada::where('periodo_id', $this->periodo_id)->where('tipoliquidacion_id', $this->tipoliquidacion_id)->where('organismo_id',$this->organismo_id);
-                if ($declaracionJurada_exist->doesntExist()) {
-                    $new_declaracionjurada = DeclaracionJurada::create([
+                $is_declaradionjurada = DeclaracionJurada::where('periodo_id', $this->periodo_id)->where('tipoliquidacion_id', $this->tipoliquidacion_id)->where('organismo_id',$this->organismo_id);
+                if ($is_declaradionjurada->doesntExist()) {
+                    $declaracionJurada = DeclaracionJurada::create([
                         'user_id' => $user_id,
                         'periodo_id' => $this->periodo_id,
                         'tipoliquidacion_id' => $this->tipoliquidacion_id,
@@ -121,22 +120,36 @@ class DeclaracionJuradaController extends Controller
                         'status' => true,
                         'rectificar' => false,
                     ]);
-                    $declaracionjurada = $this->show($new_declaracionjurada->id);
+                    $data = $this->show($declaracionJurada->id);
+                    $status = true;
+                    $confirm = false;
                 }else{
-                    $declaracionJurada_exist->first()->update([
-                        'user_id' => $user_id,
-                        'secuencia' => $this->secuencia,
-                        'nombre_archivo' => $original_name,
-                        'path' => $file_storage,
-                        'status' => true,
-                        'rectificar' => true,
-                    ]);
-                    $declaracionjurada = $this->show($declaracionJurada_exist->first()->id);
+                    $declaracionJurada = $is_declaradionjurada->first();
+                    if ($this->secuencia < $declaracionJurada->secuencia ) {
+                        $data = 'No es posible es un rectificacion anterior';
+                        $status = false;
+                        $confirm = false;
+                    }else{
+                        
+                        
+                        $data = [
+                            'id' => $declaracionJurada->id,
+                            'user_id' => $user_id,
+                            'secuencia' => $this->secuencia,
+                            'nombre_archivo' => $original_name,
+                            'path' => $file_storage,
+                            'status' => true,
+                            'rectificar' => true,
+                            'updated_at' => now()
+                        ];
+                        $status = false;
+                        $confirm = true;
+                    }
+                    
                 }
-                
-
-                return response()->json(['data' => $declaracionjurada, 'status' => true]);
             }
+        
+            return response()->json(['data' => $data , 'status' => $status, 'confirm' => $confirm]);
     }
 
     /**
@@ -170,9 +183,19 @@ class DeclaracionJuradaController extends Controller
      * @param  \App\DeclaracionJurada  $declaracionJurada
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DeclaracionJurada $declaracionJurada)
+    public function update(Request $request, $id)
     {
-        //
+        $declaracionJurada = DeclaracionJurada::find($id);
+        $declaracionJurada->update([
+            'user_id' => $request->id,
+            'secuencia' => $request->secuencia,
+            'nombre_archivo' => $request->nombre_archivo,
+            'path' => $request->path,
+            'status' => true,
+            'rectificar' => true,
+            'updated_at' => now()
+        ]);
+        return $this->show($declaracionJurada->id);
     }
 
     /**

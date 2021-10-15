@@ -74,7 +74,7 @@
       @change="onLangsPageChange">
     </paginate-links>
   </nav>
-   
+  
     
 
     <!--modal-->
