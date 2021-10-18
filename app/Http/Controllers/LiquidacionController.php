@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 
 class LiquidacionController extends Controller
 {
-    
 
-    public $perPage = 10;
+
+    protected $perPage = 10;
+    protected $liquidaciones;
+
     /**
      * Display a listing of the resource.
      *
@@ -52,34 +54,34 @@ class LiquidacionController extends Controller
     public function show($id)
     {
 
-        $liquidacion = Liquidacion::where('id',$id)
-                       ->with(['liquidacionOrganismo','historia_laborales','detalles'])
-                       ->first();
-            foreach ($liquidacion->detalles as $detalle) {
-                switch ($detalle->concepto->subtipo->tipocodigo->id) {
-                    case 1:
-                        $liquidacion->bruto += $detalle->importe;
-                        break;
-                    case 2:
-                        $liquidacion->bonificable += $detalle->importe;
-                        break;
-                    case 3:
-                        $liquidacion->no_bonificable += $detalle->importe;
-                        break;
-                    case 4:
-                        $liquidacion->no_remunerativo += $detalle->importe;
-                        break;
-                    case 5:
-                       $liquidacion->familiar += $detalle->importe;
-                        break;
-                    case 6:
-                        $liquidacion->descuento += $detalle->importe;
-                        break;
-                    
-                    default:
-                        break;
-                }
+        $liquidacion = Liquidacion::where('id', $id)
+            ->with(['liquidacionOrganismo', 'historia_laborales', 'detalles'])
+            ->first();
+        foreach ($liquidacion->detalles as $detalle) {
+            switch ($detalle->concepto->subtipo->tipocodigo->id) {
+                case 1:
+                    $liquidacion->bruto += $detalle->importe;
+                    break;
+                case 2:
+                    $liquidacion->bonificable += $detalle->importe;
+                    break;
+                case 3:
+                    $liquidacion->no_bonificable += $detalle->importe;
+                    break;
+                case 4:
+                    $liquidacion->no_remunerativo += $detalle->importe;
+                    break;
+                case 5:
+                    $liquidacion->familiar += $detalle->importe;
+                    break;
+                case 6:
+                    $liquidacion->descuento += $detalle->importe;
+                    break;
+
+                default:
+                    break;
             }
+        }
         return $liquidacion;
     }
 
@@ -114,7 +116,6 @@ class LiquidacionController extends Controller
      */
     public function destroy(Liquidacion $liquidacion)
     {
-        
     }
 
     /**
@@ -125,8 +126,8 @@ class LiquidacionController extends Controller
      */
     public function getliquidaciones()
     {
-        
-        return LiquidacionOrganismo::with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])->get();
+
+        return LiquidacionOrganismo::with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])->get();
     }
 
 
@@ -139,7 +140,7 @@ class LiquidacionController extends Controller
      */
     // public function filtro(Request $request)
     // {
-        
+
     //     $periodo = $request->periodo;
     //     $tipo = $request->tipo_liquidacion;
     //     $organismo = $request->organismo;
@@ -175,13 +176,13 @@ class LiquidacionController extends Controller
 
 
     //     return $liquidaciones->with(['liquidacionOrganismo','historia_laborales'])->paginate(50);
-        
+
     // }
 
 
-        
 
-    
+
+
 
     /**
      * busca liquidaciones segun su nombre o cuil.
@@ -200,18 +201,18 @@ class LiquidacionController extends Controller
     //             });
     //         });
     //     })->with(['liquidacionOrganismo','historia_laborales'])->paginate($this->perPage);
-                    
+
     // }
 
     public function porOrigen(Request $request, $value)
     {
-        $liquidaciones = LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
-            $organismos->whereHas('jurisdiccion',function($jurisdicciones) use ($value){
-                $jurisdicciones->where('origen_id' , $value);
+        $liquidaciones = LiquidacionOrganismo::whereHas('organismo', function ($organismos) use ($value) {
+            $organismos->whereHas('jurisdiccion', function ($jurisdicciones) use ($value) {
+                $jurisdicciones->where('origen_id', $value);
             });
         })
-        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->get();
+            ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])
+            ->paginate($this->perPage);
         return $liquidaciones;
         // return LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
         //     $organismos->whereHas('jurisdiccion',function($jurisdicciones) use ($value){
@@ -227,11 +228,11 @@ class LiquidacionController extends Controller
     {
 
 
-        return LiquidacionOrganismo::whereHas('organismo', function($organismos) use ($value){
+        return LiquidacionOrganismo::whereHas('organismo', function ($organismos) use ($value) {
             $organismos->where('jurisdiccion_id', $value);
         })
-        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->get();
+            ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])
+            ->get();
     }
 
 
@@ -241,8 +242,8 @@ class LiquidacionController extends Controller
 
 
         return LiquidacionOrganismo::where('organismo_id', $value)
-        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->get();    
+            ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])
+            ->get();
     }
 
 
@@ -251,8 +252,8 @@ class LiquidacionController extends Controller
 
 
         return LiquidacionOrganismo::buscarPorAgente($value)
-        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->get();   
+            ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])
+            ->get();
     }
 
 
@@ -261,8 +262,8 @@ class LiquidacionController extends Controller
 
 
         return LiquidacionOrganismo::where('periodo_id', $value)
-        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->get();  
+            ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])
+            ->get();
     }
 
     public function porTipo(Request $request, $value)
@@ -270,17 +271,17 @@ class LiquidacionController extends Controller
 
 
         return LiquidacionOrganismo::where('tipo_id', $value)
-        ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-        ->get();  
+            ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])
+            ->get();
     }
 
 
-    public function search($search){
+    public function search($search)
+    {
 
         return LiquidacionOrganismo::buscarLiquidacion($search)
-                ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo'])
-                ->get();
-
+            ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])
+            ->get();
     }
 
 
@@ -297,31 +298,31 @@ class LiquidacionController extends Controller
     }
 
 
-    public function filtro($agente,$periodo,$tipo)
+    public function filtro($agente, $periodo, $tipo)
     {
         # code...
         if ($agente && $periodo && $tipo) {
             # code...
             $query = LiquidacionOrganismo::buscarPorAgente($agente)->where('periodo_id', $periodo)->where('tipo_id', $tipo);
-        }else if($agente && $periodo && !$tipo) {
+        } else if ($agente && $periodo && !$tipo) {
             # code...
             $query = LiquidacionOrganismo::buscarPorAgente($agente)->where('periodo_id', $periodo);
-        }else if($agente && !$periodo && $tipo) {
+        } else if ($agente && !$periodo && $tipo) {
             # code...
             $query = LiquidacionOrganismo::buscarPorAgente($agente)->where('tipo_id', $tipo);
-        }else if($agente && !$periodo && !$tipo) {
+        } else if ($agente && !$periodo && !$tipo) {
             # code...
             $query = LiquidacionOrganismo::buscarPorAgente($agente);
-        }else if(!$agente && $periodo && $tipo) {
+        } else if (!$agente && $periodo && $tipo) {
             # code...
             $query = LiquidacionOrganismo::where('periodo_id', $periodo)->where('tipo_id', $tipo);
-        }else if(!$agente && $periodo && !$tipo) {
+        } else if (!$agente && $periodo && !$tipo) {
             # code...
             $query = LiquidacionOrganismo::where('periodo_id', $periodo);
-        }else if(!$agente && !$periodo && $tipo) {
+        } else if (!$agente && !$periodo && $tipo) {
             # code...
             $query = LiquidacionOrganismo::where('tipo_id', $tipo);
-        }else {
+        } else {
             # code...
             $query = LiquidacionOrganismo::all();
         }
@@ -330,14 +331,51 @@ class LiquidacionController extends Controller
 
     public function secuencia()
     {
-        
+
         return LiquidacionOrganismo::liquidacionesRectificadas()->get();
     }
 
 
+    public function filter(Request $request)
+    {
+        // $origen = $request->origen;
+        // $jurisdiccion = $request->jurisdiccion;
+        // $organismo = $request->organismo;
+        // $periodo = $request->periodo;
+        // $tipo = $request->tipo;
+        return LiquidacionOrganismo::filtroLiquidacion($request->all())->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])->paginate($this->perPage);
+
+        // if (!empty($organismo)) {
+        //     $this->liquidaciones = LiquidacionOrganismo::where('organismo_id', $organismo);
+        // } else {
+        //     if (!empty($jurisdiccion)) {
+        //         $this->liquidaciones = LiquidacionOrganismo::whereHas('organismo', function ($organismos) use ($jurisdiccion) {
+        //             $organismos->where('jurisdiccion_id', $jurisdiccion);
+        //         });
+        //     } else {
+        //         if (!empty($origen)) {
+        //             $this->liquidaciones = LiquidacionOrganismo::whereHas('organismo', function ($organismos) use ($origen) {
+        //                 $organismos->whereHas('jurisdiccion', function ($jurisdicciones) use ($origen) {
+        //                     $jurisdicciones->where('origen_id', $origen);
+        //                 });
+        //             });
+        //         }else{
+        //             $this->liquidaciones = new LiquidacionOrganismo();
+        //         }
+        //     }
+        // }
+
+        // if (!empty($periodo)) {
+        //     if (!empty($this->liquidaciones)) {
+        //         # code...
+        //         $this->liquidaciones->where('periodo_id', $periodo);
+        //     }
+        // }
+
+        // if (!empty($tipo)) {
+        //     $this->liquidaciones->where('tipo_id', $tipo);
+        // }
+
+        // return $this->liquidaciones->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])->paginate($this->perPage);
+    }
 }
-        
-
-        
-
-

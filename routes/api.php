@@ -45,9 +45,9 @@ Route::get('/computo/periodo-anual/{anio}', 'LiquidacionOrganismoController@peri
 
 //liquidaciones
 Route::get('/liquidacion', 'LiquidacionController@getliquidaciones')->name('liquidacion');
-Route::post('/liquidacion/origen/{id}', 'LiquidacionController@porOrigen');
-Route::post('/liquidacion/jurisdiccion/{id}', 'LiquidacionController@porJurisdiccion');
-Route::post('/liquidacion/organismo/{id}', 'LiquidacionController@porOrganismo');
+Route::get('/liquidacion/origen/{id}', 'LiquidacionController@porOrigen');
+Route::get('/liquidacion/jurisdiccion/{id}', 'LiquidacionController@porJurisdiccion');
+Route::get('/liquidacion/organismo/{id}', 'LiquidacionController@porOrganismo');
 Route::post('/liquidacion/agente/{id}', 'LiquidacionController@porAgente');
 Route::post('/liquidacion/periodo/{id}', 'LiquidacionController@porPeriodo');
 Route::post('/liquidacion/tipo/{id}', 'LiquidacionController@porTipo');
@@ -55,7 +55,9 @@ Route::get('/liquidacion/{search}', 'LiquidacionController@search');
 Route::get('/liquidacion/paginate/{n_paginas}', 'LiquidacionController@paginado');
 Route::get('/liquidacion/hl', 'LiquidacionController@hl');
 
-Route::get('/liquidacion/secuencia/q', 'LiquidacionController@secuencia');
+Route::get('/liquidacion/filter/query', 'LiquidacionController@filter');
+
+//Route::get('/liquidacion/secuencia/q', 'LiquidacionController@secuencia');
 
 
 

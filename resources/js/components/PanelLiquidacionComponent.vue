@@ -120,23 +120,55 @@
                 </div>
             </div>
         </div>
-        
 
-        
-          
+        <section class="content mb-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <form action="simple-results.html">
+                            <div class="input-group">
+                                <input
+                                    type="search"
+                                    class="form-control form-control-lg"
+                                    placeholder="Type your keywords here"
+                                />
+                                <div class="input-group-append">
+                                    <button
+                                        type="submit"
+                                        class="btn btn-lg btn-default"
+                                    >
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <select class="select2" style="width: 100%;" v-model="perPage">
+                                <option value="5">5 por Pag.</option>
+                                <option value="10">10 por Pag.</option>
+                                <option value="25">25 por Pag.</option>
+                                <option value="50">50 por Pag.</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div v-if="shown" class="card">
             <h5 class="card-header card-outline card-pink">Liquidaciones</h5>
             <div class="card-body">
-                <p class="text-center">cargando...
-                  <span>
-                  <img height="80px" src="image/ips_loading.gif" />
-                </span>
+                <p class="text-center">
+                    cargando...
+                    <span>
+                        <img height="80px" src="image/ips_loading.gif" />
+                    </span>
                 </p>
-                
             </div>
         </div>
-        <listaliquidaciones-component v-else
-            :datos="liquidaciones">
+        <listaliquidaciones-component v-else :datos="liquidaciones">
         </listaliquidaciones-component>
     </div>
 </template>
@@ -145,29 +177,30 @@
 export default {
     data() {
         return {
-            liquidaciones:[],
-                liquidacion:{},
-                shown:false,
-                periodo:'',
-                fecha_actual:null,
-                mes:null,
-                anio:null,
-                date: {
-                  from: null,
-                  to: null,
-                  month: null,
-                  year: null,
-                  monthIndex: null,
-                },
-                timeOut:1000,
-                filtro:{
-                  origen:'',
-                  jurisdiccion:'',
-                  organismo:'',
-                  tipo:'',
-                  periodo:'',
-                  agente:'',
-                }
+            liquidaciones: [],
+            liquidacion: {},
+            shown: false,
+            periodo: "",
+            fecha_actual: null,
+            mes: null,
+            anio: null,
+            date: {
+                from: null,
+                to: null,
+                month: null,
+                year: null,
+                monthIndex: null
+            },
+            timeOut: 1000,
+            filtro: {
+                origen: "",
+                jurisdiccion: "",
+                organismo: "",
+                tipo: "",
+                periodo: "",
+                agente: ""
+            },
+            perPage:"10",
         };
     },
     mounted() {
@@ -179,24 +212,29 @@ export default {
     },
     methods: {
         porOrigen(param) {
-            this.filtro.origen = param;
             this.shown = true;
+            this.filtro.organismo = "";
+            this.filtro.jurisdiccion = "";
+            this.filtro.origen = param
+
             setTimeout(() => {
                 axios
-                    .post(`api/liquidacion/origen/` + param, this.filtro)
+                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
                     .then(response => {
                         this.shown = false;
+                        console.log(response.data)
                         this.asignar(response);
                     });
             }, this.timeOut);
         },
         porJurisdiccion(param) {
             this.filtro.origen = "";
+            this.filtro.organismo = "";
             this.filtro.jurisdiccion = param;
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .post(`api/liquidacion/jurisdiccion/` + param, this.filtro)
+                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -210,7 +248,7 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .post(`api/liquidacion/organismo/` + param, this.filtro)
+                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -223,7 +261,7 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .post(`api/liquidacion/agente/` + datosAgente, this.filtro)
+                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -248,10 +286,7 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .post(
-                        `api/liquidacion/periodo/` + this.periodo,
-                        this.filtro
-                    )
+                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -263,7 +298,7 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .post(`api/liquidacion/tipo/` + param, this.filtro)
+                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -289,10 +324,6 @@ export default {
         },
         asignar(response) {
             this.liquidaciones = response.data;
-            // this.paginate.current_page = response.data.current_page;
-            // this.paginate.last_page = response.data.last_page;
-            // this.paginate.total = response.data.total;
-            // this.paginate.path = response.data.path;
         },
         getLiquidaciones() {
             axios.get(`api/liquidacion`).then(response => {

@@ -10009,3 +10009,4 @@ Horizon started successfully.
 [2021-10-15 12:14:29][479] Processed:  App\Jobs\DeleteFileImportJob
 [2021-10-15 12:14:35][478] Processing: App\Notifications\FinishJob
 [2021-10-15 12:14:35][478] Processed:  App\Notifications\FinishJob
+Horizon started successfully.

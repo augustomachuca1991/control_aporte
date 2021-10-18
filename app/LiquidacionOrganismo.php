@@ -172,4 +172,56 @@ class LiquidacionOrganismo extends Model
             })
             ->with(['organismo','liquidacion', 'tipoliquidacion', 'periodo']);
     }
+
+
+    public function scopeFiltroLiquidacion($liquidaciones, $filtros){
+
+        
+        //Log::channel('daily')->info($filtros);
+        
+        
+        
+        
+        
+        $agente = $filtros['agente'];
+
+        if (!empty($filtros['organismo'])) {
+            $organismo = $filtros['organismo'];
+            $liquidaciones->where('organismo_id', $organismo);
+        } else {
+            if (!empty($filtros['jurisdiccion'])) {
+                $jurisdiccion = $filtros['jurisdiccion'];
+                $liquidaciones->whereHas('organismo', function ($organismos) use ($jurisdiccion) {
+                    $organismos->where('jurisdiccion_id', $jurisdiccion);
+                });
+            } else {
+                if (!empty($filtros['origen'])) {
+                    $origen = $filtros['origen'];
+                    $liquidaciones->whereHas('organismo', function ($organismos) use ($origen) {
+                        $organismos->whereHas('jurisdiccion', function ($jurisdicciones) use ($origen) {
+                            $jurisdicciones->where('origen_id', $origen);
+                        });
+                    });
+                }
+            }
+        }
+
+        if (!empty($filtros['periodo'])) {
+            $periodo = $filtros['periodo'];
+            if (!empty($liquidaciones)) {
+                $liquidaciones->where('periodo_id', $periodo);
+            }
+        }
+
+        if (!empty($filtros['tipo'])) {
+            $tipo = $filtros['tipo'];
+            if (!empty($liquidaciones)) {
+            $liquidaciones->where('tipo_id', $tipo);
+            }
+        }
+
+        return $liquidaciones;
+        
+            
+    }
 }

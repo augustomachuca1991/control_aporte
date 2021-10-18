@@ -567,7 +567,7 @@
         },
         getPage(page){
           axios.get(this.paginate.path+'?page='+page).then((response)=> {
-            this.categorias = response.data.data;
+            this.liquidaciones = response.data.data;
             this.paginate.current_page = response.data.current_page;
             this.paginate.last_page = response.data.last_page;
             this.paginate.total = response.data.total;
