@@ -121,55 +121,97 @@
             </div>
         </div>
 
-        <section class="content mb-3">
+        <section class="content mb-5">
             <div class="container-fluid">
+                <h4 class="text-center display-4">Liquidaciones</h4>
                 <div class="row">
-                    <div class="col-md-8">
-                        <form action="simple-results.html">
-                            <div class="input-group">
-                                <input
-                                    type="search"
-                                    class="form-control form-control-lg"
-                                    placeholder="Type your keywords here"
-                                />
-                                <div class="input-group-append">
-                                    <button
-                                        type="submit"
-                                        class="btn btn-lg btn-default"
+                    <div class="col">
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <input
+                                type="search"
+                                class="form-control"
+                                aria-label="Type your keywords here"
+                            />
+                            <div class="input-group-append">
+                                <button
+                                    class="btn btn-outline-secondary dropdown-toggle"
+                                    type="button"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                >
+                                    {{ perPage }} por Pagina
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="paginator(5)"
+                                        >5</a
                                     >
-                                        <i class="fa fa-search"></i>
-                                    </button>
+                                    <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="paginator(10)"
+                                        >10</a
+                                    >
+                                    <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="paginator(25)"
+                                        >25</a
+                                    >
+                                    <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="paginator(50)"
+                                        >50</a
+                                    >
+                                    <div
+                                        role="separator"
+                                        class="dropdown-divider"
+                                    ></div>
+                                    <a class="dropdown-item" href="#">todos</a>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <select class="select2" style="width: 100%;" v-model="perPage">
-                                <option value="5">5 por Pag.</option>
-                                <option value="10">10 por Pag.</option>
-                                <option value="25">25 por Pag.</option>
-                                <option value="50">50 por Pag.</option>
-                            </select>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <div v-if="shown" class="card">
-            <h5 class="card-header card-outline card-pink">Liquidaciones</h5>
-            <div class="card-body">
-                <p class="text-center">
-                    cargando...
-                    <span>
-                        <img height="80px" src="image/ips_loading.gif" />
-                    </span>
-                </p>
+        <div v-if="liquidaciones.length === 0">
+            <div class="card">
+                <h5 class="card-header card-outline card-pink">
+                    Liquidaciones
+                </h5>
+                <div class="card-body">
+                    <h5 class="card-title">
+                       No hay Datos
+                    </h5>
+                </div>
             </div>
         </div>
-        <listaliquidaciones-component v-else :datos="liquidaciones">
-        </listaliquidaciones-component>
+        <div v-else>
+            <div v-if="shown" class="card">
+                <!-- <h5 class="card-header card-outline card-pink">Liquidaciones</h5> -->
+                <div class="card-body">
+                    <p class="text-center">
+                        cargando...
+                        <span>
+                            <img height="80px" src="image/ips_loading.gif" />
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <listaliquidaciones-component v-else :datos="liquidaciones">
+            </listaliquidaciones-component>
+        </div>
     </div>
 </template>
 
@@ -200,7 +242,7 @@ export default {
                 periodo: "",
                 agente: ""
             },
-            perPage:"10",
+            perPage: "10"
         };
     },
     mounted() {
@@ -215,14 +257,16 @@ export default {
             this.shown = true;
             this.filtro.organismo = "";
             this.filtro.jurisdiccion = "";
-            this.filtro.origen = param
+            this.filtro.origen = param;
 
             setTimeout(() => {
                 axios
-                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
+                    .get(`api/liquidacion/filter/query`, {
+                        params: this.filtro
+                    })
                     .then(response => {
                         this.shown = false;
-                        console.log(response.data)
+                        console.log(response.data);
                         this.asignar(response);
                     });
             }, this.timeOut);
@@ -234,7 +278,9 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
+                    .get(`api/liquidacion/filter/query`, {
+                        params: this.filtro
+                    })
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -248,7 +294,9 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
+                    .get(`api/liquidacion/filter/query`, {
+                        params: this.filtro
+                    })
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -261,17 +309,14 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
+                    .get(`api/liquidacion/filter/query`, {
+                        params: this.filtro
+                    })
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
                     });
             }, this.timeOut);
-        },
-        getPage(page) {
-            axios.get(this.paginate.path + "?page=" + page).then(response => {
-                this.asignar(response);
-            });
         },
         porPeriodo(date) {
             this.date = date;
@@ -286,7 +331,9 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
+                    .get(`api/liquidacion/filter/query`, {
+                        params: this.filtro
+                    })
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -298,7 +345,9 @@ export default {
             this.shown = true;
             setTimeout(() => {
                 axios
-                    .get(`api/liquidacion/filter/query`, {params: this.filtro})
+                    .get(`api/liquidacion/filter/query`, {
+                        params: this.filtro
+                    })
                     .then(response => {
                         this.shown = false;
                         this.asignar(response);
@@ -315,19 +364,20 @@ export default {
                 });
             }, this.timeOut);
         },
-        paginacion: function() {
-            axios
-                .get(`api/liquidacion/paginate/${this.n_paginas}`)
-                .then(response => {
-                    this.asignar(response);
-                });
+        paginator(paginas) {
+            this.perPage = paginas;
+            // axios
+            //     .get(`api/liquidacion/paginate/${this.perPage}`)
+            //     .then(response => {
+            //         this.asignar(response);
+            //     });
         },
         asignar(response) {
             this.liquidaciones = response.data;
         },
         getLiquidaciones() {
             axios.get(`api/liquidacion`).then(response => {
-                this.liquidaciones = response.data;
+                this.asignar(response);
             });
         }
     }

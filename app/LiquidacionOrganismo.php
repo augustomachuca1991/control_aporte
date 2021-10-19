@@ -174,16 +174,10 @@ class LiquidacionOrganismo extends Model
     }
 
 
-    public function scopeFiltroLiquidacion($liquidaciones, $filtros){
+    public function scopeFiltroLiquidacion($liquidaciones, $filtros)
+    {
 
         
-        //Log::channel('daily')->info($filtros);
-        
-        
-        
-        
-        
-        $agente = $filtros['agente'];
 
         if (!empty($filtros['organismo'])) {
             $organismo = $filtros['organismo'];
@@ -208,17 +202,28 @@ class LiquidacionOrganismo extends Model
 
         if (!empty($filtros['periodo'])) {
             $periodo = $filtros['periodo'];
-            if (!empty($liquidaciones)) {
-                $liquidaciones->where('periodo_id', $periodo);
-            }
+            $liquidaciones->where('periodo_id', $periodo);
         }
 
         if (!empty($filtros['tipo'])) {
             $tipo = $filtros['tipo'];
-            if (!empty($liquidaciones)) {
             $liquidaciones->where('tipo_id', $tipo);
-            }
         }
+
+        if(!empty($filtros['agente'])){
+            $agentedato = $filtros['agente'];
+            $liquidaciones->whereHas('liquidacion',function($liq) use ($agentedato){
+                $liq->whereHas('historia_laborales' , function($historiaslaborales) use ($agentedato){
+                    $historiaslaborales->whereHas('puesto', function($puestos) use ($agentedato){
+                        $puestos->whereHas('agente', function($agente) use ($agentedato){
+                                $agente->where('nombre','like',"%".$agentedato."%")
+                                       ->orWhere('cuil','like',"%".$agentedato."%");
+                        });
+                    });
+                });
+            });
+        }
+
 
         return $liquidaciones;
         

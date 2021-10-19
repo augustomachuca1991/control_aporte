@@ -18,6 +18,7 @@ var moment = require('moment'); // require
 
 import { GridPlugin } from "@syncfusion/ej2-vue-grids";
 import '@syncfusion/ej2-vue-grids/styles/material.css'
+import Vue from "vue";
 
 //MonthPicker 
 import MonthPicker from 'vue-month-picker'
@@ -89,6 +90,7 @@ Vue.component('historialaborales-component', require('./components/HistoriaLabor
 Vue.component('panel-historialaboral', require('./components/PanelHistoriaComponent.vue').default);
 
 Vue.component('listaliquidaciones-component', require('./components/ListLiquidacionesComponent.vue').default);
+Vue.component('liquidaciondetalle-component', require('./components/LiquidacionDetalleComponent.vue').default);
 
 //computos
 Vue.component('computoorigen-component', require('./components/ComputoOrigenComponent.vue').default);

@@ -14,9 +14,9 @@
 	@include('layouts.right_sidebar')
  @stop
 
-@section('content_header')
+{{-- @section('content_header')
     <h1 class="text-secondary h1-responsive text-center">Lista de Liquidaciones</h1>
-@stop
+@stop --}}
 
 
 @section('content')
