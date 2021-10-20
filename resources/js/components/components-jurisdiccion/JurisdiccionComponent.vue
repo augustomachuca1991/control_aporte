@@ -161,48 +161,6 @@
             </div>
         </div>
 
-        <!--Table-->
-        <!-- <div class="row">
-          <div class="col-md-12 col-lg-4 my-2">
-            <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nueva Jurisdicción</button>
-          </div>
-          <div class="col-md-12 col-lg-4 offset-lg-4 my-2 ">
-            <form class="form-inline justify-content-end">
-                  <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
-                  <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @keyup="buscar()">
-            </form>
-          </div>
-        </div>
-        <div class="table-responsive-md">
-          <table class="table">
-            <thead>
-                <tr>
-                  <th scope="col"># Cod <a href="#" class="text-dark" @click="sort('cod_jurisdiccion')"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Jurisdicción <a href="#" class="text-dark" @click="sort('jurisdiccion')"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Origen <a href="#" class="text-dark" @click="sort('origen_id')"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Creado <a href="#" class="text-dark" @click="sort('created_at')"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-if="jurisdicciones.length===0">
-                    <td class="text-center">No data</td>
-                </tr>
-                <tr v-else v-for="(jurisdiccion,index) in jurisdicciones" :key='jurisdiccion.id'>
-                  <th scope="row">{{jurisdiccion.cod_jurisdiccion}}</th>
-                  <td>{{jurisdiccion.jurisdiccion}}</td>
-                  <td>{{jurisdiccion.origen.origen}}</td>
-                  <td><em> {{jurisdiccion.created_at | moment}}</em></td>
-                  <td>
-                    <button @click="trash(index,jurisdiccion.id)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
-                    <button @click="edit(index,jurisdiccion)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#jurisdiccion_edit"><i class="fa fa-edit"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-          </table>
-        </div> -->
-        <!--end table-->
-
         <!-- /.col (LEFT) -->
         <section class="content">
             <div class="container-fluid">
@@ -245,13 +203,6 @@
                                         class="input-group input-group-sm"
                                         style="width: 150px;"
                                     >
-                                        <!-- <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"  @keyup="">
-
-                        <div class="input-group-append">
-                          <button type="button" class="btn btn-outline-success" disabled>
-                            <i class="fas fa-search"></i>
-                          </button>
-                        </div> -->
                                         <select
                                             class="form-control form-control-sm custom-select rounded-pill"
                                             v-model="n_paginas"
@@ -375,7 +326,7 @@
                                                     @click="
                                                         trash(
                                                             index,
-                                                            jurisdiccion.id
+                                                            jurisdiccion
                                                         )
                                                     "
                                                     class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"
@@ -485,7 +436,7 @@ export default {
     methods: {
         getJurisdicciones() {
             axios.get("api/jurisdiccion").then(response => {
-                asignar(response);
+                this.asignar(response);
             });
         },
         getOrigenes() {
@@ -506,11 +457,13 @@ export default {
             this.getJurisdicciones();
         },
 
-        trash(index, id) {
+        trash(index, jurisdiccion) {
+            this.index = this.paginate.from + parseInt(index - 1);
+            this.jurisdiccion = jurisdiccion;
             swal.fire({
                 title: "Esta seguro?",
                 text:
-                    this.jurisdicciones[index].jurisdiccion +
+                    this.jurisdiccion.jurisdiccion +
                     " esta a punto de ser eliminada!",
                 icon: "warning",
                 showCancelButton: true,
@@ -519,11 +472,11 @@ export default {
                 confirmButtonText: "Si, eliminar!"
             }).then(result => {
                 if (result.isConfirmed) {
-                    this.jurisdicciones.splice(index, 1);
+                    this.jurisdicciones.splice(this.index, 1);
                     axios
-                        .delete(`api/jurisdiccion/delete/${id}`)
+                        .delete(`api/jurisdiccion/delete/${this.jurisdiccion.id}`)
                         .then(response => {
-                            if (response.data.isValid) {
+                           /*  if (response.data.isValid) {
                                 Toast.fire({
                                     icon: "success",
                                     title: response.data.errors,
@@ -535,7 +488,8 @@ export default {
                                     title: "Atencion!!! Algo Salio Mal.",
                                     background: "#FCDBCD"
                                 });
-                            }
+                            } */
+                            console.log(response.data)
                         });
                 }
             });
@@ -569,7 +523,7 @@ export default {
         },
         buscar() {
             axios.get(`api/jurisdiccion/${this.search}`).then(response => {
-                asignar(response);
+                this.asignar(response);
             });
         },
         update() {
@@ -603,20 +557,20 @@ export default {
             axios
                 .get(`api/jurisdiccion/order/${column}/sort/${sort}`)
                 .then(response => {
-                    asignar(response);
+                    this.asignar(response);
                 });
         },
 
         getPage(page) {
             axios.get(this.paginate.path + "?page=" + page).then(response => {
-                asignar(response);
+                this.asignar(response);
             });
         },
         paginacion: function() {
             axios
                 .get(`api/jurisdiccion/paginate/${this.n_paginas}`)
                 .then(response => {
-                    asignar(response);
+                    this.asignar(response);
                 });
         },
         asignar(response) {

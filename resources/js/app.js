@@ -119,7 +119,7 @@ Vue.component('home-component', require('./components/HomeComponent.vue').defaul
 
 
 //jurisdiccion
-Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
+Vue.component('jurisdiccion-component', require('./components/components-jurisdiccion/JurisdiccionComponent.vue').default);
 Vue.component('create-jurisdiccion', require('./components/components-jurisdiccion/CreateJurisdiccion.vue').default);
 
 /**
