@@ -75,7 +75,7 @@ Vue.component('filter-component', require('./components/FiltroComponent.vue').de
 Vue.component('filtroperiodo-component', require('./components/FiltroPeriodoComponent.vue').default);
 Vue.component('filtertipoliquidacion-component', require('./components/FiltroTipoLiquidacionComponent.vue').default);
 Vue.component('buscaragente-component', require('./components/BuscarAgenteComponent.vue').default);
-Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
+
 Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
 Vue.component('concepto-component', require('./components/ConceptoComponent.vue').default);
 Vue.component('filtroclase-component', require('./components/FiltroClaseComponent.vue').default);
@@ -116,6 +116,11 @@ Vue.component('panel-config', require('./components/PanelConfiguracionComponent.
 Vue.component('users-component', require('./components/UserComponent.vue').default);
 
 Vue.component('home-component', require('./components/HomeComponent.vue').default);
+
+
+//jurisdiccion
+Vue.component('jurisdiccion-component', require('./components/JurisdiccionComponent.vue').default);
+Vue.component('create-jurisdiccion', require('./components/components-jurisdiccion/CreateJurisdiccion.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

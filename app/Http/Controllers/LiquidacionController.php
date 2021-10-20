@@ -74,7 +74,7 @@ class LiquidacionController extends Controller
      */
     public function getliquidaciones()
     {
-        return LiquidacionOrganismo::with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])->get();
+        return LiquidacionOrganismo::with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])->paginate($this->perPage);
     }
     
 
@@ -83,7 +83,7 @@ class LiquidacionController extends Controller
     {
         return LiquidacionOrganismo::buscarLiquidacion($search)
             ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])
-            ->get();
+            ->paginate($this->perPage);
     }
 
 
@@ -96,13 +96,13 @@ class LiquidacionController extends Controller
 
     public function hl()
     {
-        return Liquidacion::with('historia_laborales')->get();
+        return Liquidacion::with('historia_laborales')->paginate($this->perPage);
     }
 
     public function secuencia()
     {
 
-        return LiquidacionOrganismo::liquidacionesRectificadas()->get();
+        return LiquidacionOrganismo::liquidacionesRectificadas()->paginate($this->perPage);
     }
 
 

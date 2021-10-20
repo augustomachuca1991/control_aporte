@@ -38,31 +38,19 @@ class LiquidacionOrganismo extends Model
     {
         # code...
         if(!empty($search)){
-            $query->where('liquidacion_id' ,'LIKE' ,"%".$search."%");
-            // ->orWhere('periodo' ,'LIKE' ,"%".$search."%")
-            // ->orWhere('mes' ,'LIKE' ,"%".$search."%")
-            // ->orWhere('anio' ,'LIKE' ,"%".$search."%");
 
-        }
-    }
-
-
-    public function scopeBuscarPorAgente($query , $value)
-    {
-        if(!empty($value)){
-            $query->whereHas('liquidacion',function($liquidaciones) use ($value){
-                $liquidaciones->whereHas('historia_laborales' , function($historiaslaborales) use ($value){
-                    $historiaslaborales->whereHas('puesto', function($puestos) use ($value){
-                        $puestos->whereHas('agente', function($agente) use ($value){
-                                $agente->where('nombre','like',"%".$value."%")
-                                       ->orWhere('cuil','like',"%".$value."%");
+            $query->whereHas('liquidacion',function($liquidaciones) use ($search){
+                $liquidaciones->whereHas('historia_laborales' , function($historiaslaborales) use ($search){
+                    $historiaslaborales->whereHas('puesto', function($puestos) use ($search){
+                        $puestos->whereHas('agente', function($agente) use ($search){
+                                $agente->where('nombre','like',"%".$search."%")
+                                       ->orWhere('cuil','like',"%".$search."%");
                         });
                     });
                 });
             });
+
         }
-        
-        
     }
 
 
@@ -177,8 +165,6 @@ class LiquidacionOrganismo extends Model
     public function scopeFiltroLiquidacion($liquidaciones, $filtros)
     {
 
-        
-
         if (!empty($filtros['organismo'])) {
             $organismo = $filtros['organismo'];
             $liquidaciones->where('organismo_id', $organismo);
@@ -227,6 +213,8 @@ class LiquidacionOrganismo extends Model
 
         return $liquidaciones;
         
-            
     }
+
+        
+            
 }

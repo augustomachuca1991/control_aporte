@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 
 class JurisdiccionController extends Controller
 {
-    
+
 
     public $perPage = 10;
     /**
@@ -31,22 +31,19 @@ class JurisdiccionController extends Controller
     public function store(Request $request)
     {
 
-        $validator = $request->validate([
+        $request->validate([
             'cod_jurisdiccion' => 'required|integer|unique:jurisdiccions,cod_jurisdiccion',
             'jurisdiccion' =>   'required',
             'origen_id' => 'required'
         ]);
 
-        if (!$validator) {
-            return $validator;
-        } else {
-            $jurisdiccion = Jurisdiccion::create([
-                'cod_jurisdiccion' => $request->cod_jurisdiccion,
-                'jurisdiccion' => $request->jurisdiccion,
-                'origen_id' => $request->origen_id
-            ]);
-            return $jurisdiccion;
-        }
+        $jurisdiccion = Jurisdiccion::create([
+            'cod_jurisdiccion' => $request->cod_jurisdiccion,
+            'jurisdiccion' => $request->jurisdiccion,
+            'origen_id' => $request->origen_id
+        ]);
+
+        return $jurisdiccion;
     }
 
     /**
@@ -58,7 +55,7 @@ class JurisdiccionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
 
         $validator = Validator::make($request->all(), [
             'cod_jurisdiccion' => [
@@ -98,9 +95,9 @@ class JurisdiccionController extends Controller
                 $organismos->delete();
             }
             $jurisdiccion->delete();
-            return response()->json(['isValid'=>true,'errors'=>'Jurisdicción eliminada satisfactoriamente']);
-        }catch(\Exception $e) {
-            return response()->json(['isValid'=>false,'errors'=>'Error al eliminar la Jurisdicción']);
+            return response()->json(['isValid' => true, 'errors' => 'Jurisdicción eliminada satisfactoriamente']);
+        } catch (\Exception $e) {
+            return response()->json(['isValid' => false, 'errors' => 'Error al eliminar la Jurisdicción']);
         }
     }
 
@@ -114,15 +111,16 @@ class JurisdiccionController extends Controller
      */
     public function getJurisdicciones()
     {
-        return Jurisdiccion::with(['categorias','origen'])
-        ->paginate($this->perPage);
+        return Jurisdiccion::with(['categorias', 'origen'])
+            ->orderBy('id', 'DESC')
+            ->paginate($this->perPage);
     }
-    
+
 
 
     public function getAllJurisdicciones()
     {
-        return Jurisdiccion::with(['categorias','origen'])->get();
+        return Jurisdiccion::with(['categorias', 'origen'])->get();
     }
     /**
      * search the specified resource from storage.
@@ -132,24 +130,22 @@ class JurisdiccionController extends Controller
      */
     public function search($search)
     {
-            return Jurisdiccion::with(['categorias','origen'])
-            ->where('jurisdiccion' ,'LIKE' ,"%".$search."%")
-            ->orWhere('cod_jurisdiccion' ,'LIKE' ,"%".$search."%")
+        return Jurisdiccion::with(['categorias', 'origen'])
+            ->where('jurisdiccion', 'LIKE', "%" . $search . "%")
+            ->orWhere('cod_jurisdiccion', 'LIKE', "%" . $search . "%")
             ->paginate($this->perPage);
-        
-
     }
 
-    public function sort($column , $order)
+    public function sort($column, $order)
     {
-            return Jurisdiccion::with(['categorias','origen'])
+        return Jurisdiccion::with(['categorias', 'origen'])
             ->orderBy($column, $order)
             ->paginate($this->perPage);
-
     }
 
 
-    public function paginado($perPage){
+    public function paginado($perPage)
+    {
         $this->perPage = $perPage;
         return $this->getJurisdicciones();
     }

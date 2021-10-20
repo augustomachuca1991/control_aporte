@@ -128,7 +128,11 @@
                     <div class="col">
                         <div class="input-group">
                             <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
+                                <button
+                                    type="button"
+                                    class="btn btn-default"
+                                    
+                                >
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -136,6 +140,8 @@
                                 type="search"
                                 class="form-control"
                                 aria-label="Type your keywords here"
+                                v-model="buscador"
+                                @keyup="buscarLiquidacion()"
                             />
                             <div class="input-group-append">
                                 <button
@@ -192,7 +198,7 @@
                 </h5>
                 <div class="card-body">
                     <h5 class="card-title">
-                       No hay Datos
+                        No hay Datos
                     </h5>
                 </div>
             </div>
@@ -233,7 +239,7 @@ export default {
                 year: null,
                 monthIndex: null
             },
-            timeOut: 1000,
+            timeOut: 500,
             filtro: {
                 origen: "",
                 jurisdiccion: "",
@@ -242,7 +248,9 @@ export default {
                 periodo: "",
                 agente: ""
             },
-            perPage: "10"
+            perPage: "10",
+            setTimeoutBuscador: "",
+            buscador:"",
         };
     },
     mounted() {
@@ -250,7 +258,6 @@ export default {
         this.fecha_actual = new Date(milisegundos);
         this.mes = this.fecha_actual.getMonth() + 1;
         this.anio = this.fecha_actual.getFullYear();
-        //this.getLiquidaciones();
     },
     methods: {
         porOrigen(param) {
@@ -258,65 +265,28 @@ export default {
             this.filtro.organismo = "";
             this.filtro.jurisdiccion = "";
             this.filtro.origen = param;
+            setTimeout(this.filtrarLiquidacion, this.timeOut);
 
-            setTimeout(() => {
-                axios
-                    .get(`api/liquidacion/filter/query`, {
-                        params: this.filtro
-                    })
-                    .then(response => {
-                        this.shown = false;
-                        console.log(response.data);
-                        this.asignar(response);
-                    });
-            }, this.timeOut);
         },
         porJurisdiccion(param) {
             this.filtro.origen = "";
             this.filtro.organismo = "";
             this.filtro.jurisdiccion = param;
             this.shown = true;
-            setTimeout(() => {
-                axios
-                    .get(`api/liquidacion/filter/query`, {
-                        params: this.filtro
-                    })
-                    .then(response => {
-                        this.shown = false;
-                        this.asignar(response);
-                    });
-            }, this.timeOut);
+            setTimeout(this.filtrarLiquidacion, this.timeOut);
         },
         porOrganismo(param) {
             this.filtro.origen = "";
             this.filtro.jurisdiccion = "";
             this.filtro.organismo = param;
             this.shown = true;
-            setTimeout(() => {
-                axios
-                    .get(`api/liquidacion/filter/query`, {
-                        params: this.filtro
-                    })
-                    .then(response => {
-                        this.shown = false;
-                        this.asignar(response);
-                    });
-            }, this.timeOut);
+            setTimeout(this.filtrarLiquidacion, this.timeOut);
         },
         porAgente(param) {
             this.filtro.agente = param.search;
             let datosAgente = param.search;
             this.shown = true;
-            setTimeout(() => {
-                axios
-                    .get(`api/liquidacion/filter/query`, {
-                        params: this.filtro
-                    })
-                    .then(response => {
-                        this.shown = false;
-                        this.asignar(response);
-                    });
-            }, this.timeOut);
+            setTimeout(this.filtrarLiquidacion, this.timeOut);
         },
         porPeriodo(date) {
             this.date = date;
@@ -329,40 +299,28 @@ export default {
             }
             this.filtro.periodo = this.periodo;
             this.shown = true;
-            setTimeout(() => {
-                axios
-                    .get(`api/liquidacion/filter/query`, {
-                        params: this.filtro
-                    })
-                    .then(response => {
-                        this.shown = false;
-                        this.asignar(response);
-                    });
-            }, this.timeOut);
+            setTimeout(this.filtrarLiquidacion, this.timeOut);
         },
         porTipo(param) {
             this.filtro.tipo = param;
             this.shown = true;
-            setTimeout(() => {
-                axios
-                    .get(`api/liquidacion/filter/query`, {
-                        params: this.filtro
-                    })
-                    .then(response => {
-                        this.shown = false;
-                        this.asignar(response);
-                    });
-            }, this.timeOut);
+            setTimeout(this.filtrarLiquidacion, this.timeOut);
         },
         buscarLiquidacion() {
+
             this.shown = true;
             clearTimeout(this.setTimeoutBuscador);
-            this.setTimeoutBuscador = setTimeout(() => {
+            if (this.buscador) {
+                this.setTimeoutBuscador = setTimeout(() => {
                 axios.get(`api/liquidacion/${this.buscador}`).then(response => {
                     this.shown = false;
                     this.asignar(response);
                 });
             }, this.timeOut);
+            }else{
+                this.liquidaciones = [];
+            }
+            
         },
         paginator(paginas) {
             this.perPage = paginas;
@@ -375,10 +333,15 @@ export default {
         asignar(response) {
             this.liquidaciones = response.data;
         },
-        getLiquidaciones() {
-            axios.get(`api/liquidacion`).then(response => {
-                this.asignar(response);
-            });
+        filtrarLiquidacion() {
+            axios
+                .get(`api/liquidacion/filter/query`, {
+                    params: this.filtro
+                })
+                .then(response => {
+                    this.shown = false;
+                    this.asignar(response);
+                });
         }
     }
 };
