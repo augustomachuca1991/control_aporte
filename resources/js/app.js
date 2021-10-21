@@ -11,7 +11,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 var VuePaginate = require('vue-paginate');
-var moment = require('moment'); // require 
+var moment = require('moment'); // require
 
 // import Swal from 'sweetalert2/dist/sweetalert2.js'
 // import 'sweetalert2/src/sweetalert2.scss'
@@ -20,7 +20,7 @@ import { GridPlugin } from "@syncfusion/ej2-vue-grids";
 import '@syncfusion/ej2-vue-grids/styles/material.css'
 import Vue from "vue";
 
-//MonthPicker 
+//MonthPicker
 import MonthPicker from 'vue-month-picker'
 import MonthPickerInput from 'vue-month-picker'
 
@@ -43,14 +43,14 @@ Vue.filter('format_moment', function (date) {
 
 // Vue.filter('formatCuil', function(cuil){
 // 	value = value.toString();
-	  
+
 // 	  if (value.length === 10 ) {
 // 	    value = '0'+value;
 // 	  }
 
 // 	  return value.charAt(0)+value.charAt(1)+'-'+value.slice(2,-1)+'-'+value.slice(-1);
-// })		
-	
+// })
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -76,7 +76,6 @@ Vue.component('filtroperiodo-component', require('./components/FiltroPeriodoComp
 Vue.component('filtertipoliquidacion-component', require('./components/FiltroTipoLiquidacionComponent.vue').default);
 Vue.component('buscaragente-component', require('./components/BuscarAgenteComponent.vue').default);
 
-Vue.component('categoria-component', require('./components/CategoriaComponent.vue').default);
 Vue.component('concepto-component', require('./components/ConceptoComponent.vue').default);
 Vue.component('filtroclase-component', require('./components/FiltroClaseComponent.vue').default);
 Vue.component('clase-component', require('./components/ClaseComponent.vue').default);
@@ -104,23 +103,32 @@ Vue.component('export-component', require('./components/ExportComponent.vue').de
 //declaraciones juradas
 Vue.component('ddjj-component', require('./components/DeclaracionJuradaComponent.vue').default);
 
-//notificaticion 
+//notificaticion
 Vue.component('notification-component', require('./components/NotificacionComponent.vue').default);
 
 
-//panel lateral 
+//panel lateral
 Vue.component('panel-config', require('./components/PanelConfiguracionComponent.vue').default);
 
 //usuarios
-//panel lateral 
+//panel lateral
 Vue.component('users-component', require('./components/UserComponent.vue').default);
 
 Vue.component('home-component', require('./components/HomeComponent.vue').default);
 
+//categorias
+Vue.component('categoria-component', require('./components/components-categoria/CategoriaComponent.vue').default);
+Vue.component('create-categoria', require('./components/components-categoria/CreateCategoria.vue').default);
+Vue.component('update-categoria', require('./components/components-categoria/UpdateCategoria.vue').default);
 
 //jurisdiccion
 Vue.component('jurisdiccion-component', require('./components/components-jurisdiccion/JurisdiccionComponent.vue').default);
 Vue.component('create-jurisdiccion', require('./components/components-jurisdiccion/CreateJurisdiccion.vue').default);
+Vue.component('update-jurisdiccion', require('./components/components-jurisdiccion/UpdateJurisdiccion.vue').default);
+
+
+//paginador
+Vue.component('paginator-component', require('./components/components-paginator/PaginatorComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

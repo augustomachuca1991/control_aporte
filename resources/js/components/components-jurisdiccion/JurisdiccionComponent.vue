@@ -1,173 +1,11 @@
 <template>
     <div>
-        <!-- Modal nueva jurisdiccion -->
-        <create-jurisdiccion
-            :origenes="origenes"
-            @jurisdiccion="nuevaJurisdiccion(...arguments)"
-        ></create-jurisdiccion>
-
-        <!-- Modal editar jurisdiccion -->
-        <div
-            class="modal fade"
-            id="jurisdiccion_edit"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="ModalLabelEditJurisdiccion"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-gradient-olive">
-                        <h5 class="modal-title" id="ModalLabelEditJurisdiccion">
-                            Editar Jurisdiccion
-                        </h5>
-                        <button
-                            @click="empty()"
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group row">
-                            <label
-                                for="input_codigo_jurisdiccion_edit"
-                                class="col-sm-3 col-form-label"
-                                >Codigo *</label
-                            >
-                            <div class="col-sm-9">
-                                <input
-                                    v-if="editMode"
-                                    type="text"
-                                    class="form-control"
-                                    id="input_codigo_jurisdiccion_edit"
-                                    placeholder="Codigo"
-                                    v-model="cod_jurisdiccion"
-                                    disabled
-                                />
-                                <p class="text-justify" v-else>
-                                    {{ cod_jurisdiccion }}
-                                </p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errors.cod_jurisdiccion"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label
-                                for="input_jurisdiccion_edit"
-                                class="col-sm-3 col-form-label"
-                                >Jurisdiccion *</label
-                            >
-                            <div class="col-sm-9">
-                                <input
-                                    v-if="editMode"
-                                    type="text"
-                                    class="form-control"
-                                    id="input_jurisdiccion_edit"
-                                    placeholder="Jurisdiccion"
-                                    v-model="descripcion"
-                                />
-                                <p class="text-justify" v-else>
-                                    {{ descripcion }}
-                                </p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errors.jurisdiccion"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label
-                                for="input_cod_origen"
-                                class="col-sm-3 col-form-label"
-                                >Origen *</label
-                            >
-                            <div class="col-sm-9">
-                                <select
-                                    v-if="editMode"
-                                    class="custom-select"
-                                    id="select_origen_edit"
-                                    v-model="selectedOrigen"
-                                >
-                                    <option
-                                        v-for="(origen, index) in origenes"
-                                        :key="origen.id"
-                                        :value="index"
-                                        :selected="index === selectedOrigen"
-                                    >
-                                        {{ origen.origen }}
-                                    </option>
-                                </select>
-                                <p class="text-justify" v-else>
-                                    {{ origen.origen }}
-                                </p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errors.origen_id"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <span
-                            ><small><em>(*) obligatorio</em></small></span
-                        >
-                        <button
-                            v-if="editMode"
-                            type="button"
-                            class="btn btn-danger btn-sm"
-                            data-dismiss="modal"
-                            @click="empty()"
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            v-if="editMode"
-                            class="btn btn-info btn-sm"
-                            @click="update()"
-                        >
-                            <i class="fa fa-save"></i>&nbsp;Guardar Cambbios
-                        </button>
-                        <button
-                            v-else
-                            type="button"
-                            class="btn btn-secondary btn-sm"
-                            @click="editar()"
-                        >
-                            <i class="fa fa-edit"></i>&nbsp;Editar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- /.col (LEFT) -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col col-md-3 my-2">
                         <button
-                            @click="open_modal()"
                             class="btn bg-gradient-olive btn-block rounded-pill"
                             data-toggle="modal"
                             data-target="#jurisdiccion_new"
@@ -205,7 +43,7 @@
                                     >
                                         <select
                                             class="form-control form-control-sm custom-select rounded-pill"
-                                            v-model="n_paginas"
+                                            v-model="perPage"
                                             @change="paginacion"
                                         >
                                             <option value="5"
@@ -356,31 +194,7 @@
                                     >total registros encontrados:
                                     {{ paginate.total }}</span
                                 >
-                                <nav aria-label="Contacts Page Navigation">
-                                    <ul
-                                        class="pagination pagiante-sm justify-content-end m-0"
-                                    >
-                                        <li
-                                            class="page-item"
-                                            :class="{
-                                                active:
-                                                    paginate.current_page === n
-                                            }"
-                                            v-for="n in paginate.last_page"
-                                            :key="n.id"
-                                        >
-                                            <a
-                                                href="#"
-                                                class="page-link"
-                                                @click.prevent="getPage(n)"
-                                            >
-                                                <span>
-                                                    {{ n }}
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                <paginator-component :data="jurisdicciones" :paginate="paginate" @response="paginado(...arguments)"></paginator-component>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -389,6 +203,20 @@
                 </div>
             </div>
         </section>
+        <!-- Modal nueva jurisdiccion -->
+        <create-jurisdiccion
+            :origenes="origenes"
+            @jurisdiccion="nuevaJurisdiccion(...arguments)"
+        ></create-jurisdiccion>
+
+        <!-- Modal editar jurisdiccion -->
+        <update-jurisdiccion
+            v-if="create"
+            :origenes="origenes"
+            :jurisdiccion="jurisdiccion"
+            :index="index"
+            @jurisdiccion_update="jurisdiccionActualizada(...arguments)"
+        ></update-jurisdiccion>
     </div>
 </template>
 
@@ -409,12 +237,7 @@ export default {
             jurisdicciones: [],
             jurisdiccion: {},
             origenes: [],
-            origen: {},
-            descripcion: "",
-            cod_jurisdiccion: "",
-            selectedOrigen: "",
-            errors: [],
-            editMode: false,
+
             search: "",
             index: "",
             order: false,
@@ -425,13 +248,18 @@ export default {
                 path: "",
                 next_page_url: "",
                 from: "",
-                to: ""
+                to: "",
+                next_page_url:"",
+                prev_page_url:"",
+
             },
-            n_paginas: 5
+            perPage: 10,
+            create: false
         };
     },
     mounted() {
         this.getJurisdicciones();
+        this.getOrigenes();
     },
     methods: {
         getJurisdicciones() {
@@ -441,7 +269,6 @@ export default {
         },
         getOrigenes() {
             axios.get("api/origen/all").then(response => {
-                //console.log(response.data)
                 this.origenes = response.data;
             });
         },
@@ -455,6 +282,15 @@ export default {
                 background: "#E7FFD7"
             });
             this.getJurisdicciones();
+        },
+        jurisdiccionActualizada(param) {
+            Toast.fire({
+                icon: "success",
+                title: "Jurisdicción '" + param.jurisdiccion + "' Actualizada",
+                background: "#E7FFD7"
+            });
+            this.getJurisdicciones();
+            this.create = false;
         },
 
         trash(index, jurisdiccion) {
@@ -472,79 +308,40 @@ export default {
                 confirmButtonText: "Si, eliminar!"
             }).then(result => {
                 if (result.isConfirmed) {
-                    this.jurisdicciones.splice(this.index, 1);
                     axios
-                        .delete(`api/jurisdiccion/delete/${this.jurisdiccion.id}`)
+                        .delete(
+                            `api/jurisdiccion/delete/${this.jurisdiccion.id}`
+                        )
                         .then(response => {
-                           /*  if (response.data.isValid) {
+                            if (response.data.isValid) {
+                                this.jurisdicciones.splice(this.index, 1);
                                 Toast.fire({
                                     icon: "success",
-                                    title: response.data.errors,
+                                    title: response.data.msj,
                                     background: "#E7FFD7"
                                 });
                             } else {
                                 Toast.fire({
                                     icon: "error",
-                                    title: "Atencion!!! Algo Salio Mal.",
+                                    title: response.data.msj,
                                     background: "#FCDBCD"
                                 });
-                            } */
-                            console.log(response.data)
+                            }
                         });
                 }
             });
         },
         edit(index, jurisdiccion) {
-            // console.log(index);
-            // console.log(this.paginate.from - 1)
-            this.getOrigenes();
+            this.create = true;
+            this.index = this.paginate.from + parseInt(index - 1);
             this.jurisdiccion = jurisdiccion;
-            this.descripcion = jurisdiccion.jurisdiccion;
-            this.cod_jurisdiccion = jurisdiccion.cod_jurisdiccion;
-            this.origen = jurisdiccion.origen;
-            this.selectedOrigen = this.origen.cod_origen - 1;
-            this.index = index;
-        },
-        open_modal() {
             this.getOrigenes();
         },
-        editar() {
-            this.editMode = true;
-        },
-        empty() {
-            $("#jurisdiccion_edit").modal("hide");
-            this.errors = [];
-            this.descripcion = "";
-            this.cod_jurisdiccion = "";
-            this.cod_origen = "";
-            this.selectedOrigen = "";
-            this.editMode = false;
-            this.origen = {};
-        },
+
         buscar() {
             axios.get(`api/jurisdiccion/${this.search}`).then(response => {
                 this.asignar(response);
             });
-        },
-        update() {
-            const params = {
-                cod_jurisdiccion: this.cod_jurisdiccion,
-                jurisdiccion: this.descripcion,
-                origen_id: this.origenes[this.selectedOrigen].cod_origen,
-                created_at: this.jurisdiccion.created_at,
-                origen: this.origenes[this.selectedOrigen]
-            };
-
-            axios
-                .put(`api/jurisdiccion/update/${this.jurisdiccion.id}`, params)
-                .then(response => {
-                    this.jurisdicciones[this.index] = params;
-                    this.empty();
-                })
-                .catch(err => {
-                    console.log(err.response.data.errors);
-                    this.errors = err.response.data.errors;
-                });
         },
         sort(column) {
             this.order = !this.order;
@@ -560,15 +357,9 @@ export default {
                     this.asignar(response);
                 });
         },
-
-        getPage(page) {
-            axios.get(this.paginate.path + "?page=" + page).then(response => {
-                this.asignar(response);
-            });
-        },
         paginacion: function() {
             axios
-                .get(`api/jurisdiccion/paginate/${this.n_paginas}`)
+                .get(`api/jurisdiccion/paginate/${this.perPage}`)
                 .then(response => {
                     this.asignar(response);
                 });
@@ -581,7 +372,29 @@ export default {
             this.paginate.path = response.data.path;
             this.paginate.from = response.data.from;
             this.paginate.to = response.data.to;
+            this.paginate.next_page_url = response.data.next_page_url;
+            this.paginate.prev_page_url = response.data.prev_page_url;
+        },
+        paginado(response){
+            this.asignar(response);
+
         }
     }
 };
 </script>
+</script>
+
+<style>
+li.page-item {
+    display: none;
+}
+
+.page-item:first-child,
+.page-item:nth-child(2),
+.page-item:nth-last-child(2),
+.page-item:last-child,
+.page-item.active,
+.page-item.disabled {
+    display: block;
+}
+</style>

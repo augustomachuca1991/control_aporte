@@ -1,5 +1,6 @@
 <?php
 
+use App\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -183,3 +184,9 @@ Route::get('/users', 'UserController@getUsers');
 Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
 Route::delete('/users/delete/{id}', 'UserController@destroy');
 Route::get('/users/{search}', 'UserController@search');
+
+Route::get('/categorias/id/{id}', function(Request $request){
+    //dd($request->id);
+    $categoria = Categoria::find($request->id);
+    dd($categoria->clases()->doesntExist());
+});

@@ -33,8 +33,8 @@ class JurisdiccionController extends Controller
 
         $request->validate([
             'cod_jurisdiccion' => 'required|integer|unique:jurisdiccions,cod_jurisdiccion',
-            'jurisdiccion' =>   'required',
-            'origen_id' => 'required'
+            'jurisdiccion' =>   'required|string|max:30',
+            'origen_id' => 'required|exists:origens,cod_origen'
         ]);
 
         $jurisdiccion = Jurisdiccion::create([
@@ -57,27 +57,17 @@ class JurisdiccionController extends Controller
     {
 
 
-        $validator = Validator::make($request->all(), [
-            'cod_jurisdiccion' => [
-                'required',
-                'integer',
-                Rule::unique('jurisdiccions')->ignore($request->cod_jurisdiccion, 'cod_jurisdiccion')
-            ],
-            'jurisdiccion' => [
-                'required'
-            ],
+        $request->validate([
+            'jurisdiccion' =>   'required|string|max:30',
+            'origen_id' => 'required|exists:origens,cod_origen'
         ]);
-        if ($validator->fails()) {
-            return $validator;
-        } else {
-            $jurisdiccion = Jurisdiccion::findOrfail($id);
-            $jurisdiccion->update([
-                'cod_jurisdiccion' => $request->cod_jurisdiccion,
-                'jurisdiccion' => $request->jurisdiccion,
-                'origen_id' => $request->origen_id
-            ]);
-            return $jurisdiccion;
-        }
+        $jurisdiccion = Jurisdiccion::find($id);
+        $jurisdiccion->update([
+            'cod_jurisdiccion' => $request->cod_jurisdiccion,
+            'jurisdiccion' => $request->jurisdiccion,
+            'origen_id' => $request->origen_id
+        ]);
+        return $jurisdiccion;
     }
 
     /**
@@ -89,7 +79,18 @@ class JurisdiccionController extends Controller
     public function destroy($id)
     {
         $jurisdiccion = Jurisdiccion::find($id);
-        return $jurisdiccion->has('organismos');
+        $hasOrganismos =  $jurisdiccion->organismos()->doesntExist();
+        $hasCategorias =  $jurisdiccion->categorias()->doesntExist();
+        if ($hasCategorias && $hasOrganismos) {
+            $jurisdiccion->delete();
+            $isValid = true;
+            $msj = 'Jurisdicción eliminada satisfactoriamente';
+        } else {
+            $isValid = false;
+            $msj = 'No es posible eliminar esta jurisdicción! Tiene asociado organismos y/o categorias';
+        }
+
+        return response()->json(['isValid' => $isValid, 'msj' => $msj]);
         /* try {
             $jurisdiccion = Jurisdiccion::find($id);
             foreach ($jurisdiccion->organismos as $organismos) {

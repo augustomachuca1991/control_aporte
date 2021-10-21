@@ -15,9 +15,18 @@
 </template>
 
 <script>
-    export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+export default {
+    //props:['data'],
+    data: function() {
+        return {
+            data: []
+        };
+    },
+    mounted() {
+        console.log("Component mounted.");
+    },
+    methods:{
+
     }
+};
 </script>

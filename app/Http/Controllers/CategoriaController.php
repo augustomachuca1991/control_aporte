@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-    
+
     public $perPage = 15;
     /**
      * Display a listing of the resource.
@@ -41,17 +41,15 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $validarDatos = $request->validate([
+        $request->validate([
             'cod_categoria'     => 'required|unique:categorias',
-            'categoria'         => 'required|string',
-            'jurisdiccion_id'   => 'required',
+            'categoria'         => 'required|string|max:30',
+            'jurisdiccion_id'   => 'required|exists:jurisdiccions,cod_jurisdiccion',
         ]);
-        // dd($validarDatos);
         $categoria = Categoria::create([
-                                        'cod_categoria' => $request->cod_categoria,
-                                        'categoria'     => $request->categoria
-                                        ]);
-        // dd($categoria);
+            'cod_categoria' => $request->cod_categoria,
+            'categoria'     => $request->categoria
+        ]);
         $categoria->jurisdicciones()->attach($request->jurisdiccion_id);
 
         return $this->show($categoria->id);
@@ -66,7 +64,7 @@ class CategoriaController extends Controller
     public function show($id)
     {
         $categoria = Categoria::with(['jurisdicciones'])
-                ->where('id', $id)->first();
+            ->where('id', $id)->first();
         return $categoria;
     }
 
@@ -91,7 +89,8 @@ class CategoriaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'categoria'     => 'required'
+            'categoria'     => 'required|string|max:30',
+            'jurisdicciones_id' => 'array|required',
         ]);
         // dd($request->all());
         $categoria =  Categoria::find($id);
@@ -100,9 +99,8 @@ class CategoriaController extends Controller
         $categoria->categoria = $request->categoria;
         $categoria->updated_at = now();
         $categoria->save();
+        $categoria->jurisdicciones()->sync($request->jurisdicciones_id);
         return $this->show($categoria->id);
-       
-      
     }
 
     /**
@@ -114,23 +112,29 @@ class CategoriaController extends Controller
     public function destroy($id)
     {
         $categoria = Categoria::find($id);
-        $nombre_categoria = $categoria->categoria;
-        foreach($categoria->clases as $clases)
-        {
-            $clases->delete();
-        };
-        $categoria->jurisdicciones()->detach();
-        $categoria->delete();
+        $hasClase =  $categoria->clases()->doesntExist();
+        if ($hasClase) {
+            $isValid = true;
+            $msj = "Categoria '" . $categoria->categoria . "' eliminada";
+            $categoria->jurisdicciones()->detach();
+            $categoria->forceDelete();
+        } else {
+            $isValid = false;
+            $msj = 'No es posible eliminar esta categoria! Esta asociado a una o varias clase/s';
+        }
 
-        return $nombre_categoria." borrado exitosamente";
+
+        return response()->json(['isValid' => $isValid, 'msj' => $msj]);
     }
 
-    public function getCategorias(){
-        return Categoria::with('jurisdicciones')->paginate($this->perPage);
+    public function getCategorias()
+    {
+        return Categoria::with('jurisdicciones')->orderBy('id', 'DESC')->paginate($this->perPage);
     }
 
 
-    public function getAllCategorias(){
+    public function getAllCategorias()
+    {
         return Categoria::with('jurisdicciones')->get();
     }
 
@@ -138,34 +142,33 @@ class CategoriaController extends Controller
     public function search($search)
     {
 
-        
-            return Categoria::with(['jurisdicciones'])
-            ->where('categoria' ,'LIKE' ,"%".$search."%")
-            ->orWhere('cod_categoria' ,'LIKE' ,"%".$search."%")
-            ->orWhereHas('jurisdicciones' , function($query) use ($search){
-                $query->where('jurisdiccion','LIKE',"%".$search."%");
+
+        return Categoria::with(['jurisdicciones'])
+            ->where('categoria', 'LIKE', "%" . $search . "%")
+            ->orWhere('cod_categoria', 'LIKE', "%" . $search . "%")
+            ->orWhereHas('jurisdicciones', function ($query) use ($search) {
+                $query->where('jurisdiccion', 'LIKE', "%" . $search . "%");
             })
             ->paginate($this->perPage);
-
     }
 
 
 
 
-    public function sort($column , $order)
+    public function sort($column, $order)
     {
-            
-            return 
+
+        return
             Categoria::with(['jurisdicciones'])
             ->orderBy($column, $order)
             ->paginate($this->perPage);
-
     }
 
 
 
 
-    public function paginado($perPage){
+    public function paginado($perPage)
+    {
         $this->perPage = $perPage;
         return $this->getCategorias();
     }
