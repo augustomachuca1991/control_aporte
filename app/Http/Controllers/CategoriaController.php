@@ -92,9 +92,7 @@ class CategoriaController extends Controller
             'categoria'     => 'required|string|max:30',
             'jurisdicciones_id' => 'array|required',
         ]);
-        // dd($request->all());
         $categoria =  Categoria::find($id);
-        // dd($categoria);
 
         $categoria->categoria = $request->categoria;
         $categoria->updated_at = now();

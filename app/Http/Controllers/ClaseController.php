@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 class ClaseController extends Controller
 {
-    
+
     public $perPage = 10;
 
 
 
 
-    
+
 
 
     /**
@@ -33,7 +33,6 @@ class ClaseController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -44,7 +43,7 @@ class ClaseController extends Controller
      */
     public function store(Request $request)
     {
-        $validar = $request->validate([
+        $request->validate([
             'cod_clase' => 'required|integer',
             'clase' => 'required|string',
             'categoria_id' => 'required',
@@ -68,7 +67,7 @@ class ClaseController extends Controller
     public function show($id)
     {
         $clase = Clase::with(['categoria'])
-                ->where('id', $id)->first();
+            ->where('id', $id)->first();
         return $clase;
     }
 
@@ -93,20 +92,18 @@ class ClaseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            //'cod_clase'     => 'required',
-            'clase' => 'required|string',
-            'categoria_id' => 'required',
+            'clase' => 'required|string|max:30',
+            'categoria_id' => 'required|exists:categorias,cod_categoria'
         ]);
 
         $clase =  Clase::find($id);
+
         $clase->categoria_id = $request->categoria_id;
         $clase->clase = $request->clase;
         $clase->updated_at = now();
         $clase->save();
 
         return $this->show($clase->id);
-       
-      
     }
 
     /**
@@ -117,20 +114,33 @@ class ClaseController extends Controller
      */
     public function destroy($id)
     {
-        //tambien se debe borrar la categoria relacionada a esa clase
+
+
         $clase = Clase::find($id);
-        $nombre_clase = $clase->clase;
-        $clase->delete();
-        return $nombre_clase.' Borrado correctamente';
+        $hasPuestosLaborales =  $clase->puestolaborales()->doesntExist();
+        if ($hasPuestosLaborales) {
+            $isValid = true;
+            $msj = "Clase '" . $clase->clase . "' eliminada";
+            $clase->puestolaborales()->detach();
+            $clase->forceDelete();
+        } else {
+            $isValid = false;
+            $msj = 'No es posible eliminar esta clase! Esta asociado a una o varias puesto laboral/es';
+        }
+
+
+        return response()->json(['isValid' => $isValid, 'msj' => $msj]);
     }
 
-    public function getClases(){
-        return Clase::with('categoria')->paginate($this->perPage);
+    public function getClases()
+    {
+        return Clase::with('categoria')->orderBy('id', 'DESC')->paginate($this->perPage);
     }
 
 
 
-    public function getAllClases(){
+    public function getAllClases()
+    {
         return Clase::with('categoria')->get();
     }
 
@@ -138,36 +148,32 @@ class ClaseController extends Controller
     public function search($search)
     {
 
-        
-            return Clase::with(['categoria'])
-            ->where('clase' ,'LIKE' ,"%".$search."%")
-            ->orWhere('cod_clase' ,'LIKE' ,"%".$search."%")
-            ->orWhereHas('categoria' , function($query) use ($search){
-                $query->where('categoria','LIKE',"%".$search."%");
+
+        return Clase::with(['categoria'])
+            ->where('clase', 'LIKE', "%" . $search . "%")
+            ->orWhere('cod_clase', 'LIKE', "%" . $search . "%")
+            ->orWhereHas('categoria', function ($query) use ($search) {
+                $query->where('categoria', 'LIKE', "%" . $search . "%");
             })
             ->paginate($this->perPage);
-
     }
 
 
 
 
-    public function sort($column , $order)
+    public function sort($column, $order)
     {
-            
-            return Clase::with(['categoria'])
+
+        return Clase::with(['categoria'])
             ->orderBy($column, $order)
             ->paginate($this->perPage);
-
     }
 
 
 
-    public function paginado($perPage){
+    public function paginado($perPage)
+    {
         $this->perPage = $perPage;
         return $this->getClases();
     }
-
-
-
 }

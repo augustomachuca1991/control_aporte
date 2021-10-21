@@ -91,16 +91,6 @@ class JurisdiccionController extends Controller
         }
 
         return response()->json(['isValid' => $isValid, 'msj' => $msj]);
-        /* try {
-            $jurisdiccion = Jurisdiccion::find($id);
-            foreach ($jurisdiccion->organismos as $organismos) {
-                $organismos->delete();
-            }
-            $jurisdiccion->delete();
-            return response()->json(['isValid' => true, 'errors' => 'Jurisdicción eliminada satisfactoriamente']);
-        } catch (\Exception $e) {
-            return response()->json(['isValid' => false, 'errors' => 'Error al eliminar la Jurisdicción']);
-        } */
     }
 
 

@@ -78,11 +78,11 @@ Vue.component('buscaragente-component', require('./components/BuscarAgenteCompon
 
 Vue.component('concepto-component', require('./components/ConceptoComponent.vue').default);
 Vue.component('filtroclase-component', require('./components/FiltroClaseComponent.vue').default);
-Vue.component('clase-component', require('./components/ClaseComponent.vue').default);
+
 Vue.component('filtrocategoria-component', require('./components/FiltroCategoriaComponent.vue').default);
 Vue.component('panelcategoria-component', require('./components/PanelCategoriaComponent.vue').default);
 Vue.component('panelcomputo-component', require('./components/PanelComputoComponent.vue').default);
-Vue.component('organismo-component', require('./components/OrganismoComponent.vue').default);
+
 Vue.component('periodo-component', require('./components/PeriodoComponent.vue').default);
 
 Vue.component('historialaborales-component', require('./components/HistoriaLaboralesComponent.vue').default);
@@ -115,6 +115,16 @@ Vue.component('panel-config', require('./components/PanelConfiguracionComponent.
 Vue.component('users-component', require('./components/UserComponent.vue').default);
 
 Vue.component('home-component', require('./components/HomeComponent.vue').default);
+
+//organismos
+Vue.component('organismo-component', require('./components/components-organismo/OrganismoComponent.vue').default);
+Vue.component('create-organismo', require('./components/components-organismo/CreateOrganismo.vue').default);
+Vue.component('update-organismo', require('./components/components-organismo/UpdateOrganismo.vue').default);
+
+//clases
+Vue.component('clase-component', require('./components/components-clase/ClaseComponent.vue').default);
+Vue.component('create-clase', require('./components/components-clase/CreateClase.vue').default);
+Vue.component('update-clase', require('./components/components-clase/UpdateClase.vue').default);
 
 //categorias
 Vue.component('categoria-component', require('./components/components-categoria/CategoriaComponent.vue').default);

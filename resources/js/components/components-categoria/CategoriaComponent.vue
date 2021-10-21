@@ -13,129 +13,12 @@
             :index="index"
             @categoria_update="categoriaActualizada(...arguments)"
         ></update-categoria>
-        <!-- <div
-            class="modal fade"
-            id="categoria_edit"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="ModalLabelEditCategoria"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-gradient-info">
-                        <h5 class="modal-title" id="ModalLabelEditCategoria">
-                            Editar Categoria
-                        </h5>
-                        <button
-                            @click="empty()"
-                            type="button"
-                            class="close text-white"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group row">
-                            <label
-                                for="input_codigo_categoria_edit"
-                                class="col-sm-3 col-form-label"
-                                >Codigo *</label
-                            >
-                            <div class="col-sm-9">
-                                <input
-                                    v-if="editMode"
-                                    type="text"
-                                    class="form-control"
-                                    id="input_codigo_categoria_edit"
-                                    placeholder="Codigo"
-                                    v-model="cod_categoria"
-                                    disabled
-                                />
-                                <p class="text-justify" v-else>
-                                    {{ cod_categoria }}
-                                </p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errores.cod_categoria"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label
-                                for="input_clase_edit"
-                                class="col-sm-3 col-form-label"
-                                >Categoria *</label
-                            >
-                            <div class="col-sm-9">
-                                <input
-                                    v-if="editMode"
-                                    type="text"
-                                    class="form-control"
-                                    id="input_clase_edit"
-                                    placeholder="Categoria"
-                                    v-model="descripcion"
-                                />
-                                <p class="text-justify" v-else>
-                                    {{ descripcion }}
-                                </p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errores.categoria"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <span
-                            ><small><em>(*) obligatorio</em></small></span
-                        >
-                        <button
-                            v-if="editMode"
-                            type="button"
-                            class="btn btn-danger btn-sm"
-                            data-dismiss="modal"
-                            @click="empty()"
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            v-if="editMode"
-                            class="btn btn-info btn-sm"
-                            @click="actualizarCategoria()"
-                        >
-                            <i class="fa fa-save"></i>&nbsp;Guardar Cambios
-                        </button>
-                        <button
-                            v-else
-                            type="button"
-                            class="btn btn-secondary btn-sm"
-                            @click="isEditar()"
-                        >
-                            <i class="fa fa-edit"></i>&nbsp;Editar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <!-- nueva categoria  y buscador-->
                     <div class="col col-md-3 my-2">
+                        <!-- nueva categoria  y buscador-->
                         <button
                             class="btn bg-gradient-info btn-block rounded-pill"
                             data-toggle="modal"
@@ -161,8 +44,8 @@
                         </form>
                     </div>
 
-                    <!-- /.col (LEFT) -->
                     <div class="col-12">
+                        <!-- /.col (LEFT) -->
                         <div class="card">
                             <div class="card-header bg-gradient-info">
                                 <h3 class="card-title">Lista de Categorias</h3>
@@ -193,8 +76,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.card-header -->
+
                             <div class="card-body table-responsive p-0">
+                                <!-- /.card-header -->
                                 <table class="table table-hover text-nowrap">
                                     <thead>
                                         <tr>
@@ -234,7 +118,7 @@
                                                 ></a>
                                             </th>
                                             <th>
-                                                Jurisdicción<!-- <a href="#" class="text-dark" @click="sort('categoria')"><small><i class="fas fa-sort"></i></small></a> -->
+                                                Jurisdicción
                                             </th>
                                             <th></th>
                                         </tr>
@@ -344,7 +228,7 @@ export default {
             categorias: [],
             jurisdicciones: [],
             categoria: {},
-
+            index: "",
             search: "",
             order: false,
             paginate: {
@@ -357,8 +241,7 @@ export default {
                 next_page_url: "",
                 prev_page_url: ""
             },
-            perPage: 10,
-            index: ""
+            perPage: 10
         };
     },
     mounted() {
@@ -371,10 +254,6 @@ export default {
                 .get("api/jurisdiccion/all")
                 .then(response => {
                     this.jurisdicciones = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    this.errores = error;
                 });
         },
         getCategorias() {
@@ -382,10 +261,6 @@ export default {
                 .get("api/categoria")
                 .then(response => {
                     this.asignar(response);
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    this.errores = error;
                 });
         },
         nuevaCategoria(param) {
@@ -415,7 +290,6 @@ export default {
             });
         },
         deleteCategoria(index, categoria) {
-            //console.log(index,clase)
             this.categoria = categoria;
             this.index = this.paginate.from + parseInt(index - 1);
             swal.fire({
@@ -454,7 +328,6 @@ export default {
         },
         buscar() {
             axios.get(`api/categoria/${this.search}`).then(response => {
-                //console.log(response.data)
                 this.asignar(response);
             });
         },

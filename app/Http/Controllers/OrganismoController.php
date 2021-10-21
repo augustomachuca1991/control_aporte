@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 
 class OrganismoController extends Controller
 {
-    
+
 
     public $perPage = 10;
     /**
@@ -41,24 +41,20 @@ class OrganismoController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $validator = $request->validate([
-            'cod_organismo' => 'required|integer|unique:organismos,cod_organismo',
-            'organismo' =>   'required',
-            'jurisdiccion_id' => 'required',
-        ]);
-        
 
-        if (!$validator) {
-            return $validator;
-        } else {
-            $organismo = Organismo::create([
-                'cod_organismo' => $request->cod_organismo,
-                'organismo' => $request->organismo,
-                'jurisdiccion_id' => $request->jurisdiccion_id
-            ]);
-            return $this->show($organismo->id);
-        }
+        $request->validate([
+            'cod_organismo' => 'required|integer|unique:organismos,cod_organismo',
+            'organismo' =>   'required|string|max:30',
+            'jurisdiccion_id' => 'required|exists:jurisdiccions,cod_jurisdiccion',
+        ]);
+
+        $organismo = Organismo::create([
+            'cod_organismo' => $request->cod_organismo,
+            'organismo' => $request->organismo,
+            'jurisdiccion_id' => $request->jurisdiccion_id
+        ]);
+
+        return $this->show($organismo->id);
     }
 
     /**
@@ -70,7 +66,7 @@ class OrganismoController extends Controller
     public function show($id)
     {
         $organismo = Organismo::with(['jurisdiccion'])
-                ->where('id', $id)->first();
+            ->where('id', $id)->first();
         return $organismo;
     }
 
@@ -142,14 +138,21 @@ class OrganismoController extends Controller
      */
     public function destroy($id)
     {
-        //
-        try {
-            $organismo = Organismo::findOrFail($id);
+        $organismo = Organismo::find($id);
+        $hasLiquidaciones =  $organismo->liquidaciones()->doesntExist();
+        $hasAgentes =  $organismo->agentes()->doesntExist();
+        $hasConceptos =  $organismo->conceptos()->doesntExist();
+        $hasEstados =  $organismo->estados()->doesntExist();
+        if ($hasLiquidaciones && $hasAgentes && $hasConceptos && $hasEstados) {
             $organismo->delete();
-            return response()->json(['isValid'=>true,'errors'=>'organismo eliminada satisfactoriamente']);
-        }catch(\Exception $e) {
-            return response()->json(['isValid'=>false,'errors'=>'Error al eliminar la organismo']);
+            $isValid = true;
+            $msj = 'Organismo eliminada satisfactoriamente';
+        } else {
+            $isValid = false;
+            $msj = 'No es posible eliminar este Organismo! esta asociado a varios datos y podria causar una problema al sistemas';
         }
+
+        return response()->json(['isValid' => $isValid, 'msj' => $msj]);
     }
 
     /**
@@ -160,7 +163,7 @@ class OrganismoController extends Controller
      */
     public function getOrganismos()
     {
-        return Organismo::with(['jurisdiccion'])->paginate($this->perPage);
+        return Organismo::with(['jurisdiccion'])->orderBy('id', 'DESC')->paginate($this->perPage);
     }
 
 
@@ -182,15 +185,14 @@ class OrganismoController extends Controller
     public function search($search)
     {
 
-        try{
+        try {
             return Organismo::with(['jurisdiccion'])
-            ->where('organismo' ,'LIKE' ,"%".$search."%")
-            ->orWhere('cod_organismo' ,'LIKE' ,"%".$search."%")
-            ->paginate($this->perPage);
-        }catch (\Exception $e){
+                ->where('organismo', 'LIKE', "%" . $search . "%")
+                ->orWhere('cod_organismo', 'LIKE', "%" . $search . "%")
+                ->paginate($this->perPage);
+        } catch (\Exception $e) {
             return 'algo salio mal';
         }
-
     }
 
     /**
@@ -199,16 +201,16 @@ class OrganismoController extends Controller
      * @param  \App\Organismo  $organismo
      * @return \Illuminate\Http\Response
      */
-    public function sort($column , $order){
+    public function sort($column, $order)
+    {
 
-        try{
-            
+        try {
+
             return Organismo::with(['jurisdiccion'])
-            ->orderBy($column, $order)
-            ->paginate($this->perPage);
-        }catch (\Exception $e){
+                ->orderBy($column, $order)
+                ->paginate($this->perPage);
+        } catch (\Exception $e) {
             return 'algo salio mal';
         }
-
     }
 }
