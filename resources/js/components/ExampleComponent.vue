@@ -25,8 +25,6 @@ export default {
     mounted() {
         console.log("Component mounted.");
     },
-    methods:{
-
-    }
+    methods: {}
 };
 </script>

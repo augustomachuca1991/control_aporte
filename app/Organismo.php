@@ -69,4 +69,12 @@ class Organismo extends Model
         return $this->hasMany('App\DeclaracionJurada');
 
     }
+
+
+    public function scopeSearchOrganismo($query , $search){
+        if (!empty($search)) {
+            # code...
+            $query->where('organismo', 'LIKE', "%" . $search . "%")->orWhere('cod_organismo', 'LIKE', "%" . $search . "%");
+        }
+    }
 }

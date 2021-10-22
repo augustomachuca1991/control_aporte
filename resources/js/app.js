@@ -83,7 +83,7 @@ Vue.component('filtrocategoria-component', require('./components/FiltroCategoria
 Vue.component('panelcategoria-component', require('./components/PanelCategoriaComponent.vue').default);
 Vue.component('panelcomputo-component', require('./components/PanelComputoComponent.vue').default);
 
-Vue.component('periodo-component', require('./components/PeriodoComponent.vue').default);
+
 
 Vue.component('historialaborales-component', require('./components/HistoriaLaboralesComponent.vue').default);
 Vue.component('panel-historialaboral', require('./components/PanelHistoriaComponent.vue').default);
@@ -115,6 +115,11 @@ Vue.component('panel-config', require('./components/PanelConfiguracionComponent.
 Vue.component('users-component', require('./components/UserComponent.vue').default);
 
 Vue.component('home-component', require('./components/HomeComponent.vue').default);
+
+//periodo
+Vue.component('periodo-component', require('./components/components-periodo/PeriodoComponent.vue').default);
+Vue.component('create-periodo', require('./components/components-periodo/CreatePeriodo.vue').default);
+// Vue.component('update-periodo', require('./components/components-periodo/UpdatePeriodo.vue').default);
 
 //organismos
 Vue.component('organismo-component', require('./components/components-organismo/OrganismoComponent.vue').default);

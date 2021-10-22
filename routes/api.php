@@ -143,11 +143,12 @@ Route::get('/jurisdiccion/paginate/{n_paginas}', 'JurisdiccionController@paginad
 Route::get('/organismo', 'OrganismoController@getOrganismos')->name('organismo');
 Route::get('/organismo/all', 'OrganismoController@getAllOrganismos')->name('organismo_all');
 Route::get('/organismo/{search}', 'OrganismoController@search')->name('organismo_search');
-Route::get('/organismo/edit/{id}', 'OrganismoController@edit')->name('edit_organismo');
+//Route::get('/organismo/edit/{id}', 'OrganismoController@edit')->name('edit_organismo');
 Route::put('/organismo/update/{id}', 'OrganismoController@update')->name('update_organismo');
-Route::post('/organismo/create', 'OrganismoController@store')->name('create_organismo');
+//Route::post('/organismo/create', 'OrganismoController@store')->name('create_organismo');
 Route::delete('/organismo/delete/{id}', 'OrganismoController@destroy')->name('delete_organismo');
 Route::get('/organismo/order/{column}/sort/{sort}', 'OrganismoController@sort')->name('sort_organismo');
+Route::get('/organismo/paginate/{paginas}', 'OrganismoController@paginado');
 
 
 

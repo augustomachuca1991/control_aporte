@@ -204,8 +204,6 @@ export default {
             descripcion: "",
             selectedOrigen:"",
             selectedJurisdiccion:"",
-            indexJurisdiccion:"",
-            indexOrigen:"",
             editMode: false,
 
         };
@@ -217,6 +215,7 @@ export default {
         clear(){
             $("#organismo_edit").modal("hide");
             this.jurisdicciones = [];
+            this.errors = [];
             this.origen = {};
             this.jurisdiccion = {};
             this.cod_organismo = "";
@@ -229,7 +228,7 @@ export default {
             this.jurisdicciones = [];
             this.selectedJurisdiccion = "";
             if (this.selectedOrigen !== "") {
-                this.origen = this.origenes[this.selectedOrigen];
+                this.origen = this.origenes[this.selectedOrigen-1];
                 this.jurisdicciones = this.origen.jurisdicciones;
             }
         },
@@ -246,12 +245,25 @@ export default {
             this.descripcion = this.organismo.organismo;
             this.selectedJurisdiccion = this.organismo.jurisdiccion_id;
             this.selectedOrigen = this.organismo.jurisdiccion.origen_id;
-            // this.indexJurisdiccion = ;
-            // this.indexOrigen = ;
+            this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones;
 
         },
         update(){
+            const param = {
+                cod_organismo: this.cod_organismo,
+                organismo: this.descripcion,
+                jurisdiccion_id: this.selectedJurisdiccion
+            };
 
+            axios
+                .put(`api/organismo/update/${this.organismo.id}`, param)
+                .then(response => {
+                    this.clear();
+                    this.$emit("organismo_update", [response.data, this.index]);
+                })
+                .catch(err => {
+                    this.errors = err.response.data.errors;
+                });
         }
     }
 };

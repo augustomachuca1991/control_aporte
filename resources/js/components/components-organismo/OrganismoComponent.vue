@@ -54,6 +54,8 @@
                                     >
                                         <select
                                             class="form-control form-control-sm custom-select rounded-pill"
+                                            v-model="perPage"
+                                            @change="paginator"
                                         >
                                             <option value="5"
                                                 >5 por página</option
@@ -245,32 +247,26 @@ export default {
     data: function() {
         return {
             origenes: [],
-            jurisdicciones: [],
             organismos: [],
-            errors: [],
-            origen: {},
-            jurisdiccion: {},
             organismo: {},
-            selectedOrigen: "",
-            selectedJurisdiccion: "",
-            selectedOrganismo: "",
-            cod_organismo: "",
-            descripcion: "",
             search: "",
             order: false,
-            editMode: false,
-            noclick: false,
+            perPage: 10,
+            index: "",
+            create: false,
             paginate: {
                 current_page: "",
                 last_page: "",
                 total: "",
                 path: "",
-                next_page_url: "",
                 from: "",
-                to: ""
+                to: "",
+                per_page: "",
+                next_page_url: "",
+                prev_page_url: ""
             },
-            index: "",
-            create:false,
+            setTimeoutBuscador: "",
+            timeOut: 400
         };
     },
     mounted() {
@@ -283,37 +279,9 @@ export default {
                 this.origenes = response.data;
             });
         },
-        getJurisdicciones() {
-            axios.get("api/jurisdiccion/all").then(response => {
-                this.jurisdicciones = response.data;
-            });
-        },
-        selectOrigenes() {
-            this.jurisdicciones = [];
-            this.selectedJurisdiccion = "";
-            if (this.selectedOrigen !== "") {
-                this.origen = this.origenes[this.selectedOrigen];
-                this.jurisdicciones = this.origenes[
-                    this.selectedOrigen
-                ].jurisdicciones;
-            }
-        },
-        selectJurisdicciones() {
-            if (this.selectedOrigen !== "") {
-                this.jurisdiccion = this.jurisdicciones[
-                    this.selectedJurisdiccion
-                ];
-            }
-        },
         getOrganismos() {
             axios.get("api/organismo").then(response => {
-                this.organismos = response.data.data;
-                this.paginate.current_page = response.data.current_page;
-                this.paginate.last_page = response.data.last_page;
-                this.paginate.total = response.data.total;
-                this.paginate.path = response.data.path;
-                this.paginate.from = response.data.from;
-                this.paginate.to = response.data.to;
+                this.asignar(response);
             });
         },
         nuevoOrganismo(param) {
@@ -368,37 +336,27 @@ export default {
             this.index = this.paginate.from + parseInt(index - 1);
             this.organismo = organismo;
         },
-        update() {
-            //const params = {
-            //    cod_organismo : this.cod_organismo,
-            //    organismo : this.descripcion,
-            //    jurisdiccion_id : this.jurisdicciones[this.selectedJurisdiccion].cod_jurisdiccion,
-            //    created_at: this.jurisdiccion.created_at,
-            //    origen_id: this.origenes[this.selectedOrigen].cod_origen,
-            //};
-
-            const organismo = {
-                jurisdiccion_id: this.jurisdiccion.cod_jurisdiccion,
-                organismo: this.descripcion
-            };
-            // this.organismos[this.index_organismo] = organismo;
-            // this.empty();
-
-            axios
-                .put(`api/organismo/update/${this.organismo.id}`, organismo)
-                .then(response => {
-                    this.organismos[this.selectedOrganismo] = response.data;
-                    this.empty();
-                })
-                .catch(err => {
-                    console.log(err.response.data.errors);
-                    this.errors = err.response.data.errors;
-                });
+        organismoActualizada(param) {
+            this.organismo = param[0];
+            this.index = param[1];
+            this.organismos[this.index] = this.organismo;
+            Toast.fire({
+                icon: "success",
+                title:
+                    "Clase '" +
+                    this.organismo.organismo +
+                    "' creada exitosamente",
+                background: "#E7FFD7"
+            });
+            this.create = false;
         },
         buscar() {
-            axios.get(`api/organismo/${this.search}`).then(response => {
-                this.asignar(response);
-            });
+            clearTimeout(this.setTimeoutBuscador);
+            this.setTimeoutBuscador = setTimeout(() => {
+                axios.get(`api/organismo/${this.search}`).then(response => {
+                    this.asignar(response);
+                });
+            }, this.timeOut);
         },
         sort(column) {
             this.order = !this.order;
@@ -416,29 +374,6 @@ export default {
                     this.asignar(response);
                 });
         },
-        empty() {
-            this.jurisdicciones = [];
-            this.origenes = [];
-            this.errors = [];
-            this.organismo = {};
-            this.jurisdiccion = {};
-            this.descripcion = "";
-            this.cod_organismo = "";
-            this.cod_origen = "";
-            this.cod_jurisdiccion = "";
-            this.selectedOrigen = "";
-            this.selectedJurisdiccion = "";
-            this.editMode = false;
-            this.noclick = false;
-            this.origen = {};
-            this.index_organismo = "";
-            $("#organismo_new").modal("hide");
-            $("#organismo_edit").modal("hide");
-        },
-        editar() {
-            this.editMode = true;
-            this.noclick = true;
-        },
         asignar(response) {
             this.organismos = response.data.data;
             this.paginate.current_page = response.data.current_page;
@@ -448,6 +383,15 @@ export default {
             this.organismos = response.data.data;
             this.paginate.from = response.data.from;
             this.paginate.to = response.data.to;
+            this.paginate.next_page_url = response.data.next_page_url;
+            this.paginate.prev_page_url = response.data.prev_page_url;
+        },
+        paginator() {
+            axios
+                .get(`api/organismo/paginate/${this.perPage}`)
+                .then(response => {
+                    this.asignar(response);
+                });
         }
     }
 };

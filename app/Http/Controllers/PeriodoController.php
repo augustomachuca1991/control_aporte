@@ -38,7 +38,7 @@ class PeriodoController extends Controller
      */
     public function store(Request $request)
     {
-        $validar = $request->validate([
+        $request->validate([
             'cod_periodo' => 'required|integer|unique:periodos,cod_periodo',
         ]);
 
@@ -49,7 +49,7 @@ class PeriodoController extends Controller
             'anio' => $request->anio,
         ]);
 
-        return $periodo;
+        return $this->show($periodo->id);
     }
 
     /**
@@ -111,9 +111,18 @@ class PeriodoController extends Controller
     public function destroy($id)
     {
         $periodo = Periodo::find($id);
-        $nombre_periodo = $periodo->periodo;
-        $periodo->delete();
-        return $nombre_periodo;
+        $hasLiquidaciones =  $periodo->liquidaciones()->doesntExist();
+        $hasComputos =  $periodo->liquidacionOrganismo()->doesntExist();
+        if ($hasLiquidaciones && $hasComputos) {
+            $msj = 'periodo <u>'.$periodo->periodo .'</u> eliminado satisfactoriamente';
+            $isValid = true;
+            $periodo->delete();
+        } else {
+            $isValid = false;
+            $msj = 'No es posible eliminar este periodo! esta asociado a varios datos y podria causar una problema al sistemas';
+        }
+
+        return response()->json(['isValid' => $isValid, 'msj' => $msj]);
     }
 
     public function getPeriodos(){
