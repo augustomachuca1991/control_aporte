@@ -119,7 +119,7 @@ Vue.component('home-component', require('./components/HomeComponent.vue').defaul
 //periodo
 Vue.component('periodo-component', require('./components/components-periodo/PeriodoComponent.vue').default);
 Vue.component('create-periodo', require('./components/components-periodo/CreatePeriodo.vue').default);
-// Vue.component('update-periodo', require('./components/components-periodo/UpdatePeriodo.vue').default);
+Vue.component('update-periodo', require('./components/components-periodo/UpdatePeriodo.vue').default);
 
 //organismos
 Vue.component('organismo-component', require('./components/components-organismo/OrganismoComponent.vue').default);

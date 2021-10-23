@@ -4,208 +4,12 @@
         <create-periodo @periodo="nuevoPeriodo(...arguments)"></create-periodo>
 
         <!-- Modal editar Periodo -->
-        <div
-            class="modal fade"
-            id="periodo_edit"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="ModalLabelEditPeriodo"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form action="" @submit.prevent="nuevo_periodo">
-                        <div
-                            class="modal-header"
-                            style="background: radial-gradient(#f3fff1, #ccc);"
-                        >
-                            <h5 class="modal-title" id="ModalLabelEditPeriodo">
-                                Nuevo Periodo
-                            </h5>
-                            <!-- {{errors}} -->
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                                @click="empty"
-                            >
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- <div class="form-group row">
-                    <label for="select_mes" class="col-sm-3 col-form-label">Mes *</label>
-                    <div class="col-sm-9">
-                      <select class="custom-select" id="select_mes" v-model="mes" @change="selectMes">
-                        <option selected disabled :value="''">Seleccione Mes...</option>
-                        <option :value="1">Enero</option>
-                        <option :value="2">Febrero</option>
-                        <option :value="3">Marzo</option>
-                        <option :value="4">Abril</option>
-                        <option :value="5">Mayo</option>
-                        <option :value="6">Junio</option>
-                        <option :value="7">Julio</option>
-                        <option :value="8">Agosto</option>
-                        <option :value="9">Septiembre</option>
-                        <option :value="10">Octubre</option>
-                        <option :value="11">Noviembre</option>
-                        <option :value="12">Diciembre</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="select_mes" class="col-sm-3 col-form-label">Año *</label>
-                    <div class="col-sm-9">
-                      <select :disabled="mes == ''" class="custom-select" id="select_mes" v-model="anio" @change="selectAnio">
-                        <option selected disabled :value="''">Seleccione Año...</option>
-                        <option :value="2020">2020</option>
-                        <option :value="2021">2021</option>
-                        <option :value="2022">2022</option>
-                        <option :value="2023">2023</option>
-                      </select>
-                    </div>
-                  </div> -->
-                            <div class="form-group">
-                                <label for="descripcion">Periodo</label>
-                                <p id="descripcion">{{ periodo.periodo }}</p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errores.periodo"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="cod_periodo">Codigo Periodo</label>
-                                <p id="cod_periodo">
-                                    {{ periodo.cod_periodo }}
-                                </p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errores.cod_periodo"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="mes">Mes</label>
-                                <p id="mes">{{ periodo.mes }}</p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errores.mes"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="anio">Año</label>
-                                <p id="anio">{{ periodo.anio }}</p>
-                                <span
-                                    class="errors text-danger"
-                                    v-for="error in errores.anio"
-                                    :key="error.id"
-                                >
-                                    <small
-                                        ><em>{{ error }}</em></small
-                                    >
-                                </span>
-                            </div>
-                            <div class="form-group" v-if="isEdit">
-                                <label for="selectPeriodo"
-                                    >Elija un Periodo</label
-                                >
-                                <month-picker-input
-                                    id="selectPeriodo"
-                                    v-if="isEdit"
-                                    :lang="'es'"
-                                    :no-default="true"
-                                    :max-date="fecha_actual"
-                                    @change="actualizar"
-                                >
-                                </month-picker-input>
-                            </div>
-                        </div>
-                        <div class="modal-footer" v-if="isEdit">
-                            <button
-                                type="button"
-                                class="btn btn-primary btn-sm"
-                                @click="confimarCambios"
-                            >
-                                <i class="fa fa-edit"></i>&nbsp;Guardar Cambios
-                            </button>
-                        </div>
-                        <div class="modal-footer" v-else>
-                            <button
-                                type="button"
-                                class="btn btn-danger btn-sm"
-                                @click="empty"
-                            >
-                                <i class="fa fa-times"></i>&nbsp;Cancelar
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-secondary btn-sm"
-                                @click="editMode"
-                            >
-                                <i class="fa fa-edit"></i>&nbsp;Editar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!--Table-->
-        <!-- <div class="row">
-          <div class="col-md-12 col-lg-4 my-2">
-            <button  @click="open_modal()" class="btn btn-outline-success btn-block rounded-pill" data-toggle="modal" data-target="#jurisdiccion_new"><i class="fa fa-plus"></i>&nbsp;Nueva Jurisdicción</button>
-          </div>
-          <div class="col-md-12 col-lg-4 offset-lg-4 my-2 ">
-            <form class="form-inline justify-content-end">
-                  <label for="buscador" class="mx-1 sr-only"><i class="fa fa-search"></i></label>
-                  <input id="buscador" class="form-control mr-sm-2 w-100 w-lg-80" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @keyup="buscar()">
-            </form>
-          </div>
-        </div>
-        <div class="table-responsive-md">
-          <table class="table">
-            <thead>
-                <tr>
-                  <th scope="col"># Cod <a href="#" class="text-dark" @click="sort('cod_jurisdiccion')"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Jurisdicción <a href="#" class="text-dark" @click="sort('jurisdiccion')"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Origen <a href="#" class="text-dark" @click="sort('origen_id')"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col">Creado <a href="#" class="text-dark" @click="sort('created_at')"><small><i class="fas fa-sort"></i></small></a></th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-if="jurisdicciones.length===0">
-                    <td class="text-center">No data</td>
-                </tr>
-                <tr v-else v-for="(jurisdiccion,index) in jurisdicciones" :key='jurisdiccion.id'>
-                  <th scope="row">{{jurisdiccion.cod_jurisdiccion}}</th>
-                  <td>{{jurisdiccion.jurisdiccion}}</td>
-                  <td>{{jurisdiccion.origen.origen}}</td>
-                  <td><em> {{jurisdiccion.created_at | moment}}</em></td>
-                  <td>
-                    <button @click="trash(index,jurisdiccion.id)" class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"><i class="fa fa-trash"></i></button>
-                    <button @click="edit(index,jurisdiccion)" class="btn btn-outline-warning rounded-circle btn-sm mb-1 my-lg-0 border-0" data-toggle="modal" data-target="#jurisdiccion_edit"><i class="fa fa-edit"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-          </table>
-        </div> -->
-        <!--end table-->
+        <update-periodo
+            v-if="create"
+            :periodo="periodo"
+            :index="index"
+            @periodo_update="periodoActualizado(...arguments)"
+        ></update-periodo>
 
         <!-- /.col (LEFT) -->
         <section class="content">
@@ -361,7 +165,10 @@
                                                 <button
                                                     class="btn btn-outline-danger rounded-circle btn-sm mb-1 my-lg-0 border-0"
                                                     @click="
-                                                        deletePeriodo(index, periodo)
+                                                        deletePeriodo(
+                                                            index,
+                                                            periodo
+                                                        )
                                                     "
                                                 >
                                                     <i class="fa fa-trash"></i>
@@ -371,7 +178,7 @@
                                                     data-toggle="modal"
                                                     data-target="#periodo_edit"
                                                     @click="
-                                                        editar(index, periodo)
+                                                        edit(index, periodo)
                                                     "
                                                 >
                                                     <i class="fa fa-edit"></i>
@@ -466,6 +273,7 @@ export default {
             n_paginas: 10,
             buscador: "",
             setTimeoutBuscador: "",
+            create: false
         };
     },
     mounted() {
@@ -489,11 +297,10 @@ export default {
                 this.paginate.to = response.data.to;
             });
         },
-        nuevoPeriodo(periodo){
+        nuevoPeriodo(periodo) {
             Toast.fire({
                 icon: "success",
-                title:
-                    "periodo '" + periodo.periodo + "' creado exitosamente",
+                title: "periodo '" + periodo.periodo + "' creado exitosamente",
                 background: "#E7FFD7"
             });
             this.periodos.unshift(periodo);
@@ -539,49 +346,6 @@ export default {
             this.setTimeoutBuscador = "";
             this.order = false;
         },
-        nombreMes(mes) {
-            switch (mes) {
-                case 1:
-                    return "Enero";
-                    break;
-                case 2:
-                    return "Febrero";
-                    break;
-                case 3:
-                    return "Marzo";
-                    break;
-                case 4:
-                    return "Abril";
-                    break;
-                case 5:
-                    return "Mayo";
-                    break;
-                case 6:
-                    return "Junio";
-                    break;
-                case 7:
-                    return "Julio";
-                    break;
-                case 8:
-                    return "Agosto";
-                    break;
-                case 9:
-                    return "Septiembre";
-                    break;
-                case 10:
-                    return "Octubre";
-                    break;
-                case 11:
-                    return "Noviembre";
-                    break;
-                case 12:
-                    return "Diciembre";
-                    break;
-                default:
-                    return "no corresponde a un mes";
-                    break;
-            }
-        },
         deletePeriodo(index, periodo) {
             this.periodo = periodo;
             this.index = this.paginate.from + parseInt(index - 1);
@@ -616,16 +380,14 @@ export default {
                 }
             });
         },
-        editar(index, periodo) {
-            this.index = index;
-            this.id = periodo.id;
+        edit(index, periodo) {
             this.periodo = periodo;
-            this.mes = periodo.mes;
-            this.anio = periodo.anio;
-            this.cod_periodo = periodo.cod_periodo;
+            this.index = this.paginate.from + parseInt(index - 1);
+            this.create = true;
         },
-        editMode() {
-            this.isEdit = true;
+        periodoActualizado(periodo) {
+            console.log(periodo[0]);
+            console.log(periodo[1]);
         },
         actualizar(date) {
             this.date = date;

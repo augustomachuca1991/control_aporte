@@ -102,7 +102,9 @@
                                     v-for="(origen, index) in origenes"
                                     :key="index"
                                     :value="origen.cod_origen"
-                                    :selected="origen.cod_origen === selectedOrigen"
+                                    :selected="
+                                        origen.cod_origen === selectedOrigen
+                                    "
                                 >
                                     {{ origen.origen }}
                                 </option>
@@ -110,9 +112,6 @@
                             <p class="text-justify" v-else>
                                 {{ organismo.jurisdiccion.origen.origen }}
                             </p>
-                            <!-- <span class="errors text-danger" v-for="error in errors.origen_id">
-                        <small><em>{{error}}</em></small>
-                    </span> -->
                         </div>
                     </div>
                     <div class="form-group row">
@@ -131,16 +130,15 @@
                                 @change="selectJurisdicciones"
                                 required
                             >
-                                <!-- <option v-if="noclick" selected :value="''">
-                        {{jurisdiccion.jurisdiccion}}
-                      </option> -->
-
                                 <option
                                     v-for="(jurisdiccion,
                                     index) in jurisdicciones"
                                     :value="jurisdiccion.cod_jurisdiccion"
                                     :key="index"
-                                    :selected="jurisdiccion.cod_jurisdiccion === selectedJurisdiccion"
+                                    :selected="
+                                        jurisdiccion.cod_jurisdiccion ===
+                                            selectedJurisdiccion
+                                    "
                                 >
                                     {{ jurisdiccion.jurisdiccion }}
                                 </option>
@@ -193,26 +191,25 @@
 
 <script>
 export default {
-    props:['organismo' , 'index', 'origenes'],
+    props: ["organismo", "index", "origenes"],
     data: function() {
         return {
             errors: [],
-            jurisdicciones:[],
-            origen:{},
-            jurisdiccion:{},
-            cod_organismo:"",
+            jurisdicciones: [],
+            origen: {},
+            jurisdiccion: {},
+            cod_organismo: "",
             descripcion: "",
-            selectedOrigen:"",
-            selectedJurisdiccion:"",
-            editMode: false,
-
+            selectedOrigen: "",
+            selectedJurisdiccion: "",
+            editMode: false
         };
     },
     mounted() {
         // console.log("Component mounted.");
     },
     methods: {
-        clear(){
+        clear() {
             $("#organismo_edit").modal("hide");
             this.jurisdicciones = [];
             this.errors = [];
@@ -224,11 +221,11 @@ export default {
             this.selectedJurisdiccion = "";
             this.editMode = false;
         },
-        selectOrigenes(){
+        selectOrigenes() {
             this.jurisdicciones = [];
             this.selectedJurisdiccion = "";
             if (this.selectedOrigen !== "") {
-                this.origen = this.origenes[this.selectedOrigen-1];
+                this.origen = this.origenes[this.selectedOrigen - 1];
                 this.jurisdicciones = this.origen.jurisdicciones;
             }
         },
@@ -239,16 +236,17 @@ export default {
                 ];
             }
         },
-        editar(){
+        editar() {
             this.editMode = true;
             this.cod_organismo = this.organismo.cod_organismo;
             this.descripcion = this.organismo.organismo;
             this.selectedJurisdiccion = this.organismo.jurisdiccion_id;
             this.selectedOrigen = this.organismo.jurisdiccion.origen_id;
-            this.jurisdicciones = this.origenes[this.selectedOrigen-1].jurisdicciones;
-
+            this.jurisdicciones = this.origenes[
+                this.selectedOrigen - 1
+            ].jurisdicciones;
         },
-        update(){
+        update() {
             const param = {
                 cod_organismo: this.cod_organismo,
                 organismo: this.descripcion,
