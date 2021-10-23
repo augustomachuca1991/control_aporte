@@ -22,7 +22,7 @@ class Liquidacion extends Model
         'familiar',
         'descuento',
     ];
-    
+
     /**
      * relacion mucho a mucho con tabla historia_laborals.
      *
@@ -30,7 +30,7 @@ class Liquidacion extends Model
      */
     public function historia_laborales()
     {
-    	return $this->belongsToMany( 'App\HistoriaLaboral','historia_liquidacion', 'h_laboral_id', 'liquidacion_id')->with(['puesto','clase','historialiquidaciones']);
+        return $this->belongsToMany('App\HistoriaLaboral', 'historia_liquidacion', 'h_laboral_id', 'liquidacion_id')->with(['puesto', 'clase', 'historialiquidaciones']);
     }
 
     /**
@@ -40,7 +40,7 @@ class Liquidacion extends Model
      */
     public function estados()
     {
-        return $this->belongsToMany( 'App\Estado','historia_liquidacion','estado_id','liquidacion_id')->with('organismo');
+        return $this->belongsToMany('App\Estado', 'historia_liquidacion', 'estado_id', 'liquidacion_id')->with('organismo');
     }
 
     /**
@@ -50,7 +50,7 @@ class Liquidacion extends Model
      */
     public function funciones()
     {
-        return $this->belongsToMany('App\Funcion','historia_liquidacion','id','liquidacion_id')->with('organismo');
+        return $this->belongsToMany('App\Funcion', 'historia_liquidacion', 'id', 'liquidacion_id')->with('organismo');
     }
 
     /**
@@ -60,7 +60,7 @@ class Liquidacion extends Model
      */
     public function organismos()
     {
-    	return $this->belongsToMany('App\Organismo')->with('jurisdiccion');
+        return $this->belongsToMany('App\Organismo')->with('jurisdiccion');
     }
 
     /**
@@ -70,7 +70,7 @@ class Liquidacion extends Model
      */
     public function periodos()
     {
-    	return $this->belongsToMany('App\Periodo','liquidacion_organismo','id', 'liquidacion_id');
+        return $this->belongsToMany('App\Periodo', 'liquidacion_organismo', 'liquidacion_id', 'periodo_id');
     }
 
     /**
@@ -80,7 +80,7 @@ class Liquidacion extends Model
      */
     public function tipoLiquidaciones()
     {
-    	return $this->belongsToMany('App\TipoLiquidacion','liquidacion_organismo','id', 'liquidacion_id');
+        return $this->belongsToMany('App\TipoLiquidacion', 'liquidacion_organismo', 'liquidacion_id', 'tipo_id');
     }
 
     /**
@@ -100,19 +100,19 @@ class Liquidacion extends Model
      */
     public function conceptos()
     {
-        return $this->belongsToMany('App\ConceptoLiquidacion','liquidacion_detalles','liquidacion_id', 'concepto_id');
+        return $this->belongsToMany('App\ConceptoLiquidacion', 'liquidacion_detalles', 'liquidacion_id', 'concepto_id');
     }
 
 
     public function liquidacionOrganismo()
     {
-        return $this->hasMany('App\LiquidacionOrganismo')->with(['organismo','periodo','tipoliquidacion']);
+        return $this->hasMany('App\LiquidacionOrganismo')->with(['organismo', 'periodo', 'tipoliquidacion']);
     }
 
 
     public function declaracionjurada()
     {
-        return $this->belongsTo('App\DeclaracionJurada','declaracion_id','id')->with('ddjj_lines');
+        return $this->belongsTo('App\DeclaracionJurada', 'declaracion_id', 'id')->with('ddjj_lines');
     }
 
 
@@ -120,8 +120,8 @@ class Liquidacion extends Model
     public function scopeBuscarLiquidacion($query, $search)
     {
         # code...
-        if(!empty($search)){
-            $query->where('liquidacion_id' ,'LIKE' ,"%".$search."%");
+        if (!empty($search)) {
+            $query->where('liquidacion_id', 'LIKE', "%" . $search . "%");
             // ->orWhere('periodo' ,'LIKE' ,"%".$search."%")
             // ->orWhere('mes' ,'LIKE' ,"%".$search."%")
             // ->orWhere('anio' ,'LIKE' ,"%".$search."%");
@@ -129,14 +129,10 @@ class Liquidacion extends Model
         }
     }
 
-    public function scopeName($query, $name){
+    // public function scopeName($query, $name)
+    // {
 
-      if($name)
-        return $query->where(\DB::raw("CONCAT(apellido,'',name)"),'LIKE', '%'.str_replace(' ','',$name).'%');
-    }
-
-
-
+    //     if ($name)
+    //         return $query->where(\DB::raw("CONCAT(apellido,'',name)"), 'LIKE', '%' . str_replace(' ', '', $name) . '%');
+    // }
 }
-    
-

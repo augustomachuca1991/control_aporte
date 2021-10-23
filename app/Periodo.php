@@ -18,38 +18,41 @@ class Periodo extends Model
         'anio',
     ];
 
+    protected $primaryKey = "cod_periodo";
+
     //relashionships
 
     public function liquidaciones()
     {
-    	return $this->belongsToMany('App\Liquidacion','liquidacion_organismo','id', 'periodo_id');
+        return $this->belongsToMany('App\Liquidacion', 'liquidacion_organismo', 'periodo_id', 'liquidacion_id');
     }
 
     public function organismos()
     {
-    	return $this->belongsToMany('App\Organismo','liquidacion_organismo','id', 'periodo_id');
+        return $this->belongsToMany('App\Organismo', 'liquidacion_organismo', 'periodo_id', 'organismo_id');
     }
 
     public function tipoLiquidaciones()
     {
-    	return $this->belongsToMany('App\TipoLiquidacion','liquidacion_organismo','id', 'periodo_id');
+        return $this->belongsToMany('App\TipoLiquidacion', 'liquidacion_organismo', 'periodo_id', 'tipo_id');
     }
 
     public function liquidacionOrganismo()
     {
-        return $this->hasMany('App\LiquidacionOrganismo')->with(['organismo','liquidacion','tipoLiquidacion']);
+        return $this->hasMany('App\LiquidacionOrganismo', 'periodo_id', 'cod_periodo')->with(['organismo', 'liquidacion', 'tipoLiquidacion']);
     }
 
 
 
     //buscador
 
-    public function scopeFiltroPeriodo($query, $search){
-        if(!empty($search)){
-            $query->where('cod_periodo' ,'LIKE' ,"%".$search."%")
-            ->orWhere('periodo' ,'LIKE' ,"%".$search."%")
-            ->orWhere('mes' ,'LIKE' ,"%".$search."%")
-            ->orWhere('anio' ,'LIKE' ,"%".$search."%");
+    public function scopeFiltroPeriodo($query, $search)
+    {
+        if (!empty($search)) {
+            $query->where('cod_periodo', 'LIKE', "%" . $search . "%")
+                ->orWhere('periodo', 'LIKE', "%" . $search . "%")
+                ->orWhere('mes', 'LIKE', "%" . $search . "%")
+                ->orWhere('anio', 'LIKE', "%" . $search . "%");
         }
     }
 }

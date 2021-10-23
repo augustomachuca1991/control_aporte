@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class PeriodoController extends Controller
 {
-    
+
 
     public $perPage = 10;
     /**
@@ -20,26 +20,16 @@ class PeriodoController extends Controller
         return view('periodos.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function store(Request $request)
     {
         $request->validate([
             'cod_periodo' => 'required|integer|unique:periodos,cod_periodo',
+            'mes' => 'required|integer|between:1,12',
+            'anio' => 'required|integer',
+            'periodo' => 'required|string|max:30',
         ]);
 
         $periodo = Periodo::create([
@@ -52,43 +42,24 @@ class PeriodoController extends Controller
         return $this->show($periodo->id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Periodo  $periodo
-     * @return \Illuminate\Http\Response
-     */
+
+
+
     public function show($id)
     {
-        
-       return Periodo::find($id);
+        return Periodo::find($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Periodo  $periodo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Periodo $periodo)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Periodo  $periodo
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function update(Request $request, $id)
     {
         $request->validate([
-            'cod_periodo'     => 'required|unique:periodos,cod_periodo',
-            'mes' => 'required|integer',
+            'cod_periodo' => 'required',
+            'mes' => 'required|integer|between:1,12',
             'anio' => 'required|integer',
-            'periodo' => 'required|string',
+            'periodo' => 'required|string|max:30',
         ]);
 
         $periodo =  Periodo::find($id);
@@ -102,19 +73,17 @@ class PeriodoController extends Controller
         return $this->show($periodo->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Periodo  $periodo
-     * @return \Illuminate\Http\Response
-     */
+
+
+
     public function destroy($id)
     {
-        $periodo = Periodo::find($id);
+        $periodo = Periodo::where('id', $id)->first();
         $hasLiquidaciones =  $periodo->liquidaciones()->doesntExist();
         $hasComputos =  $periodo->liquidacionOrganismo()->doesntExist();
-        if ($hasLiquidaciones && $hasComputos) {
-            $msj = 'periodo <u>'.$periodo->periodo .'</u> eliminado satisfactoriamente';
+        $hasOrganismos =  $periodo->organismos()->doesntExist();
+        if ($hasLiquidaciones && $hasComputos && $hasOrganismos) {
+            $msj = 'periodo ' . $periodo->periodo . ' eliminado satisfactoriamente';
             $isValid = true;
             $periodo->delete();
         } else {
@@ -125,14 +94,16 @@ class PeriodoController extends Controller
         return response()->json(['isValid' => $isValid, 'msj' => $msj]);
     }
 
-    public function getPeriodos(){
+    public function getPeriodos()
+    {
 
         return Periodo::latest()->paginate($this->perPage);
     }
 
 
 
-    public function paginado($perPage){
+    public function paginado($perPage)
+    {
         $this->perPage = $perPage;
         return $this->getPeriodos();
     }
@@ -141,19 +112,15 @@ class PeriodoController extends Controller
     public function search($search)
     {
         return Periodo::filtroPeriodo($search)
-                ->paginate($this->perPage);
-
+            ->paginate($this->perPage);
     }
 
 
 
-    public function sort($column , $order)
+    public function sort($column, $order)
     {
-            
-            return Periodo::orderBy($column, $order)
-                    ->paginate($this->perPage);
 
+        return Periodo::orderBy($column, $order)
+            ->paginate($this->perPage);
     }
-
-
 }

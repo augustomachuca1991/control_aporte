@@ -36,7 +36,7 @@
                                 type="search"
                                 placeholder="Buscar..."
                                 aria-label="Search"
-                                v-model="buscador"
+                                v-model="search"
                                 @keyup="buscarPeriodo()"
                             />
                         </form>
@@ -54,16 +54,9 @@
                                         class="input-group input-group-sm"
                                         style="width: 150px;"
                                     >
-                                        <!-- <input type="search" name="table_search" class="form-control float-right" placeholder="Buscar"  @keyup="">
-
-                        <div class="input-group-append">
-                          <button type="button" class="btn btn-outline-success" disabled>
-                            <i class="fas fa-search"></i>
-                          </button>
-                        </div> -->
                                         <select
                                             class="form-control form-control-sm custom-select rounded-pill"
-                                            v-model="n_paginas"
+                                            v-model="perPage"
                                             @change="paginacion"
                                         >
                                             <option value="5"
@@ -193,31 +186,11 @@
                                     >total registros encontrados:
                                     {{ paginate.total }}</span
                                 >
-                                <nav aria-label="Contacts Page Navigation">
-                                    <ul
-                                        class="pagination pagiante-sm justify-content-end m-0"
-                                    >
-                                        <li
-                                            class="page-item"
-                                            :class="{
-                                                active:
-                                                    paginate.current_page === n
-                                            }"
-                                            v-for="n in paginate.last_page"
-                                            :key="n.id"
-                                        >
-                                            <a
-                                                href="#"
-                                                class="page-link"
-                                                @click.prevent="getPage(n)"
-                                            >
-                                                <span>
-                                                    {{ n }}
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                <paginator-component
+                                    :data="periodos"
+                                    :paginate="paginate"
+                                    @response="asignar(...arguments)"
+                                ></paginator-component>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -244,15 +217,9 @@ export default {
     data: function() {
         return {
             periodos: [],
-            errores: [],
             periodo: {},
             index: "",
-            id: "",
-            mes: "",
-            anio: "",
-            cod_periodo: "",
             fecha_actual: null,
-            isEdit: false,
             order: false,
             date: {
                 from: null,
@@ -268,33 +235,26 @@ export default {
                 path: "",
                 next_page_url: "",
                 from: "",
-                to: ""
+                to: "",
+                next_page_url: "",
+                prev_page_url: ""
             },
-            n_paginas: 10,
-            buscador: "",
+            perPage: 10,
+            search: "",
             setTimeoutBuscador: "",
+            timeOut: 300,
             create: false
         };
     },
     mounted() {
         var milisegundos = Date.now();
         this.fecha_actual = new Date(milisegundos);
-        // this.mes = this.fecha_actual.getMonth()+1;
-        // this.anio = this.fecha_actual.getFullYear();
         this.getPeriodos();
-        console.log("componente periodo");
     },
     methods: {
         getPeriodos() {
             axios.get("api/periodo").then(response => {
-                console.log(response.data);
-                this.periodos = response.data.data;
-                this.paginate.current_page = response.data.current_page;
-                this.paginate.last_page = response.data.last_page;
-                this.paginate.total = response.data.total;
-                this.paginate.path = response.data.path;
-                this.paginate.from = response.data.from;
-                this.paginate.to = response.data.to;
+                this.asignar(response);
             });
         },
         nuevoPeriodo(periodo) {
@@ -304,47 +264,6 @@ export default {
                 background: "#E7FFD7"
             });
             this.periodos.unshift(periodo);
-        },
-        nuevo_periodo(date) {
-            this.date = date;
-            if (this.date.monthIndex.toString().length < 2) {
-                var mes = "0".concat(this.date.monthIndex.toString());
-                this.cod_periodo = this.date.year.toString() + mes;
-            } else {
-                this.cod_periodo =
-                    date.year.toString() + date.monthIndex.toString();
-            }
-            this.periodo = {
-                cod_periodo: this.cod_periodo,
-                mes: this.date.monthIndex.toString(),
-                anio: this.date.year.toString(),
-                periodo:
-                    this.nombreMes(this.date.monthIndex) +
-                    " de " +
-                    this.date.year
-            };
-        },
-        codPerido() {
-            if (this.mes < 10) {
-                this.cod_periodo = this.anio + "0" + this.mes;
-            } else {
-                this.cod_periodo = this.anio + "" + this.mes;
-            }
-        },
-        empty() {
-            $("#periodo_new").modal("hide");
-            $("#periodo_edit").modal("hide");
-            this.errores = [];
-            this.periodo = {};
-            this.id = "";
-            this.cod_periodo = "";
-            this.mes = "";
-            this.anio = "";
-            this.index = "";
-            this.isEdit = false;
-            this.buscador = "";
-            this.setTimeoutBuscador = "";
-            this.order = false;
         },
         deletePeriodo(index, periodo) {
             this.periodo = periodo;
@@ -386,60 +305,20 @@ export default {
             this.create = true;
         },
         periodoActualizado(periodo) {
-            console.log(periodo[0]);
-            console.log(periodo[1]);
-        },
-        actualizar(date) {
-            this.date = date;
-            if (this.date.monthIndex.toString().length < 2) {
-                var mes = "0".concat(this.date.monthIndex.toString());
-                this.cod_periodo = this.date.year.toString() + mes;
-            } else {
-                this.cod_periodo =
-                    date.year.toString() + date.monthIndex.toString();
-            }
-
-            this.periodo = {
-                id: this.id,
-                cod_periodo: this.cod_periodo,
-                mes: this.date.monthIndex.toString(),
-                anio: this.date.year.toString(),
-                periodo:
-                    this.nombreMes(this.date.monthIndex) +
-                    " de " +
-                    this.date.year
-            };
-        },
-        confimarCambios() {
-            axios
-                .put(`api/periodo/update/${this.periodo.id}`, this.periodo)
-                .then(response => {
-                    console.log(response.data);
-                    this.periodo = response.data;
-                    this.periodos[this.index] = this.periodo;
-                    this.empty();
-                    Toast.fire({
-                        icon: "success",
-                        title: "Periodo Actualizado",
-                        background: "#E7FFD7"
-                    });
-                })
-                .catch(err => {
-                    console.log(err.response.data.errors);
-                    this.errores = err.response.data.errors;
-                });
-        },
-        getPage(page) {
-            axios.get(this.paginate.path + "?page=" + page).then(response => {
-                this.asignar(response);
+            this.periodo = periodo[0];
+            this.index = periodo[1];
+            this.create = false;
+            this.periodos[this.index] = this.periodo;
+            Toast.fire({
+                icon: "success",
+                title: "Periodo '" + this.periodo.periodo + "' actualizado",
+                background: "#E7FFD7"
             });
         },
         paginacion: function() {
-            axios
-                .get(`api/periodo/paginate/${this.n_paginas}`)
-                .then(response => {
-                    this.asignar(response);
-                });
+            axios.get(`api/periodo/paginate/${this.perPage}`).then(response => {
+                this.asignar(response);
+            });
         },
         buscarPeriodo() {
             clearTimeout(this.setTimeoutBuscador);
@@ -447,16 +326,7 @@ export default {
                 axios.get(`api/periodo/${this.buscador}`).then(response => {
                     this.asignar(response);
                 });
-            }, 1000);
-        },
-        asignar(response) {
-            this.periodos = response.data.data;
-            this.paginate.current_page = response.data.current_page;
-            this.paginate.last_page = response.data.last_page;
-            this.paginate.total = response.data.total;
-            this.paginate.path = response.data.path;
-            this.paginate.from = response.data.from;
-            this.paginate.to = response.data.to;
+            }, this.timeOut);
         },
         sort(columna) {
             this.order = !this.order;
@@ -466,12 +336,22 @@ export default {
             } else {
                 sort = "desc";
             }
-            console.log(columna);
             axios
                 .get(`api/periodo/order/${columna}/sort/${sort}`)
                 .then(response => {
                     this.asignar(response);
                 });
+        },
+        asignar(response) {
+            this.periodos = response.data.data;
+            this.paginate.current_page = response.data.current_page;
+            this.paginate.last_page = response.data.last_page;
+            this.paginate.total = response.data.total;
+            this.paginate.path = response.data.path;
+            this.paginate.from = response.data.from;
+            this.paginate.to = response.data.to;
+            this.paginate.next_page_url = response.data.next_page_url;
+            this.paginate.prev_page_url = response.data.prev_page_url;
         }
     }
 };

@@ -30,7 +30,10 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="descripcion">Periodo</label>
-                        <p id="descripcion">{{ periodo.periodo }}</p>
+                        <p id="descripcion" v-if="editMode">
+                            {{ descripcion }}
+                        </p>
+                        <p id="descripcion" v-else>{{ periodo.periodo }}</p>
                         <span
                             class="errors text-danger"
                             v-for="error in errors.periodo"
@@ -103,16 +106,7 @@
                         </month-picker-input>
                     </div>
                 </div>
-                <div class="modal-footer" v-if="editMode">
-                    <button
-                        type="button"
-                        class="btn btn-primary btn-sm"
-                        @click="update"
-                    >
-                        <i class="fa fa-edit"></i>&nbsp;Guardar Cambios
-                    </button>
-                </div>
-                <div class="modal-footer" v-else>
+                <div class="modal-footer">
                     <button
                         type="button"
                         class="btn btn-danger btn-sm"
@@ -120,7 +114,18 @@
                     >
                         <i class="fa fa-times"></i>&nbsp;Cancelar
                     </button>
+
                     <button
+                        v-if="editMode"
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        @click="update"
+                    >
+                        <i class="fa fa-edit"></i>&nbsp;Guardar Cambios
+                    </button>
+
+                    <button
+                        v-else
                         type="button"
                         class="btn btn-secondary btn-sm"
                         @click="editar"
@@ -153,7 +158,13 @@ export default {
     },
     methods: {
         clear() {
-            console.log("clear");
+            $("#periodo_edit").modal("hide");
+            this.errors = [];
+            this.editMode = false;
+            this.descripcion = "";
+            this.anio = "";
+            this.mes = "";
+            this.cod_periodo = "";
         },
         selectedPeriodo(date) {
             let cod_periodo;
@@ -163,15 +174,27 @@ export default {
             } else {
                 cod_periodo = date.year.toString() + date.monthIndex.toString();
             }
-            this.periodo = {
-                cod_periodo: cod_periodo,
-                mes: date.monthIndex.toString(),
-                anio: date.year.toString(),
-                periodo: date.month + " de " + date.year
-            };
+            this.cod_periodo = cod_periodo;
+            this.mes = date.monthIndex.toString();
+            this.anio = date.year.toString();
+            this.descripcion = date.month + " de " + date.year;
         },
         update() {
-            console.log("update");
+            const params = {
+                cod_periodo: this.cod_periodo,
+                mes: this.mes,
+                anio: this.anio,
+                periodo: this.descripcion
+            };
+            axios
+                .put(`api/periodo/update/${this.periodo.id}`, params)
+                .then(response => {
+                    this.clear();
+                    this.$emit("periodo_update", [response.data, this.index]);
+                })
+                .catch(err => {
+                    this.errors = err.response.data.errors;
+                });
         },
         editar() {
             this.editMode = true;

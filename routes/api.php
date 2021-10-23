@@ -1,6 +1,8 @@
 <?php
 
 use App\Categoria;
+use App\Liquidacion;
+use App\Periodo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -21,18 +23,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //Declaraciones Juradas
-Route::get('/declaracion_jurada' , 'DeclaracionJuradaController@getDeclaracionesJuradas');
+Route::get('/declaracion_jurada', 'DeclaracionJuradaController@getDeclaracionesJuradas');
 Route::post('/declaracion_jurada/create', 'DeclaracionJuradaController@store');
 Route::put('/declaracion_jurada/update/{id}', 'DeclaracionJuradaController@update');
 Route::get('/declaracion_jurada/{id}', 'DeclaracionJuradaController@show');
 //Route::delete('declaracion_jurada/aplicar/{id}' , 'DeclaracionJuradaController@destroy');
 //Declaraciones Juradas detalle
-Route::get('/declaracion_jurada/buscar/{search}' , 'DeclaracionJuradaController@search');
+Route::get('/declaracion_jurada/buscar/{search}', 'DeclaracionJuradaController@search');
 Route::post('/declaracion_jurada/download', 'DeclaracionJuradaController@download');
 Route::get('/archivos-recientes', 'DeclaracionJuradaController@recientes')->name('archivos-recientes');
 
 
-Route::post('/declaracion_jurada_line/task' , 'DeclaracionJuradaLineController@store');
+Route::post('/declaracion_jurada_line/task', 'DeclaracionJuradaLineController@store');
 
 //Computos
 Route::get('/computo/origen/{periodo}', 'LiquidacionOrganismoController@computoOrigenes');
@@ -186,8 +188,15 @@ Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
 Route::delete('/users/delete/{id}', 'UserController@destroy');
 Route::get('/users/{search}', 'UserController@search');
 
-Route::get('/categorias/id/{id}', function(Request $request){
+Route::get('/periodo/id/{id}', function (Request $request) {
     //dd($request->id);
-    $categoria = Categoria::find($request->id);
-    dd($categoria->clases()->doesntExist());
+    $periodo = Periodo::where('cod_periodo', $request->id)->first();
+    return $periodo->with(['liquidacionOrganismo'])->get();
+});
+
+
+Route::get('/liquidacion/id/{id}', function (Request $request) {
+    //dd($request->id);
+    $liquidacion = Liquidacion::where('id', $request->id)->with(['periodos'])->get();
+    return $liquidacion;
 });
