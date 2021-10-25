@@ -10417,3 +10417,26 @@ Horizon started successfully.
 [2021-10-25 08:40:01][577] Processed:  App\Jobs\DeleteFileImportJob
 [2021-10-25 08:40:01][576] Processing: App\Notifications\FinishJob
 [2021-10-25 08:40:01][576] Processed:  App\Notifications\FinishJob
+Horizon started successfully.
+[2021-10-25 18:21:45][430] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-25 18:21:45][430] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-25 18:21:45][431] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:21:56][431] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:21:56][432] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:22:07][432] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:22:07][433] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:22:18][433] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:22:18][434] Processing: App\Jobs\CompletedImport
+[2021-10-25 18:22:18][434] Processed:  App\Jobs\CompletedImport
+[2021-10-25 18:22:18][435] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:22:30][435] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:22:30][436] Processing: App\Events\NotificationImport
+[2021-10-25 18:22:31][436] Processed:  App\Events\NotificationImport
+[2021-10-25 18:22:31][437] Processing: App\Jobs\NotificationJob
+[2021-10-25 18:22:31][437] Processed:  App\Jobs\NotificationJob
+[2021-10-25 18:22:31][438] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:22:42][438] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-25 18:22:42][440] Processing: App\Jobs\DeleteFileImportJob
+[2021-10-25 18:22:42][440] Processed:  App\Jobs\DeleteFileImportJob
+[2021-10-25 18:22:42][439] Processing: App\Notifications\FinishJob
+[2021-10-25 18:22:42][439] Processed:  App\Notifications\FinishJob

@@ -13,6 +13,6 @@ class TipoCodigo extends Model
 
     public function subtipos()
     {
-        return $this->hasMany('App\SubtipoCodigo' , 'id', 'tipocodigo_id')->with('conceptos');
+        return $this->hasMany('App\SubtipoCodigo', 'tipocodigo_id', 'id');
     }
 }

@@ -65,15 +65,16 @@
                 </div>
             </div>
         </section>
+        <create-concepto></create-concepto>
         <div class="list-group">
             <a
                 href="#"
                 class="list-group-item list-group-item-action flex-column align-items-start mb-2"
                 v-for="(concepto, index) in conceptos"
                 :key="concepto.id"
-                @click="show(index, concepto)"
+                @click="edit(index, concepto)"
                 data-toggle="modal"
-                data-target="#show_concepto"
+                data-target="#concepto_edit"
             >
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-2">{{ concepto.concepto | capitalize }}</h5>
@@ -89,21 +90,26 @@
             :paginate="paginate"
             @response="asignar(...arguments)"
         ></paginator-component>
-        <show-concepto
+        <update-concepto
             v-if="create"
             :concepto="concepto"
             :index="index"
-            @concepto_show="edit(...arguments)"
-        ></show-concepto>
-        <!-- <update-concepto
-            v-if="create"
-            :concepto="concepto"
-            :index="index"
-        ></update-concepto> -->
+            @concepto_update="conceptoActualizado(...arguments)"
+        ></update-concepto>
     </div>
 </template>
 
 <script>
+const Toast = swal.mixin({
+    toast: true,
+    position: "top-end",
+    timer: 6000,
+    showConfirmButton: false,
+    onOpen: toast => {
+        toast.addEventListener("mouseenter", swal.stopTimer);
+        toast.addEventListener("mouseleave", swal.resumeTimer);
+    }
+});
 export default {
     data: function() {
         return {
@@ -152,14 +158,24 @@ export default {
         buscarConcepto() {
             console.log(this.search);
         },
-        show(index, concepto) {
+        edit(index, concepto) {
             this.create = true;
             this.concepto = concepto;
             this.index = this.paginate.from + parseInt(index - 1);
         },
-        edit(concepto) {
+        conceptoActualizado(concepto) {
             this.concepto = concepto[0];
             this.index = concepto[1];
+            this.conceptos[this.index] = this.concepto;
+            Toast.fire({
+                icon: "success",
+                title:
+                    "Concepto '" +
+                    this.concepto.concepto +
+                    "' actualizado exitosamente",
+                background: "#E7FFD7"
+            });
+            this.create = false;
         }
     }
 };

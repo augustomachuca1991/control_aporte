@@ -1,9 +1,6 @@
 <?php
 
-use App\Categoria;
-use App\DeclaracionJurada;
-use App\Liquidacion;
-use App\Periodo;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -88,7 +85,8 @@ Route::get('/puesto', 'PuestoLaboralController@getpuestoLaboral')->name('puesto_
 
 
 //Conceptos
-Route::get('/concepto', 'ConceptoLiquidacionController@getConceptos')->name('concepto');
+Route::get('/concepto', 'ConceptoLiquidacionController@getConceptos');
+Route::put('/concepto/update/{id}', 'ConceptoLiquidacionController@update');
 
 //Subtipos Codigos
 Route::get('/subtipo', 'SubtipoCodigoController@getSubtipo')->name('subtipo');
@@ -189,15 +187,15 @@ Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
 Route::delete('/users/delete/{id}', 'UserController@destroy');
 Route::get('/users/{search}', 'UserController@search');
 
-Route::get('/periodo/id/{id}', function (Request $request) {
-    //dd($request->id);
-    $periodo = Periodo::where('cod_periodo', $request->id)->first();
-    return $periodo->with(['liquidacionOrganismo'])->get();
-});
+// Route::get('/periodo/id/{id}', function (Request $request) {
+//     //dd($request->id);
+//     $periodo = Periodo::where('cod_periodo', $request->id)->first();
+//     return $periodo->with(['liquidacionOrganismo'])->get();
+// });
 
 
-Route::get('/ddjj/id/{id}', function (Request $request) {
-    //dd($request->id);
-    $importedBy = DeclaracionJurada::find($request->id);
-    return $importedBy->user;
-});
+// Route::get('/tipo/id/{id}', function (Request $request) {
+//     //dd($request->id);
+//     $tipo = TipoCodigo::find($request->id);
+//     return $tipo->subtipos;
+// });

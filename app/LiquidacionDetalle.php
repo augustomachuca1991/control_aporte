@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class LiquidacionDetalle extends Model
 {
     use SoftDeletes;
@@ -12,7 +13,6 @@ class LiquidacionDetalle extends Model
     protected $fillable = [
         'liquidacion_id',
         'concepto_id',
-        'unidad',
         'importe',
     ];
 

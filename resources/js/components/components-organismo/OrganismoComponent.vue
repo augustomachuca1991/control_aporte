@@ -343,9 +343,9 @@ export default {
             Toast.fire({
                 icon: "success",
                 title:
-                    "Clase '" +
+                    "Organismo '" +
                     this.organismo.organismo +
-                    "' creada exitosamente",
+                    "' actualizado exitosamente",
                 background: "#E7FFD7"
             });
             this.create = false;

@@ -22,6 +22,7 @@
                         class="close"
                         data-dismiss="modal"
                         aria-label="Close"
+                        @click="clear"
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -37,20 +38,53 @@
                         <li class="list-group-item">
                             <div class="row justify-content-between">
                                 <div class="col-4">
-                                    Subtipo
+                                    Concepto *
                                 </div>
-                                <div class="col-4">
-                                    <i>{{ concepto.subtipo.descripcion }}</i>
+                                <div class="col-6">
+                                    <input
+                                        class="form-control"
+                                        type="text"
+                                        v-if="editMode"
+                                        v-model="descripcion"
+                                    />
+                                    <i v-else>{{ concepto.concepto }}</i>
+                                    <span
+                                        class="errors text-danger"
+                                        v-for="error in errors.concepto"
+                                        :key="error.id"
+                                    >
+                                        <small>
+                                            <em>{{ error }}</em>
+                                        </small>
+                                    </span>
                                 </div>
                             </div>
                         </li>
                         <li class="list-group-item">
                             <div class="row justify-content-between">
                                 <div class="col-4">
-                                    Tipo
+                                    Tipo Concepto *
                                 </div>
-                                <div class="col-4">
-                                    <i>{{
+                                <div class="col-6">
+                                    <div v-if="editMode">
+                                        <select
+                                            class="custom-select mr-sm-2"
+                                            id="selectTipo"
+                                            v-model="selectedTipo"
+                                            @change="selectedTipos"
+                                        >
+                                            <option
+                                                v-for="(tipo, index) in tipos"
+                                                :key="index"
+                                                :value="tipo.id"
+                                                :selected="
+                                                    tipo.id === selectedTipo
+                                                "
+                                                >{{ tipo.descripcion }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <i v-else>{{
                                         concepto.subtipo.tipocodigo.descripcion
                                     }}</i>
                                 </div>
@@ -59,10 +93,50 @@
                         <li class="list-group-item">
                             <div class="row justify-content-between">
                                 <div class="col-4">
-                                    Organismo
+                                    Subtipo Concepto *
                                 </div>
-                                <div class="col-4">
-                                    <i>{{ concepto.organismo.organismo }}</i>
+                                <div class="col-6">
+                                    <div v-if="editMode">
+                                        <select
+                                            class="custom-select mr-sm-2"
+                                            id="selectSubtipo"
+                                            v-if="subtipos.length"
+                                        >
+                                            <option
+                                                v-for="(subtipo,
+                                                index) in subtipos"
+                                                :key="index"
+                                                :value="subtipo.id"
+                                                >{{ subtipo.id }} -
+                                                {{ subtipo.descripcion }}
+                                            </option>
+                                        </select>
+                                        <select
+                                            class="custom-select mr-sm-2"
+                                            id="selectSubtipo"
+                                            v-else
+                                            disabled
+                                        >
+                                            <option selected>{{
+                                                concepto.subtipo.descripcion
+                                            }}</option></select
+                                        >
+                                        <!-- <p v-else>
+                                            {{ concepto.subtipo.descripcion }}
+                                        </p> -->
+                                    </div>
+                                    <i v-else>{{
+                                        concepto.subtipo.descripcion
+                                    }}</i>
+                                    <span
+                                        class="errors text-danger"
+                                        v-for="error in errors.subtipo_id"
+                                        :key="error.id"
+                                    >
+                                        <small>
+                                            <em>{{ error }}</em>
+                                        </small>
+                                    </span>
                                 </div>
                             </div>
                         </li>
@@ -71,26 +145,46 @@
                                 <div class="col-4">
                                     Unidad
                                 </div>
-                                <div class="col-4">
-                                    <i
-                                        >Lorem ipsum dolor, sit amet consectetur
-                                        adipisicing elit. Et eum voluptat</i
-                                    >
+                                <div class="col-6">
+                                    <input
+                                        v-if="editMode"
+                                        class="form-control"
+                                        type="text"
+                                        v-model="unidad"
+                                    />
+                                    <i v-else>
+                                        <div v-if="unidad">
+                                            {{ concepto.unidad }}
+                                        </div>
+                                        <div v-else>-</div>
+                                    </i>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="modal-footer">
-                    <!-- <button
+                <div class="modal-footer" v-if="editMode">
+                    <small><i>(*) campos obligatorios</i></small>
+                    <button type="button" class="btn btn-danger" @click="clear">
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="update"
+                    >
+                        Guardar Cambios
+                    </button>
+                </div>
+                <div class="modal-footer" v-else>
+                    <button
                         type="button"
                         class="btn btn-secondary"
                         @click="edit"
-                        data-toggle="modal"
-                        data-target="#concepto_edit"
                     >
                         Editar
-                    </button> -->
+                    </button>
                 </div>
             </div>
         </div>
@@ -99,15 +193,75 @@
 
 <script>
 export default {
-    //props:['data'],
+    props: ["concepto", "index"],
     data: function() {
         return {
-            data: []
+            errors: [],
+            tipos: [],
+            subtipos: [],
+            editMode: false,
+            descripcion: "",
+            subtipo: "",
+            tipo: "",
+            organismo: "",
+            unidad: "",
+            selectedTipo: "",
+            selectedSubtipo: ""
         };
     },
     mounted() {
-        console.log("Component mounted.");
+        this.getTiposCodigos();
     },
-    methods: {}
+    methods: {
+        edit() {
+            this.editMode = true;
+            this.selectedTipo = this.concepto.subtipo.tipocodigo.id;
+            this.selectedSubtipo = this.concepto.subtipo.id;
+            this.descripcion = this.concepto.concepto;
+            this.subtipo = this.concepto.subtipo.descripcion;
+            this.tipo = this.concepto.subtipo.tipocodigo.descripcion;
+            this.organismo = this.concepto.organismo.organismo;
+            this.unidad = this.concepto.unidad;
+        },
+        clear() {
+            this.editMode = false;
+            this.descripcion = "";
+            this.subtipo = "";
+            this.tipo = "";
+            this.organismo = "";
+            this.unidad = "";
+            this.subtipos = [];
+            this.errors = [];
+        },
+        update() {
+            const param = {
+                cod_concepto: this.concepto.cod_concepto,
+                unidad: this.unidad,
+                concepto: this.descripcion,
+                organismo_id: this.concepto.organismo_id,
+                subtipo_id: this.selectedSubtipo
+            };
+            axios
+                .put(`api/concepto/update/${this.concepto.id}`, param)
+                .then(response => {
+                    $("#concepto_edit").modal("hide");
+                    this.clear();
+                    this.$emit("concepto_update", [response.data, this.index]);
+                })
+                .catch(err => {
+                    this.errors = err.response.data.errors;
+                });
+        },
+        selectedTipos() {
+            if (this.selectedTipo !== "") {
+                this.subtipos = this.tipos[this.selectedTipo - 1].subtipos;
+            }
+        },
+        getTiposCodigos() {
+            axios.get("api/tipocodigo").then(response => {
+                this.tipos = response.data;
+            });
+        }
+    }
 };
 </script>

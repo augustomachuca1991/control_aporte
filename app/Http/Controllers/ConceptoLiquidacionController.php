@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ConceptoLiquidacionController extends Controller
 {
-    
+
 
     public $perPage = 10;
     /**
@@ -19,16 +19,6 @@ class ConceptoLiquidacionController extends Controller
     {
         //
         return view('conceptos.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -48,20 +38,9 @@ class ConceptoLiquidacionController extends Controller
      * @param  \App\ConceptoLiquidacion  $conceptoLiquidacion
      * @return \Illuminate\Http\Response
      */
-    public function show(ConceptoLiquidacion $conceptoLiquidacion)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ConceptoLiquidacion  $conceptoLiquidacion
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ConceptoLiquidacion $conceptoLiquidacion)
-    {
-        //
+        return ConceptoLiquidacion::with(['organismo', 'subtipo'])->where('id', $id)->first();
     }
 
     /**
@@ -71,9 +50,22 @@ class ConceptoLiquidacionController extends Controller
      * @param  \App\ConceptoLiquidacion  $conceptoLiquidacion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ConceptoLiquidacion $conceptoLiquidacion)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'concepto' => 'required|string|max:50',
+            'subtipo_id' => 'required|exists:subtipo_codigos,id',
+        ]);
+
+        $conceptoLiquidacion = ConceptoLiquidacion::find($id);
+
+        $conceptoLiquidacion->update([
+            'concepto' => $request->concepto,
+            'unidad' => $request->unidad,
+            'subtipo_id' => $request->subtipo_id
+        ]);
+
+        return $this->show($conceptoLiquidacion->id);
     }
 
     /**
@@ -89,6 +81,6 @@ class ConceptoLiquidacionController extends Controller
 
     public function getConceptos()
     {
-        return ConceptoLiquidacion::with(['organismo','subtipo'])->paginate($this->perPage);
+        return ConceptoLiquidacion::with(['organismo', 'subtipo'])->paginate($this->perPage);
     }
 }

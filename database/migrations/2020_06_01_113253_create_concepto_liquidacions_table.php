@@ -17,13 +17,13 @@ class CreateConceptoLiquidacionsTable extends Migration
             $table->id();
             $table->bigInteger('cod_concepto')->unsigned();
             $table->string('concepto');
-            
+            $table->string('unidad')->nullable();
             $table->bigInteger('organismo_id')->unsigned();
             $table->foreign('organismo_id')->references('cod_organismo')->on('organismos');
             $table->bigInteger('subtipo_id')->unsigned();
             $table->foreign('subtipo_id')->references('id')->on('subtipo_codigos');
 
-            $table->softDeletes(); 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -266,8 +266,8 @@ Vue.component(
     require("./components/components-concepto/ConceptoComponent.vue").default
 );
 Vue.component(
-    "show-concepto",
-    require("./components/components-concepto/ShowConcepto.vue").default
+    "create-concepto",
+    require("./components/components-concepto/CreateConcepto.vue").default
 );
 Vue.component(
     "update-concepto",

@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\{DeclaracionJurada, Liquidacion, DeclaracionJuradaLine, Categoria, Clase, Jurisdiccion, Agente, PuestoLaboral, HistoriaLaboral, ConceptoLiquidacion, HistoriaLiquidacion, LiquidacionDetalle, LiquidacionOrganismo, Organismo, User};
+use App\{DeclaracionJurada, Liquidacion, DeclaracionJuradaLine, Categoria, Clase, Jurisdiccion, Agente, PuestoLaboral, HistoriaLaboral, ConceptoLiquidacion, HistoriaLiquidacion, LiquidacionDetalle, LiquidacionOrganismo, Organismo, TipoCodigo, User};
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Jobs\{ImportFailedJob, CompletedImport, DeleteFileImportJob, NotificationJob};
@@ -139,6 +139,7 @@ class LiquidacionsImport implements
                         $this->concepto_id[$i]  = ConceptoLiquidacion::insertGetId([
                             'cod_concepto' => $this->conceptos[$i]['cod'],
                             'concepto' => $this->conceptos[$i]['concepto'],
+                            'unidad' => $this->conceptos[$i]['unidad'],
                             'organismo_id' => $this->declaracionjuradaline->cod_organismo,
                             'subtipo_id' => $this->conceptos[$i]['subtipo'],
                             'created_at' => now(),
@@ -245,6 +246,7 @@ class LiquidacionsImport implements
                         $this->concepto_id[$i]  = ConceptoLiquidacion::insertGetId([
                             'cod_concepto' => $this->conceptos[$i]['cod'],
                             'concepto' => $this->conceptos[$i]['concepto'],
+                            'unidad' => $this->conceptos[$i]['unidad'],
                             'organismo_id' => $ddjj_line['cod_organismo'],
                             'subtipo_id' => $this->conceptos[$i]['subtipo'],
                             'created_at' => now()
@@ -476,7 +478,6 @@ class LiquidacionsImport implements
 
         for ($i = 0; $i < count($this->conceptos); $i++) {
             $liquidacion->conceptos()->attach($this->concepto_id[$i], [
-                'unidad' => $this->conceptos[$i]['unidad'],
                 'importe' => $this->conceptos[$i]['importe']
             ]);
         }
