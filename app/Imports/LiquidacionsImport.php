@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\{DeclaracionJurada, Liquidacion, DeclaracionJuradaLine, Categoria, Clase, Jurisdiccion, Agente, PuestoLaboral, HistoriaLaboral, ConceptoLiquidacion, HistoriaLiquidacion, LiquidacionDetalle, LiquidacionOrganismo, Organismo, User};
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Jobs\{ImportFailedJob, CompletedImport, DeleteFileImportJob, LiquidarJob, NotificationJob};
+use App\Jobs\{ImportFailedJob, CompletedImport, DeleteFileImportJob, NotificationJob};
 use App\Events\{NotificationImport, FailedImport};
 use App\Notifications\ImportHasFailedNotification;
 use Maatwebsite\Excel\Validators\Failure;
@@ -22,9 +22,8 @@ class LiquidacionsImport implements
     SkipsOnError,
     SkipsOnFailure,
     WithEvents,
-    WithValidation
-
-//WithBatchInserts
+    WithValidation,
+    WithBatchInserts
 {
     use Importable, SkipsErrors, RemembersChunkOffset, RemembersRowNumber;
 
@@ -45,7 +44,7 @@ class LiquidacionsImport implements
     public $tries = 1;
     public $totalRows;
     public $countCicles = 0;
-    public $errors;
+    public $errores;
 
 
 
@@ -399,14 +398,14 @@ class LiquidacionsImport implements
         if (!empty($failures)) {
             foreach ($failures as $key => $failure) {
                 Log::channel('daily')->info('fallos', [
-                    'message' => $failure->toArray()[0],
+                    //'message' => $failure->toArray()[0],
                     'row' => $failure->row(),
                     'attribute' => $failure->attribute(),
                     'errors' => $failure->errors(),
                     'values' => $failure->values(),
                 ]);
 
-                $this->errors[$key] = $failure;
+                //$this->errores[$key] = $failure;
             }
         }
     }
@@ -419,10 +418,7 @@ class LiquidacionsImport implements
             ImportFailed::class => function (ImportFailed $event) {
 
                 if (!empty($event)) {
-                    Log::channel('daily')->error('failed import', [
-                        'message' => $event->getException()->getMessage(),
-                        // 'errors' => $this->errors,
-                    ]);
+                    Log::channel('daily')->error($this->errores);
                     event(new FailedImport("error de importacion"));
                 }
             },
