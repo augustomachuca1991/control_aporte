@@ -1,6 +1,7 @@
 <?php
 
 use App\Categoria;
+use App\DeclaracionJurada;
 use App\Liquidacion;
 use App\Periodo;
 use Illuminate\Http\Request;
@@ -195,8 +196,8 @@ Route::get('/periodo/id/{id}', function (Request $request) {
 });
 
 
-Route::get('/liquidacion/id/{id}', function (Request $request) {
+Route::get('/ddjj/id/{id}', function (Request $request) {
     //dd($request->id);
-    $liquidacion = Liquidacion::where('id', $request->id)->with(['periodos'])->get();
-    return $liquidacion;
+    $importedBy = DeclaracionJurada::find($request->id);
+    return $importedBy->user;
 });

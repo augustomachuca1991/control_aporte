@@ -7,8 +7,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Jobs\{ImportFailedJob, CompletedImport, DeleteFileImportJob, LiquidarJob, NotificationJob};
 use App\Events\{NotificationImport, FailedImport};
+use App\Notifications\ImportHasFailedNotification;
 use Maatwebsite\Excel\Validators\Failure;
-use Maatwebsite\Excel\Events\{ImportFailed, BeforeImport};
+use Maatwebsite\Excel\Events\{AfterImport, ImportFailed, BeforeImport};
 use Maatwebsite\Excel\Concerns\{ToCollection, WithHeadingRow, WithBatchInserts, WithChunkReading, Importable, WithCustomCsvSettings, WithEvents, WithValidation, SkipsOnError, SkipsErrors, SkipsOnFailure, SkipsFailures, RemembersChunkOffset, RemembersRowNumber};
 use Illuminate\Support\Facades\Log;
 
@@ -39,17 +40,19 @@ class LiquidacionsImport implements
     protected $agente;
     protected $puesto_laboral;
     protected $historia_laboral_id;
+    protected $importedBy;
 
     public $tries = 1;
     public $totalRows;
     public $countCicles = 0;
-    public $error = "ocurrio un error";
+    public $errors;
 
 
 
     public function __construct(DeclaracionJurada $declaracionjurada)
     {
         $this->declaracionjurada = $declaracionjurada;
+        $this->importedBy = $declaracionjurada->user;
     }
 
 
@@ -328,10 +331,6 @@ class LiquidacionsImport implements
             '*.clase' => ['required'],
             '*.cod_estado' => ['required', 'integer'],
             '*.estado' => ['required'],
-            '*.cod_jurisdiccion' => ['required', 'integer'],
-            '*.jurisdiccion' => ['required'],
-            '*.cod_organismo' => ['required', 'integer'],
-            '*.organismo' => ['required'],
             '*.cod_funcion' => ['integer', 'nullable'],
             '*.funcion' => ['string', 'nullable'],
         ];
@@ -398,7 +397,7 @@ class LiquidacionsImport implements
     public function onFailure(Failure ...$failures)
     {
         if (!empty($failures)) {
-            foreach ($failures as $failure) {
+            foreach ($failures as $key => $failure) {
                 Log::channel('daily')->info('fallos', [
                     'message' => $failure->toArray()[0],
                     'row' => $failure->row(),
@@ -407,7 +406,7 @@ class LiquidacionsImport implements
                     'values' => $failure->values(),
                 ]);
 
-                $this->error = $failure->toArray()[0];
+                $this->errors[$key] = $failure;
             }
         }
     }
@@ -421,9 +420,10 @@ class LiquidacionsImport implements
 
                 if (!empty($event)) {
                     Log::channel('daily')->error('failed import', [
-                        'import failed' => $event->getException()->getMessage(),
+                        'message' => $event->getException()->getMessage(),
+                        // 'errors' => $this->errors,
                     ]);
-                    event(new FailedImport($this->error));
+                    event(new FailedImport("error de importacion"));
                 }
             },
 
@@ -435,17 +435,17 @@ class LiquidacionsImport implements
                         'total Rows' => $this->totalRows
                     ]);
                 }
-            }
+            },
 
-            // AfterImport::class => function (AfterImport $event) {
-            //     $creator = $event->reader->getProperties()->getCreator();
-            //     if (!empty($creator)) {
-            //         //echo $totalRows['Worksheet'];
-            //         Log::channel('daily')->info('after import', [
-            //             'creator' => $creator
-            //         ]);
-            //     }
-            // },
+            AfterImport::class => function (AfterImport $event) {
+                $creator = $event->reader->getProperties()->getCreator();
+                if (!empty($creator)) {
+                    //echo $totalRows['Worksheet'];
+                    Log::channel('daily')->info('after import', [
+                        'creator' => $creator
+                    ]);
+                }
+            },
 
 
         ];

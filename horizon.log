@@ -10167,3 +10167,203 @@ Horizon started successfully.
 [2021-10-21 08:32:01][553] Processing: App\Notifications\FinishJob
 [2021-10-21 08:32:01][553] Processed:  App\Notifications\FinishJob
 Horizon started successfully.
+Horizon started successfully.
+[2021-10-24 20:20:28][370] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:20:28][370] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:20:28][371] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:20:37][371] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:20:37][372] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:20:47][372] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:20:47][373] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:20:56][373] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:20:56][374] Processing: App\Jobs\CompletedImport
+[2021-10-24 20:20:56][374] Processed:  App\Jobs\CompletedImport
+[2021-10-24 20:20:56][375] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:21:05][375] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:21:05][376] Processing: App\Events\NotificationImport
+[2021-10-24 20:21:06][376] Processed:  App\Events\NotificationImport
+[2021-10-24 20:21:06][377] Processing: App\Jobs\NotificationJob
+[2021-10-24 20:21:07][377] Processed:  App\Jobs\NotificationJob
+[2021-10-24 20:21:07][378] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:21:16][378] Processed:  Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:21:16][380] Processing: App\Jobs\DeleteFileImportJob
+[2021-10-24 20:21:16][380] Processed:  App\Jobs\DeleteFileImportJob
+[2021-10-24 20:21:16][379] Processing: App\Notifications\FinishJob
+[2021-10-24 20:21:16][379] Processed:  App\Notifications\FinishJob
+[2021-10-24 20:29:29][381] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:29:29][381] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:29:29][382] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+
+   Symfony\Component\ErrorHandler\Error\FatalError 
+
+  App\Notifications\ImportHasFailedNotification and Illuminate\Bus\Queueable define the same property ($connection) in the composition of App\Notifications\ImportHasFailedNotification. However, the definition differs and is considered incompatible. Class was composed
+
+  at app/Notifications/ImportHasFailedNotification.php:10
+     6| use Illuminate\Contracts\Queue\ShouldQueue;
+     7| use Illuminate\Notifications\Messages\MailMessage;
+     8| use Illuminate\Notifications\Notification;
+     9| 
+  > 10| class ImportHasFailedNotification extends Notification implements ShouldQueue
+    11| {
+    12|     use Queueable;
+    13| 
+    14|     public $connection = 'redis';
+
+
+   Whoops\Exception\ErrorException 
+
+  App\Notifications\ImportHasFailedNotification and Illuminate\Bus\Queueable define the same property ($connection) in the composition of App\Notifications\ImportHasFailedNotification. However, the definition differs and is considered incompatible. Class was composed
+
+  at app/Notifications/ImportHasFailedNotification.php:10
+     6| use Illuminate\Contracts\Queue\ShouldQueue;
+     7| use Illuminate\Notifications\Messages\MailMessage;
+     8| use Illuminate\Notifications\Notification;
+     9| 
+  > 10| class ImportHasFailedNotification extends Notification implements ShouldQueue
+    11| {
+    12|     use Queueable;
+    13| 
+    14|     public $connection = 'redis';
+
+      [2m+1 vendor frames [22m
+  2   [internal]:0
+      Whoops\Run::handleShutdown()
+[2021-10-24 20:34:10][383] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:34:10][383] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:34:10][384] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+
+   Symfony\Component\ErrorHandler\Error\FatalError 
+
+  App\Notifications\ImportHasFailedNotification and Illuminate\Bus\Queueable define the same property ($connection) in the composition of App\Notifications\ImportHasFailedNotification. However, the definition differs and is considered incompatible. Class was composed
+
+  at app/Notifications/ImportHasFailedNotification.php:10
+     6| use Illuminate\Contracts\Queue\ShouldQueue;
+     7| use Illuminate\Notifications\Messages\MailMessage;
+     8| use Illuminate\Notifications\Notification;
+     9| 
+  > 10| class ImportHasFailedNotification extends Notification implements ShouldQueue
+    11| {
+    12|     use Queueable;
+    13| 
+    14|     public $connection = 'redis';
+
+
+   Whoops\Exception\ErrorException 
+
+  App\Notifications\ImportHasFailedNotification and Illuminate\Bus\Queueable define the same property ($connection) in the composition of App\Notifications\ImportHasFailedNotification. However, the definition differs and is considered incompatible. Class was composed
+
+  at app/Notifications/ImportHasFailedNotification.php:10
+     6| use Illuminate\Contracts\Queue\ShouldQueue;
+     7| use Illuminate\Notifications\Messages\MailMessage;
+     8| use Illuminate\Notifications\Notification;
+     9| 
+  > 10| class ImportHasFailedNotification extends Notification implements ShouldQueue
+    11| {
+    12|     use Queueable;
+    13| 
+    14|     public $connection = 'redis';
+
+      [2m+1 vendor frames [22m
+  2   [internal]:0
+      Whoops\Run::handleShutdown()
+Horizon started successfully.
+[2021-10-24 20:37:51][385] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:37:51][385] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:37:51][386] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:37:56][386] Failed:     Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:37:56][387] Processing: App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:38:01][387] Failed:     App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:38:01][388] Processing: App\Jobs\ImportFailedJob
+[2021-10-24 20:38:01][388] Processed:  App\Jobs\ImportFailedJob
+Horizon started successfully.
+[2021-10-24 20:42:23][389] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:42:23][389] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:42:23][390] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:42:28][390] Failed:     Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:42:28][391] Processing: App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:42:32][391] Failed:     App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:42:32][392] Processing: App\Jobs\ImportFailedJob
+[2021-10-24 20:42:32][392] Processed:  App\Jobs\ImportFailedJob
+Horizon started successfully.
+[2021-10-24 20:47:20][393] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:47:20][393] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:47:20][394] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+
+   Symfony\Component\ErrorHandler\Error\FatalError 
+
+  App\Notifications\ImportHasFailedNotification and Illuminate\Bus\Queueable define the same property ($connection) in the composition of App\Notifications\ImportHasFailedNotification. However, the definition differs and is considered incompatible. Class was composed
+
+  at app/Notifications/ImportHasFailedNotification.php:10
+     6| use Illuminate\Contracts\Queue\ShouldQueue;
+     7| use Illuminate\Notifications\Messages\MailMessage;
+     8| use Illuminate\Notifications\Notification;
+     9| 
+  > 10| class ImportHasFailedNotification extends Notification implements ShouldQueue
+    11| {
+    12|     use Queueable;
+    13| 
+    14|
+
+
+   Whoops\Exception\ErrorException 
+
+  App\Notifications\ImportHasFailedNotification and Illuminate\Bus\Queueable define the same property ($connection) in the composition of App\Notifications\ImportHasFailedNotification. However, the definition differs and is considered incompatible. Class was composed
+
+  at app/Notifications/ImportHasFailedNotification.php:10
+     6| use Illuminate\Contracts\Queue\ShouldQueue;
+     7| use Illuminate\Notifications\Messages\MailMessage;
+     8| use Illuminate\Notifications\Notification;
+     9| 
+  > 10| class ImportHasFailedNotification extends Notification implements ShouldQueue
+    11| {
+    12|     use Queueable;
+    13| 
+    14|
+
+      [2m+1 vendor frames [22m
+  2   [internal]:0
+      Whoops\Run::handleShutdown()
+[2021-10-24 20:48:29][395] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:48:29][395] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:48:29][396] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:48:30][396] Failed:     Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:48:30][397] Processing: App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:48:37][397] Failed:     App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:48:37][398] Processing: App\Jobs\ImportFailedJob
+[2021-10-24 20:48:37][398] Processed:  App\Jobs\ImportFailedJob
+[2021-10-24 20:52:58][399] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:52:58][399] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:52:58][400] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:52:59][400] Failed:     Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:52:59][401] Processing: App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:53:01][401] Failed:     App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:53:01][402] Processing: App\Jobs\ImportFailedJob
+[2021-10-24 20:53:02][402] Processed:  App\Jobs\ImportFailedJob
+Horizon started successfully.
+[2021-10-24 20:57:09][403] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:57:09][403] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 20:57:09][404] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:57:14][404] Failed:     Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 20:57:15][405] Processing: App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:57:22][405] Failed:     App\Notifications\ImportHasFailedNotification
+[2021-10-24 20:57:22][406] Processing: App\Jobs\ImportFailedJob
+[2021-10-24 20:57:22][406] Processed:  App\Jobs\ImportFailedJob
+Horizon started successfully.
+[2021-10-24 21:03:28][407] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 21:03:28][407] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 21:03:28][408] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 21:03:34][408] Failed:     Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 21:03:34][409] Processing: App\Notifications\ImportHasFailedNotification
+[2021-10-24 21:03:37][409] Failed:     App\Notifications\ImportHasFailedNotification
+[2021-10-24 21:03:37][410] Processing: App\Jobs\ImportFailedJob
+[2021-10-24 21:03:37][410] Processed:  App\Jobs\ImportFailedJob
+Horizon started successfully.
+[2021-10-24 21:10:26][411] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 21:10:26][411] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-10-24 21:10:26][412] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 21:10:32][412] Failed:     Maatwebsite\Excel\Jobs\ReadChunk
+[2021-10-24 21:10:32][413] Processing: App\Events\FailedImport
+[2021-10-24 21:10:33][413] Processed:  App\Events\FailedImport
+[2021-10-24 21:10:33][414] Processing: App\Jobs\ImportFailedJob
+[2021-10-24 21:10:33][414] Processed:  App\Jobs\ImportFailedJob
+Horizon started successfully.
