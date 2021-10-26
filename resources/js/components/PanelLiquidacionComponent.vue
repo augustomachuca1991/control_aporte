@@ -1,5 +1,70 @@
 <template>
     <div class="container">
+        <section class="content mb-3">
+            <div class="container-fluid">
+                <h4 class="text-center text-muted display-4">Liquidaciones</h4>
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <input
+                                type="search"
+                                class="form-control"
+                                aria-label="Type your keywords here"
+                                v-model="buscador"
+                                @keyup="buscarLiquidacion()"
+                            />
+                            <div class="input-group-append">
+                                <button
+                                    class="btn btn-outline-secondary dropdown-toggle"
+                                    type="button"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                >
+                                    {{ perPage }} por Pagina
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="paginator(5)"
+                                        >5</a
+                                    >
+                                    <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="paginator(10)"
+                                        >10</a
+                                    >
+                                    <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="paginator(25)"
+                                        >25</a
+                                    >
+                                    <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="paginator(50)"
+                                        >50</a
+                                    >
+                                    <div
+                                        role="separator"
+                                        class="dropdown-divider"
+                                    ></div>
+                                    <a class="dropdown-item" href="#">todos</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <div class="row">
             <div class="col-12">
                 <div class="card card-outline card-pink">
@@ -121,76 +186,6 @@
             </div>
         </div>
 
-        <section class="content mb-5">
-            <div class="container-fluid">
-                <h4 class="text-center display-4">Liquidaciones</h4>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group">
-                            <div class="input-group-append">
-                                <button
-                                    type="button"
-                                    class="btn btn-default"
-                                    
-                                >
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                            <input
-                                type="search"
-                                class="form-control"
-                                aria-label="Type your keywords here"
-                                v-model="buscador"
-                                @keyup="buscarLiquidacion()"
-                            />
-                            <div class="input-group-append">
-                                <button
-                                    class="btn btn-outline-secondary dropdown-toggle"
-                                    type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    {{ perPage }} por Pagina
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a
-                                        class="dropdown-item"
-                                        href="#"
-                                        @click="paginator(5)"
-                                        >5</a
-                                    >
-                                    <a
-                                        class="dropdown-item"
-                                        href="#"
-                                        @click="paginator(10)"
-                                        >10</a
-                                    >
-                                    <a
-                                        class="dropdown-item"
-                                        href="#"
-                                        @click="paginator(25)"
-                                        >25</a
-                                    >
-                                    <a
-                                        class="dropdown-item"
-                                        href="#"
-                                        @click="paginator(50)"
-                                        >50</a
-                                    >
-                                    <div
-                                        role="separator"
-                                        class="dropdown-divider"
-                                    ></div>
-                                    <a class="dropdown-item" href="#">todos</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <div v-if="liquidaciones.length === 0">
             <div class="card">
                 <h5 class="card-header card-outline card-pink">
@@ -250,7 +245,7 @@ export default {
             },
             perPage: "10",
             setTimeoutBuscador: "",
-            buscador:"",
+            buscador: ""
         };
     },
     mounted() {
@@ -266,7 +261,6 @@ export default {
             this.filtro.jurisdiccion = "";
             this.filtro.origen = param;
             setTimeout(this.filtrarLiquidacion, this.timeOut);
-
         },
         porJurisdiccion(param) {
             this.filtro.origen = "";
@@ -307,20 +301,20 @@ export default {
             setTimeout(this.filtrarLiquidacion, this.timeOut);
         },
         buscarLiquidacion() {
-
             this.shown = true;
             clearTimeout(this.setTimeoutBuscador);
             if (this.buscador) {
                 this.setTimeoutBuscador = setTimeout(() => {
-                axios.get(`api/liquidacion/${this.buscador}`).then(response => {
-                    this.shown = false;
-                    this.asignar(response);
-                });
-            }, this.timeOut);
-            }else{
+                    axios
+                        .get(`api/liquidacion/${this.buscador}`)
+                        .then(response => {
+                            this.shown = false;
+                            this.asignar(response);
+                        });
+                }, this.timeOut);
+            } else {
                 this.liquidaciones = [];
             }
-            
         },
         paginator(paginas) {
             this.perPage = paginas;

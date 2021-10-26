@@ -274,7 +274,8 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="detalle in liquidacionDetalle.liquidacion.detalles"
+                                    v-for="detalle in liquidacionDetalle
+                                        .liquidacion.detalles"
                                     :key="detalle.id"
                                 >
                                     <th scope="row">
@@ -286,7 +287,9 @@
                                         }}</small>
                                     </td>
                                     <td>
-                                        <small>{{ detalle.unidad }}</small>
+                                        <small>{{
+                                            detalle.concepto.unidad
+                                        }}</small>
                                     </td>
                                     <td>
                                         <small
@@ -335,44 +338,75 @@
                                     <small>Subtotal</small>
                                 </th>
                                 <td>
-                                    <small v-if="liquidacionDetalle.liquidacion.no_remunerativo"
+                                    <small
+                                        v-if="
+                                            liquidacionDetalle.liquidacion
+                                                .no_remunerativo
+                                        "
                                         >$
                                         {{
-                                            parseInt(liquidacionDetalle.liquidacion.bruto) -
+                                            parseInt(
+                                                liquidacionDetalle.liquidacion
+                                                    .bruto
+                                            ) -
                                                 parseInt(
-                                                    liquidacionDetalle.liquidacion.no_remunerativo
+                                                    liquidacionDetalle
+                                                        .liquidacion
+                                                        .no_remunerativo
                                                 )
                                         }}</small
                                     >
                                     <small v-else
                                         >$
-                                        {{ parseInt(liquidacionDetalle.liquidacion.bruto) }}</small
-                                    >
-                                </td>
-                                <td>
-                                    <small
-                                        >$
-                                        {{ liquidacionDetalle.liquidacion.no_remunerativo }}</small
+                                        {{
+                                            parseInt(
+                                                liquidacionDetalle.liquidacion
+                                                    .bruto
+                                            )
+                                        }}</small
                                     >
                                 </td>
                                 <td>
                                     <small
                                         >$
                                         {{
-                                            parseInt(liquidacionDetalle.liquidacion.familiar) +
-                                                parseInt(liquidacionDetalle.liquidacion.hijo) +
-                                                parseInt(liquidacionDetalle.liquidacion.esposa)
+                                            liquidacionDetalle.liquidacion
+                                                .no_remunerativo
                                         }}</small
                                     >
                                 </td>
                                 <td>
-                                    <small>$ {{ liquidacionDetalle.liquidacion.descuento }}</small>
+                                    <small
+                                        >$
+                                        {{
+                                            parseInt(
+                                                liquidacionDetalle.liquidacion
+                                                    .familiar
+                                            ) +
+                                                parseInt(
+                                                    liquidacionDetalle
+                                                        .liquidacion.hijo
+                                                ) +
+                                                parseInt(
+                                                    liquidacionDetalle
+                                                        .liquidacion.esposa
+                                                )
+                                        }}</small
+                                    >
+                                </td>
+                                <td>
+                                    <small
+                                        >$
+                                        {{
+                                            liquidacionDetalle.liquidacion
+                                                .descuento
+                                        }}</small
+                                    >
                                 </td>
                             </tfoot>
                         </table>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>

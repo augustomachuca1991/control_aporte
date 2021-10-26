@@ -128,9 +128,6 @@
                                                 concepto.subtipo.descripcion
                                             }}</option></select
                                         >
-                                        <!-- <p v-else>
-                                            {{ concepto.subtipo.descripcion }}
-                                        </p> -->
                                     </div>
                                     <i v-else>{{
                                         concepto.subtipo.descripcion
@@ -167,6 +164,16 @@
                                         </div>
                                         <div v-else>-</div>
                                     </i>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row justify-content-between">
+                                <div class="col-4">
+                                    Organismo
+                                </div>
+                                <div class="col-6">
+                                    {{ concepto.organismo.organismo }}
                                 </div>
                             </div>
                         </li>

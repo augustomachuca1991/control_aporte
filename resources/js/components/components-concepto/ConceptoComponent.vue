@@ -47,7 +47,9 @@
                 </div>
             </div>
         </section>
-        <create-concepto></create-concepto>
+        <create-concepto
+            @concepto="nuevoConcepto(...arguments)"
+        ></create-concepto>
         <div class="card">
             <div class="card-header border-0">
                 <h3 class="card-title text-muted">
@@ -192,6 +194,15 @@ export default {
                 this.asignar(response);
             });
         },
+        nuevoConcepto(concepto) {
+            this.conceptos.unshift(concepto);
+            Toast.fire({
+                icon: "success",
+                title:
+                    "Concepto '" + concepto.concepto + "' creado exitosamente",
+                background: "#E7FFD7"
+            });
+        },
         asignar(response) {
             this.conceptos = response.data.data;
             this.paginate.current_page = response.data.current_page;
@@ -209,9 +220,6 @@ export default {
                 .then(response => {
                     this.asignar(response);
                 });
-        },
-        buscarConcepto() {
-            console.log(this.search);
         },
         edit(index, concepto) {
             this.create = true;

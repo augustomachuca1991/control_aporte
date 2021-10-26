@@ -1,61 +1,81 @@
 <template>
-    <div class="container">
-        <div
-            class="modal fade row justify-content-center  "
-            id="exampleModal"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-        >
-            <div class="col-md-4">
-                <div class="card card-widget widget-user">
-                    <div class="widget-user-header bg-info">
-                        <h3 class="widget-user-username">
-                            Alexander Pierce
-                        </h3>
-                        <h5 class="widget-user-desc">
-                            Founder & CEO
-                        </h5>
-                    </div>
-                    <div class="widget-user-image">
-                        <img
-                            class="img-circle elevation-2"
-                            :src="
-                                'https://ui-avatars.com/api/?name=' +
-                                    'user.name' +
-                                    '&color=7F9CF5&background=EBF4FF'
-                            "
-                            alt="User Avatar"
-                        />
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-sm-4 border-right">
-                                <div class="description-block">
-                                    <h5 class="description-header">
-                                        3,200
-                                    </h5>
-                                    <span class="description-text">SALES</span>
+    <div
+        class="modal fade"
+        id="showUser"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="showUserLabel"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog" role="document">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <div class="card card-widget widget-user">
+                        <div class="widget-user-header bg-info">
+                            <h3 class="widget-user-username">
+                                {{ user.name }}
+                                <button
+                                    type="button"
+                                    class="btn btn-sm text-white"
+                                    @click="edit"
+                                >
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                            </h3>
+                            <h5 class="widget-user-desc">
+                                {{ user.email }}
+                            </h5>
+                        </div>
+                        <div class="widget-user-image">
+                            <img
+                                class="img-circle elevation-2"
+                                :src="
+                                    'https://ui-avatars.com/api/?name=' +
+                                        user.name +
+                                        '&color=7F9CF5&background=EBF4FF'
+                                "
+                                alt="User Avatar"
+                            />
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm-4 border-right">
+                                    <div class="description-block">
+                                        <h5 class="description-header">
+                                            {{ user.roles[0].rol }}
+                                        </h5>
+
+                                        <span class="description-text"
+                                            >Roles</span
+                                        >
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-4 border-right">
-                                <div class="description-block">
-                                    <h5 class="description-header">
-                                        13,000
-                                    </h5>
-                                    <span class="description-text"
-                                        >FOLLOWERS</span
-                                    >
+                                <div class="col-sm-4 border-right">
+                                    <div class="description-block">
+                                        <h5 class="description-header">
+                                            + 800 - 12 12 23 52
+                                        </h5>
+                                        <span class="description-text"
+                                            >Telefo</span
+                                        >
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="description-block">
-                                    <h5 class="description-header">
-                                        35
-                                    </h5>
-                                    <span class="description-text"
-                                        >PRODUCTS</span
-                                    >
+                                <div class="col-sm-4">
+                                    <div class="description-block">
+                                        <h5 class="description-header">
+                                            <span
+                                                v-if="!user.deleted_at"
+                                                :class="{
+                                                    'badge badge-success':
+                                                        user.deleted_at === null
+                                                }"
+                                                >Activo</span
+                                            >
+                                        </h5>
+                                        <span class="description-text"
+                                            >Estado</span
+                                        >
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +88,7 @@
 
 <script>
 export default {
-    //props:['data'],
+    props: ["user", "index"],
     data: function() {
         return {
             data: []
@@ -77,6 +97,10 @@ export default {
     mounted() {
         console.log("update user");
     },
-    methods: {}
+    methods: {
+        edit() {
+            this.user.name = "ediitado";
+        }
+    }
 };
 </script>

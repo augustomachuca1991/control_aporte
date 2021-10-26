@@ -40,37 +40,97 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="inputConcepto">Concepto</label>
+                            <label for="inputcod">Cod Concepto*</label>
+                            <input
+                                type="text"
+                                id="inputcod"
+                                class="form-control"
+                                v-model="cod_concepto"
+                            />
+                            <div v-if="!errors.length">
+                                <span
+                                    class="errors text-danger"
+                                    v-for="error in errors.cod_concepto"
+                                    :key="error.id"
+                                >
+                                    <small
+                                        ><em>{{ error }}</em></small
+                                    >
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputConcepto">Concepto*</label>
                             <input
                                 type="text"
                                 id="inputConcepto"
                                 class="form-control"
                                 v-model="concepto"
                             />
+                            <div v-if="!errors.length">
+                                <span
+                                    class="errors text-danger"
+                                    v-for="error in errors.concepto"
+                                    :key="error.id"
+                                >
+                                    <small
+                                        ><em>{{ error }}</em></small
+                                    >
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputTipo">Tipo</label>
+                            <label for="inputTipo">Tipo*</label>
                             <select
                                 id="inputTipo"
                                 class="form-control custom-select"
+                                v-model="tipo"
+                                @change="selectedTipo"
                             >
-                                <option disabled>Select one</option>
-                                <option>On Hold</option>
-                                <option>Canceled</option>
-                                <option selected>Remunerativo</option>
+                                <option :value="''" disabled selected
+                                    >Seleccione un tipo de concepto de
+                                    liquidación</option
+                                >
+                                <option
+                                    v-for="(tipo, index) in tipos"
+                                    :key="tipo.id"
+                                    :value="index"
+                                >
+                                    {{ tipo.id }} - {{ tipo.descripcion }}
+                                </option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="inputSubtipo">Subtipo</label>
+                            <label for="inputSubtipo">Subtipo*</label>
                             <select
                                 id="inputSubtipo"
                                 class="form-control custom-select"
+                                v-model="subtipo"
+                                :disabled="!subtipos.length"
                             >
-                                <option disabled>Select one</option>
-                                <option>On Hold</option>
-                                <option>Canceled</option>
-                                <option selected>Antigüedad</option>
+                                <option :value="''" disabled selected
+                                    >Seleccione un subtipo de concepto de
+                                    liquidación</option
+                                >
+                                <option
+                                    v-for="(subtipo, index) in subtipos"
+                                    :key="index"
+                                    :value="subtipo.id"
+                                    >{{ subtipo.id }} -
+                                    {{ subtipo.descripcion }}</option
+                                >
                             </select>
+                            <div v-if="!errors.length">
+                                <span
+                                    class="errors text-danger"
+                                    v-for="error in errors.subtipo_id"
+                                    :key="error.id"
+                                >
+                                    <small
+                                        ><em>{{ error }}</em></small
+                                    >
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="inputUnidad">Unidad</label>
@@ -82,19 +142,38 @@
                             />
                         </div>
                         <div class="form-group">
-                            <label for="inputOrganismo">Organismo</label>
+                            <label for="inputOrganismo">Organismo*</label>
                             <select
                                 id="inputOrganismo"
                                 class="form-control custom-select"
+                                v-model="organismo"
                             >
-                                <option disabled>Select one</option>
-                                <option>On Hold</option>
-                                <option>Canceled</option>
-                                <option selected>Saladas</option>
+                                <option :value="''" disabled selected
+                                    >Seleccione un organismo</option
+                                >
+
+                                <option
+                                    v-for="(organismo, index) in organismos"
+                                    :key="index"
+                                    :value="organismo.cod_organismo"
+                                    >{{ organismo.organismo }}</option
+                                >
                             </select>
+                            <div v-if="!errors.length">
+                                <span
+                                    class="errors text-danger"
+                                    v-for="error in errors.organismo_id"
+                                    :key="error.id"
+                                >
+                                    <small
+                                        ><em>{{ error }}</em></small
+                                    >
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <small><i>(*) campos obligatorios</i></small>
                         <button
                             type="button"
                             class="btn btn-secondary"
@@ -102,7 +181,11 @@
                         >
                             Cerrar
                         </button>
-                        <button type="button" class="btn btn-primary">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="newConcepto"
+                        >
                             Guardar Cambios
                         </button>
                     </div>
@@ -114,77 +197,64 @@
 
 <script>
 export default {
-    props: ["concepto", "index"],
     data: function() {
         return {
             errors: [],
             tipos: [],
             subtipos: [],
-            editMode: false,
-            descripcion: "",
+            organismos: [],
+            cod_concepto: "",
+            concepto: "",
             subtipo: "",
             tipo: "",
             organismo: "",
-            unidad: "",
-            selectedTipo: "",
-            selectedSubtipo: ""
+            unidad: ""
         };
     },
     mounted() {
         this.getTiposCodigos();
+        this.getOrganismos();
     },
     methods: {
-        edit() {
-            //this.$emit("concepto_show", [this.concepto, this.index]);
-            this.editMode = true;
-            //this.tipos = this.getTipos();
-            this.selectedTipo = this.concepto.subtipo.tipocodigo.id;
-            this.selectedSubtipo = this.concepto.subtipo.id;
-            this.descripcion = this.concepto.concepto;
-            this.subtipo = this.concepto.subtipo.descripcion;
-            this.tipo = this.concepto.subtipo.tipocodigo.descripcion;
-            this.organismo = this.concepto.organismo.organismo;
-            this.unidad = this.concepto.unidad;
-        },
-        clear() {
-            //$("#show_concepto").modal("hide");
-            this.editMode = false;
-            this.descripcion = "";
-            this.subtipo = "";
-            this.tipo = "";
-            this.organismo = "";
-            this.unidad = "";
-            this.subtipos = [];
-            this.errors = [];
-        },
-        update() {
-            const param = {
-                cod_concepto: this.concepto.cod_concepto,
-                unidad: this.unidad,
-                concepto: this.descripcion,
-                organismo_id: this.concepto.organismo_id,
-                subtipo_id: this.selectedSubtipo
-            };
-            axios
-                .put(`api/concepto/update/${this.concepto.id}`, param)
-                .then(response => {
-                    $("#show_concepto").modal("hide");
-                    this.clear();
-                    this.$emit("concepto_update", [response.data, this.index]);
-                })
-                .catch(err => {
-                    this.errors = err.response.data.errors;
-                });
-        },
-        selectedTipos() {
-            if (this.selectedTipo !== "") {
-                this.subtipos = this.tipos[this.selectedTipo - 1].subtipos;
-            }
-        },
         getTiposCodigos() {
             axios.get("api/tipocodigo").then(response => {
                 this.tipos = response.data;
             });
+        },
+        getOrganismos() {
+            axios.get("api/organismo/all").then(response => {
+                this.organismos = response.data;
+            });
+        },
+        clear() {
+            console.log("clear");
+        },
+        selectedTipo() {
+            this.subtipo = "";
+            this.subtipos = [];
+            if (this.tipo !== "") {
+                this.subtipos = this.tipos[this.tipo].subtipos;
+            }
+        },
+        newConcepto() {
+            const param = {
+                cod_concepto: this.cod_concepto,
+                concepto: this.concepto,
+                organismo_id: this.organismo,
+                subtipo_id: this.subtipo
+            };
+            this.create(param);
+        },
+        create(concepto) {
+            axios
+                .post("api/concepto/create", concepto)
+                .then(response => {
+                    this.clear();
+                    this.$emit("concepto", response.data);
+                })
+                .catch(err => {
+                    this.errors = err.response.data.errors;
+                });
         }
     }
 };

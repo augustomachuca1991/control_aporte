@@ -29,7 +29,24 @@ class ConceptoLiquidacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'cod_concepto' => 'required|unique:concepto_liquidacions,cod_concepto|integer|min:1',
+            'concepto' => 'required|string|unique:concepto_liquidacions,concepto|max:50',
+            'organismo_id' => 'required|exists:organismos,cod_organismo',
+            'subtipo_id' => 'required|exists:subtipo_codigos,id'
+        ]);
+
+        $conceptoLiquidacion = ConceptoLiquidacion::create([
+            'cod_concepto' => $request->cod_concepto,
+            'concepto' => $request->concepto,
+            'organismo_id' => $request->organismo_id,
+            'subtipo_id' => $request->subtipo_id,
+            'unidad' => $request->unidad
+        ]);
+
+        return $this->show($conceptoLiquidacion->id);
+
+
     }
 
     /**

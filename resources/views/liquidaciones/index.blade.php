@@ -14,9 +14,14 @@
 	@include('layouts.right_sidebar')
  @stop
 
-{{-- @section('content_header')
-    <h1 class="text-secondary h1-responsive text-center">Lista de Liquidaciones</h1>
-@stop --}}
+@section('content_header')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{route('home')}}"> <i class="fas fa-home"></i> Panel</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Liquidaciones</li>
+  </ol>
+</nav>
+@stop
 
 
 @section('content')
