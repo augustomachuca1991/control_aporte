@@ -48,15 +48,17 @@
                                         v-model="descripcion"
                                     />
                                     <i v-else>{{ concepto.concepto }}</i>
-                                    <span
-                                        class="errors text-danger"
-                                        v-for="error in errors.concepto"
-                                        :key="error.id"
-                                    >
-                                        <small>
-                                            <em>{{ error }}</em>
-                                        </small>
-                                    </span>
+                                    <div v-if="errors.length">
+                                        <span
+                                            class="errors text-danger"
+                                            v-for="error in errors.concepto"
+                                            :key="error.id"
+                                        >
+                                            <small>
+                                                <em>{{ error }}</em>
+                                            </small>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -101,12 +103,17 @@
                                             class="custom-select mr-sm-2"
                                             id="selectSubtipo"
                                             v-if="subtipos.length"
+                                            v-model="selectedSubtipo"
                                         >
                                             <option
                                                 v-for="(subtipo,
                                                 index) in subtipos"
                                                 :key="index"
                                                 :value="subtipo.id"
+                                                :selected="
+                                                    selectedSubtipo ===
+                                                        subtipo.id
+                                                "
                                                 >{{ subtipo.id }} -
                                                 {{ subtipo.descripcion }}
                                             </option>
@@ -128,15 +135,17 @@
                                     <i v-else>{{
                                         concepto.subtipo.descripcion
                                     }}</i>
-                                    <span
-                                        class="errors text-danger"
-                                        v-for="error in errors.subtipo_id"
-                                        :key="error.id"
-                                    >
-                                        <small>
-                                            <em>{{ error }}</em>
-                                        </small>
-                                    </span>
+                                    <div v-if="errors.length">
+                                        <span
+                                            class="errors text-danger"
+                                            v-for="error in errors.subtipo_id"
+                                            :key="error.id"
+                                        >
+                                            <small>
+                                                <em>{{ error }}</em>
+                                            </small>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -201,8 +210,6 @@ export default {
             subtipos: [],
             editMode: false,
             descripcion: "",
-            subtipo: "",
-            tipo: "",
             organismo: "",
             unidad: "",
             selectedTipo: "",
@@ -218,20 +225,20 @@ export default {
             this.selectedTipo = this.concepto.subtipo.tipocodigo.id;
             this.selectedSubtipo = this.concepto.subtipo.id;
             this.descripcion = this.concepto.concepto;
-            this.subtipo = this.concepto.subtipo.descripcion;
-            this.tipo = this.concepto.subtipo.tipocodigo.descripcion;
+            this.selectedSubtipo = this.concepto.subtipo.id;
+            this.selectedTipo = this.concepto.subtipo.tipocodigo.id;
             this.organismo = this.concepto.organismo.organismo;
             this.unidad = this.concepto.unidad;
         },
         clear() {
             this.editMode = false;
             this.descripcion = "";
-            this.subtipo = "";
-            this.tipo = "";
             this.organismo = "";
             this.unidad = "";
             this.subtipos = [];
             this.errors = [];
+            this.selectedTipo = "";
+            this.selectedSubtipo = "";
         },
         update() {
             const param = {

@@ -176,10 +176,13 @@ Vue.component(
 );
 
 //usuarios
-//panel lateral
 Vue.component(
     "users-component",
-    require("./components/UserComponent.vue").default
+    require("./components/components-user/UserComponent.vue").default
+);
+Vue.component(
+    "update-user",
+    require("./components/components-user/UpdateUser.vue").default
 );
 
 Vue.component(

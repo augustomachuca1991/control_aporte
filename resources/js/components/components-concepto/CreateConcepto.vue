@@ -21,20 +21,78 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="new_conceptoLabel">
-                            Modal title
-                        </h5>
+                        <img
+                            src="image/logo-ips-header.png"
+                            width="150"
+                            height="30"
+                            alt=""
+                        />
+
                         <button
                             type="button"
                             class="close"
                             data-dismiss="modal"
                             aria-label="Close"
+                            @click="clear"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <div class="form-group">
+                            <label for="inputConcepto">Concepto</label>
+                            <input
+                                type="text"
+                                id="inputConcepto"
+                                class="form-control"
+                                v-model="concepto"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputTipo">Tipo</label>
+                            <select
+                                id="inputTipo"
+                                class="form-control custom-select"
+                            >
+                                <option disabled>Select one</option>
+                                <option>On Hold</option>
+                                <option>Canceled</option>
+                                <option selected>Remunerativo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSubtipo">Subtipo</label>
+                            <select
+                                id="inputSubtipo"
+                                class="form-control custom-select"
+                            >
+                                <option disabled>Select one</option>
+                                <option>On Hold</option>
+                                <option>Canceled</option>
+                                <option selected>Antigüedad</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputUnidad">Unidad</label>
+                            <input
+                                type="text"
+                                id="inputUnidad"
+                                class="form-control"
+                                v-model="unidad"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputOrganismo">Organismo</label>
+                            <select
+                                id="inputOrganismo"
+                                class="form-control custom-select"
+                            >
+                                <option disabled>Select one</option>
+                                <option>On Hold</option>
+                                <option>Canceled</option>
+                                <option selected>Saladas</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button
@@ -42,10 +100,10 @@
                             class="btn btn-secondary"
                             data-dismiss="modal"
                         >
-                            Close
+                            Cerrar
                         </button>
                         <button type="button" class="btn btn-primary">
-                            Save changes
+                            Guardar Cambios
                         </button>
                     </div>
                 </div>

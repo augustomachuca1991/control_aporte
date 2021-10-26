@@ -32,26 +32,8 @@
                                     <a
                                         class="dropdown-item"
                                         href="#"
-                                        @click="paginator(5)"
-                                        >5</a
-                                    >
-                                    <a
-                                        class="dropdown-item"
-                                        href="#"
-                                        @click="paginator(10)"
+                                        @click="paginator"
                                         >10</a
-                                    >
-                                    <a
-                                        class="dropdown-item"
-                                        href="#"
-                                        @click="paginator(25)"
-                                        >25</a
-                                    >
-                                    <a
-                                        class="dropdown-item"
-                                        href="#"
-                                        @click="paginator(50)"
-                                        >50</a
                                     >
                                     <div
                                         role="separator"
@@ -66,6 +48,73 @@
             </div>
         </section>
         <create-concepto></create-concepto>
+        <div class="card">
+            <div class="card-header border-0">
+                <h3 class="card-title text-muted">
+                    Lista de Conceptos de Liquidacion
+                </h3>
+                <div class="card-tools">
+                    <a href="#" class="btn btn-sm btn-tool">
+                        <img
+                            src="image/logo-ips-header.png"
+                            width="150"
+                            height="30"
+                            alt=""
+                        />
+                    </a>
+                    <a href="#" class="btn btn-sm btn-tool">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div
+                    class="d-flex justify-content-between align-items-center border-bottom mb-3"
+                >
+                    <p class="text-success text-xl">
+                        <i class="fab fa-amazon-pay"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                        <span class="font-weight-bold">
+                            <i class="fas fa-eye"></i>
+                            12%
+                        </span>
+                        <span class="text-muted">CONVERSION RATE</span>
+                    </p>
+                </div>
+                <!-- /.d-flex -->
+                <div
+                    class="d-flex justify-content-between align-items-center border-bottom mb-3"
+                >
+                    <p class="text-warning text-xl">
+                        <i class="fas fa-trash"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                        <span class="font-weight-bold">
+                            <i class="fas fa-eye"></i>
+                            0.8%
+                        </span>
+                        <span class="text-muted">SALES RATE</span>
+                    </p>
+                </div>
+                <!-- /.d-flex -->
+                <div
+                    class="d-flex justify-content-between align-items-center mb-0"
+                >
+                    <p class="text-danger text-xl">
+                        <i class="fab fa-airbnb"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                        <span class="font-weight-bold">
+                            <i class="fas fa-eye"></i>
+                            1%
+                        </span>
+                        <span class="text-muted">REGISTRATION RATE</span>
+                    </p>
+                </div>
+                <!-- /.d-flex -->
+            </div>
+        </div>
         <div class="list-group">
             <a
                 href="#"
@@ -81,7 +130,7 @@
                     <small>{{ concepto.organismo.organismo }}</small>
                 </div>
                 <p class="mb-2">cod {{ concepto.cod_concepto }}</p>
-                <small>unidad</small>
+                <small>{{ concepto.unidad }}</small>
             </a>
         </div>
         <span>total registros encontrados: {{ paginate.total }}</span>
@@ -128,6 +177,8 @@ export default {
             },
             perPage: 10,
             search: "",
+            setTimeoutBuscador: "",
+            timeOut: 400,
             index: "",
             create: false
         };
@@ -152,8 +203,12 @@ export default {
             this.paginate.next_page_url = response.data.next_page_url;
             this.paginate.prev_page_url = response.data.prev_page_url;
         },
-        paginator(perPage) {
-            console.log(perPage);
+        paginator() {
+            axios
+                .get(`api/concepto/paginate/${this.perPage}`)
+                .then(response => {
+                    this.asignar(response);
+                });
         },
         buscarConcepto() {
             console.log(this.search);
@@ -176,6 +231,14 @@ export default {
                 background: "#E7FFD7"
             });
             this.create = false;
+        },
+        buscarConcepto() {
+            clearTimeout(this.setTimeoutBuscador);
+            this.setTimeoutBuscador = setTimeout(() => {
+                axios.get(`api/concepto/${this.search}`).then(response => {
+                    this.asignar(response);
+                });
+            }, this.timeOut);
         }
     }
 };

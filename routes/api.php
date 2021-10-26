@@ -87,6 +87,8 @@ Route::get('/puesto', 'PuestoLaboralController@getpuestoLaboral')->name('puesto_
 //Conceptos
 Route::get('/concepto', 'ConceptoLiquidacionController@getConceptos');
 Route::put('/concepto/update/{id}', 'ConceptoLiquidacionController@update');
+Route::get('/concepto/paginate/{n_paginas}', 'ConceptoLiquidacionController@paginado');
+Route::get('/concepto/{search}', 'ConceptoLiquidacionController@search');
 
 //Subtipos Codigos
 Route::get('/subtipo', 'SubtipoCodigoController@getSubtipo')->name('subtipo');

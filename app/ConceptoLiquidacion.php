@@ -39,4 +39,13 @@ class ConceptoLiquidacion extends Model
     {
         return $this->belongsToMany('App\Liquidacion', 'liquidacion_detalles', 'id', 'concepto_id');
     }
+
+    public function scopeSearchConcepto($query, $search)
+    {
+        if (!empty($search)) {
+            $query->where('cod_concepto', 'LIKE', "%" . $search . "%")
+                ->orWhere('concepto', 'LIKE', "%" . $search . "%")
+                ->orWhere('unidad', 'LIKE', "%" . $search . "%");
+        }
+    }
 }
