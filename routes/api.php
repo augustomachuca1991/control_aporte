@@ -186,10 +186,14 @@ Route::post('/agente', 'AgenteController@search')->name('agente_search');
 //usuarios
 
 Route::get('/users', 'UserController@getUsers');
+Route::post('/users/create', 'UserController@store');
 Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
 Route::delete('/users/delete/{id}', 'UserController@destroy');
 Route::get('/users/{search}', 'UserController@search');
 
+
+//roles
+Route::get('/roles', 'RoleController@getRoles');
 // Route::get('/periodo/id/{id}', function (Request $request) {
 //     //dd($request->id);
 //     $periodo = Periodo::where('cod_periodo', $request->id)->first();

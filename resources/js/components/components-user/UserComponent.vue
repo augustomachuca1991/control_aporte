@@ -1,67 +1,61 @@
 <template>
     <div id="lista_usuarios">
         <div class="container">
-            <h2 class="text-center display-4 text-muted">Usuarios</h2>
-            <form>
-                <div class="row">
-                    <div class="col-md-10 offset-md-1">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <button
-                                        type="button"
-                                        class="btn btn-block btn-outline-info"
-                                    >
-                                        + Nuevo Usuario
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <select
-                                        class="form-control"
-                                        style="width: 100%;"
-                                    >
-                                        <option selected>10 por pagina</option>
-                                        <option>25 por pagina</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <select
-                                        class="form-control"
-                                        style="width: 100%;"
-                                    >
-                                        <option selected>Nombre</option>
-                                        <option>Fecha</option>
-                                    </select>
-                                </div>
+            <h2 class="text-center display-4 text-muted">
+                <i class="fa fa-users"></i> Usuarios
+            </h2>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <create-user
+                                    @user="nuevoUser(...arguments)"
+                                ></create-user>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="input-group input-group-lg">
-                                <input
-                                    type="search"
-                                    class="form-control form-control-lg"
-                                    placeholder="Buscar Nombre, Email, Rol, etc..."
-                                    @keyup="buscar"
-                                    v-model="search"
-                                />
+                        <div class="col-4">
+                            <div class="form-group">
+                                <select
+                                    class="form-control"
+                                    style="width: 100%;"
+                                >
+                                    <option selected>10 por pagina</option>
+                                    <option>25 por pagina</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                <select
+                                    class="form-control"
+                                    style="width: 100%;"
+                                >
+                                    <option selected>Nombre</option>
+                                    <option>Fecha</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group ">
+                            <input
+                                type="search"
+                                class="form-control "
+                                placeholder="Buscar Nombre, Email, Rol, etc..."
+                                @keyup="buscar"
+                                v-model="search"
+                            />
 
-                                <div class="input-group-append">
-                                    <button
-                                        type="submit"
-                                        class="btn btn-lg btn-default"
-                                    >
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
             <div class="row">
                 <div
                     v-for="(user, index) in users"
@@ -93,16 +87,24 @@
                                         <b>{{ user.name }}</b>
                                     </h2>
                                     <p class="text-muted text-sm">
-                                        <b>Roles: </b>
-                                        {{ user.roles[0].rol }}/ Arg / Graphic
-                                        Artist / Coffee Lover
+                                        <span
+                                            v-for="(role, index) in user.roles"
+                                            :key="role.id"
+                                            >{{ role.rol }}
+                                            <i
+                                                v-show="
+                                                    index < user.roles.lenght
+                                                "
+                                                >/</i
+                                            >
+                                        </span>
                                     </p>
                                     <ul class="ml-4 mb-0 fa-ul text-muted">
                                         <li class="small">
                                             <span class="fa-li"
                                                 ><i class="fas fa-lg fa-at"></i
                                             ></span>
-                                            Mail: {{ user.email }}
+                                            {{ user.email }}
                                         </li>
                                         <li class="small">
                                             <span class="fa-li"
@@ -110,7 +112,7 @@
                                                     class="fas fa-lg fa-phone"
                                                 ></i
                                             ></span>
-                                            Telefo #: + 800 - 12 12 23 52
+                                            + 800 - 12 12 23 52
                                         </li>
                                     </ul>
                                 </div>
@@ -176,6 +178,16 @@
 </template>
 
 <script>
+const Toast = swal.mixin({
+    toast: true,
+    position: "top-end",
+    timer: 6000,
+    showConfirmButton: false,
+    onOpen: toast => {
+        toast.addEventListener("mouseenter", swal.stopTimer);
+        toast.addEventListener("mouseleave", swal.resumeTimer);
+    }
+});
 export default {
     data: function() {
         return {
@@ -205,6 +217,14 @@ export default {
         getUsers: function() {
             axios.get("api/users").then(response => {
                 this.asignar(response);
+            });
+        },
+        nuevoUser(user) {
+            this.users.unshift(user);
+            Toast.fire({
+                icon: "success",
+                title: "Se envió un correo de confirmación a " + user.email,
+                background: "#E7FFD7"
             });
         },
         desbloquear: function(index, user) {

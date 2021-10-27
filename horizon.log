@@ -10465,3 +10465,31 @@ Horizon started successfully.
 [2021-10-26 09:03:24][591] Processing: App\Notifications\FinishJob
 [2021-10-26 09:03:24][591] Processed:  App\Notifications\FinishJob
 Horizon started successfully.
+Horizon started successfully.
+[2021-10-26 21:15:19][446] Processing: App\Notifications\ResetPasswordNotification
+[2021-10-26 21:15:23][446] Failed:     App\Notifications\ResetPasswordNotification
+[2021-10-26 21:16:00][447] Processing: App\Notifications\ResetPasswordNotification
+[2021-10-26 21:16:03][447] Failed:     App\Notifications\ResetPasswordNotification
+[2021-10-26 21:18:03][448] Processing: App\Notifications\ResetPasswordNotification
+[2021-10-26 21:18:06][448] Failed:     App\Notifications\ResetPasswordNotification
+[2021-10-26 21:19:24][1] Processing: App\Notifications\ResetPasswordNotification
+[2021-10-26 21:19:27][1] Failed:     App\Notifications\ResetPasswordNotification
+[2021-10-26 21:23:12][2] Processing: App\Notifications\ResetPasswordNotification
+[2021-10-26 21:23:15][2] Failed:     App\Notifications\ResetPasswordNotification
+[2021-10-26 21:25:06][3] Processing: App\Notifications\ResetPasswordNotification
+[2021-10-26 21:25:09][3] Failed:     App\Notifications\ResetPasswordNotification
+[2021-10-26 21:25:21][4] Processing: App\Notifications\ResetPasswordNotification
+[2021-10-26 21:25:24][4] Failed:     App\Notifications\ResetPasswordNotification
+[2021-10-26 21:26:54][5] Processing: App\Notifications\ResetPasswordNotification
+[2021-10-26 21:26:57][5] Failed:     App\Notifications\ResetPasswordNotification
+Horizon started successfully.
+[2021-10-26 23:21:35][6] Processing: App\Jobs\ResetPasswordJob
+[2021-10-26 23:21:39][6] Processed:  App\Jobs\ResetPasswordJob
+[2021-10-26 23:25:09][7] Processing: App\Jobs\ResetPasswordJob
+[2021-10-26 23:25:13][7] Processed:  App\Jobs\ResetPasswordJob
+[2021-10-26 23:28:14][8] Processing: App\Jobs\ResetPasswordJob
+[2021-10-26 23:28:17][8] Processed:  App\Jobs\ResetPasswordJob
+[2021-10-26 23:32:32][9] Processing: App\Jobs\ResetPasswordJob
+[2021-10-26 23:32:36][9] Processed:  App\Jobs\ResetPasswordJob
+[2021-10-26 23:33:27][10] Processing: App\Jobs\ResetPasswordJob
+[2021-10-26 23:33:30][10] Processed:  App\Jobs\ResetPasswordJob

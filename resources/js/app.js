@@ -181,6 +181,10 @@ Vue.component(
     require("./components/components-user/UserComponent.vue").default
 );
 Vue.component(
+    "create-user",
+    require("./components/components-user/CreateUser.vue").default
+);
+Vue.component(
     "update-user",
     require("./components/components-user/UpdateUser.vue").default
 );
