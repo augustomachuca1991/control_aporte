@@ -1,6 +1,6 @@
 <template>
-    <div class="container" v-if="shown">
-		{{search}}
+    <div class="container">
+        {{ search }}
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text"
@@ -15,27 +15,10 @@
                 @keyup="buscar()"
             />
         </div>
-        <paginate
-            name="dd_jj"
-            :list="declaraciones_juradas"
-            :per="8"
-            ref="paginator"
-            class="pl-0"
-        >
+
+        <div v-if="declaraciones_juradas.length">
             <div
-                v-if="declaraciones_juradas.length === 0"
-                class="card card-outline card-dark"
-            >
-                <div class="card-hearder">
-                    Declaraciones Juradas
-                </div>
-                <div class="card-body">
-                    No hay datos
-                </div>
-            </div>
-            <div
-                v-else
-                v-for="declaracion_jurada in paginated('dd_jj')"
+                v-for="(declaracion_jurada, index) in declaraciones_juradas"
                 :key="declaracion_jurada.id"
                 class="card card-outline card-secondary"
             >
@@ -43,9 +26,13 @@
                     <div
                         class="d-flex w-100 justify-content-between text-muted px-4 py-2"
                     >
-                        <h4 class="mb-1">Declaraciones Juradas</h4>
+                        <h4 class="mb-1">
+                            Declaraciones Juradas nº {{ declaracion_jurada.id }}
+                        </h4>
                         <small
-                            ><i class="fas fa-calendar-alt"></i>&nbsp;{{ declaracion_jurada.created_at | moment }}</small
+                            ><i class="fas fa-calendar-alt"></i>&nbsp;{{
+                                declaracion_jurada.created_at | moment
+                            }}</small
                         >
                     </div>
                 </div>
@@ -83,20 +70,33 @@
                                 </li>
                             </ul>
                         </div>
-                            <div class="col-md-6">
-							<button type="button" @click="download(declaracion_jurada.path)" class="btn btn-outline-info btn-block btn-sm"><i class="fas fa-file-download"></i> descargar</button>
-							<button type="button" class="btn btn-outline-danger btn-block btn-sm"><i class="fa fa-book"></i> detalle</button>
-							</div>
+                        <div class="col-md-6">
+                            <button
+                                type="button"
+                                @click="download(declaracion_jurada.path)"
+                                class="btn btn-outline-info btn-block btn-sm"
+                            >
+                                <i class="fas fa-file-download"></i> descargar
+                            </button>
+                            <button
+                                type="button"
+                                @click="show(index, declaracion_jurada)"
+                                class="btn btn-outline-danger btn-block btn-sm"
+                            >
+                                <i class="fa fa-book"></i> detalle
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">
                     <div class="row">
                         <div class="col text-muted text-sm">
-                            <i class="far fa-clock"></i
-                            >&nbsp;{{ declaracion_jurada.created_at | moment }} |
-                            <i class="far fa-user"></i
-                            >&nbsp;subido por {{ declaracion_jurada.user.name | capitalize }} |
-							&nbsp;
+                            <i class="far fa-clock"></i>&nbsp;{{
+                                declaracion_jurada.created_at | moment
+                            }}
+                            | <i class="far fa-user"></i>&nbsp;subido por
+                            {{ declaracion_jurada.user.name | capitalize }} |
+                            &nbsp;
                             <span
                                 v-if="declaracion_jurada.deleted_at"
                                 class="badge bg-danger"
@@ -107,46 +107,137 @@
                     </div>
                 </div>
             </div>
-            <!-- <table class="table table-sm">
-			      <caption>
-			          <span v-if="$refs.paginator">
-						 mostrando {{$refs.paginator.pageItemsCount}} resultados
-					  </span>
-			      </caption>
-			      <thead>
-			        <tr>
-			          <th scope="col">Usuario</th>
-			          <th scope="col">Fecha de Importacion</th>
-			          <th scope="col">Organismo</th>
-			          <th scope="col">Tipo Liquidacion</th>
-			          <th scope="col">Periodo</th>
-			          <th scope="col">Archivo</th>
-			          <th scope="col"></th>
-			        </tr>
-			      </thead>
-			      <tbody>
-			        <tr v-if="declaraciones_juradas.length === 0" class="table-default text-center">
-			          <td colspan="7">No hay datos</td>
-			        </tr>
-			        <tr v-else v-for="(declaracion_jurada, index) in paginated('dd_jj') " :key="declaracion_jurada.id">
-			          <th scope="row">{{declaracion_jurada.user.name | capitalize}}</th> 
-			          <td>{{declaracion_jurada.created_at | moment}}</td>
-			          <td>{{declaracion_jurada.organismo.organismo | capitalize}}</td>
-			          <td>{{declaracion_jurada.tipoliquidacion.descripcion}}</td>
-			          <td>{{declaracion_jurada.periodo.periodo}}</td>
-			          <td>{{declaracion_jurada.nombre_archivo}}</td>
-			          <td>
-			              <a class="btn btn-outline-info text-info btn-sm border-0" data-toggle="tooltip" data-placement="bottom" title="Descargar declaracion jurada" @click="download(declaracion_jurada.path)">
-			              	<i class="fas fa-download"></i>
-			              </a>
-			              <a class="btn btn-outline-primary btn-sm text-primary border-0" @click="getDetalles(declaracion_jurada.id)">
-			              	<i class="far fa-eye"></i>
-			              </a> 
-			          </td>
-			        </tr>
-			      </tbody>
-			      
-			    </table> -->
+            <!-- <div v-if="declaraciones_juradas.lenght > perPage"> -->
+            <span>total registros encontrados: {{ paginate.total }}</span>
+            <paginator-component
+                :data="declaraciones_juradas"
+                :paginate="paginate"
+                @response="asignar(...arguments)"
+            ></paginator-component>
+            <!-- </div> -->
+            <div>
+                <p>{{ declaracion_jurada.id }}</p>
+                <p>{{ declaracion_jurada.ddjj_lines }}</p>
+            </div>
+        </div>
+        <div v-else class="card card-outline card-dark">
+            <div class="card-hearder">
+                <h4 class="mb-1 ml-2">Declaraciones Juradas</h4>
+            </div>
+            <div class="card-body">
+                <p>No Data</p>
+            </div>
+            <div class="card-footer">
+                Registros Totales 0
+            </div>
+        </div>
+        <!-- <paginate
+            name="dd_jj"
+            :list="declaraciones_juradas"
+            :per="8"
+            ref="paginator"
+            class="pl-0"
+        >
+            <div
+                v-if="declaraciones_juradas.length === 0"
+                class="card card-outline card-dark"
+            >
+                <div class="card-hearder">
+                    Declaraciones Juradas
+                </div>
+                <div class="card-body">
+                    No hay datos
+                </div>
+            </div>
+            <div
+                v-else
+                v-for="(declaracion_jurada, index) in paginated('dd_jj')"
+                :key="declaracion_jurada.id"
+                class="card card-outline card-secondary"
+            >
+                <div class="card-hearder">
+                    <div
+                        class="d-flex w-100 justify-content-between text-muted px-4 py-2"
+                    >
+                        <h4 class="mb-1">Declaraciones Juradas</h4>
+                        <small
+                            ><i class="fas fa-calendar-alt"></i>&nbsp;{{
+                                declaracion_jurada.created_at | moment
+                            }}</small
+                        >
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <a
+                                class="btn"
+                                data-toggle="tooltip"
+                                data-placement="bottom"
+                                title="Descargar declaracion jurada"
+                                @click="download(declaracion_jurada.path)"
+                            >
+                                <i
+                                    class="far fa-file-excel fa-5x text-olive"
+                                ></i>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <ul class="list-unstyled">
+                                <li>
+                                    {{
+                                        declaracion_jurada.organismo.organismo
+                                            | capitalize
+                                    }}
+                                </li>
+                                <li>
+                                    {{ declaracion_jurada.periodo.periodo }}
+                                </li>
+                                <li>
+                                    {{
+                                        declaracion_jurada.tipoliquidacion
+                                            .descripcion
+                                    }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <button
+                                type="button"
+                                @click="download(declaracion_jurada.path)"
+                                class="btn btn-outline-info btn-block btn-sm"
+                            >
+                                <i class="fas fa-file-download"></i> descargar
+                            </button>
+                            <button
+                                type="button"
+                                @click="show(index, declaracion_jurada)"
+                                class="btn btn-outline-danger btn-block btn-sm"
+                            >
+                                <i class="fa fa-book"></i> detalle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col text-muted text-sm">
+                            <i class="far fa-clock"></i>&nbsp;{{
+                                declaracion_jurada.created_at | moment
+                            }}
+                            | <i class="far fa-user"></i>&nbsp;subido por
+                            {{ declaracion_jurada.user.name | capitalize }} |
+                            &nbsp;
+                            <span
+                                v-if="declaracion_jurada.deleted_at"
+                                class="badge bg-danger"
+                                >inactivo</span
+                            >
+                            <span v-else class="badge bg-olive">activo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </paginate>
 
         <paginate-links
@@ -162,12 +253,12 @@
             :limit="5"
         >
         </paginate-links>
-		<span v-if="$refs.paginator" class="d-flex justify-content-end text-muted">
-			Mostrando {{$refs.paginator.pageItemsCount}} resultados
-		</span>
-        <!-- <a class="btn btn-primary shadow text-white">
-					aplicadas <i class="fas fa-check"></i>
-				</a> -->
+        <span
+            v-if="$refs.paginator"
+            class="d-flex justify-content-end text-muted"
+        >
+            Mostrando {{ $refs.paginator.pageItemsCount }} resultados
+        </span>
 
         <table class="table" v-if="detalles.length > 0">
             <thead>
@@ -229,7 +320,7 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
     </div>
 </template>
 
@@ -238,20 +329,29 @@ export default {
     data: function() {
         return {
             declaraciones_juradas: [],
+            paginate: {
+                current_page: "",
+                last_page: "",
+                total: "",
+                path: "",
+                next_page_url: "",
+                from: "",
+                to: "",
+                next_page_url: "",
+                prev_page_url: ""
+            },
+            declaracion_jurada: {},
             detalles: [],
             title: "",
             paginate: ["dd_jj"],
             shown: false,
-            search: ""
+            search: "",
+            timeOut: 400,
+            perPage: "10"
         };
     },
     mounted() {
-        setTimeout(() => {
-            axios.get("api/declaracion_jurada").then(response => {
-                this.declaraciones_juradas = response.data;
-                this.shown = true;
-            });
-        }, 0);
+        this.getDeclaracionesJuradas();
     },
     methods: {
         moment: function() {
@@ -286,22 +386,31 @@ export default {
         },
         buscar: function() {
             console.log(this.search);
+        },
+        show(index, declaracion_jurada) {
+            this.declaracion_jurada = declaracion_jurada;
+            this.index = this.paginate.from + parseInt(index - 1);
+        },
+        getDeclaracionesJuradas() {
+            axios.get("api/declaracion_jurada").then(response => {
+                this.asignar(response);
+            });
+        },
+        asignar(response) {
+            this.declaraciones_juradas = response.data.data;
+            this.paginate.current_page = response.data.current_page;
+            this.paginate.last_page = response.data.last_page;
+            this.paginate.total = response.data.total;
+            this.paginate.path = response.data.path;
+            this.paginate.from = response.data.from;
+            this.paginate.to = response.data.to;
+            this.paginate.next_page_url = response.data.next_page_url;
+            this.paginate.prev_page_url = response.data.prev_page_url;
         }
     },
     filters: {
-        pipe: function(detalle) {
-            var conceptos = detalle.split("|");
-            var index = 0;
-            var arrayLength = conceptos.length;
-            var tempArray = [];
-
-            for (index = 0; index < arrayLength; index += 6) {
-                let concepto = conceptos.slice(index, index + 6);
-                // Do something if you want with the group
-                tempArray.push(concepto);
-            }
-
-            return tempArray;
+        jsonDecode: function(detalle) {
+            return JSON.parse(detalle);
         }
     }
 };

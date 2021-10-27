@@ -1,6 +1,5 @@
 <template>
     <div v-if="liquidaciones.length">
-        <!-- {{ liquidaciones }} -->
         <div
             class="card w-100 card-outline card-pink"
             v-for="(liquidacion, index) in liquidaciones"
@@ -133,7 +132,9 @@
         <div class="card">
             <h5 class="card-header card-outline card-pink">Liquidaciones</h5>
             <div class="card-body">
-                <h5 class="card-title">No se encontraron resultados para esta consulta</h5>
+                <h5 class="card-title">
+                    No se encontraron resultados para esta consulta
+                </h5>
             </div>
         </div>
     </div>
@@ -154,7 +155,6 @@ export default {
                 prev_page_url: this.datos.prev_page_url,
                 from: this.datos.from,
                 to: this.datos.to
-
             },
             liquidacionOrganismo: {},
             index: ""
@@ -180,7 +180,7 @@ export default {
                 this.paginacion(response);
             });
         },
-        paginacion(response){
+        paginacion(response) {
             this.liquidaciones = response.data.data;
             this.paginate.current_page = response.data.current_page;
             this.paginate.last_page = response.data.last_page;

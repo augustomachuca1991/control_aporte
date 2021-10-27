@@ -14,7 +14,12 @@
  @stop
 
 @section('content_header')
-    <h1 class="text-secondary h1-responsive">Declaraciones Juradas</h1>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{route('home')}}"> <i class="fas fa-home"></i> Panel</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Declaraciones Juradas</li>
+  </ol>
+</nav>
 @stop
 
 

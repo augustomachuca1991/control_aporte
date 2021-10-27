@@ -69,4 +69,13 @@ class User extends Authenticatable
     {
         return 'usuario/perfil';
     }
+
+    public function scopeFilterRole($query, $filter){
+
+        if (!empty($filter)) {
+            $query->whereHas('roles', function($roles) use ($filter){
+                $roles->where('role_id' , $filter);
+            });
+        }
+    }
 }

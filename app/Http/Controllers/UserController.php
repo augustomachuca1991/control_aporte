@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ResetPasswordJob;
-use App\Notifications\ResetPasswordNotification;
 use Illuminate\Http\Request;
 use App\User;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
 {
 
     public $perPage = 9;
+
 
     public function index()
     {
@@ -70,11 +70,18 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-
         $user = User::find($id);
-        $name_user = $user->name;
-        $user->delete();
-        return $name_user;
+        $hasAuth = Auth::check();
+        if (!$hasAuth) {
+            $msj = 'Usuario ' . $user->user . 'bloqueado';
+            $isValid = true;
+            $user->delete();
+        } else {
+            $isValid = false;
+            $msj = 'No es posible bloquear al usuario actualmente autenticado';
+        }
+
+        return response()->json(['isValid' => $isValid, 'msj' => $msj]);
     }
 
 
@@ -90,5 +97,19 @@ class UserController extends Controller
     public function show($id)
     {
         return User::with('roles')->where('id', $id)->first();
+    }
+
+
+    public function paginado($perPage)
+    {
+        $this->perPage = $perPage;
+        return $this->getUsers();
+    }
+
+
+
+    public function filter($filter)
+    {
+        return User::filterRole($filter)->with('roles')->paginate($this->perPage);
     }
 }

@@ -16,6 +16,7 @@ class DeclaracionJuradaController extends Controller
     public $periodo_id;
     public $tipoliquidacion_id;
     public $secuencia;
+    public $perPage = 10;
     
     /**
      * Display a listing of the resource.
@@ -224,8 +225,8 @@ class DeclaracionJuradaController extends Controller
         // return DeclaracionJurada::whereHas('ddjj_lines')->with(
         //     ['organismo', 'user','periodo', 'tipoliquidacion']
         // )->orderBy('id', 'desc')->get();
-        return DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion'])
-        ->latest()->get();
+        return DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion', 'ddjj_lines'])
+        ->latest()->paginate($this->perPage);
     }
 
     

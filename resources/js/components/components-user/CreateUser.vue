@@ -36,7 +36,7 @@
                         <form>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="inputEmail4">Email*</label>
+                                    <label for="inputEmail4">Email (*)</label>
                                     <input
                                         type="email"
                                         class="form-control"
@@ -57,7 +57,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="inputName">Name</label>
+                                    <label for="inputName"
+                                        >Nombre Completo (*)</label
+                                    >
                                     <input
                                         type="text"
                                         class="form-control"
@@ -79,7 +81,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputPhone">Phone</label>
+                                <label for="inputPhone">Telefo</label>
                                 <input
                                     type="text"
                                     class="form-control"
@@ -89,7 +91,7 @@
                                 />
                             </div>
                             <div class="form-group">
-                                <label for="inputRoles">Roles*</label>
+                                <label for="inputRoles">Roles (*)</label>
                                 <select
                                     id="inputRoles"
                                     class="form-control"

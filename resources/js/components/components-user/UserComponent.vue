@@ -19,9 +19,13 @@
                                 <select
                                     class="form-control"
                                     style="width: 100%;"
+                                    v-model="perPage"
+                                    @change="paginacion"
                                 >
-                                    <option selected>10 por pagina</option>
-                                    <option>25 por pagina</option>
+                                    <option value="3">3 por pagina</option>
+                                    <option value="9">9 por pagina</option>
+                                    <option value="27">27 por pagina</option>
+                                    <option value="81">81 por pagina</option>
                                 </select>
                             </div>
                         </div>
@@ -30,9 +34,18 @@
                                 <select
                                     class="form-control"
                                     style="width: 100%;"
+                                    v-model="selectedRol"
+                                    @change="filter"
                                 >
-                                    <option selected>Nombre</option>
-                                    <option>Fecha</option>
+                                    <option :value="''" disabled
+                                        >Buscar Por Roles</option
+                                    >
+                                    <option
+                                        v-for="(role, index) in roles"
+                                        :key="index"
+                                        :value="role.id"
+                                        >{{ role.rol }}</option
+                                    >
                                 </select>
                             </div>
                         </div>
@@ -43,7 +56,7 @@
                                 type="search"
                                 class="form-control "
                                 placeholder="Buscar Nombre, Email, Rol, etc..."
-                                @keyup="buscar"
+                                @keyup="buscarUser"
                                 v-model="search"
                             />
 
@@ -146,7 +159,7 @@
                                 <a
                                     href="#"
                                     class="btn btn-sm bg-gradient-teal"
-                                    @click="bloquear(index, user)"
+                                    @click="deleteUser(index, user)"
                                 >
                                     <i class="fas fa-lock"></i>
                                 </a>
@@ -192,6 +205,8 @@ export default {
     data: function() {
         return {
             users: [],
+            roles: [],
+            user: {},
             paginate: {
                 current_page: "",
                 last_page: "",
@@ -207,16 +222,24 @@ export default {
             index: "",
             create: false,
             setTimeoutBuscador: "",
-            timeOut: 400
+            timeOut: 400,
+            selectedRol: "",
+            perPage: "9"
         };
     },
     mounted() {
         this.getUsers();
+        this.getRoles();
     },
     methods: {
         getUsers: function() {
             axios.get("api/users").then(response => {
                 this.asignar(response);
+            });
+        },
+        getRoles() {
+            axios.get("api/roles").then(response => {
+                this.roles = response.data;
             });
         },
         nuevoUser(user) {
@@ -227,19 +250,54 @@ export default {
                 background: "#E7FFD7"
             });
         },
-        desbloquear: function(index, user) {
-            //console.log(user.id);
-            axios.get(`api/users/desbloquear/` + user.id).then(response => {
-                this.users[index].deleted_at = "";
-                this.users[index] = response.data;
-                alert("usuario desbloqueado: " + response.data);
-            });
+        desbloquear(index, user) {
+            this.user = user;
+            this.index = this.paginate.from + parseInt(index - 1);
+            axios
+                .get(`api/users/desbloquear/${this.user.id}`)
+                .then(response => {
+                    this.users[this.index].deleted_at = "";
+                    this.user = response.data;
+                    this.users[this.index] = this.user;
+                    Toast.fire({
+                        icon: "success",
+                        title: "Usuario" + this.user.name + " Habilatado",
+                        background: "#E7FFD7"
+                    });
+                });
         },
-        bloquear: function(index, user) {
-            axios.delete(`api/users/delete/` + user.id).then(response => {
-                let hoy = new Date();
-                this.users[index].deleted_at = hoy;
-                alert("usuario bloqueado: " + response.data);
+        deleteUser(index, user) {
+            this.user = user;
+            this.index = this.paginate.from + parseInt(index - 1);
+            swal.fire({
+                title: "Esta seguro?",
+                text: this.user.name + " sera bloqueado del sistema!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, eliminar!"
+            }).then(result => {
+                if (result.isConfirmed) {
+                    axios
+                        .delete(`api/users/delete/${this.user.id}`)
+                        .then(response => {
+                            if (response.data.isValid) {
+                                this.users[this.index].deleted_at = new Date();
+                                Toast.fire({
+                                    icon: "success",
+                                    title: response.data.msj,
+                                    background: "#E7FFD7"
+                                });
+                            } else {
+                                Toast.fire({
+                                    icon: "error",
+                                    title: response.data.msj,
+                                    background: "#FCDBCD"
+                                });
+                            }
+                        });
+                }
             });
         },
         edit(index, user) {
@@ -247,7 +305,7 @@ export default {
             this.index = this.paginate.from + parseInt(index - 1);
             this.create = true;
         },
-        buscar: function() {
+        buscarUser() {
             clearTimeout(this.setTimeoutBuscador);
             this.setTimeoutBuscador = setTimeout(() => {
                 axios.get(`api/users/${this.search}`).then(response => {
@@ -265,6 +323,16 @@ export default {
             this.paginate.to = response.data.to;
             this.paginate.next_page_url = response.data.next_page_url;
             this.paginate.prev_page_url = response.data.prev_page_url;
+        },
+        paginacion: function() {
+            axios.get(`api/users/paginate/${this.perPage}`).then(response => {
+                this.asignar(response);
+            });
+        },
+        filter: function() {
+            axios.get(`api/users/filter/${this.selectedRol}`).then(response => {
+                this.asignar(response);
+            });
         }
     }
 };

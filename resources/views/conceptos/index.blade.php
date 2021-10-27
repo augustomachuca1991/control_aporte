@@ -14,6 +14,12 @@
  @stop
 
 @section('content_header')
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{route('home')}}"> <i class="fas fa-home"></i> Panel</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Conceptos</li>
+      </ol>
+    </nav>
     <h1 class="text-secondary h1-responsive text-center">Lista de Conceptos de Liquidacion</h1>
 @stop
 

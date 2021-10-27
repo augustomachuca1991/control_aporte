@@ -1,6 +1,7 @@
 <?php
 
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -190,15 +191,18 @@ Route::post('/users/create', 'UserController@store');
 Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
 Route::delete('/users/delete/{id}', 'UserController@destroy');
 Route::get('/users/{search}', 'UserController@search');
-
+Route::get('/users/paginate/{paginas}' , 'UserController@paginado');
+Route::get('/users/filter/{role_id}' , 'UserController@filter');
 
 //roles
 Route::get('/roles', 'RoleController@getRoles');
-// Route::get('/periodo/id/{id}', function (Request $request) {
-//     //dd($request->id);
-//     $periodo = Periodo::where('cod_periodo', $request->id)->first();
-//     return $periodo->with(['liquidacionOrganismo'])->get();
-// });
+
+
+Route::get('/puesto_random', function (Request $request) {
+    $user = Auth::check();
+    dd($user);
+    
+});
 
 
 // Route::get('/tipo/id/{id}', function (Request $request) {
