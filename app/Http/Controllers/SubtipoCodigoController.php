@@ -14,7 +14,7 @@ class SubtipoCodigoController extends Controller
      */
     public function index()
     {
-        //
+        return view('subtipos.index');
     }
 
     /**

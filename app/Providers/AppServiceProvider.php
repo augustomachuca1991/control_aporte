@@ -45,7 +45,6 @@ class AppServiceProvider extends ServiceProvider
                     'text' => 'sin notificaciones',
                     'url'  => '#',
                     'icon' => 'fas  fa-file-csv',
-                    // 'shift'   => 'ml-4',
                 ];
             }
 

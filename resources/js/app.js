@@ -162,6 +162,10 @@ Vue.component(
     "ddjj-component",
     require("./components/DeclaracionJuradaComponent.vue").default
 );
+Vue.component(
+    "lines-component",
+    require("./components/components-ddjj_lines/DeclaracionJuradaLinesComponent.vue").default
+);
 
 //notificaticion
 Vue.component(

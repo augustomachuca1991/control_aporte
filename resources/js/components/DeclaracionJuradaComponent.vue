@@ -78,13 +78,15 @@
                             >
                                 <i class="fas fa-file-download"></i> descargar
                             </button>
-                            <button
-                                type="button"
-                                @click="show(index, declaracion_jurada)"
+                            <a
+                                :href="
+                                    'declaracion_jurada_lines/' +
+                                        declaracion_jurada.id
+                                "
                                 class="btn btn-outline-danger btn-block btn-sm"
                             >
                                 <i class="fa fa-book"></i> detalle
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -115,10 +117,26 @@
                 @response="asignar(...arguments)"
             ></paginator-component>
             <!-- </div> -->
-            <div>
-                <p>{{ declaracion_jurada.id }}</p>
-                <p>{{ declaracion_jurada.ddjj_lines }}</p>
-            </div>
+            <!-- <div>
+                <ul
+                    v-for="(ddjj_line, index) in declaracion_jurada.ddjj_lines"
+                    :key="ddjj_line.id"
+                    class="nav mb-3"
+                >
+                    <li class="nav-item mx-1">{{ index }}</li>
+                    <li class="nav-item mx-1">{{ ddjj_line.nombre }}</li>
+                    <li class="nav-item mx-1">{{ ddjj_line.cuil }}</li>
+                    <li class="nav-item mx-1">
+                        {{ ddjj_line.fecha_nac }}
+                    </li>
+                    <li class="nav-item mx-1">{{ ddjj_line.sexo }}</li>
+                    <li class="nav-item mx-1">
+                        {{ ddjj_line.puesto_laboral }}
+                    </li>
+                    <li class="nav-item mx-1">{{ ddjj_line.categoria }}</li>
+                    <li class="nav-item mx-1">{{ ddjj_line.detalle }}</li>
+                </ul>
+            </div> -->
         </div>
         <div v-else class="card card-outline card-dark">
             <div class="card-hearder">

@@ -177,7 +177,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="!users.lenght">
+            <div v-if="users.length">
                 <span>total registros encontrados: {{ paginate.total }}</span>
                 <paginator-component
                     :data="users"

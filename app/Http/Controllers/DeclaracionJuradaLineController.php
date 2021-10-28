@@ -12,9 +12,21 @@ class DeclaracionJuradaLineController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public $perPage = 3;
+
+    public function index($id)
     {
-        //
+        $ddjj_lines = DeclaracionJuradaLine::where('declaracionjurada_id', $id)->paginate($this->perPage);
+        return view('declaraciones_juradas.show', [
+            'lines' => $ddjj_lines
+        ]);
+    }
+
+
+    public function getDeclaracionesJuradasLines($id)
+    {
+
+        return DeclaracionJuradaLine::where('declaracionjurada_id', $id)->paginate($this->perPage);
     }
 
     /**
@@ -46,7 +58,7 @@ class DeclaracionJuradaLineController extends Controller
      */
     public function show($cabecera_id)
     {
-    
+
         return DeclaracionJuradaLine::where('declaracionjurada_id', $cabecera_id)->get();
     }
 

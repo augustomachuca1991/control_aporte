@@ -4,7 +4,6 @@
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +32,10 @@ Route::post('/declaracion_jurada/download', 'DeclaracionJuradaController@downloa
 Route::get('/archivos-recientes', 'DeclaracionJuradaController@recientes')->name('archivos-recientes');
 
 
-Route::post('/declaracion_jurada_line/task', 'DeclaracionJuradaLineController@store');
+Route::get('/declaracion_jurada_lines/{cabecara_id}', 'DeclaracionJuradaLineController@getDeclaracionesJuradasLines');
+
+
+//Route::post('/declaracion_jurada_line/task', 'DeclaracionJuradaLineController@store');
 
 //Computos
 Route::get('/computo/origen/{periodo}', 'LiquidacionOrganismoController@computoOrigenes');
@@ -191,17 +193,28 @@ Route::post('/users/create', 'UserController@store');
 Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
 Route::delete('/users/delete/{id}', 'UserController@destroy');
 Route::get('/users/{search}', 'UserController@search');
-Route::get('/users/paginate/{paginas}' , 'UserController@paginado');
-Route::get('/users/filter/{role_id}' , 'UserController@filter');
+Route::get('/users/paginate/{paginas}', 'UserController@paginado');
+Route::get('/users/filter/{role_id}', 'UserController@filter');
 
 //roles
 Route::get('/roles', 'RoleController@getRoles');
 
 
-Route::get('/puesto_random', function (Request $request) {
-    $user = Auth::check();
-    dd($user);
-    
+Route::get('/dj', function (Request $request) {
+    // $declaracionJurada = DeclaracionJurada::with('ddjj_lines')->where('id', 1)->first();
+    // $declaracionJurada->ddjj_lines->first()->detalle = json_decode($declaracionJurada->ddjj_lines->first()->detalle, true);
+    // $detalle = $declaracionJurada->ddjj_lines->first()->detalle;
+    // return $detalle;
+
+    // $string = "1|asdasd|30%|1|50000";
+    // $explode = explode('|', $string);
+    // $concepto = new ConceptoLiquidacion();
+    // foreach ($explode as $key => $value) {
+    //     $concepto->cod_concepto =
+    // }
+    // dd($explode);
+    $user = User::find(1);
+    dd(User::getRelations());
 });
 
 

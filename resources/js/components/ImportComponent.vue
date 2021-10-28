@@ -244,6 +244,20 @@
                                 </table>
                             </div>
                             <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <div v-if="declaraciones_juradas.length">
+                                    <span
+                                        >total registros encontrados:
+                                        {{ paginate.total }}</span
+                                    >
+                                    <paginator-component
+                                        :data="declaraciones_juradas"
+                                        :paginate="paginate"
+                                        @response="asignar(...arguments)"
+                                    ></paginator-component>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.card -->
                     </div>
@@ -274,6 +288,17 @@ export default {
         return {
             file: "",
             declaraciones_juradas: [],
+            paginate: {
+                current_page: "",
+                last_page: "",
+                total: "",
+                path: "",
+                next_page_url: "",
+                from: "",
+                to: "",
+                next_page_url: "",
+                prev_page_url: ""
+            },
             dd_jj: [],
             declaracion_jurada: {},
             isLoad: false,
@@ -285,7 +310,6 @@ export default {
         };
     },
     mounted() {
-        console.log(this.user);
         axios.get("api/archivos-recientes").then(response => {
             if (response.data.length === 0) {
                 this.isReciente = false;
@@ -295,9 +319,7 @@ export default {
             }
         });
 
-        axios.get("api/declaracion_jurada").then(response => {
-            this.declaraciones_juradas = response.data;
-        });
+        this.getDeclaracionesJudaras();
     },
     methods: {
         // onUploadProgress:function(progressEvent){
@@ -342,14 +364,15 @@ export default {
                         );
                         this.isReciente = true;
                     } else {
-                        if(response.data.confirm){
+                        if (response.data.confirm) {
                             swal.fire({
-                            title: "Atención! Esta a punto de rectificar, Los cambios seran de forma permanentes.",
-                            showCancelButton: true,
-                            confirmButtonText: 'Save',
-                            }).then((result) => {
+                                title:
+                                    "Atención! Esta a punto de rectificar, Los cambios seran de forma permanentes.",
+                                showCancelButton: true,
+                                confirmButtonText: "Save"
+                            }).then(result => {
                                 if (result.isConfirmed) {
-                                    this.rectificar(response.data.data)
+                                    this.rectificar(response.data.data);
                                     // this.declaracion_jurada = response.data.data
 
                                     // Toast.fire({
@@ -357,18 +380,17 @@ export default {
                                     //     title:"rectificacion con exitó",
                                     //     background: "#E7FFD7"
                                     // });
-                                }else{
+                                } else {
                                     window.location.reload();
                                 }
-                            })
-                        }else{
+                            });
+                        } else {
                             Toast.fire({
                                 icon: "error",
                                 title: response.data.data,
                                 background: "#FCDBCD"
                             });
                         }
-                        
                     }
                     this.isLoad = false;
                 })
@@ -384,6 +406,11 @@ export default {
         handleFileUpload() {
             this.file = "";
             this.file = this.$refs.file.files[0];
+        },
+        getDeclaracionesJudaras() {
+            axios.get("api/declaracion_jurada").then(response => {
+                this.asignar(response);
+            });
         },
         aplicar(declaracion_jurada) {
             $("#" + declaracion_jurada.id)
@@ -404,21 +431,22 @@ export default {
                 });
             });
         },
-        rectificar(declaracionjurada){
+        rectificar(declaracionjurada) {
             const data = {
-                id : declaracionjurada.id,
-                user_id : declaracionjurada.user_id,
-                secuencia : declaracionjurada.secuencia,
-                nombre_archivo : declaracionjurada.nombre_archivo,
-                path : declaracionjurada.path,
-                status : true,
-                rectificar : true,
-              };
+                id: declaracionjurada.id,
+                user_id: declaracionjurada.user_id,
+                secuencia: declaracionjurada.secuencia,
+                nombre_archivo: declaracionjurada.nombre_archivo,
+                path: declaracionjurada.path,
+                status: true,
+                rectificar: true
+            };
 
-            axios.put(`api/declaracion_jurada/update/`+data.id ,data)
-              .then((response)=>{
-                 this.declaraciones_juradas.unshift(response.data);
-              });
+            axios
+                .put(`api/declaracion_jurada/update/` + data.id, data)
+                .then(response => {
+                    this.declaraciones_juradas.unshift(response.data);
+                });
         },
         buscar() {
             axios
@@ -426,6 +454,17 @@ export default {
                 .then(response => {
                     this.declaraciones_juradas = response.data;
                 });
+        },
+        asignar(response) {
+            this.declaraciones_juradas = response.data.data;
+            this.paginate.current_page = response.data.current_page;
+            this.paginate.last_page = response.data.last_page;
+            this.paginate.total = response.data.total;
+            this.paginate.path = response.data.path;
+            this.paginate.from = response.data.from;
+            this.paginate.to = response.data.to;
+            this.paginate.next_page_url = response.data.next_page_url;
+            this.paginate.prev_page_url = response.data.prev_page_url;
         }
     }
 };

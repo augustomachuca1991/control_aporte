@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 //use App\{DeclaracionJurada,Liquidacion,Agente,PuestoLaboral,Clase,Categoria,HistoriaLaboral,Jurisdiccion};
-use App\{DeclaracionJurada,Periodo,TipoLiquidacion,Organismo,User};
+use App\{DeclaracionJurada, DeclaracionJuradaLine, Periodo, TipoLiquidacion, Organismo, User};
 use Illuminate\Http\Request;
 use App\Jobs\LiquidacionJob;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,7 @@ class DeclaracionJuradaController extends Controller
     public $tipoliquidacion_id;
     public $secuencia;
     public $perPage = 10;
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -51,11 +51,11 @@ class DeclaracionJuradaController extends Controller
         $file = $request->file('file');
         $user_id = $request->user_id;
         $file_storage = $file->store('public');
-        $name = explode( '_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+        $name = explode('_', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $original_name = $file->getClientOriginalName();
         $count = count($name);
-        
-        
+
+
         //validamos si existe si la cadena contiene numero de secuencia
         if ($count === 3) {
             $name[3] = null;
@@ -64,93 +64,92 @@ class DeclaracionJuradaController extends Controller
 
 
         //se valida el archivo a subir
-            $validacion = [
-                'archivo' => $file,
-                'original_name' => $original_name,
-                'nombre' => $name,
-                'organismo' => $name[0],
-                'periodo' => $name[1],
-                'tipo_liquidacion' => $name[2],
-                'secuencia' => $name[3],
-            ];
-            $reglas = [
-                'archivo' => 'file|mimes:csv,txt',
-                'original_name' => 'unique:declaracion_juradas,nombre_archivo',
-                'nombre' => 'required|array|max:4',
-                'organismo' => 'exists:organismos,cod_organismo',
-                'periodo' => 'exists:periodos,cod_periodo',
-                'tipo_liquidacion' => 'exists:tipo_liquidacions,descripcion',
-                'secuencia' => 'integer|nullable'
-            ];
-            $mensajes = [
-                'archivo.file' => 'Debe Seleccionar un archivo',
-                'archivo.mimes' => 'El tipo de archivo es incorrecto. Debe ser .csv o .txt',
-                'original_name.unique' => 'Esta intentando importar un archivo ya existente',
-                'nombre.required' => 'Nombre Requerido',
-                'nombre.array' => 'El nombre no cumple con el formato. El mismo debe ser ej: organimo_periodo_tipoliquidacion_secuencia.csv',
-                'nombre.max' => 'El nombre no cumple con el formato. El mismo debe tener como maximo 4 elementos',
-                'organismo.exists' => 'El cod organismo no existe o no esta escrito correctamente',
-                'periodo.exists' => 'El codigo de periodo no existe',
-                'tipo_liquidacion.exists' => 'Tipo de Liquidacion no existe. Verifique',
-                'secuencia.integer' => 'El numero secuencia debe ser un entero',
-            ];
-            $validator = Validator::make($validacion, $reglas, $mensajes);
+        $validacion = [
+            'archivo' => $file,
+            'original_name' => $original_name,
+            'nombre' => $name,
+            'organismo' => $name[0],
+            'periodo' => $name[1],
+            'tipo_liquidacion' => $name[2],
+            'secuencia' => $name[3],
+        ];
+        $reglas = [
+            'archivo' => 'file|mimes:csv,txt',
+            'original_name' => 'unique:declaracion_juradas,nombre_archivo',
+            'nombre' => 'required|array|max:4',
+            'organismo' => 'exists:organismos,cod_organismo',
+            'periodo' => 'exists:periodos,cod_periodo',
+            'tipo_liquidacion' => 'exists:tipo_liquidacions,descripcion',
+            'secuencia' => 'integer|nullable'
+        ];
+        $mensajes = [
+            'archivo.file' => 'Debe Seleccionar un archivo',
+            'archivo.mimes' => 'El tipo de archivo es incorrecto. Debe ser .csv o .txt',
+            'original_name.unique' => 'Esta intentando importar un archivo ya existente',
+            'nombre.required' => 'Nombre Requerido',
+            'nombre.array' => 'El nombre no cumple con el formato. El mismo debe ser ej: organimo_periodo_tipoliquidacion_secuencia.csv',
+            'nombre.max' => 'El nombre no cumple con el formato. El mismo debe tener como maximo 4 elementos',
+            'organismo.exists' => 'El cod organismo no existe o no esta escrito correctamente',
+            'periodo.exists' => 'El codigo de periodo no existe',
+            'tipo_liquidacion.exists' => 'Tipo de Liquidacion no existe. Verifique',
+            'secuencia.integer' => 'El numero secuencia debe ser un entero',
+        ];
+        $validator = Validator::make($validacion, $reglas, $mensajes);
 
 
-            // si no pasa la validacion arroja mensaje caso contrario crea una nueva declaracion jurada
-            if ($validator->fails()) {
-                $data = $validator->errors()->first();
-                $status = false;
+        // si no pasa la validacion arroja mensaje caso contrario crea una nueva declaracion jurada
+        if ($validator->fails()) {
+            $data = $validator->errors()->first();
+            $status = false;
+            $confirm = false;
+        } else {
+
+            $this->organismo_id = Organismo::where('cod_organismo', $name[0])->first()->cod_organismo;
+            $this->periodo_id = $name[1];
+            $this->tipoliquidacion_id = TipoLiquidacion::where('descripcion', $name[2])->first()->id;
+            $this->secuencia = $name[3];
+            $is_declaradionjurada = DeclaracionJurada::where('periodo_id', $this->periodo_id)->where('tipoliquidacion_id', $this->tipoliquidacion_id)->where('organismo_id', $this->organismo_id);
+            if ($is_declaradionjurada->doesntExist()) {
+                $declaracionJurada = DeclaracionJurada::create([
+                    'user_id' => $user_id,
+                    'periodo_id' => $this->periodo_id,
+                    'tipoliquidacion_id' => $this->tipoliquidacion_id,
+                    'organismo_id' => $this->organismo_id,
+                    'secuencia' => $this->secuencia,
+                    'path' => $file_storage,
+                    'nombre_archivo' => $original_name,
+                    'status' => true,
+                    'rectificar' => false,
+                ]);
+                $data = $this->show($declaracionJurada->id);
+                $status = true;
                 $confirm = false;
-            }else{
-                
-                $this->organismo_id = Organismo::where('cod_organismo',$name[0])->first()->cod_organismo;
-                $this->periodo_id = $name[1];
-                $this->tipoliquidacion_id = TipoLiquidacion::where('descripcion',$name[2])->first()->id;
-                $this->secuencia = $name[3];
-                $is_declaradionjurada = DeclaracionJurada::where('periodo_id', $this->periodo_id)->where('tipoliquidacion_id', $this->tipoliquidacion_id)->where('organismo_id',$this->organismo_id);
-                if ($is_declaradionjurada->doesntExist()) {
-                    $declaracionJurada = DeclaracionJurada::create([
-                        'user_id' => $user_id,
-                        'periodo_id' => $this->periodo_id,
-                        'tipoliquidacion_id' => $this->tipoliquidacion_id,
-                        'organismo_id' => $this->organismo_id,
-                        'secuencia' => $this->secuencia,
-                        'path' => $file_storage,
-                        'nombre_archivo' => $original_name,
-                        'status' => true,
-                        'rectificar' => false,
-                    ]);
-                    $data = $this->show($declaracionJurada->id);
-                    $status = true;
+            } else {
+                $declaracionJurada = $is_declaradionjurada->first();
+                if ($this->secuencia < $declaracionJurada->secuencia) {
+                    $data = 'No es posible es un rectificacion anterior';
+                    $status = false;
                     $confirm = false;
-                }else{
-                    $declaracionJurada = $is_declaradionjurada->first();
-                    if ($this->secuencia < $declaracionJurada->secuencia ) {
-                        $data = 'No es posible es un rectificacion anterior';
-                        $status = false;
-                        $confirm = false;
-                    }else{
-                        
-                        
-                        $data = [
-                            'id' => $declaracionJurada->id,
-                            'user_id' => $user_id,
-                            'secuencia' => $this->secuencia,
-                            'nombre_archivo' => $original_name,
-                            'path' => $file_storage,
-                            'status' => true,
-                            'rectificar' => true,
-                            'updated_at' => now()
-                        ];
-                        $status = false;
-                        $confirm = true;
-                    }
-                    
+                } else {
+
+
+                    $data = [
+                        'id' => $declaracionJurada->id,
+                        'user_id' => $user_id,
+                        'secuencia' => $this->secuencia,
+                        'nombre_archivo' => $original_name,
+                        'path' => $file_storage,
+                        'status' => true,
+                        'rectificar' => true,
+                        'updated_at' => now()
+                    ];
+                    $status = false;
+                    $confirm = true;
                 }
             }
-        
-            return response()->json(['data' => $data , 'status' => $status, 'confirm' => $confirm]);
+        }
+
+        return response()->json(['data' => $data, 'status' => $status, 'confirm' => $confirm]);
     }
 
     /**
@@ -161,8 +160,8 @@ class DeclaracionJuradaController extends Controller
      */
     public function show($id)
     {
-        $declaracionjurada = DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion','ddjj_lines', 'liquidaciones'])
-                            ->where('id', $id)->first();
+        $declaracionjurada = DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion', 'ddjj_lines', 'liquidaciones'])
+            ->where('id', $id)->first();
         return $declaracionjurada;
     }
 
@@ -207,12 +206,11 @@ class DeclaracionJuradaController extends Controller
      */
     public function destroy($id)
     {
-        
+
         $declaracionJurada = DeclaracionJurada::find($id);
-        
     }
 
-    
+
 
 
     /**
@@ -221,15 +219,15 @@ class DeclaracionJuradaController extends Controller
      * @param  \App\DeclaracionJurada  $declaracionJurada
      * @return \Illuminate\Http\Response
      */
-    public function getDeclaracionesJuradas(){
-        // return DeclaracionJurada::whereHas('ddjj_lines')->with(
-        //     ['organismo', 'user','periodo', 'tipoliquidacion']
-        // )->orderBy('id', 'desc')->get();
-        return DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion', 'ddjj_lines'])
-        ->latest()->paginate($this->perPage);
+    public function getDeclaracionesJuradas()
+    {
+        $declaracionesJuradas = DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion', 'ddjj_lines'])
+            ->latest()->paginate($this->perPage);
+
+        return $declaracionesJuradas;
     }
 
-    
+
 
 
     /**
@@ -240,9 +238,9 @@ class DeclaracionJuradaController extends Controller
      */
     public function download(Request $request)
     {
-        $pathToFile = storage_path('app/'.$request->path);
+        $pathToFile = storage_path('app/' . $request->path);
         $header = ['Content-Type' => 'text/csv'];
-        return response()->download($pathToFile, 'descarga.csv',$header);
+        return response()->download($pathToFile, 'descarga.csv', $header);
     }
 
 
@@ -255,28 +253,31 @@ class DeclaracionJuradaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search($buscar)
-    {   
-        
-            
-            return DeclaracionJurada::whereHas('user', function($query) use($buscar){
-                        $query->where('name','LIKE',"%".$buscar."%");
-                })->orWhereHas('periodo', function($query) use($buscar){
-                        $query->where('periodo','LIKE',"%".$buscar."%");
-                })->orWhereHas('tipoliquidacion', function($query) use($buscar){
-                        $query->where('descripcion','LIKE',"%".$buscar."%");
-                })->orWhereHas('organismo', function($query) use($buscar){
-                        $query->where('organismo','LIKE',"%".$buscar."%");
-                })
-            ->with(['organismo', 'user','periodo', 'tipoliquidacion'])
+    {
+
+
+        return DeclaracionJurada::whereHas('user', function ($query) use ($buscar) {
+            $query->where('name', 'LIKE', "%" . $buscar . "%");
+        })->orWhereHas('periodo', function ($query) use ($buscar) {
+            $query->where('periodo', 'LIKE', "%" . $buscar . "%");
+        })->orWhereHas('tipoliquidacion', function ($query) use ($buscar) {
+            $query->where('descripcion', 'LIKE', "%" . $buscar . "%");
+        })->orWhereHas('organismo', function ($query) use ($buscar) {
+            $query->where('organismo', 'LIKE', "%" . $buscar . "%");
+        })
+            ->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])
             //->orWhere('periodo_id' ,'LIKE' ,"%".$search."%")
             ->get();
-        
-        
     }
 
 
-    public function recientes(Request $request){
-        return DeclaracionJurada::with(['organismo', 'user','periodo', 'tipoliquidacion'])->latest()->take(3)->get();
+    public function recientes(Request $request)
+    {
+        return DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->latest()->take(3)->get();
     }
 
+    public function cast_jsonDecode(DeclaracionJuradaLine $declaracionJuradaLine)
+    {
+        $declaracionJuradaLine->detalle = json_decode($declaracionJuradaLine->detalle, true);
+    }
 }
