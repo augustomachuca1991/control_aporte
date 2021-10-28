@@ -96,7 +96,7 @@ Route::get('/concepto/{search}', 'ConceptoLiquidacionController@search');
 
 //Subtipos Codigos
 Route::get('/subtipo', 'SubtipoCodigoController@getSubtipo')->name('subtipo');
-
+Route::post('/subtipo/create', 'SubtipoCodigoController@store');
 //Tipos  Codigos
 Route::get('/tipocodigo', 'TipoCodigoController@getTipo')->name('tipocodigo');
 
@@ -214,7 +214,7 @@ Route::get('/dj', function (Request $request) {
     // }
     // dd($explode);
     $user = User::find(1);
-    dd(User::getRelations());
+    //dd(User::getRelations());
 });
 
 

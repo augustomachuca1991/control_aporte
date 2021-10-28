@@ -35,7 +35,16 @@ class SubtipoCodigoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'descripcion' => 'required|string|max:30|unique:subtipo_codigos,descripcion',
+            'tipocodigo_id' => 'required|exists:tipo_codigos,id'
+        ]);
+
+        $subtipo = SubtipoCodigo::create([
+            'descripcion' => $request->descripcion,
+            'tipocodigo_id' => $request->tipocodigo_id
+        ]);
+        return $this->show($subtipo->id);
     }
 
     /**
@@ -44,9 +53,9 @@ class SubtipoCodigoController extends Controller
      * @param  \App\SubtipoCodigo  $subtipoCodigo
      * @return \Illuminate\Http\Response
      */
-    public function show(SubtipoCodigo $subtipoCodigo)
+    public function show($id)
     {
-        //
+        return SubtipoCodigo::with('tipocodigo')->where('id' , $id)->first();
     }
 
     /**

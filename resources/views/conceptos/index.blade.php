@@ -7,6 +7,27 @@
 @section('css')
     <!-- <link rel="stylesheet" href="/css/admin_custom.css"> -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <style>
+      .hr-sect {
+          display: flex;
+          flex-basis: 100%;
+          align-items: center;
+          color: rgba(0, 0, 0, 0.35);
+          margin: 8px 0px;
+      }
+
+      .hr-sect:before,
+      .hr-sect:after {
+          content: "";
+          flex-grow: 1;
+          background: rgba(0, 0, 0, 0.35);
+          height: 1px;
+          font-size: 0px;
+          line-height: 0px;
+          margin: 0px 8px;
+      }
+
+  </style>
 @stop
 
  @section('right-sidebar')
@@ -20,7 +41,7 @@
         <li class="breadcrumb-item active" aria-current="page">Conceptos</li>
       </ol>
     </nav>
-    <h1 class="text-secondary h1-responsive text-center">Lista de Conceptos de Liquidacion</h1>
+    
 @stop
 
 

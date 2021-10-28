@@ -160,11 +160,8 @@ Vue.component(
 //declaraciones juradas
 Vue.component(
     "ddjj-component",
-    require("./components/DeclaracionJuradaComponent.vue").default
-);
-Vue.component(
-    "lines-component",
-    require("./components/components-ddjj_lines/DeclaracionJuradaLinesComponent.vue").default
+    require("./components/components-ddjj/DeclaracionJuradaComponent.vue")
+        .default
 );
 
 //notificaticion
@@ -289,6 +286,16 @@ Vue.component(
 Vue.component(
     "paginator-component",
     require("./components/components-paginator/PaginatorComponent.vue").default
+);
+
+//subtipo
+Vue.component(
+    "subtipo-component",
+    require("./components/components-subtipo/SubtipoComponent.vue").default
+);
+Vue.component(
+    "create-subtipo",
+    require("./components/components-subtipo/CreateSubtipo.vue").default
 );
 
 /**

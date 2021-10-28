@@ -3,11 +3,11 @@
         <!-- Button trigger modal -->
         <button
             type="button"
-            class="btn btn-primary mb-2"
+            class="btn bg-olive mb-2"
             data-toggle="modal"
             data-target="#new_concepto"
         >
-            + nuevo concepto
+            + Nuevo Concepto
         </button>
 
         <!-- Modal -->
@@ -227,7 +227,15 @@ export default {
             });
         },
         clear() {
-            console.log("clear");
+            $("#new_concepto").modal("hide");
+            this.errors = [];
+            this.subtipos = [];
+            this.cod_concepto = "";
+            this.concepto = "";
+            this.subtipo = "";
+            this.tipo = "";
+            this.organismo = "";
+            this.unidad = "";
         },
         selectedTipo() {
             this.subtipo = "";

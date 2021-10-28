@@ -1,10 +1,89 @@
 <template>
     <div class="container">
+        <div class="hr-sect capitalize">
+            <h4>Conceptos de Liquidaciones</h4>
+        </div>
         <section class="content mb-5">
             <div class="container-fluid">
-                <h4 class="text-center display-4">Conceptos</h4>
+                <h4 class="display-4 text-muted">Buscador</h4>
                 <div class="row">
                     <div class="col">
+                        <div class="row">
+                            <div class="col col-lg-4">
+                                <div class="form-group">
+                                    <select
+                                        class="form-control"
+                                        :class="{
+                                            'text-secondary':
+                                                selectedSubtipo === ''
+                                        }"
+                                        style="width: 100%;"
+                                        @change="filter"
+                                    >
+                                        <option :value="''" selected disabled
+                                            >Por Subtipo</option
+                                        >
+                                        <option
+                                            v-for="(subtipo, index) in subtipos"
+                                            :key="index"
+                                            :value="subtipo.id"
+                                            >{{ subtipo.id }} -
+                                            {{ subtipo.descripcion }}</option
+                                        >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col col-lg-4">
+                                <div class="form-group">
+                                    <select
+                                        class="form-control"
+                                        :class="{
+                                            'text-secondary':
+                                                selectedTipo === ''
+                                        }"
+                                        style="width: 100%;"
+                                        @change="filter"
+                                    >
+                                        <option :value="''" selected disabled
+                                            >Por Tipo de Codigo</option
+                                        >
+                                        <option
+                                            v-for="(tipo, index) in tipos"
+                                            :key="index"
+                                            :value="tipo.id"
+                                            >{{ tipo.id }} -
+                                            {{ tipo.descripcion }}</option
+                                        >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col col-lg-4">
+                                <div class="form-group">
+                                    <select
+                                        class="form-control"
+                                        :class="{
+                                            'text-secondary':
+                                                selectedOrganismo === ''
+                                        }"
+                                        style="width: 100%;"
+                                        @change="filter"
+                                        v-model="selectedOrganismo"
+                                    >
+                                        <option :value="''" disabled
+                                            >Buscar Por Organismo</option
+                                        >
+                                        <option
+                                            v-for="(organismo,
+                                            index) in organismos"
+                                            :key="index"
+                                            :value="organismo.cod_organismo"
+                                            >{{ organismo.cod_organismo }} -
+                                            {{ organismo.organismo }}</option
+                                        >
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="input-group">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-default">
@@ -17,6 +96,7 @@
                                 aria-label="Type your keywords here"
                                 v-model="search"
                                 @keyup="buscarConcepto"
+                                placeholder="Buscar Concepto, Subtipo, Tipo ..."
                             />
                             <div class="input-group-append">
                                 <button
@@ -35,6 +115,7 @@
                                         @click="paginator"
                                         >10</a
                                     >
+
                                     <div
                                         role="separator"
                                         class="dropdown-divider"
@@ -53,7 +134,7 @@
         <div class="card">
             <div class="card-header border-0">
                 <h3 class="card-title text-muted">
-                    Lista de Conceptos de Liquidacion
+                    Concepto | Subtipo | Tipo
                 </h3>
                 <div class="card-tools">
                     <a href="#" class="btn btn-sm btn-tool">
@@ -64,76 +145,49 @@
                             alt=""
                         />
                     </a>
-                    <a href="#" class="btn btn-sm btn-tool">
-                        <i class="fas fa-bars"></i>
-                    </a>
                 </div>
             </div>
             <div class="card-body">
                 <div
+                    v-for="(concepto, index) in conceptos"
+                    :key="concepto.id"
                     class="d-flex justify-content-between align-items-center border-bottom mb-3"
                 >
-                    <p class="text-success text-xl">
-                        <i class="fab fa-amazon-pay"></i>
+                    <p class="text-md ">
+                        <a
+                            href="#"
+                            @click="edit(index, concepto)"
+                            data-toggle="modal"
+                            data-target="#concepto_edit"
+                            class="text-olive"
+                        >
+                            <i class="fas fa-angle-right"></i>
+                            {{ concepto.concepto | capitalize }} |
+                            {{ concepto.subtipo.descripcion | capitalize }} |
+                            {{
+                                concepto.subtipo.tipocodigo.descripcion
+                                    | capitalize
+                            }}
+                        </a>
                     </p>
                     <p class="d-flex flex-column text-right">
                         <span class="font-weight-bold">
-                            <i class="fas fa-eye"></i>
-                            12%
+                            <a
+                                href="#"
+                                @click="edit(index, concepto)"
+                                data-toggle="modal"
+                                data-target="#concepto_edit"
+                            >
+                                <i class="fas fa-eye"></i>
+                                # {{ concepto.cod_concepto }}
+                            </a>
                         </span>
-                        <span class="text-muted">CONVERSION RATE</span>
+                        <span class="text-muted">
+                            {{ concepto.organismo.organismo }}</span
+                        >
                     </p>
                 </div>
-                <!-- /.d-flex -->
-                <div
-                    class="d-flex justify-content-between align-items-center border-bottom mb-3"
-                >
-                    <p class="text-warning text-xl">
-                        <i class="fas fa-trash"></i>
-                    </p>
-                    <p class="d-flex flex-column text-right">
-                        <span class="font-weight-bold">
-                            <i class="fas fa-eye"></i>
-                            0.8%
-                        </span>
-                        <span class="text-muted">SALES RATE</span>
-                    </p>
-                </div>
-                <!-- /.d-flex -->
-                <div
-                    class="d-flex justify-content-between align-items-center mb-0"
-                >
-                    <p class="text-danger text-xl">
-                        <i class="fab fa-airbnb"></i>
-                    </p>
-                    <p class="d-flex flex-column text-right">
-                        <span class="font-weight-bold">
-                            <i class="fas fa-eye"></i>
-                            1%
-                        </span>
-                        <span class="text-muted">REGISTRATION RATE</span>
-                    </p>
-                </div>
-                <!-- /.d-flex -->
             </div>
-        </div>
-        <div class="list-group">
-            <a
-                href="#"
-                class="list-group-item list-group-item-action flex-column align-items-start mb-2"
-                v-for="(concepto, index) in conceptos"
-                :key="concepto.id"
-                @click="edit(index, concepto)"
-                data-toggle="modal"
-                data-target="#concepto_edit"
-            >
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-2">{{ concepto.concepto | capitalize }}</h5>
-                    <small>{{ concepto.organismo.organismo }}</small>
-                </div>
-                <p class="mb-2">cod {{ concepto.cod_concepto }}</p>
-                <small>{{ concepto.unidad }}</small>
-            </a>
         </div>
         <span>total registros encontrados: {{ paginate.total }}</span>
         <paginator-component
@@ -165,6 +219,9 @@ export default {
     data: function() {
         return {
             conceptos: [],
+            organismos: [],
+            subtipos: [],
+            tipos: [],
             concepto: {},
             paginate: {
                 current_page: "",
@@ -182,16 +239,37 @@ export default {
             setTimeoutBuscador: "",
             timeOut: 400,
             index: "",
-            create: false
+            create: false,
+            selectedOrganismo: "",
+            selectedSubtipo: "",
+            selectedTipo: ""
         };
     },
     mounted() {
         this.getConceptos();
+        this.getOrganismos();
+        this.getSubtipos();
+        this.getTipos();
     },
     methods: {
         getConceptos() {
             axios.get("api/concepto").then(response => {
                 this.asignar(response);
+            });
+        },
+        getOrganismos() {
+            axios.get("api/organismo/all").then(response => {
+                this.organismos = response.data;
+            });
+        },
+        getSubtipos() {
+            axios.get("api/subtipo").then(response => {
+                this.subtipos = response.data;
+            });
+        },
+        getTipos() {
+            axios.get("api/tipocodigo").then(response => {
+                this.tipos = response.data;
             });
         },
         nuevoConcepto(concepto) {
@@ -247,7 +325,8 @@ export default {
                     this.asignar(response);
                 });
             }, this.timeOut);
-        }
+        },
+        filter() {}
     }
 };
 </script>

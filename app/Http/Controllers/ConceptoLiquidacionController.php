@@ -98,7 +98,7 @@ class ConceptoLiquidacionController extends Controller
 
     public function getConceptos()
     {
-        return ConceptoLiquidacion::with(['organismo', 'subtipo'])->paginate($this->perPage);
+        return ConceptoLiquidacion::with(['organismo', 'subtipo'])->latest()->paginate($this->perPage);
     }
 
 
