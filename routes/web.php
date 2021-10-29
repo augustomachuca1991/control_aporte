@@ -74,5 +74,10 @@ Route::get('/subtipo-codigos', 'SubtipoCodigoController@index')->name('subtipos'
 
 Route::get('/notificaciones', 'NotificationController@index')->name('notificaciones');
 
+//---------- User Controller -------------------------
 Route::get('/users', 'UserController@index')->name('users');
 Route::get('/users/locker', 'UserController@locker')->name('locker');
+
+
+//---------- Configuracion Controller -------------------------
+Route::get('/configuracion', 'ConfiguracionController@index')->name('config');

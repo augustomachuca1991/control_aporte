@@ -21,4 +21,19 @@ class SubtipoCodigo extends Model
     {
         return $this->belongsTo('App\TipoCodigo');
     }
+
+    public function departamentos(){
+
+        return $this->belongsToMany('App\Dpto','configuracions','subtipo_id', 'dpto_id');
+    }
+
+    public function scopeSearchSubtipo($query, $search)
+    {
+        if (!empty($search)) {
+            // $query->whereHas('tipocodigo', function($tipo) use ($search){
+            //     $tipo->where('descripcion', 'LIKE', "%" . $search . "%" );
+            // })->where('descripcion', 'LIKE', "%" . $search . "%");
+            $query->where('descripcion', 'LIKE', "%" . $search . "%");
+        }
+    }
 }

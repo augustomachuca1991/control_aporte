@@ -12,6 +12,8 @@ class SubtipoCodigoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $perPage = 10;
+
     public function index()
     {
         return view('subtipos.index');
@@ -95,5 +97,11 @@ class SubtipoCodigoController extends Controller
     public function getSubtipo()
     {
         return SubtipoCodigo::with('tipocodigo')->get();
+    }
+
+
+    public function search($search)
+    {
+        return SubtipoCodigo::searchSubtipo($search)->with('tipocodigo')->get();
     }
 }

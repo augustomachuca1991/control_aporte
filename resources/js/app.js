@@ -298,6 +298,16 @@ Vue.component(
     require("./components/components-subtipo/CreateSubtipo.vue").default
 );
 
+//Configuracion
+Vue.component(
+    "configuracion-component",
+    require("./components/components-configuracion/ConfiguracionComponent.vue")
+        .default
+);
+Vue.component(
+    "create-subtipo",
+    require("./components/components-subtipo/CreateSubtipo.vue").default
+);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

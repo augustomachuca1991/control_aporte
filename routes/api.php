@@ -97,6 +97,7 @@ Route::get('/concepto/{search}', 'ConceptoLiquidacionController@search');
 //Subtipos Codigos
 Route::get('/subtipo', 'SubtipoCodigoController@getSubtipo')->name('subtipo');
 Route::post('/subtipo/create', 'SubtipoCodigoController@store');
+Route::get('/subtipo/{search}', 'SubtipoCodigoController@search');
 //Tipos  Codigos
 Route::get('/tipocodigo', 'TipoCodigoController@getTipo')->name('tipocodigo');
 
@@ -186,8 +187,8 @@ Route::post('/notification/leida/{id}', 'NotificationController@markAsReads')->n
 Route::post('/agente', 'AgenteController@search')->name('agente_search');
 
 
-//usuarios
 
+//usuarios
 Route::get('/users', 'UserController@getUsers');
 Route::post('/users/create', 'UserController@store');
 Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
@@ -198,6 +199,10 @@ Route::get('/users/filter/{role_id}', 'UserController@filter');
 
 //roles
 Route::get('/roles', 'RoleController@getRoles');
+
+
+//departamentos
+Route::get('/departamento', 'DptoController@getDptos');
 
 
 Route::get('/dj', function (Request $request) {

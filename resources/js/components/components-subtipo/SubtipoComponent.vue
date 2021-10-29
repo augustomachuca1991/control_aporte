@@ -1,5 +1,60 @@
 <template>
     <div class="container">
+        <section class="content mb-5">
+            <div class="container-fluid">
+                <h4 class="display-4 text-muted">Buscador</h4>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <button
+                                            type="button"
+                                            class="btn btn-default"
+                                        >
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <input
+                                        type="search"
+                                        class="form-control"
+                                        aria-label="Type your keywords here"
+                                        v-model="search"
+                                        @keyup="buscarSubtipo"
+                                        placeholder="Buscar Organismo, Subtipo, Tipo ..."
+                                    />
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn btn-outline-secondary dropdown-toggle"
+                                            type="button"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                        >
+                                            {{ perPage }} por Pagina
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#"
+                                                >10</a
+                                            >
+
+                                            <div
+                                                role="separator"
+                                                class="dropdown-divider"
+                                            ></div>
+                                            <a class="dropdown-item" href="#"
+                                                >todos</a
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <div class="row">
             <div class="col">
                 <div class="hr-sect capitalize">
@@ -7,48 +62,27 @@
                 </div>
                 <table class="table">
                     <thead>
-                        <tr class="table-danger">
-                            <!-- <th>Subtipo</th> -->
+                        <tr class="table-warning">
                             <th>#Cod - Subtipo</th>
                             <th>#Cod - Tipo</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(tipo, index) in tipos" :key="index">
-                            <!-- <th scope="row">{{ tipo.id }}</th> -->
+                        <tr v-if="!subtipos.length">
                             <td>
-                                <div
-                                    class="row"
-                                    v-for="(subtipo, index) in tipo.subtipos"
-                                    :key="index"
-                                >
-                                    <div class="col">
-                                        {{ subtipo.id }} -
-                                        {{ subtipo.descripcion }}
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ tipo.id }} - {{ tipo.descripcion }}</td>
-
-                            <td>
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="exampleCheck1"
-                                />
-                                <label
-                                    class="form-check-label"
-                                    for="exampleCheck1"
-                                    >Check me out</label
-                                >
+                                Sin resultado para la busqueda "{{ search }}"
                             </td>
                         </tr>
-                        <!-- <tr lass="table-dange">
-                            <th>
-                                No data
-                            </th>
-                        </tr> -->
+                        <tr v-for="(subtipo, index) in subtipos" :key="index">
+                            <td>
+                                {{ subtipo.id }} - {{ subtipo.descripcion }}
+                            </td>
+                            <td>
+                                {{ subtipo.tipocodigo.id }} -{{
+                                    subtipo.tipocodigo.descripcion
+                                }}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -69,7 +103,14 @@ export default {
     data: function() {
         return {
             subtipos: [],
-            tipos: []
+            tipos: [],
+            organismos: [],
+            perPage: 10,
+            selectedOrganismo: "",
+            search: "",
+            setTimeoutBuscador: "",
+            timeOut: 400,
+            status: "check"
         };
     },
     mounted() {
@@ -87,9 +128,22 @@ export default {
                 this.tipos = response.data;
             });
         },
+        // getOrganismo() {
+        //     axios.get("api/organismo/all").then(response => {
+        //         this.organismos = response.data;
+        //     });
+        // },
         nuevoSubtipo(subtipo) {
             this.subtipos.unshift(subtipo);
             alert("nuevo subtipo");
+        },
+        buscarSubtipo() {
+            clearTimeout(this.setTimeoutBuscador);
+            this.setTimeoutBuscador = setTimeout(() => {
+                axios.get(`api/subtipo/${this.search}`).then(response => {
+                    this.subtipos = response.data;
+                });
+            }, this.timeOut);
         }
     }
 };

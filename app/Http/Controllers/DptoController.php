@@ -82,4 +82,9 @@ class DptoController extends Controller
     {
         //
     }
+
+
+    public function getDptos(){
+        return Dpto::with(['subtipos','tipocodigos'])->get();
+    }
 }

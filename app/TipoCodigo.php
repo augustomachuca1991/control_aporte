@@ -15,4 +15,10 @@ class TipoCodigo extends Model
     {
         return $this->hasMany('App\SubtipoCodigo', 'tipocodigo_id', 'id');
     }
+
+
+    public function departamentos(){
+
+        return $this->belongsToMany('App\Dpto','configuracions','tipocodigo_id', 'dpto_id');
+    }
 }

@@ -17,8 +17,8 @@ class CreateConfiguracionsTable extends Migration
             $table->id();
             $table->bigInteger('dpto_id')->unsigned();
             $table->foreign('dpto_id')->references('id')->on('dptos');
-            $table->bigInteger('suptipo_id')->unsigned();
-            $table->foreign('suptipo_id')->references('id')->on('subtipo_codigos');
+            $table->bigInteger('subtipo_id')->unsigned();
+            $table->foreign('subtipo_id')->references('id')->on('subtipo_codigos');
             $table->bigInteger('tipocodigo_id')->unsigned();
             $table->foreign('tipocodigo_id')->references('id')->on('tipo_codigos');
 

@@ -8,7 +8,7 @@
         <li><a href=" {{ route('conceptos') }}">Conceptos</a></li>
         <li><a href=" {{ route('subtipos') }}">Subtipos de Codigos</a></li>
         <li><a href="#">Departamentos</a></li>
-        <li><a href="#">Configuración</a></li>
+        <li><a href="{{route('config')}}">Configuración</a></li>
         {{-- <li><a href=" {{ route('tipos') }}">Tipo de Codigos</a></li> --}}
     </ul>
 
