@@ -1,14 +1,8 @@
  @extends('adminlte::page')
 
- @section('title', 'Perfiles de Usuarios')
+ @section('title', 'Usuarios')
  
-
-
-
-
-
- 
- @section('css')
+@section('css')
      <!-- <link rel="stylesheet" href="/css/admin_custom.css"> -->
      <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
  @stop
@@ -28,11 +22,11 @@
 
 
  @section('content')
- <div id="app">
-        <users-component></users-component>
-
+  <div id="app">
+          <users-component></users-component>
   </div>
  @stop
+
 
 
 

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Declaracion Jurada')
+@section('title', 'Configuración')
 
 <!-- @section('plugins.Sweetalert2', true) -->
 
