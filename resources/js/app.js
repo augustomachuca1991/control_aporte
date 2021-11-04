@@ -38,6 +38,11 @@ Vue.filter("format_moment", function(date) {
     return moment(date).format("L");
 });
 
+Vue.filter('reverse', function(value) {
+    // slice to make a copy of array, then reverse the copy
+    return value.slice().reverse();
+  });
+
 // Vue.filter('formatCuil', function(cuil){
 // 	value = value.toString();
 
@@ -280,6 +285,10 @@ Vue.component(
 Vue.component(
     "update-concepto",
     require("./components/components-concepto/UpdateConcepto.vue").default
+);
+Vue.component(
+    "history-concepto",
+    require("./components/components-concepto/HistoryConcepto.vue").default
 );
 
 //paginador

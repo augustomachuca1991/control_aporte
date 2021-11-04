@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\ConceptoLiquidacion;
+use App\Dpto;
 use App\SubtipoCodigo;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConceptoLiquidacionController extends Controller
 {
@@ -18,8 +21,8 @@ class ConceptoLiquidacionController extends Controller
      */
     public function index()
     {
-        //
-        return view('conceptos.index');
+        $user = Auth::user();
+        return view('conceptos.index', ['user' => $user]);
     }
 
     /**
@@ -46,8 +49,6 @@ class ConceptoLiquidacionController extends Controller
         ]);
 
         return $this->show($conceptoLiquidacion->id);
-
-
     }
 
     /**
@@ -58,7 +59,7 @@ class ConceptoLiquidacionController extends Controller
      */
     public function show($id)
     {
-        return ConceptoLiquidacion::with(['organismo', 'subtipo', 'departamentos'])->where('id', $id)->first();
+        return ConceptoLiquidacion::with(['organismo', 'subtipo', 'departamentos', 'users'])->where('id', $id)->first();
     }
 
     /**
@@ -84,10 +85,14 @@ class ConceptoLiquidacionController extends Controller
         ]);
 
         $subtipo = SubtipoCodigo::find($request->subtipo_id);
+        $dpto = Dpto::find(1);
+        $user = User::find($request->user_id);
 
-        $conceptoLiquidacion->departamentos()->attach(1,['user_id' => 1,'tipocodigo_id' => $subtipo->tipocodigo->id,
-        'subtipo_id' => $subtipo->id, 'updated_at' => now() ]);
-        
+        $conceptoLiquidacion->departamentos()->attach($dpto->id, [
+            'user_id' => $user->id, 'tipocodigo_id' => $subtipo->tipocodigo->id,
+            'subtipo_id' => $subtipo->id, 'updated_at' => now()
+        ]);
+
         // $subtipo->departamentos()->attach(1,['tipocodigo_id' => $subtipo->tipocodigo->id]);
         return $this->show($conceptoLiquidacion->id);
     }
@@ -105,7 +110,7 @@ class ConceptoLiquidacionController extends Controller
 
     public function getConceptos()
     {
-        return ConceptoLiquidacion::with(['organismo', 'subtipo', 'departamentos'])->latest()->paginate($this->perPage);
+        return ConceptoLiquidacion::with(['organismo', 'subtipo', 'departamentos', 'users'])->latest()->paginate($this->perPage);
     }
 
 
@@ -118,6 +123,6 @@ class ConceptoLiquidacionController extends Controller
 
     public function search($search)
     {
-        return ConceptoLiquidacion::searchConcepto($search)->with(['organismo', 'subtipo', 'departamentos'])->paginate($this->perPage);
+        return ConceptoLiquidacion::searchConcepto($search)->with(['organismo', 'subtipo', 'departamentos', 'users'])->paginate($this->perPage);
     }
 }

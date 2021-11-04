@@ -209,7 +209,7 @@
 
 <script>
 export default {
-    props: ["concepto", "index"],
+    props: ["concepto", "index", "user"],
     data: function() {
         return {
             errors: [],
@@ -253,7 +253,8 @@ export default {
                 unidad: this.unidad,
                 concepto: this.descripcion,
                 organismo_id: this.concepto.organismo_id,
-                subtipo_id: this.selectedSubtipo
+                subtipo_id: this.selectedSubtipo,
+                user_id: this.user.id
             };
             axios
                 .put(`api/concepto/update/${this.concepto.id}`, param)
