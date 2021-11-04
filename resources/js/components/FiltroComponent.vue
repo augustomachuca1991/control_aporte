@@ -76,6 +76,9 @@ export default {
             origenes: [],
             jurisdicciones: [],
             organismos: [],
+            origen: {},
+            jurisdiccion: {},
+            organismo: {},
             selectedOrigen: "",
             selectedJurisdicion: "",
             selectedOrganismo: ""
@@ -94,10 +97,9 @@ export default {
             this.selectedJurisdicion = "";
             this.selectedOrganismo = "";
             if (this.selectedOrigen !== "") {
-                this.jurisdicciones = this.origenes[
-                    this.selectedOrigen
-                ].jurisdicciones;
-                const origen = this.origenes[this.selectedOrigen].cod_origen;
+                this.origen = this.origenes[this.selectedOrigen];
+                this.jurisdicciones = this.origen.jurisdicciones;
+                const origen = this.origen.cod_origen;
                 this.$emit("sendOrigen", origen);
             }
         },
@@ -105,18 +107,18 @@ export default {
             this.organismos = [];
             this.selectedOrganismo = "";
             if (this.selectedJurisdicion !== "") {
-                this.organismos = this.jurisdicciones[
+                this.jurisdiccion = this.jurisdicciones[
                     this.selectedJurisdicion
-                ].organismos;
-                const jur = this.jurisdicciones[this.selectedJurisdicion]
-                    .cod_jurisdiccion;
+                ];
+                this.organismos = this.jurisdiccion.organismos;
+                const jur = this.jurisdiccion.cod_jurisdiccion;
                 this.$emit("sendJur", jur);
             }
         },
         cambioOrganismo: function() {
             if (this.selectedOrganismo !== "") {
-                const organismo = this.organismos[this.selectedOrganismo]
-                    .cod_organismo;
+                this.organismo = this.organismos[this.selectedOrganismo];
+                const organismo = this.organismo.cod_organismo;
                 this.$emit("sendOrganismo", organismo);
             }
         }

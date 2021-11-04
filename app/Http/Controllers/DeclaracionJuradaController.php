@@ -57,8 +57,8 @@ class DeclaracionJuradaController extends Controller
 
 
         //validamos si existe si la cadena contiene numero de secuencia
-        if ($count === 3) {
-            $name[3] = null;
+        if ($count === 5) {
+            $name[5] = null;
         }
 
 
@@ -68,15 +68,19 @@ class DeclaracionJuradaController extends Controller
             'archivo' => $file,
             'original_name' => $original_name,
             'nombre' => $name,
-            'organismo' => $name[0],
-            'periodo' => $name[1],
-            'tipo_liquidacion' => $name[2],
-            'secuencia' => $name[3],
+            'origen' => $name[0],
+            'jurisdiccion' => $name[1],
+            'organismo' => $name[2],
+            'periodo' => $name[3],
+            'tipo_liquidacion' => $name[4],
+            'secuencia' => $name[5],
         ];
         $reglas = [
             'archivo' => 'file|mimes:csv,txt',
             'original_name' => 'unique:declaracion_juradas,nombre_archivo',
-            'nombre' => 'required|array|max:4',
+            'nombre' => 'required|array|max:6',
+            'origens' => 'exists:origens,cod_origen',
+            'jurisdiccion' => 'exists:jurisdiccions,cod_jurisdiccion',
             'organismo' => 'exists:organismos,cod_organismo',
             'periodo' => 'exists:periodos,cod_periodo',
             'tipo_liquidacion' => 'exists:tipo_liquidacions,descripcion',
@@ -89,6 +93,8 @@ class DeclaracionJuradaController extends Controller
             'nombre.required' => 'Nombre Requerido',
             'nombre.array' => 'El nombre no cumple con el formato. El mismo debe ser ej: organimo_periodo_tipoliquidacion_secuencia.csv',
             'nombre.max' => 'El nombre no cumple con el formato. El mismo debe tener como maximo 4 elementos',
+            'jurisdiccion.exists' => 'El cod Jurisdiccion no existe o no esta escrito correctamente',
+            'origen.exists' => 'El cod Origen no existe o no esta escrito correctamente',
             'organismo.exists' => 'El cod organismo no existe o no esta escrito correctamente',
             'periodo.exists' => 'El codigo de periodo no existe',
             'tipo_liquidacion.exists' => 'Tipo de Liquidacion no existe. Verifique',
@@ -104,10 +110,10 @@ class DeclaracionJuradaController extends Controller
             $confirm = false;
         } else {
 
-            $this->organismo_id = Organismo::where('cod_organismo', $name[0])->first()->cod_organismo;
-            $this->periodo_id = $name[1];
-            $this->tipoliquidacion_id = TipoLiquidacion::where('descripcion', $name[2])->first()->id;
-            $this->secuencia = $name[3];
+            $this->organismo_id = Organismo::where('cod_organismo', $name[2])->first()->cod_organismo;
+            $this->periodo_id = $name[3];
+            $this->tipoliquidacion_id = TipoLiquidacion::where('descripcion', $name[4])->first()->id;
+            $this->secuencia = $name[5];
             $is_declaradionjurada = DeclaracionJurada::where('periodo_id', $this->periodo_id)->where('tipoliquidacion_id', $this->tipoliquidacion_id)->where('organismo_id', $this->organismo_id);
             if ($is_declaradionjurada->doesntExist()) {
                 $declaracionJurada = DeclaracionJurada::create([
