@@ -12,14 +12,9 @@ class Dpto extends Model
     protected $dates = ['deleted_at'];
 
 
-    public function subtipos(){
+    public function conceptos(){
 
-        return $this->belongsToMany( 'App\SubtipoCodigo' ,'configuracions' ,'dpto_id' , 'subtipo_id');
-    }
-
-    public function tipocodigos(){
-
-        return $this->belongsToMany( 'App\TipoCodigo' ,'configuracions' ,'dpto_id' , 'tipocodigo_id');
+        return $this->belongsToMany( 'App\ConceptoLiquidacion' ,'configuracions' ,'dpto_id' , 'concepto_id');
     }
 }
 

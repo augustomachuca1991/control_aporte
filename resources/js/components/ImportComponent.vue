@@ -144,12 +144,6 @@
                                             v-model="search"
                                             @keyup="buscar()"
                                         />
-
-                                        <!-- <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-success" disabled>
-                          <i class="fas fa-search"></i>
-                        </button>
-                      </div> -->
                                     </div>
                                 </div>
                             </div>

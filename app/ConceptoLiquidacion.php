@@ -32,12 +32,22 @@ class ConceptoLiquidacion extends Model
 
     public function organismo()
     {
-        return $this->belongsTo('App\Organismo');
+        return $this->belongsTo('App\Organismo','organismo_id' , 'cod_organismo');
     }
 
     public function liquidaciones()
     {
         return $this->belongsToMany('App\Liquidacion', 'liquidacion_detalles', 'id', 'concepto_id');
+    }
+
+    public function departamentos(){
+
+        return $this->belongsToMany('App\Dpto','configuracions','concepto_id', 'dpto_id')->withPivot('user_id' , 'subtipo_id','tipocodigo_id','updated_at');
+    }
+
+    public function users(){
+
+        return $this->belongsToMany('App\User','configuracions','concepto_id', 'user_id');
     }
 
     public function scopeSearchConcepto($query, $search)

@@ -4,6 +4,7 @@
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
 /*
 |--------------------------------------------------------------------------
@@ -211,15 +212,26 @@ Route::get('/dj', function (Request $request) {
     // $detalle = $declaracionJurada->ddjj_lines->first()->detalle;
     // return $detalle;
 
-    // $string = "1|asdasd|30%|1|50000";
-    // $explode = explode('|', $string);
-    // $concepto = new ConceptoLiquidacion();
-    // foreach ($explode as $key => $value) {
-    //     $concepto->cod_concepto =
-    // }
-    // dd($explode);
-    $user = User::find(1);
-    //dd(User::getRelations());
+    $string = "1|asdasd|30%|1|1|5000|2|qwerty|18.5%|1|2";
+    $explode = explode('|', $string);
+    $array_detalle = array_chunk($explode, 6, false);
+
+        $validacion = [
+            'detalle' => $array_detalle,
+        ];
+        $reglas = [
+            'detalle.*' => 'array|size:6',
+        ];
+        $mensajes = [
+            'detalle.*.array' => '* no es array',
+            'detalle.*.size' => '* no tiene el tamaño especifico',
+        ];
+        $validator = Validator::make($validacion, $reglas, $mensajes);
+        if ($validator->fails()) {
+            dd($validator->errors()->first());
+        }else{
+            dd('todo ok');
+        }
 });
 
 

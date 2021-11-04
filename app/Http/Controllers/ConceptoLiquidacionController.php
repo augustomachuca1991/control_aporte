@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ConceptoLiquidacion;
+use App\SubtipoCodigo;
 use Illuminate\Http\Request;
 
 class ConceptoLiquidacionController extends Controller
@@ -57,7 +58,7 @@ class ConceptoLiquidacionController extends Controller
      */
     public function show($id)
     {
-        return ConceptoLiquidacion::with(['organismo', 'subtipo'])->where('id', $id)->first();
+        return ConceptoLiquidacion::with(['organismo', 'subtipo', 'departamentos'])->where('id', $id)->first();
     }
 
     /**
@@ -82,6 +83,12 @@ class ConceptoLiquidacionController extends Controller
             'subtipo_id' => $request->subtipo_id
         ]);
 
+        $subtipo = SubtipoCodigo::find($request->subtipo_id);
+
+        $conceptoLiquidacion->departamentos()->attach(1,['user_id' => 1,'tipocodigo_id' => $subtipo->tipocodigo->id,
+        'subtipo_id' => $subtipo->id, 'updated_at' => now() ]);
+        
+        // $subtipo->departamentos()->attach(1,['tipocodigo_id' => $subtipo->tipocodigo->id]);
         return $this->show($conceptoLiquidacion->id);
     }
 
@@ -98,7 +105,7 @@ class ConceptoLiquidacionController extends Controller
 
     public function getConceptos()
     {
-        return ConceptoLiquidacion::with(['organismo', 'subtipo'])->latest()->paginate($this->perPage);
+        return ConceptoLiquidacion::with(['organismo', 'subtipo', 'departamentos'])->latest()->paginate($this->perPage);
     }
 
 
@@ -111,6 +118,6 @@ class ConceptoLiquidacionController extends Controller
 
     public function search($search)
     {
-        return ConceptoLiquidacion::searchConcepto($search)->with(['organismo', 'subtipo'])->paginate($this->perPage);
+        return ConceptoLiquidacion::searchConcepto($search)->with(['organismo', 'subtipo', 'departamentos'])->paginate($this->perPage);
     }
 }

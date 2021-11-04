@@ -53,6 +53,12 @@ class User extends Authenticatable
     }
 
 
+    public function conceptos(){
+
+        return $this->belongsToMany( 'App\ConceptoLiquidacion' ,'configuracions' ,'user_id' , 'concepto_id');
+    }
+
+
     public function adminlte_image()
     {
         //return 'https://picsum.photos/300/300';

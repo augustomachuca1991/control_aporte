@@ -123,10 +123,13 @@
             </ul>
         </nav>
         <!-- Modal -->
-        <liquidaciondetalle-component
-            :index="index"
-            :liquidacionDetalle="liquidacionOrganismo"
-        ></liquidaciondetalle-component>
+        <div v-if="create">
+            <liquidaciondetalle-component
+                :index="index"
+                :liquidacionDetalle="liquidacionOrganismo"
+                @modal="hide()"
+            ></liquidaciondetalle-component>
+        </div>
     </div>
     <div v-else>
         <div class="card">
@@ -157,13 +160,15 @@ export default {
                 to: this.datos.to
             },
             liquidacionOrganismo: {},
-            index: ""
+            index: "",
+            create: false
         };
     },
     methods: {
         ver_detalle(index, liquidacionOrganismo) {
             this.index = this.paginate.from + parseInt(index - 1);
             this.liquidacionOrganismo = liquidacionOrganismo;
+            this.create = true;
         },
         getPage(page) {
             axios.get(this.paginate.path + "?page=" + page).then(response => {
@@ -190,6 +195,9 @@ export default {
             this.paginate.to = response.data.to;
             this.paginate.next_page_url = response.data.next_page_url;
             this.paginate.prev_page_url = response.data.prev_page_url;
+        },
+        hide() {
+            this.create = false;
         }
     }
 };

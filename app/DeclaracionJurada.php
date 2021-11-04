@@ -29,7 +29,7 @@ class DeclaracionJurada extends Model
 
     public function organismo()
     {
-        return $this->belongsTo('App\Organismo')->with('jurisdiccion');
+        return $this->belongsTo('App\Organismo' ,'organismo_id' , 'cod_organismo')->with('jurisdiccion');
     }
 
     public function periodo()

@@ -22,7 +22,7 @@ class Jurisdiccion extends Model
 
     public function organismos()
     {
-        return $this->hasMany('App\Organismo','jurisdiccion_id','id');
+        return $this->hasMany('App\Organismo','jurisdiccion_id','cod_jurisdiccion');
     }
 
     public function categorias(){

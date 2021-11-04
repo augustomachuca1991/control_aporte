@@ -60,7 +60,7 @@ class Liquidacion extends Model
      */
     public function organismos()
     {
-        return $this->belongsToMany('App\Organismo')->with('jurisdiccion');
+        return $this->belongsToMany('App\Organismo','liquidacion_organismo','liquidacion_id','organismo_id')->with('jurisdiccion');
     }
 
     /**

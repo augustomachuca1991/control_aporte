@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Validators\Failure;
 use Maatwebsite\Excel\Events\{AfterImport, ImportFailed, BeforeImport};
 use Maatwebsite\Excel\Concerns\{ToCollection, WithHeadingRow, WithBatchInserts, WithChunkReading, Importable, WithCustomCsvSettings, WithEvents, WithValidation, SkipsOnError, SkipsErrors, SkipsOnFailure, SkipsFailures, RemembersChunkOffset, RemembersRowNumber};
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class LiquidacionsImport implements
     ToCollection,
@@ -59,6 +60,7 @@ class LiquidacionsImport implements
     public function collection(Collection $rows)
     {
 
+        
         $chunkOffset = $this->getChunkOffset() - 2;
         $count = ($chunkOffset / 100) + 1;
         $cicles = intdiv($this->totalRows, $rows->count());
@@ -215,6 +217,11 @@ class LiquidacionsImport implements
         } else {
             foreach ($rows as $row) {
                 $this->detalle_conceptos($row['detalle']);
+
+                // Validator::make($this->conceptos, [
+                //     '*.detalle' => 'array|size:6',
+                // ])->validate();
+
                 $ddjj_line = DeclaracionJuradaLine::create([
                     'declaracionjurada_id' => $this->declaracionjurada->id,
                     'nombre' => $row['nombre'],
@@ -336,7 +343,7 @@ class LiquidacionsImport implements
             '*.estado' => ['required'],
             '*.cod_funcion' => ['integer', 'nullable'],
             '*.funcion' => ['string', 'nullable'],
-            '*.detalle' => ['string'],
+            '*.detalle' => ['required', 'string'],
         ];
     }
 
@@ -463,6 +470,19 @@ class LiquidacionsImport implements
     {
         $detalle = explode('|', $detalles);
         $array_detalle = array_chunk($detalle, 6, false);
+
+        // $validacion = [
+        //     'detalle_array' => $array_detalle,
+        // ];
+        // $reglas = [
+        //     'detalle.*' => 'array|size:6',
+        // ];
+        // $mensajes = [
+        //     'detalle.*.array' => '* no es array',
+        //     'detalle.*.size' => '* no tiene el tamaño especifico',
+        // ];
+        // $validator = Validator::make($validacion, $reglas, $mensajes);
+
         for ($i = 0; $i < count($array_detalle); $i++) {
             for ($j = 0; $j < count($array_detalle[$i]); $j++) {
                 $this->conceptos[$i]['cod'] = $array_detalle[$i][0];

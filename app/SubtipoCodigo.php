@@ -22,10 +22,10 @@ class SubtipoCodigo extends Model
         return $this->belongsTo('App\TipoCodigo');
     }
 
-    public function departamentos(){
+    // public function departamentos(){
 
-        return $this->belongsToMany('App\Dpto','configuracions','subtipo_id', 'dpto_id');
-    }
+    //     return $this->belongsToMany('App\Dpto','configuracions','subtipo_id', 'dpto_id');
+    // }
 
     public function scopeSearchSubtipo($query, $search)
     {

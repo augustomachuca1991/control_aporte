@@ -16,7 +16,7 @@
                     v-for="(origen, index) in origenes"
                     :key="origen.id"
                     :value="index"
-                    >{{ origen.origen }}</option
+                    >{{ origen.cod_origen }} - {{ origen.origen }}</option
                 >
             </select>
         </div>
@@ -39,7 +39,8 @@
                     v-for="(jurisdiccion, index) in jurisdicciones"
                     :key="jurisdiccion.id"
                     :value="index"
-                    >{{ jurisdiccion.jurisdiccion }}</option
+                    >{{ jurisdiccion.cod_jurisdiccion }} -
+                    {{ jurisdiccion.jurisdiccion }}</option
                 >
             </select>
         </div>
@@ -62,7 +63,9 @@
                     v-for="(organismo, index) in organismos"
                     :key="organismo.id"
                     :value="index"
-                    >{{ organismo.organismo }}</option
+                    >{{ organismo.cod_organismo }} -{{
+                        organismo.organismo
+                    }}</option
                 >
             </select>
         </div>
@@ -85,10 +88,7 @@ export default {
         };
     },
     mounted() {
-        axios.get("api/origen/all").then(response => {
-            this.origenes = response.data;
-            //console.log(this.origenes[0].jurisdicciones[0].organismos.length)
-        });
+        this.getOrigenes();
     },
     methods: {
         cambioOrigen: function() {
@@ -121,6 +121,11 @@ export default {
                 const organismo = this.organismo.cod_organismo;
                 this.$emit("sendOrganismo", organismo);
             }
+        },
+        getOrigenes: function() {
+            axios.get("api/origen/all").then(response => {
+                this.origenes = response.data;
+            });
         }
     }
 };

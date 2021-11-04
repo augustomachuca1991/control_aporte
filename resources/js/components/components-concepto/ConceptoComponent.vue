@@ -161,7 +161,7 @@
                             data-target="#concepto_edit"
                             class="text-olive"
                         >
-                            <i class="fas fa-angle-right"></i>
+                            <i class="fas fa-pencil-alt"></i>
                             {{ concepto.concepto | capitalize }} |
                             {{ concepto.subtipo.descripcion | capitalize }} |
                             {{
@@ -174,7 +174,7 @@
                         <span class="font-weight-bold">
                             <a
                                 href="#"
-                                @click="edit(index, concepto)"
+                                @click="history(index, concepto)"
                                 data-toggle="modal"
                                 data-target="#concepto_edit"
                             >
@@ -201,6 +201,37 @@
             :index="index"
             @concepto_update="conceptoActualizado(...arguments)"
         ></update-concepto>
+        <div v-if="departamentos.length">
+            <h4>historial de configuracion</h4>
+            <div class="container">
+                <div class="row">
+                    <div class="col">Concepto</div>
+                    <div class="col">Dpto</div>
+                    <div class="col">Usuario</div>
+                    <div class="col">Cambios</div>
+                    <div class="col">Modificacion</div>
+                </div>
+                <div
+                    class="row"
+                    v-for="(departamento, index) in concepto.departamentos"
+                    :key="index"
+                >
+                    <div class="col">{{ concepto.concepto }}</div>
+                    <div class="col">{{ departamento.departamento }}</div>
+                    <div class="col">{{ departamento.pivot.user_id }}</div>
+                    <div class="col">
+                        {{ departamento.pivot.subtipo_id }} -
+                        {{ departamento.pivot.tipocodigo_id }}
+                    </div>
+                    <div class="col">
+                        {{ departamento.pivot.updated_at | moment }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            <h4>No tiene historial de cambio</h4>
+        </div>
     </div>
 </template>
 
@@ -222,6 +253,7 @@ export default {
             organismos: [],
             subtipos: [],
             tipos: [],
+            departamentos: [],
             concepto: {},
             paginate: {
                 current_page: "",
@@ -302,6 +334,12 @@ export default {
         edit(index, concepto) {
             this.create = true;
             this.concepto = concepto;
+            this.departamentos = concepto.departamentos;
+            this.index = this.paginate.from + parseInt(index - 1);
+        },
+        history(index, concepto) {
+            this.concepto = concepto;
+            this.departamentos = concepto.departamentos;
             this.index = this.paginate.from + parseInt(index - 1);
         },
         conceptoActualizado(concepto) {

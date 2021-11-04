@@ -12,6 +12,7 @@ class Organismo extends Model
     protected $table = 'organismos';
     protected $fillable = ['cod_organismo', 'jurisdiccion_id', 'organismo'];
     protected $dates = ['deleted_at'];
+    //protected $primaryKey = 'cod_organismo';
 
     public function jurisdiccion()
     {
@@ -41,7 +42,7 @@ class Organismo extends Model
 
     public function conceptos()
     {
-        return $this->hasMany('App\ConceptoLiquidacion');
+        return $this->hasMany('App\ConceptoLiquidacion','organismo_id','cod_organismo');
     }
 
     public function liquidacionOrganismo()
@@ -66,7 +67,7 @@ class Organismo extends Model
 
     public function declaracionesJuradas()
     {
-        return $this->hasMany('App\DeclaracionJurada');
+        return $this->hasMany('App\DeclaracionJurada','organismo_id','cod_organismo');
 
     }
 
