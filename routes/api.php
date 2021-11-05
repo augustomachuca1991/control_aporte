@@ -94,6 +94,9 @@ Route::put('/concepto/update/{id}', 'ConceptoLiquidacionController@update');
 Route::post('/concepto/create', 'ConceptoLiquidacionController@store');
 Route::get('/concepto/paginate/{n_paginas}', 'ConceptoLiquidacionController@paginado');
 Route::get('/concepto/{search}', 'ConceptoLiquidacionController@search');
+Route::get('/concepto/tipo/{id}', 'ConceptoLiquidacionController@perTipo');
+Route::get('/concepto/subtipo/{id}', 'ConceptoLiquidacionController@perSubtipo');
+Route::get('/concepto/organismo/{id}', 'ConceptoLiquidacionController@perOrganismo');
 
 //Subtipos Codigos
 Route::get('/subtipo', 'SubtipoCodigoController@getSubtipo')->name('subtipo');

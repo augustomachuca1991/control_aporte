@@ -8,55 +8,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="row">
-                            <div class="col col-lg-4">
-                                <div class="form-group">
-                                    <select
-                                        class="form-control"
-                                        :class="{
-                                            'text-secondary':
-                                                selectedSubtipo === ''
-                                        }"
-                                        style="width: 100%;"
-                                        @change="filter"
-                                    >
-                                        <option :value="''" selected disabled
-                                            >Por Subtipo</option
-                                        >
-                                        <option
-                                            v-for="(subtipo, index) in subtipos"
-                                            :key="index"
-                                            :value="subtipo.id"
-                                            >{{ subtipo.id }} -
-                                            {{ subtipo.descripcion }}</option
-                                        >
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col col-lg-4">
-                                <div class="form-group">
-                                    <select
-                                        class="form-control"
-                                        :class="{
-                                            'text-secondary':
-                                                selectedTipo === ''
-                                        }"
-                                        style="width: 100%;"
-                                        @change="filter"
-                                    >
-                                        <option :value="''" selected disabled
-                                            >Por Tipo de Codigo</option
-                                        >
-                                        <option
-                                            v-for="(tipo, index) in tipos"
-                                            :key="index"
-                                            :value="tipo.id"
-                                            >{{ tipo.id }} -
-                                            {{ tipo.descripcion }}</option
-                                        >
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col col-lg-4">
+                            <div class="col col-lg-3">
                                 <div class="form-group">
                                     <select
                                         class="form-control"
@@ -65,7 +17,7 @@
                                                 selectedOrganismo === ''
                                         }"
                                         style="width: 100%;"
-                                        @change="filter"
+                                        @change="selectOrganismo"
                                         v-model="selectedOrganismo"
                                     >
                                         <option :value="''" disabled
@@ -82,6 +34,66 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col col-lg-3">
+                                <div class="form-group">
+                                    <select
+                                        class="form-control"
+                                        :class="{
+                                            'text-secondary':
+                                                selectedTipo === ''
+                                        }"
+                                        style="width: 100%;"
+                                        @change="selectTipo"
+                                        v-model="selectedTipo"
+                                    >
+                                        <option :value="''" selected disabled
+                                            >Por Tipo de Codigo</option
+                                        >
+                                        <option
+                                            v-for="(tipo, index) in tipos"
+                                            :key="tipo.id"
+                                            :value="index"
+                                            >{{ tipo.id }} -
+                                            {{ tipo.descripcion }}</option
+                                        >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col col-lg-3">
+                                <div class="form-group">
+                                    <select
+                                        class="form-control"
+                                        :class="{
+                                            'text-secondary':
+                                                selectedSubtipo === ''
+                                        }"
+                                        style="width: 100%;"
+                                        @change="selectSubtipo"
+                                        v-model="selectedSubtipo"
+                                        :disabled="subtipos.length === 0"
+                                    >
+                                        <option :value="''" selected disabled
+                                            >Por Subtipo</option
+                                        >
+                                        <option
+                                            v-for="(subtipo, index) in subtipos"
+                                            :key="subtipo.id"
+                                            :value="index"
+                                            >{{ subtipo.id }} -
+                                            {{ subtipo.descripcion }}</option
+                                        >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col col-lg-3">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-warning btn-block"
+                                    @click="refresh"
+                                >
+                                    <i class="fas fa-sync-alt"></i>Refresh
+                                </button>
+                            </div>
                         </div>
                         <div class="input-group">
                             <div class="input-group-append">
@@ -95,7 +107,7 @@
                                 aria-label="Type your keywords here"
                                 v-model="search"
                                 @keyup="buscarConcepto"
-                                placeholder="Buscar Concepto, Subtipo, Tipo ..."
+                                placeholder="Buscar Concepto"
                             />
                             <div class="input-group-append">
                                 <button
@@ -127,9 +139,9 @@
                 </div>
             </div>
         </section>
-        <create-concepto
+        <!-- <create-concepto
             @concepto="nuevoConcepto(...arguments)"
-        ></create-concepto>
+        ></create-concepto> -->
         <div class="card">
             <div class="card-header border-0">
                 <h3 class="card-title text-muted">
@@ -190,12 +202,12 @@
             </div>
         </div>
         <span>total registros encontrados: {{ paginate.total }}</span>
-
         <paginator-component
             :data="conceptos"
             :paginate="paginate"
             @response="asignar(...arguments)"
         ></paginator-component>
+
         <update-concepto
             v-if="create"
             :concepto="concepto"
@@ -293,7 +305,6 @@ export default {
     mounted() {
         this.getConceptos();
         this.getOrganismos();
-        this.getSubtipos();
         this.getTipos();
     },
     methods: {
@@ -377,7 +388,43 @@ export default {
                 });
             }, this.timeOut);
         },
-        filter() {}
+        selectTipo() {
+            this.subtipos = [];
+            this.selectedSubtipo = "";
+            if (this.selectedTipo >= 0) {
+                this.subtipos = this.tipos[this.selectedTipo].subtipos;
+                const id = this.tipos[this.selectedTipo].id;
+                axios.get(`api/concepto/tipo/${id}`).then(response => {
+                    this.asignar(response);
+                });
+            }
+        },
+        selectSubtipo() {
+            if (this.selectedSubtipo >= 0) {
+                this.subtipo = this.subtipos[this.selectedSubtipo];
+                axios
+                    .get(`api/concepto/subtipo/${this.subtipo.id}`)
+                    .then(response => {
+                        this.asignar(response);
+                    });
+            }
+        },
+        selectOrganismo() {
+            axios
+                .get(`api/concepto/organismo/${this.selectedOrganismo}`)
+                .then(response => {
+                    this.asignar(response);
+                });
+        },
+        refresh() {
+            this.selectedTipo = "";
+            this.selectedSubtipo = "";
+            this.selectedOrganismo = "";
+            this.search = "";
+            this.getConceptos();
+            this.getOrganismos();
+            this.getTipos();
+        }
     }
 };
 </script>
