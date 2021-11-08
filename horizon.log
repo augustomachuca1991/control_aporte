@@ -11452,3 +11452,12 @@ Horizon started successfully.
 [2021-11-05 12:57:45][1064] Processed:  App\Events\FailedImport
 [2021-11-05 12:57:45][1065] Processing: App\Jobs\ImportFailedJob
 [2021-11-05 12:57:45][1065] Failed:     App\Jobs\ImportFailedJob
+[2021-11-08 08:06:11][1066] Processing: Maatwebsite\Excel\Jobs\QueueImport
+[2021-11-08 08:06:11][1066] Processed:  Maatwebsite\Excel\Jobs\QueueImport
+[2021-11-08 08:06:11][1067] Processing: Maatwebsite\Excel\Jobs\ReadChunk
+[2021-11-08 08:06:11][1067] Failed:     Maatwebsite\Excel\Jobs\ReadChunk
+[2021-11-08 08:06:11][1068] Processing: App\Events\FailedImport
+[2021-11-08 08:06:13][1068] Processed:  App\Events\FailedImport
+[2021-11-08 08:06:13][1069] Processing: App\Jobs\ImportFailedJob
+[2021-11-08 08:06:13][1069] Failed:     App\Jobs\ImportFailedJob
+Horizon started successfully.
