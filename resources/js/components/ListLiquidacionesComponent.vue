@@ -127,7 +127,6 @@
             <liquidaciondetalle-component
                 :index="index"
                 :liquidacionDetalle="liquidacionOrganismo"
-                @modal="hide()"
             ></liquidaciondetalle-component>
         </div>
     </div>

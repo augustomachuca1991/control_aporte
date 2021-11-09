@@ -45,6 +45,8 @@ class ExcelController extends Controller
 
 
         $declaracionjurada = DeclaracionJurada::find($request->id);
+        $declaracionjurada->apply = true;
+        $declaracionjurada->save();
         $path = Storage::url($request->path);
         $file = Storage::putFileAs('public', new File("./" . $path), 'import.csv');
         $import = new LiquidacionsImport($declaracionjurada);

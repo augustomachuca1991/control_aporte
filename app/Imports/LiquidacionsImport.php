@@ -469,7 +469,8 @@ class LiquidacionsImport implements
 
                 if (!empty($event)) {
                     Log::channel('daily')->error($event->getException()->getMessage());
-                    event(new FailedImport("error de importacion"));
+                    //event(new FailedImport("error de importacion"));
+                    $this->failed($event->getException()->getMessage());
                 }
             },
 

@@ -125,6 +125,7 @@ class DeclaracionJuradaController extends Controller
                     'path' => $file_storage,
                     'nombre_archivo' => $original_name,
                     'status' => true,
+                    'apply' => false,
                     'rectificar' => false,
                 ]);
                 $data = $this->show($declaracionJurada->id);
@@ -147,6 +148,7 @@ class DeclaracionJuradaController extends Controller
                         'path' => $file_storage,
                         'status' => true,
                         'rectificar' => true,
+                        'apply' => false,
                         'updated_at' => now()
                     ];
                     $status = false;
@@ -228,7 +230,7 @@ class DeclaracionJuradaController extends Controller
     public function getDeclaracionesJuradas()
     {
         $declaracionesJuradas = DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion', 'ddjj_lines'])
-            ->latest()->paginate($this->perPage);
+            ->latest()->where('status' , false)->paginate($this->perPage);
 
         return $declaracionesJuradas;
     }
@@ -262,24 +264,24 @@ class DeclaracionJuradaController extends Controller
     {
 
 
-        return DeclaracionJurada::whereHas('user', function ($query) use ($buscar) {
-            $query->where('name', 'LIKE', "%" . $buscar . "%");
-        })->orWhereHas('periodo', function ($query) use ($buscar) {
-            $query->where('periodo', 'LIKE', "%" . $buscar . "%");
-        })->orWhereHas('tipoliquidacion', function ($query) use ($buscar) {
-            $query->where('descripcion', 'LIKE', "%" . $buscar . "%");
-        })->orWhereHas('organismo', function ($query) use ($buscar) {
-            $query->where('organismo', 'LIKE', "%" . $buscar . "%");
-        })
-            ->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])
-            //->orWhere('periodo_id' ,'LIKE' ,"%".$search."%")
-            ->get();
+        // return DeclaracionJurada::where('status' , false)->whereHas('user', function ($query) use ($buscar) {
+        //     $query->where('name', 'LIKE', "%" . $buscar . "%");
+        // })->orWhereHas('periodo', function ($query) use ($buscar) {
+        //     $query->where('periodo', 'LIKE', "%" . $buscar . "%");
+        // })->orWhereHas('tipoliquidacion', function ($query) use ($buscar) {
+        //     $query->where('descripcion', 'LIKE', "%" . $buscar . "%");
+        // })->orWhereHas('organismo', function ($query) use ($buscar) {
+        //     $query->where('organismo', 'LIKE', "%" . $buscar . "%");
+        // })
+        // ->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])
+        // ->paginate($this->perPage);
+        return DeclaracionJurada::where('status' , false)->where('nombre_archivo' , 'LIKE', "%" . $buscar . "%")->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->paginate($this->perPage);
     }
 
 
     public function recientes(Request $request)
     {
-        return DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->latest()->take(3)->get();
+        return DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->where('status' , true)->get();
     }
 
     public function cast_jsonDecode(DeclaracionJuradaLine $declaracionJuradaLine)

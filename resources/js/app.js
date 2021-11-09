@@ -38,10 +38,10 @@ Vue.filter("format_moment", function(date) {
     return moment(date).format("L");
 });
 
-Vue.filter('reverse', function(value) {
+Vue.filter("reverse", function(value) {
     // slice to make a copy of array, then reverse the copy
     return value.slice().reverse();
-  });
+});
 
 // Vue.filter('formatCuil', function(cuil){
 // 	value = value.toString();
@@ -155,11 +155,11 @@ Vue.component(
 //csv
 Vue.component(
     "import-component",
-    require("./components/ImportComponent.vue").default
+    require("./components/components-file/ImportComponent.vue").default
 );
 Vue.component(
     "export-component",
-    require("./components/ExportComponent.vue").default
+    require("./components/components-file/ExportComponent.vue").default
 );
 
 //declaraciones juradas

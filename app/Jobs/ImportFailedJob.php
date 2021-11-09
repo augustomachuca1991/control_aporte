@@ -34,11 +34,12 @@ class ImportFailedJob implements ShouldQueue
      */
     public function handle()
     {
-        //
-        foreach($this->declaracionjurada->ddjj_lines as $ddjj_line)
-        {
-            $ddjj_line->delete();
-        }
-        $this->declaracionjurada->forceDelete();
+        $this->declaracionjurada->apply = false;
+        $this->declaracionjurada->save();
+        // foreach($this->declaracionjurada->ddjj_lines as $ddjj_line)
+        // {
+        //     $ddjj_line->delete();
+        // }
+        // $this->declaracionjurada->forceDelete();
     }
 }
