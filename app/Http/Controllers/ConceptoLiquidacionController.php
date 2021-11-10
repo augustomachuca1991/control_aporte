@@ -89,7 +89,8 @@ class ConceptoLiquidacionController extends Controller
         $user = User::find($request->user_id);
 
         $conceptoLiquidacion->departamentos()->attach($dpto->id, [
-            'user_id' => $user->id, 'tipocodigo_id' => $subtipo->tipocodigo->id,
+            'user_id' => $user->id,
+            'tipocodigo_id' => $subtipo->tipocodigo->id,
             'subtipo_id' => $subtipo->id, 'updated_at' => now()
         ]);
 
@@ -127,25 +128,28 @@ class ConceptoLiquidacionController extends Controller
     }
 
 
-    public function perTipo($id){
-        return ConceptoLiquidacion::whereHas('subtipo' , function ($subtipo) use ($id){
-            $subtipo->whereHas('tipocodigo' ,function($tipo) use ($id){
-                $tipo->where('id' , $id);
+    public function perTipo($id)
+    {
+        return ConceptoLiquidacion::whereHas('subtipo', function ($subtipo) use ($id) {
+            $subtipo->whereHas('tipocodigo', function ($tipo) use ($id) {
+                $tipo->where('id', $id);
             });
         })->with(['organismo', 'subtipo', 'departamentos', 'users'])->paginate($this->perPage);
     }
 
 
-    public function perSubtipo($id){
-        return ConceptoLiquidacion::whereHas('subtipo' , function ($subtipo) use ($id){
-            $subtipo->where('id' , $id);
+    public function perSubtipo($id)
+    {
+        return ConceptoLiquidacion::whereHas('subtipo', function ($subtipo) use ($id) {
+            $subtipo->where('id', $id);
         })->with(['organismo', 'subtipo', 'departamentos', 'users'])->paginate($this->perPage);
     }
 
 
-    public function perOrganismo($cod_organismo){
-        return ConceptoLiquidacion::whereHas('organismo' , function ($organismo) use ($cod_organismo){
-            $organismo->where('cod_organismo' , $cod_organismo);
+    public function perOrganismo($cod_organismo)
+    {
+        return ConceptoLiquidacion::whereHas('organismo', function ($organismo) use ($cod_organismo) {
+            $organismo->where('cod_organismo', $cod_organismo);
         })->with(['organismo', 'subtipo', 'departamentos', 'users'])->paginate($this->perPage);
     }
 }

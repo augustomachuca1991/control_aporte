@@ -60,15 +60,97 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col">
-                                        <span class="text-muted text-sm">{{
-                                            departamento.pivot.subtipo_id
-                                        }}</span>
+                                    <div class="col" v-if="index > 0">
+                                        <span class="text-muted text-sm"
+                                            >{{
+                                                concepto.departamentos[
+                                                    index - 1
+                                                ].pivot.subtipo_id
+                                            }}<svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="h-6 w-6"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                width="18"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                /></svg
+                                            >{{
+                                                departamento.pivot.subtipo_id
+                                            }}</span
+                                        >
                                     </div>
-                                    <div class="col">
-                                        <span class="text-muted text-sm">{{
-                                            departamento.pivot.tipocodigo_id
-                                        }}</span>
+                                    <div class="col" v-else>
+                                        <span class="text-muted text-sm">
+                                            {{ departamento.pivot.subtipo_id
+                                            }}<svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="h-6 w-6"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                width="18"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                /></svg
+                                            >{{ departamento.pivot.subtipo_id }}
+                                        </span>
+                                    </div>
+                                    <div class="col" v-if="index > 0">
+                                        <span class="text-muted text-sm"
+                                            >{{
+                                                concepto.departamentos[
+                                                    index - 1
+                                                ].pivot.tipocodigo_id
+                                            }}<svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="h-6 w-6"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                width="18"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                /></svg
+                                            >{{
+                                                departamento.pivot.tipocodigo_id
+                                            }}</span
+                                        >
+                                    </div>
+                                    <div class="col" v-else>
+                                        <span class="text-muted text-sm">
+                                            {{ departamento.pivot.tipocodigo_id
+                                            }}<svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="h-6 w-6"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                width="18"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                /></svg
+                                            >{{
+                                                departamento.pivot.tipocodigo_id
+                                            }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>

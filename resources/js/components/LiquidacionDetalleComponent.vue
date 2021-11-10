@@ -279,7 +279,9 @@
                                     :key="detalle.id"
                                 >
                                     <th scope="row">
-                                        <small>{{ detalle.concepto_id }}</small>
+                                        <small>{{
+                                            detalle.concepto.cod_concepto
+                                        }}</small>
                                     </th>
                                     <td>
                                         <small>{{

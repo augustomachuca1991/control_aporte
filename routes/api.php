@@ -26,7 +26,7 @@ Route::get('/declaracion_jurada', 'DeclaracionJuradaController@getDeclaracionesJ
 Route::post('/declaracion_jurada/create', 'DeclaracionJuradaController@store');
 Route::put('/declaracion_jurada/update/{id}', 'DeclaracionJuradaController@update');
 Route::get('/declaracion_jurada/{id}', 'DeclaracionJuradaController@show');
-//Route::delete('declaracion_jurada/aplicar/{id}' , 'DeclaracionJuradaController@destroy');
+Route::delete('declaracion_jurada/delete/{id}', 'DeclaracionJuradaController@destroy');
 //Declaraciones Juradas detalle
 Route::get('/declaracion_jurada/buscar/{search}', 'DeclaracionJuradaController@search');
 Route::post('/declaracion_jurada/download', 'DeclaracionJuradaController@download');
@@ -219,22 +219,22 @@ Route::get('/dj', function (Request $request) {
     $explode = explode('|', $string);
     $array_detalle = array_chunk($explode, 6, false);
 
-        $validacion = [
-            'detalle' => $array_detalle,
-        ];
-        $reglas = [
-            'detalle.*' => 'array|size:6',
-        ];
-        $mensajes = [
-            'detalle.*.array' => '* no es array',
-            'detalle.*.size' => '* no tiene el tamaño especifico',
-        ];
-        $validator = Validator::make($validacion, $reglas, $mensajes);
-        if ($validator->fails()) {
-            dd($validator->errors()->first());
-        }else{
-            dd('todo ok');
-        }
+    $validacion = [
+        'detalle' => $array_detalle,
+    ];
+    $reglas = [
+        'detalle.*' => 'array|size:6',
+    ];
+    $mensajes = [
+        'detalle.*.array' => '* no es array',
+        'detalle.*.size' => '* no tiene el tamaño especifico',
+    ];
+    $validator = Validator::make($validacion, $reglas, $mensajes);
+    if ($validator->fails()) {
+        dd($validator->errors()->first());
+    } else {
+        dd('todo ok');
+    }
 });
 
 

@@ -22,14 +22,23 @@
                                     v-if="ddjj_sin.length === 0"
                                 >
                                     <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
+                                        <div
+                                            class="widget-content-wrapper text-muted"
+                                        >
                                             <p>No hay tareas por realizar</p>
+                                            Lorem ipsum dolor sit amet
+                                            consectetur, adipisicing elit.
+                                            Exercitationem maiores debitis at
+                                            tempora soluta quia alias ab
+                                            explicabo quibusdam quo veritatis
+                                            ipsa dolore esse, eum sed, nesciunt
+                                            neque voluptatibus provident!
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 class="h-5 w-5"
                                                 viewBox="0 0 20 20"
                                                 fill="currentColor"
-                                                width="72"
+                                                width="48"
                                             >
                                                 <path
                                                     d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"
@@ -44,8 +53,8 @@
                                     </div>
                                 </li>
                                 <li
-                                    class="list-group-item"
                                     v-else
+                                    class="list-group-item"
                                     v-for="(declaracion_jurada,
                                     index) in ddjj_sin"
                                     :key="index"
@@ -142,6 +151,12 @@
                                                         Aplicar
                                                     </button>
                                                     <button
+                                                        @click="
+                                                            deletePeriodo(
+                                                                index,
+                                                                declaracion_jurada
+                                                            )
+                                                        "
                                                         class="border-0 btn-transition btn btn-outline-danger rounded-pill"
                                                     >
                                                         <i
@@ -208,7 +223,7 @@
                                             id="import"
                                         >
                                             <i class="fas fa-file-upload"></i>
-                                            Subir
+                                            &nbsp; Subir
                                         </button>
                                     </div>
                                 </div>
@@ -278,7 +293,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col col-lg-3">
                                         <div class="form-group">
                                             <select
@@ -334,7 +349,7 @@
                                             >Refresh
                                         </button>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="input-group">
                                     <div class="input-group-append">
                                         <button
@@ -475,34 +490,23 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-3 text-center">
-                                        <!-- <button
-                                                type="button"
-                                                v-if="declaracion_jurada.status"
-                                                class="btn btn-outline-info rounded-pill btn-xs btn-block"
-                                                @click="
-                                                    aplicar(declaracion_jurada)
-                                                "
-                                                data-toggle="tooltip"
-                                                data-placement="top"
-                                                title="Aplicar Tarea"
-                                            >
-                                                <i class="fas fa-tasks"></i>
-                                            </button>
-                                            <span
-                                                v-else
-                                                class="badge bg-success rounded-circle"
-                                                ><i class="fas fa-check"></i
-                                            ></span>
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-danger rounded-pill btn-xs btn-block"
-                                                data-toggle="tooltip"
-                                                data-placement="top"
-                                                title="Quitar"
-                                            >
-                                                <i class="fas fa-times"></i>
-                                            </button> -->
+                                    <div class="col-3 text-center text-olive">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="h-6 w-6 "
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            width="24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M5 13l4 4L19 7"
+                                            />
+                                        </svg>
+                                        <span class="text-xs"> completed</span>
                                     </div>
                                 </div>
                             </div>
@@ -574,7 +578,8 @@ export default {
             search: "",
             setTimeoutBuscador: "",
             timeOut: 300,
-            perPage: "10"
+            perPage: "10",
+            index: ""
         };
     },
     mounted() {
@@ -664,6 +669,43 @@ export default {
             this.file = "";
             this.file = this.$refs.file.files[0];
         },
+        deletePeriodo(index, declaracionJurada) {
+            this.declaracionJurada = declaracionJurada;
+            this.index = index;
+            swal.fire({
+                title: "Esta seguro?",
+                text: "Desea quitar esta tarea de la lista?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, eliminar!",
+                cancelButtonText: "Cancelar"
+            }).then(result => {
+                if (result.isConfirmed) {
+                    axios
+                        .delete(
+                            `api/declaracion_jurada/delete/${this.declaracionJurada.id}`
+                        )
+                        .then(response => {
+                            if (response.data.isValid) {
+                                this.ddjj_sin.splice(this.index, 1);
+                                Toast.fire({
+                                    icon: "success",
+                                    title: response.data.msj,
+                                    background: "#E7FFD7"
+                                });
+                            } else {
+                                Toast.fire({
+                                    icon: "error",
+                                    title: response.data.msj,
+                                    background: "#FCDBCD"
+                                });
+                            }
+                        });
+                }
+            });
+        },
         getDeclaracionesJudaras() {
             axios.get("api/declaracion_jurada").then(response => {
                 this.asignar(response);
@@ -675,12 +717,14 @@ export default {
             });
         },
         aplicar(index, declaracion_jurada) {
-            this.ddjj_sin[index].apply = true;
-            axios.post("api/import", declaracion_jurada).then(response => {
-                //this.ddjj_sin[index] = response.data;
+            this.index = index;
+            this.declaracion_jurada = declaracion_jurada;
+            axios.post("api/import", this.declaracion_jurada).then(response => {
+                this.ddjj_sin[this.index].apply = true;
                 Toast.fire({
                     icon: "success",
-                    title: "importando: " + declaracion_jurada.nombre_archivo
+                    title:
+                        "importando: " + this.declaracion_jurada.nombre_archivo
                 });
             });
         },
@@ -707,7 +751,6 @@ export default {
                 axios
                     .get(`api/declaracion_jurada/buscar/${this.search}`)
                     .then(response => {
-                        console.log(response.data);
                         this.asignar(response);
                     });
             }, this.timeOut);

@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\{DeclaracionJurada, Liquidacion, DeclaracionJuradaLine, Categoria, Clase, Jurisdiccion, Agente, PuestoLaboral, HistoriaLaboral, ConceptoLiquidacion, HistoriaLiquidacion, LiquidacionDetalle, LiquidacionOrganismo, Organismo, TipoCodigo, User};
+use App\{DeclaracionJurada, Liquidacion, DeclaracionJuradaLine, Categoria, Clase, Jurisdiccion, Agente, PuestoLaboral, HistoriaLaboral, ConceptoLiquidacion, Dpto, HistoriaLiquidacion, LiquidacionDetalle, LiquidacionOrganismo, Organismo, TipoCodigo, User};
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Jobs\{ImportFailedJob, CompletedImport, DeleteFileImportJob, NotificationJob};
@@ -60,7 +60,7 @@ class LiquidacionsImport implements
     public function collection(Collection $rows)
     {
 
-        
+
         $chunkOffset = $this->getChunkOffset() - 2;
         $count = ($chunkOffset / 100) + 1;
         $cicles = intdiv($this->totalRows, $rows->count());
@@ -126,7 +126,7 @@ class LiquidacionsImport implements
                     'updated_at' => now()
                 ]);
 
-                
+
 
                 if (!empty($this->declaracionjurada->liquidaciones[$row])) {
                     $this->liquidacion = $this->declaracionjurada->liquidaciones[$row];
@@ -146,6 +146,15 @@ class LiquidacionsImport implements
                             'organismo_id' => $this->declaracionjuradaline->cod_organismo,
                             'subtipo_id' => $this->conceptos[$i]['subtipo'],
                             'created_at' => now(),
+                        ]);
+
+                        $departamento = Dpto::find(1);
+                        $departamento->conceptos()->attach($this->concepto_id[$i], [
+                            'user_id' => $this->declaracionjurada->user_id,
+                            'tipocodigo_id' => $this->conceptos[$i]['tipo'],
+                            'subtipo_id' => $this->conceptos[$i]['subtipo'],
+                            'created_at' => now(),
+                            'updated_at' => now()
                         ]);
                     } else {
                         $this->concepto_id[$i] = $is_concepto->first()->id;
@@ -193,7 +202,7 @@ class LiquidacionsImport implements
                 $is_detalleliquidacion = LiquidacionDetalle::where('liquidacion_id', $this->liquidacion->id);
                 if ($is_detalleliquidacion->doesntExist()) {
                     $this->liquidacion_conceptos($this->liquidacion);
-                }else{
+                } else {
                     $liquidacionDetalle = $is_detalleliquidacion->get();
                     for ($i = 0; $i < count($this->conceptos); $i++) {
                         if (!empty($liquidacionDetalle[$i])) {
@@ -201,7 +210,7 @@ class LiquidacionsImport implements
                             $liquidacionDetalle[$i]->concepto_id = $this->concepto_id[$i];
                             $liquidacionDetalle[$i]->updated_at = now();
                             $liquidacionDetalle[$i]->save();
-                        }else{
+                        } else {
                             $liquidacionDetalle = new LiquidacionDetalle();
                             $liquidacionDetalle->liquidacion_id = $this->liquidacion->id;
                             $liquidacionDetalle->concepto_id = $this->concepto_id[$i];
@@ -210,13 +219,12 @@ class LiquidacionsImport implements
                             $liquidacionDetalle->save();
                         }
                     }
-                    
                 }
 
                 $is_computo = LiquidacionOrganismo::where('liquidacion_id', $this->liquidacion->id);
                 if ($is_computo->doesntExist()) {
                     $this->liquidacion_organismo($this->liquidacion);
-                }else{
+                } else {
                     $computos = $is_computo->get();
                     foreach ($computos as $computo) {
                         $computo->haber_bruto = $this->liquidacion->bruto;
@@ -242,7 +250,7 @@ class LiquidacionsImport implements
                         'funcion_id' => null,
                         'h_laboral_id' => $this->historia_laboral_id,
                     ]);
-                }else{
+                } else {
                     $historiasLaborales = $is_historiaLiquidacion->get();
                     foreach ($historiasLaborales as $historiaLaboral) {
                         $historiaLaboral->estado_id = $this->declaracionjuradaline->cod_estado;
@@ -282,7 +290,7 @@ class LiquidacionsImport implements
                     'detalle' => json_encode($this->conceptos),
                 ]);
 
-                
+
                 $liquidacion = new Liquidacion();
                 $liquidacion->declaracion_id = $this->declaracionjurada->id;
                 for ($i = 0; $i < count($this->conceptos); $i++) {
@@ -297,6 +305,14 @@ class LiquidacionsImport implements
                             'organismo_id' => $ddjj_line['cod_organismo'],
                             'subtipo_id' => $this->conceptos[$i]['subtipo'],
                             'created_at' => now()
+                        ]);
+                        $departamento = Dpto::find(1);
+                        $departamento->conceptos()->attach($this->concepto_id[$i], [
+                            'user_id' => $this->declaracionjurada->user_id,
+                            'tipocodigo_id' => $this->conceptos[$i]['tipo'],
+                            'subtipo_id' => $this->conceptos[$i]['subtipo'],
+                            'created_at' => now(),
+                            'updated_at' => now()
                         ]);
                     } else {
                         $this->concepto_id[$i] = $is_concepto->first()->id;
@@ -538,6 +554,7 @@ class LiquidacionsImport implements
     protected function liquidacion_conceptos($liquidacion)
     {
 
+
         for ($i = 0; $i < count($this->conceptos); $i++) {
             $liquidacion->conceptos()->attach($this->concepto_id[$i], [
                 'importe' => $this->conceptos[$i]['importe']
@@ -657,17 +674,17 @@ class LiquidacionsImport implements
     }
 
 
-    protected function random_puesto_laboral($cod_laboral){
-        if(empty($cod_laboral)){
-            $random_cod = rand(1,100000);
+    protected function random_puesto_laboral($cod_laboral)
+    {
+        if (empty($cod_laboral)) {
+            $random_cod = rand(1, 100000);
             $is_puesto = PuestoLaboral::where('cod_laboral', $random_cod)->exists();
             while ($is_puesto) {
-                $random_cod = rand(1,100000);
+                $random_cod = rand(1, 100000);
                 $is_puesto = PuestoLaboral::where('cod_laboral', $random_cod)->exists();
             }
             $cod_laboral = $random_cod;
         }
         return $cod_laboral;
-        
     }
 }

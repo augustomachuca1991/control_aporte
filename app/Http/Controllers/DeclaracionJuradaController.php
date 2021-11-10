@@ -216,6 +216,17 @@ class DeclaracionJuradaController extends Controller
     {
 
         $declaracionJurada = DeclaracionJurada::find($id);
+        $hasDetalle =  $declaracionJurada->ddjj_lines()->doesntExist();
+        if ($hasDetalle) {
+            $msj = $declaracionJurada->nombre_archivo . ' se quito de la lista de tareas';
+            $isValid = true;
+            $declaracionJurada->delete();
+        } else {
+            $isValid = false;
+            $msj = 'No es posible eliminar! esta asociado a varios datos y podria causar una problema al sistemas';
+        }
+
+        return response()->json(['isValid' => $isValid, 'msj' => $msj]);
     }
 
 
@@ -230,7 +241,7 @@ class DeclaracionJuradaController extends Controller
     public function getDeclaracionesJuradas()
     {
         $declaracionesJuradas = DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion', 'ddjj_lines'])
-            ->latest()->where('status' , false)->paginate($this->perPage);
+            ->latest()->where('status', false)->paginate($this->perPage);
 
         return $declaracionesJuradas;
     }
@@ -275,13 +286,13 @@ class DeclaracionJuradaController extends Controller
         // })
         // ->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])
         // ->paginate($this->perPage);
-        return DeclaracionJurada::where('status' , false)->where('nombre_archivo' , 'LIKE', "%" . $buscar . "%")->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->paginate($this->perPage);
+        return DeclaracionJurada::where('status', false)->where('nombre_archivo', 'LIKE', "%" . $buscar . "%")->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->paginate($this->perPage);
     }
 
 
     public function recientes(Request $request)
     {
-        return DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->where('status' , true)->get();
+        return DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->where('status', true)->get();
     }
 
     public function cast_jsonDecode(DeclaracionJuradaLine $declaracionJuradaLine)
