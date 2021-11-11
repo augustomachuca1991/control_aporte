@@ -1,3 +1,9 @@
+<style>
+.custom-file-input ~ .custom-file-label::after {
+    font-family: "Font Awesome 5 Free";
+    content: "\f07b Elegir";
+}
+</style>
 <template>
     <section class="content container">
         <div class="row">
@@ -26,13 +32,6 @@
                                             class="widget-content-wrapper text-muted"
                                         >
                                             <p>No hay tareas por realizar</p>
-                                            Lorem ipsum dolor sit amet
-                                            consectetur, adipisicing elit.
-                                            Exercitationem maiores debitis at
-                                            tempora soluta quia alias ab
-                                            explicabo quibusdam quo veritatis
-                                            ipsa dolore esse, eum sed, nesciunt
-                                            neque voluptatibus provident!
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 class="h-5 w-5"
@@ -60,8 +59,10 @@
                                     :key="index"
                                 >
                                     <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left">
+                                        <div class="widget-content-wrapper row">
+                                            <div
+                                                class="widget-content-left col mb-4 mb-lg-0"
+                                            >
                                                 <div
                                                     class="widget-content-left text-olive"
                                                 >
@@ -132,7 +133,7 @@
                                                 >
                                             </div>
                                             <div
-                                                class="widget-content-right widget-content-actions pt-3"
+                                                class="widget-content-right widget-content-actions col-12 col-lg-3"
                                             >
                                                 <div
                                                     v-if="
@@ -146,22 +147,26 @@
                                                                 declaracion_jurada
                                                             )
                                                         "
-                                                        class="border-0 btn-transition btn btn-outline-info rounded-pill"
+                                                        class="border-0 btn-transition btn btn-outline-info rounded-pill mb-1"
                                                     >
-                                                        Aplicar
+                                                        <i
+                                                            class="fas fa-file-upload"
+                                                        ></i
+                                                        >&nbsp;Importar
                                                     </button>
                                                     <button
                                                         @click="
-                                                            deletePeriodo(
+                                                            deleteDeclaracionJurada(
                                                                 index,
                                                                 declaracion_jurada
                                                             )
                                                         "
-                                                        class="border-0 btn-transition btn btn-outline-danger rounded-pill"
+                                                        class="border-0 btn-transition btn btn-outline-danger rounded-pill mb-1"
                                                     >
                                                         <i
                                                             class="fas fa-times"
-                                                        ></i>
+                                                        ></i
+                                                        >&nbsp;Quitar de la cola
                                                     </button>
                                                 </div>
                                                 <div v-else>
@@ -196,7 +201,9 @@
                     <div class="card-footer">
                         <form @submit.prevent="submitFile()">
                             <div class="form-group">
-                                <label for="inputFile">Subir Archivo</label>
+                                <label for="inputFile" class="text-muted"
+                                    >Subir Archivo</label
+                                >
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input
@@ -205,7 +212,7 @@
                                             id="inputFile"
                                             name="file"
                                             ref="file"
-                                            @change="handleFileUpload()"
+                                            @change="handleFileUpload"
                                             required
                                             lang="es"
                                         />
@@ -221,9 +228,10 @@
                                             type="submit"
                                             name="import"
                                             id="import"
+                                            style="font-family: 'Font Awesome 5 Free';"
                                         >
-                                            <i class="fas fa-file-upload"></i>
-                                            &nbsp; Subir
+                                            <i class="fas fa-link"></i>Poner en
+                                            cola
                                         </button>
                                     </div>
                                 </div>
@@ -232,58 +240,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-header bg-gradient-gray">
-                        <h3 class="card-title">Importar Excel \ CSV</h3>
-
-                        <div class="card-tools">
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="collapse"
-                            >
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <form @submit.prevent="submitFile()">
-                        <div class="card-body">
-                            <div
-                                class="import"
-                                style="min-height: 135px; height: 135px; max-height: 135px; max-width: 100%;"
-                            >
-                                <div class="form-group">
-                                    <div class="d-flex align-items-center">
-                                        <input
-                                            class="form-control border-0"
-                                            type="file"
-                                            id="file"
-                                            name="file"
-                                            ref="file"
-                                            @change="handleFileUpload()"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer bg-white">
-                            <div>
-                                <button
-                                    type="submit"
-                                    name="import"
-                                    id="import"
-                                    class="btn bg-gradient-gray btn-block"
-                                >
-                                    <i class="fas fa-file-upload"></i
-                                    >&nbsp;Subir
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div> -->
 
             <div class="col-12">
                 <div class="hr-sect capitalize">
@@ -580,6 +536,7 @@ export default {
             timeOut: 300,
             perPage: "10",
             index: ""
+            //fileName: "hola.csv"
         };
     },
     mounted() {
@@ -665,11 +622,14 @@ export default {
                     });
                 });
         },
-        handleFileUpload() {
+        handleFileUpload(e) {
+            var fileName = document.getElementById("inputFile").files[0].name;
+            var nextSibling = e.target.nextElementSibling;
+            nextSibling.innerText = fileName;
             this.file = "";
             this.file = this.$refs.file.files[0];
         },
-        deletePeriodo(index, declaracionJurada) {
+        deleteDeclaracionJurada(index, declaracionJurada) {
             this.declaracionJurada = declaracionJurada;
             this.index = index;
             swal.fire({

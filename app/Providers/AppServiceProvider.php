@@ -33,11 +33,10 @@ class AppServiceProvider extends ServiceProvider
             if ($notificationes->count() > 0) {
                 foreach ($notificationes as $key) {
                     $menu[] = [
-                        //'text' => $key->data.' '.$key->created_at->diffForHumans(),
                         'text' => json_decode($key->data),
                         'url'  => '#',
-                        'icon' => 'fas  fa-bell',
-                        'icon_color' => 'maroon',
+                        'icon' => 'mr-2 fas fa-fw fa-envelope text-primary',
+                        'time' => json_decode($key->created_at),
                     ];
                 }
             } else {
@@ -58,6 +57,7 @@ class AppServiceProvider extends ServiceProvider
                 'topnav_right' => true,
                 'submenu' => $menu,
             ]);
+        
         });
     }
 }

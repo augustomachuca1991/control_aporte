@@ -220,7 +220,7 @@ class DeclaracionJuradaController extends Controller
         if ($hasDetalle) {
             $msj = $declaracionJurada->nombre_archivo . ' se quito de la lista de tareas';
             $isValid = true;
-            $declaracionJurada->delete();
+            $declaracionJurada->forceDelete();
         } else {
             $isValid = false;
             $msj = 'No es posible eliminar! esta asociado a varios datos y podria causar una problema al sistemas';
