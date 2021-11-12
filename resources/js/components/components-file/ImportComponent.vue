@@ -249,63 +249,6 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
-                                <!-- <div class="row">
-                                    <div class="col col-lg-3">
-                                        <div class="form-group">
-                                            <select
-                                                class="form-control"
-                                                style="width: 100%;"
-                                            >
-                                                <option
-                                                    :value="''"
-                                                    selected
-                                                    disabled
-                                                    >Buscar Por
-                                                    Organismo</option
-                                                >
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col col-lg-3">
-                                        <div class="form-group">
-                                            <select
-                                                class="form-control"
-                                                style="width: 100%;"
-                                            >
-                                                <option
-                                                    :value="''"
-                                                    selected
-                                                    disabled
-                                                    >Por Tipo de Codigo</option
-                                                >
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col col-lg-3">
-                                        <div class="form-group">
-                                            <select
-                                                class="form-control"
-                                                style="width: 100%;"
-                                            >
-                                                <option
-                                                    :value="''"
-                                                    selected
-                                                    disabled
-                                                    >Por Subtipo</option
-                                                >
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col col-lg-3">
-                                        <button
-                                            type="button"
-                                            class="btn btn-outline-warning btn-block"
-                                        >
-                                            <i class="fas fa-sync-alt"></i
-                                            >Refresh
-                                        </button>
-                                    </div>
-                                </div> -->
                                 <div class="input-group">
                                     <div class="input-group-append">
                                         <button
@@ -354,9 +297,24 @@
                 </section>
                 <div class="row" v-if="declaraciones_juradas.length === 0">
                     <div class="col">
-                        <p>
-                            No Hay Datos
-                        </p>
+                        <div class="card" style="width: 18rem;">
+                            <img
+                                class="card-img-top"
+                                src="http://www.molfx.com/wp-content/uploads/2016/10/sin_datos_de_prensa-1.jpg"
+                                alt="Card image cap"
+                            />
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">
+                                    Some quick example text to build on the card
+                                    title and make up the bulk of the card's
+                                    content.
+                                </p>
+                                <a href="#" class="btn btn-primary"
+                                    >Go somewhere</a
+                                >
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div v-else class="row">

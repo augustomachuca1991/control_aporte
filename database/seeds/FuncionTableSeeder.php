@@ -2,7 +2,6 @@
 
 use App\Funcion;
 use Illuminate\Database\Seeder;
-use PhpParser\Node\Expr\FuncCall;
 
 class FuncionTableSeeder extends Seeder
 {

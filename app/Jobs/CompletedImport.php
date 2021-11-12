@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\DeclaracionJurada;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,16 +15,16 @@ class CompletedImport implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $declaracionJurada;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    //public $condition;
-
-    public function __construct()
+    public function __construct(DeclaracionJurada $declaracionJurada)
     {
-         //$this->condition = $condition;
+        $this->declaracionJurada = $declaracionJurada;
+        $this->onConnection('redis');
     }
 
     /**
@@ -33,6 +34,12 @@ class CompletedImport implements ShouldQueue
      */
     public function handle()
     {
-        event(new NotificationImport('Archivo importado exitosamente'));
+        //Log::channel('daily')->info($this->declaracionJurada);
+        //Storage::delete($this->declaracionJurada->path);
+        $this->declaracionJurada->status = false;
+        $this->declaracionJurada->apply = true;
+        $this->declaracionJurada->rectificar = false;
+        $this->declaracionJurada->save();
+        event(new NotificationImport('Se envio una notificacion a su correo'));
     }
 }

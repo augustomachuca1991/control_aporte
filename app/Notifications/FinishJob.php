@@ -41,10 +41,10 @@ class FinishJob extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Exito!')
-                    ->line('La carga de archivo finalizo de forma exitosa.')
-                    ->action('Instituto de Previsión Social', url('/dashboard'))
-                    ->line('Gracias por Utilizar nuestra aplicación!');
+            ->greeting('Exito!')
+            ->line('La carga de archivo finalizo de forma exitosa.')
+            ->action('Instituto de Previsión Social', url('/dashboard'))
+            ->line('Gracias por Utilizar nuestra aplicación!');
     }
 
     /**
@@ -56,7 +56,7 @@ class FinishJob extends Notification implements ShouldQueue
     public function toDatabase($notifiable)
     {
         return [
-            'Tarea Completada'
+            'Tarea Finalizada'
         ];
         // return [
         //     'Tarea Completa con exito',

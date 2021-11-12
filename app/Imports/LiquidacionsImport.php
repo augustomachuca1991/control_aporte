@@ -28,7 +28,7 @@ class LiquidacionsImport implements
     WithValidation,
     WithBatchInserts
 {
-    use Importable, SkipsErrors, RemembersChunkOffset, RemembersRowNumber,SkipsFailures;
+    use Importable, SkipsErrors, RemembersChunkOffset, RemembersRowNumber, SkipsFailures;
 
 
     protected $declaracionjurada;
@@ -72,7 +72,7 @@ class LiquidacionsImport implements
             foreach ($rows as $row => $value) {
                 try {
                     DB::beginTransaction();
-                
+
                     $this->detalle_conceptos($value['detalle']);
                     if (!empty($this->declaracionjurada->ddjj_lines[$row])) {
                         $this->declaracionjurada->ddjj_lines[$row]->update([
@@ -264,36 +264,23 @@ class LiquidacionsImport implements
                             $historiaLaboral->save();
                         }
                     }
-                
+
                     DB::commit();
-                
                 } catch (Exception $e) {
                     DB::rollback();
                     if (!empty($e)) {
                         Log::channel('daily')->error($e->getMessage());
-                    }
-                } catch(Failure $f){
-                    DB::rollback();
-                    if (!empty($f)) {
-                        Log::channel('daily')->error($f);
-                    }
-                }catch(\Throwable $errors){
-                    if (!empty($errors)) {
-                        foreach ($errors as $error) {
-                            Log::channel('daily')->info('onError', [
-                                'errors' => $error->errors(),
-                            ]);
-                        }
+                        $this->failed($e->getMessage());
                     }
                 }
-                
             }
         } else {
             foreach ($rows as $row) {
-                try{
+                try {
                     DB::beginTransaction();
-                
-                    $this->detalle_conceptos($row['detalle']);$ddjj_line = DeclaracionJuradaLine::create([
+
+                    $this->detalle_conceptos($row['detalle']);
+                    $ddjj_line = DeclaracionJuradaLine::create([
                         'declaracionjurada_id' => $this->declaracionjurada->id,
                         'nombre' => $row['nombre'],
                         'cuil' => $row['cuil'],
@@ -314,14 +301,14 @@ class LiquidacionsImport implements
                         'organismo' => $organismo->organismo,
                         'detalle' => json_encode($this->conceptos),
                     ]);
-                    
+
                     $liquidacion = new Liquidacion();
                     $liquidacion->declaracion_id = $this->declaracionjurada->id;
                     for ($i = 0; $i < count($this->conceptos); $i++) {
                         $is_concepto = ConceptoLiquidacion::where('cod_concepto', $this->conceptos[$i]['cod'])
                             ->where('organismo_id', $ddjj_line['cod_organismo']);
                         if ($is_concepto->doesntExist()) {
-    
+
                             $this->concepto_id[$i]  = ConceptoLiquidacion::insertGetId([
                                 'cod_concepto' => $this->conceptos[$i]['cod'],
                                 'concepto' => $this->conceptos[$i]['concepto'],
@@ -341,16 +328,16 @@ class LiquidacionsImport implements
                         } else {
                             $this->concepto_id[$i] = $is_concepto->first()->id;
                         }
-    
+
                         if ($this->conceptos[$i]['subtipo'] <= 2) {
-    
+
                             if ($this->conceptos[$i]['subtipo'] == 1) {
                                 $liquidacion->basico = $this->conceptos[$i]['importe'];
                             }
                             $liquidacion->remunerativo += $this->conceptos[$i]['importe'];
                             $liquidacion->bruto += $this->conceptos[$i]['importe'];
                         } else if ($this->conceptos[$i]['subtipo'] > 2 && $this->conceptos[$i]['subtipo'] <= 5) {
-    
+
                             if ($this->conceptos[$i]['tipo'] == 2) {
                                 $liquidacion->bonificable += $this->conceptos[$i]['importe'];
                             } else if ($this->conceptos[$i]['tipo'] == 3) {
@@ -361,7 +348,7 @@ class LiquidacionsImport implements
                             $liquidacion->adicionales += $this->conceptos[$i]['importe'];
                             $liquidacion->bruto += $this->conceptos[$i]['importe'];
                         } else if ($this->conceptos[$i]['subtipo'] > 5 && $this->conceptos[$i]['subtipo'] <= 8) {
-    
+
                             if ($this->conceptos[$i]['subtipo'] == 6) {
                                 $liquidacion->familiar += $this->conceptos[$i]['importe'];
                             } elseif ($this->conceptos[$i]['subtipo'] == 7) {
@@ -370,7 +357,7 @@ class LiquidacionsImport implements
                                 $liquidacion->esposa += $this->conceptos[$i]['importe'];
                             }
                         } elseif ($this->conceptos[$i]['subtipo'] > 8 && $this->conceptos[$i]['subtipo'] <= 11) { // descuento
-    
+
                             if ($this->conceptos[$i]['subtipo'] == 9) {
                                 $liquidacion->aporte_personal = $this->conceptos[$i]['importe'];
                             }
@@ -378,49 +365,33 @@ class LiquidacionsImport implements
                         }
                     }
                     $liquidacion->save();
-                    
+
                     $this->liquidacion_conceptos($liquidacion);
                     $this->liquidacion_organismo($liquidacion);
                     $this->categoria_clase($ddjj_line);
                     $this->agente($ddjj_line);
                     $this->puesto_laboral($ddjj_line);
-                    
-                    // $liquidacion->historia_laborales()->attach($this->historia_laboral_id, [
-                    //     'estado_id' => $ddjj_line->cod_estado,
-                    //     'funcion_id' => 1
-                    // ]);
-                
-                
+
+                    $liquidacion->historia_laborales()->attach($this->historia_laboral_id, [
+                        'estado_id' => $ddjj_line->cod_estado,
+                        'funcion_id' => 1
+                    ]);
+
+
                     DB::commit();
-                }catch(Exception $e){ 
+                } catch (Exception $e) {
                     DB::rollback();
                     if (!empty($e)) {
-                        Log::channel('daily')->error($e->getMessage());
-                        //event(new FailedImport("error de importacion"));
+                        Log::channel('daily')->info($e->getMessage());
                         //$this->failed($e->getMessage());
                     }
-
-                }catch(Failure $f){
-                    DB::rollback();
-                    if (!empty($f)) {
-                        Log::channel('daily')->error($f);
-                    }
-                }catch(\Throwable $errors){
-                    if (!empty($errors)) {
-                        foreach ($errors as $error) {
-                            Log::channel('daily')->info('onError', [
-                                'errors' => $error->errors(),
-                            ]);
-                        }
-                    }
                 }
-                
             }
         }
 
         if ($cicles == $count) {
-            $deleteFileJob = new DeleteFileImportJob($this->declaracionjurada);
-            CompletedImport::dispatch()->chain([new NotificationJob(User::find($this->declaracionjurada->user_id)), $deleteFileJob]);
+            $completeImport = new CompletedImport($this->declaracionjurada);
+            $completeImport->dispatch()->chain([new NotificationJob(User::find($this->declaracionjurada->user_id))]);
         }
     }
 
@@ -498,8 +469,8 @@ class LiquidacionsImport implements
 
         if (!empty($errors)) {
             foreach ($errors as $error) {
-                Log::channel('daily')->info('onError', [
-                    'errors' => $error->errors(),
+                Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
+                    'error' => $error->errors(),
                 ]);
             }
         }
@@ -510,12 +481,13 @@ class LiquidacionsImport implements
     {
         if (!empty($failures)) {
             foreach ($failures as $key => $failure) {
-                Log::channel('daily')->info('fallos', [
-                    //'message' => $failure->toArray()[0],
+                Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
+
+                    'message' => $failure->toArray()[0],
                     'row' => $failure->row(),
                     'attribute' => $failure->attribute(),
                     'errors' => $failure->errors(),
-                    'values' => $failure->values(),
+                    'values' => $failure->values()[$failure->attribute()],
                 ]);
             }
         }
@@ -526,14 +498,14 @@ class LiquidacionsImport implements
     public function registerEvents(): array
     {
         return [
-            ImportFailed::class => function (ImportFailed $event) {
+            // ImportFailed::class => function (ImportFailed $event) {
 
-                if (!empty($event)) {
-                    Log::channel('daily')->error($event->getException()->getMessage());
-                    //event(new FailedImport("error de importacion"));
-                    $this->failed($event->getException()->getMessage());
-                }
-            },
+            //     if (!empty($event)) {
+            //         Log::channel('daily')->error($event->getException()->getMessage());
+            //         //event(new FailedImport("error de importacion"));
+            //         $this->failed($event->getException()->getMessage());
+            //     }
+            // },
 
             BeforeImport::class => function (BeforeImport $event) {
                 $totalRows = $event->getReader()->getTotalRows();
@@ -562,7 +534,7 @@ class LiquidacionsImport implements
     public function failed($message)
     {
         ImportFailedJob::dispatch($this->declaracionjurada);
-        event(new FailedImport($message));
+        event(new FailedImport('ocurrio un error durante la importacion'));
     }
 
 
