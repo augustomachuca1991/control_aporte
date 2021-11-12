@@ -31,12 +31,11 @@ class AppServiceProvider extends ServiceProvider
             $event->menu->add('© Copyright 2021');
             $notificationes = Notification::where('notifiable_id', Auth::id())->get();
             if ($notificationes->count() > 0) {
-                foreach ($notificationes as $key) {
+                foreach ($notificationes as $notificacion) {
                     $menu[] = [
-                        'text' => json_decode($key->data),
+                        'text' => $notificacion->data,
                         'url'  => '#',
                         'icon' => 'mr-2 fas fa-fw fa-envelope text-primary',
-                        'time' => json_decode($key->created_at),
                     ];
                 }
             } else {

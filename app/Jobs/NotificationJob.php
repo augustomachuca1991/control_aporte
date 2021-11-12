@@ -33,8 +33,8 @@ class NotificationJob implements ShouldQueue
      */
     public function handle()
     {
-        $when = now()->addSeconds(5);
-        $this->user->notify((new FinishJob)->delay($when));
+        
+        $this->user->notify(new FinishJob);
         
     }
 }

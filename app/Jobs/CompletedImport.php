@@ -14,16 +14,14 @@ use App\Events\NotificationImport;
 class CompletedImport implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    public $declaracionJurada;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(DeclaracionJurada $declaracionJurada)
+    public function __construct()
     {
-        $this->declaracionJurada = $declaracionJurada;
+        
         $this->onConnection('redis');
     }
 
@@ -36,10 +34,7 @@ class CompletedImport implements ShouldQueue
     {
         //Log::channel('daily')->info($this->declaracionJurada);
         //Storage::delete($this->declaracionJurada->path);
-        $this->declaracionJurada->status = false;
-        $this->declaracionJurada->apply = true;
-        $this->declaracionJurada->rectificar = false;
-        $this->declaracionJurada->save();
+        
         event(new NotificationImport('Se envio una notificacion a su correo'));
     }
 }
