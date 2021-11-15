@@ -210,12 +210,8 @@ Route::get('/departamento', 'DptoController@getDptos');
 
 
 Route::get('/dj', function (Request $request) {
-    // $declaracionJurada = DeclaracionJurada::with('ddjj_lines')->where('id', 1)->first();
-    // $declaracionJurada->ddjj_lines->first()->detalle = json_decode($declaracionJurada->ddjj_lines->first()->detalle, true);
-    // $detalle = $declaracionJurada->ddjj_lines->first()->detalle;
-    // return $detalle;
 
-    $string = "1|asdasd|30%|1|1|5000|2|qwerty|18.5%|1|2";
+    $string = "1|asdasd|30%|1|1|5000|2|qwerty|18.5%|1|2|25000";
     $explode = explode('|', $string);
     $array_detalle = array_chunk($explode, 6, false);
 
@@ -223,18 +219,52 @@ Route::get('/dj', function (Request $request) {
         'detalle' => $array_detalle,
     ];
     $reglas = [
+        'detalle' => 'array',
         'detalle.*' => 'array|size:6',
+        'detalle.*.0' => 'integer|min:1|required',
+        'detalle.*.1' => 'string|required|max:50',
+        'detalle.*.2' => 'string|required|max:50',
+        'detalle.*.4' => 'integer|exists:subtipo_codigos,id|required',
+        'detalle.*.3' => 'integer|exists:tipo_codigos,id|required',
+        'detalle.*.5' => 'integer|required',
     ];
     $mensajes = [
-        'detalle.*.array' => '* no es array',
-        'detalle.*.size' => '* no tiene el tamaño especifico',
+        'detalle.array' => 'El campo detalle no cumple con las especificaciones declarada',
     ];
     $validator = Validator::make($validacion, $reglas, $mensajes);
-    if ($validator->fails()) {
-        dd($validator->errors()->first());
-    } else {
-        dd('todo ok');
-    }
+
+    //dd($validator->fails());
+        if (!$validator->fails()) {
+            foreach ($array_detalle as $index => $item) {
+                    $detalle[$index]['cod'] = $item[0];
+                    $detalle[$index]['concepto'] = $item[1];
+                    $detalle[$index]['unidad'] = $item[2];
+                    $detalle[$index]['subtipo'] = $item[3];
+                    $detalle[$index]['tipo'] = $item[4];
+                    $detalle[$index]['importe'] = $item[5];
+                }
+            dd(json_encode($detalle));
+        }else{
+            dd($validator->errors()->first());
+        }
+    
+
+    // $validacion = [
+    //     'detalle' => $array_detalle,
+    // ];
+    // $reglas = [
+    //     'detalle.*' => 'array|size:6',
+    // ];
+    // $mensajes = [
+    //     'detalle.*.array' => '* no es array',
+    //     'detalle.*.size' => '* no tiene el tamaño especifico',
+    // ];
+    // $validator = Validator::make($validacion, $reglas, $mensajes);
+    // if ($validator->fails()) {
+    //     dd($validator->errors()->first());
+    // } else {
+    //     dd('todo ok');
+    // }
 });
 
 
