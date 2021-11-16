@@ -40,10 +40,7 @@ class LiquidacionsImport implements
     protected $declaracionjuradaline;
     protected $liquidacion;
     protected $conceptos;
-    protected $concepto_id;
     protected $categoria;
-    protected $clase_id;
-    protected $jurisdiccion_id;
     protected $agente;
     protected $puesto_laboral;
     protected $historiasLaborales;
@@ -92,8 +89,8 @@ class LiquidacionsImport implements
         } else {
             foreach ($rows as $index => $row) {
                 #update
-                if (!empty($this->declaracionjurada->ddjj_lines[$index])) {
-                    $this->declaracionjurada->ddjj_lines[$index]->update([
+                if (!empty($this->declaracionjurada->ddjj_lines[$row['fila']-1])) {
+                    $this->declaracionjurada->ddjj_lines[$row['fila']-1]->update([
                         'nombre' => $row['nombre'],
                         'cuil' => $row['cuil'],
                         'fecha_nac' => date("Y-m-d", strtotime($row['fecha_nac'])),
@@ -110,11 +107,23 @@ class LiquidacionsImport implements
                         'detalle' => $this->detalle_conceptos($row['detalle']),
                         'updated_at' => now()
                     ]);
-                    $this->declaracionjuradaline = $this->declaracionjurada->ddjj_lines[$row];
-                } else {
+                    $this->declaracionjuradaline = $this->declaracionjurada->ddjj_lines[$row['fila']-1];
+                }else{
                     $this->createDdjjlines($row);
                 }
-                $this->createConcepto();
+
+                $this->rectifyConcepto($row['fila']-1);
+                $this->rectifyAgente();
+                $this->rectifyCategoria();
+                $this->rectifyClase();
+                $this->rectifyPuestoLaboral();
+                //$this->rectifyLiquidacion($row['fila']-1);
+
+                // Log::channel('daily')->info('fila ' . $row['fila'], [
+                //     'liquidacion' => $this->declaracionjurada->liquidaciones[$row['fila']-1]->conceptos,
+                // ]);
+                
+
             }
         }
 
@@ -133,7 +142,110 @@ class LiquidacionsImport implements
     }
 
 
+    public function rectifyLiquidacion($fila){
+        if (!empty($this->declaracionjurada->liquidaciones[$fila])) {
+            $this->liquidacion = $this->declaracionjurada->liquidaciones[$fila];
+            foreach ($this->importes as $index => $importe) {
+                $this->liquidacion->detalles[$index]->importe = $importe;
+                $this->liquidacion->detalles[$index]->updated_at = now();
+                $this->liquidacion->detalles[$index]->save();
+                // Log::channel('daily')->info($this->liquidacion->id, [
+                //     'importe' . $index => $importe,
+                //     'detalle' => $this->liquidacion->detalles[$index]
+                // ]);
+            }
 
+        }
+        
+    }
+
+    public function rectifyPuestoLaboral(){
+
+        $p_laboral = $this->random_puesto_laboral($this->declaracionjuradaline->puesto_laboral);
+        $is_puesto_laboral = PuestoLaboral::where('cod_laboral', $p_laboral);
+        if ($is_puesto_laboral->exists()) {
+            $this->puesto_laboral = $is_puesto_laboral->first();
+            $this->puesto_laboral->update([
+                'fecha_ingreso' => $this->declaracionjuradaline->fecha_ingreso,
+                'fecha_egreso' => null,
+            ]);
+            $this->puesto_laboral->clases()->sync($this->clase->id, [
+                //'fecha_inicio' => $this->puesto_laboral->fecha_ingreso,
+                'fecha_inicio' => $this->puesto_laboral->fecha_ingreso,
+                'updated_at' => now(),
+            ]);
+        }
+    }
+
+    public function rectifyClase(){
+
+        $is_clase = Clase::where('cod_clase' , $this->declaracionjuradaline->cod_clase)
+        ->where('categoria_id' , $this->categoria->id);
+        if ($is_clase->exists()) {
+            $this->clase = $is_clase->first();
+            $this->clase->update([
+                'clase' => $this->declaracionjuradaline->clase,
+                'updated_at' => now()
+            ]);
+        }
+    }
+
+    public function rectifyCategoria(){
+
+        $is_categoria = Categoria::where('cod_categoria' , $this->declaracionjuradaline->cod_categoria);
+        if ($is_categoria->exists()) {
+            $this->categoria = $is_categoria->first();
+            $this->categoria->update([
+                'categoria' => $this->declaracionjuradaline->categoria,
+                'updated_at' => now()
+            ]);
+        }
+        
+        
+    }
+
+    public function rectifyAgente(){
+
+        $is_agente = Agente::where('cuil' , $this->declaracionjuradaline->cuil);
+        if ($is_agente->exists()) {
+            $this->agente = $is_agente->first();
+            $this->agente->update([
+                'nombre' => $this->declaracionjuradaline->nombre,
+                'fecha_nac' => $this->declaracionjuradaline->fecha_nac,
+                'sexo' => $this->declaracionjuradaline->sexo,
+                'updated_at' => now()
+            ]);
+        }
+    }
+
+    public function rectifyConcepto($fila){
+
+        if (!empty($this->declaracionjurada->liquidaciones[$fila])) {
+            foreach ($this->declaracionjurada->liquidaciones[$fila]->conceptos as $index => $concepto) {
+                $concepto->update([
+                    'concepto' => json_decode($this->declaracionjuradaline->detalle, true)[$index]['concepto'],
+                    'unidad' => json_decode($this->declaracionjuradaline->detalle, true)[$index]['unidad'],
+                    'subtipo_id' => json_decode($this->declaracionjuradaline->detalle, true)[$index]['subtipo'],
+                    'organismo_id' => $this->organismo->id, 
+                    'updated_at' => now()
+                ]);
+
+                Log::channel('daily')->info('detalles' , [
+                    'detalle ' . $index => $concepto->detalles[$index],
+                ]);
+
+                // $concepto->detalles[$index]->sync([
+                //     'importe' => 8,
+                //     'updated_at' => now()
+                // ]);
+
+                //$this->importes[$index] = json_decode($this->declaracionjuradaline->detalle, true)[$index]['importe'];
+
+            }
+        }
+    }
+
+    
     public function historias_liquidaciones()
     {
 
@@ -263,8 +375,6 @@ class LiquidacionsImport implements
         } else {
             $this->puesto_laboral = $is_puesto_laboral->first();
         }
-
-        //$this->historiasLaborales = $this->puesto_laboral->clases();
     }
 
 
@@ -473,17 +583,6 @@ class LiquidacionsImport implements
     {
         ImportFailedJob::dispatch($this->declaracionjurada);
         event(new FailedImport('ocurrio un error durante la importacion'));
-    }
-
-
-
-    public function store($row)
-    {
-    }
-
-
-    public function update($index, $row)
-    {
     }
 
 

@@ -138,8 +138,6 @@ class DeclaracionJuradaController extends Controller
                     $status = false;
                     $confirm = false;
                 } else {
-
-
                     $data = [
                         'id' => $declaracionJurada->id,
                         'user_id' => $user_id,
@@ -201,6 +199,7 @@ class DeclaracionJuradaController extends Controller
             'path' => $request->path,
             'status' => true,
             'rectificar' => true,
+            'apply' => false,
             'updated_at' => now()
         ]);
         return $this->show($declaracionJurada->id);

@@ -1,7 +1,6 @@
 <style>
 .custom-file-input ~ .custom-file-label::after {
-    font-family: "Font Awesome 5 Free";
-    content: "\f07b Elegir";
+    content: "Elegir";
 }
 </style>
 <template>
@@ -228,7 +227,6 @@
                                             type="submit"
                                             name="import"
                                             id="import"
-                                            style="font-family: 'Font Awesome 5 Free';"
                                         >
                                             <i class="fas fa-link"></i>Poner en
                                             cola
@@ -297,22 +295,14 @@
                 </section>
                 <div class="row" v-if="declaraciones_juradas.length === 0">
                     <div class="col">
-                        <div class="card" style="width: 18rem;">
-                            <img
-                                class="card-img-top"
-                                src="http://www.molfx.com/wp-content/uploads/2016/10/sin_datos_de_prensa-1.jpg"
-                                alt="Card image cap"
-                            />
+                        <div class="card">
+                            <h5 class="card-header card-outline card-navy">
+                                Declaraciones Juradas
+                            </h5>
                             <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">
-                                    Some quick example text to build on the card
-                                    title and make up the bulk of the card's
-                                    content.
-                                </p>
-                                <a href="#" class="btn btn-primary"
-                                    >Go somewhere</a
-                                >
+                                <h5 class="card-title">
+                                    No Hay Datos
+                                </h5>
                             </div>
                         </div>
                     </div>
@@ -660,7 +650,7 @@ export default {
             axios
                 .put(`api/declaracion_jurada/update/` + data.id, data)
                 .then(response => {
-                    this.declaraciones_juradas.unshift(response.data);
+                    this.ddjj_sin.unshift(response.data);
                 });
         },
         buscarDeclaracionJurada() {
