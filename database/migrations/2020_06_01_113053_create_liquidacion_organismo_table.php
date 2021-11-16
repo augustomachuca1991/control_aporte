@@ -24,16 +24,16 @@ class CreateLiquidacionOrganismoTable extends Migration
             $table->bigInteger('periodo_id')->unsigned();
             $table->foreign('periodo_id')->references('cod_periodo')->on('periodos');
             //computo
-            $table->decimal('haber_bruto',8,2)->unsigned()->nullable();
-            $table->decimal('total_aporte_personal',8,2)->unsigned()->nullable();
-            $table->decimal('total_sueldo_basico',8,2)->unsigned()->nullable();
-            $table->decimal('total_antiguedad',8,2)->unsigned()->nullable();
-            $table->decimal('total_adicional',8,2)->unsigned()->nullable();
-            $table->decimal('total_familiar',8,2)->unsigned()->nullable();
-            $table->decimal('total_hijo',8,2)->unsigned()->nullable();
-            $table->decimal('total_esposa',8,2)->unsigned()->nullable();
+            // $table->decimal('haber_bruto',8,2)->unsigned()->nullable();
+            // $table->decimal('total_aporte_personal',8,2)->unsigned()->nullable();
+            // $table->decimal('total_sueldo_basico',8,2)->unsigned()->nullable();
+            // $table->decimal('total_antiguedad',8,2)->unsigned()->nullable();
+            // $table->decimal('total_adicional',8,2)->unsigned()->nullable();
+            // $table->decimal('total_familiar',8,2)->unsigned()->nullable();
+            // $table->decimal('total_hijo',8,2)->unsigned()->nullable();
+            // $table->decimal('total_esposa',8,2)->unsigned()->nullable();
             //computo
-            $table->softDeletes(); 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

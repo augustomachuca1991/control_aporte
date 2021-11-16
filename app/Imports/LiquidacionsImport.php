@@ -46,9 +46,9 @@ class LiquidacionsImport implements
     protected $jurisdiccion_id;
     protected $agente;
     protected $puesto_laboral;
-    protected $historia_laboral_id;
+    protected $historiasLaborales;
     protected $importes;
-    
+
 
 
     public $tries = 2;
@@ -82,14 +82,14 @@ class LiquidacionsImport implements
                 $this->createDdjjlines($row);
                 $this->createConcepto();
                 $this->createAgente();
-                $this->createPuestoLaboral();
                 $this->createCategoria();
                 $this->createClase();
+                $this->createPuestoLaboral();
                 $this->createLiquidacion();
-                
+                $this->liquidacion_organismo();
+                $this->historias_liquidaciones();
             }
-
-        }else{
+        } else {
             foreach ($rows as $index => $row) {
                 #update
                 if (!empty($this->declaracionjurada->ddjj_lines[$index])) {
@@ -107,11 +107,11 @@ class LiquidacionsImport implements
                         'clase' => $row['clase'],
                         'cod_estado' => $row['cod_estado'],
                         'estado' => $row['estado'],
-                        'detalle' => $this->detalle_conceptos( $row['detalle']),
+                        'detalle' => $this->detalle_conceptos($row['detalle']),
                         'updated_at' => now()
                     ]);
                     $this->declaracionjuradaline = $this->declaracionjurada->ddjj_lines[$row];
-                }else{
+                } else {
                     $this->createDdjjlines($row);
                 }
                 $this->createConcepto();
@@ -133,52 +133,97 @@ class LiquidacionsImport implements
     }
 
 
+
+    public function historias_liquidaciones()
+    {
+
+        foreach ($this->puesto_laboral->clases as $index => $historiaLaboral) {
+            $this->liquidacion->historia_laborales()->attach($historiaLaboral->pivot->id, [
+                'estado_id' => $this->declaracionjuradaline->cod_estado,
+                'funcion_id' => 1
+            ]);
+        }
+    }
+
+
+
+    public function liquidacion_organismo()
+    {
+        $this->liquidacion->organismos()->attach($this->declaracionjurada->organismo_id, [
+            'periodo_id' => $this->periodo->cod_periodo,
+            'tipo_id' => $this->tipo->id,
+        ]);
+    }
+
+
     public function createLiquidacion()
     {
-        $liquidacion  = new Liquidacion();
-        $liquidacion->declaracion_id = $this->declaracionjurada->id;
+        $this->liquidacion  = new Liquidacion();
+        $this->liquidacion->declaracion_id = $this->declaracionjurada->id;
         foreach ($this->conceptos as $key => $concepto) {
             if ($concepto->subtipo->tipocodigo->id == 1) {
+                # remunerativo
+                if ($concepto->subtipo->id == 1) {
+                    # sueldo basico
+                    $this->liquidacion->basico += $this->importes[$key];
+                } elseif ($concepto->subtipo->id == 2) {
+                    # antiguedad
+                    $this->liquidacion->antiguedad += $this->importes[$key];
+                }
+                $this->liquidacion->remunerativo += $this->importes[$key];
+            } elseif ($concepto->subtipo->tipocodigo->id == 2) {
                 # remunerativo bonificable
-                $liquidacion->remunerativo += $this->importes[$key];
-            }elseif($concepto->subtipo->tipocodigo->id == 2){
-                # remunerativo bonificable
-                $liquidacion->bonificable += $this->importes[$key];
-            }elseif($concepto->subtipo->tipocodigo->id == 3){
+                $this->liquidacion->bonificable += !empty($this->importes[$key]) ? $this->importes[$key] : 0;
+            } elseif ($concepto->subtipo->tipocodigo->id == 3) {
                 # remunerativo no bonificable
-                $liquidacion->no_bonificable += $this->importes[$key];
-            }elseif($concepto->subtipo->tipocodigo->id == 4){
+                $this->liquidacion->no_bonificable += !empty($this->importes[$key]) ? $this->importes[$key] : 0;
+            } elseif ($concepto->subtipo->tipocodigo->id == 4) {
                 # no remunerativo
-                $liquidacion->no_remunerativo += $this->importes[$key];
-            }elseif($concepto->subtipo->tipocodigo->id == 5){
+                $this->liquidacion->no_remunerativo += !empty($this->importes[$key]) ? $this->importes[$key] : 0;
+            } elseif ($concepto->subtipo->tipocodigo->id == 5) {
                 # adicioneales sociales
-                $liquidacion->adicionales += $this->importes[$key];
-            }elseif($concepto->subtipo->tipocodigo->id == 6){
+                if ($concepto->subtipo->id == 6) {
+                    # salario familiar
+                    $this->liquidacion->familiar += !empty($this->importes[$key]) ? $this->importes[$key] : 0;
+                } elseif ($concepto->subtipo->id == 7) {
+                    # hijo
+                    $this->liquidacion->hijo += !empty($this->importes[$key]) ? $this->importes[$key] : 0;
+                } elseif ($concepto->subtipo->id == 8) {
+                    #esposa
+                    $this->liquidacion->esposa += !empty($this->importes[$key]) ? $this->importes[$key] : 0;
+                }
+                $this->liquidacion->adicionales += $this->importes[$key];
+            } elseif ($concepto->subtipo->tipocodigo->id == 6) {
                 # descuento
-                $liquidacion->descuento += $this->importes[$key];
+                if ($concepto->subtipo->id == 9) {
+                    # Aportes Jubilatorio
+                    $this->liquidacion->aporte_personal += $this->importes[$key];
+                }
+                $this->liquidacion->descuento += $this->importes[$key];
             }
         }
-        $liquidacion->created_at = now();
-        $liquidacion->save();
-        $this->liquidacion = $liquidacion;
-
+        $this->liquidacion->created_at = now();
+        $this->liquidacion->save();
+        foreach ($this->conceptos as $key => $concepto) {
+            $this->liquidacion->conceptos()->attach($concepto->cod_concepto, ['importe' => $this->importes[$key]]);
+        }
     }
 
 
     public function createClase()
     {
-        $is_clase = Clase::where('cod_clase', $this->declaracionjuradaline->cod_clase)->where('categoria_id' , $this->categoria->cod_categoria);
+        $is_clase = Clase::where('cod_clase', $this->declaracionjuradaline->cod_clase)->where('categoria_id', $this->categoria->cod_categoria);
         if ($is_clase->doesntExist()) {
             $this->clase = Clase::create([
                 'cod_clase' => $this->declaracionjuradaline->cod_clase,
                 'categoria_id' => $this->categoria->id,
                 'clase' => $this->declaracionjuradaline->clase,
             ]);
-        }else{
+        } else {
             $this->clase = $is_clase->first();
         }
     }
-        
+
 
 
 
@@ -192,10 +237,9 @@ class LiquidacionsImport implements
             ]);
 
             $this->categoria->jurisdicciones()->attach($this->jurisdiccion->cod_jurisdiccion);
-        }else{
+        } else {
             $this->categoria = $is_categoria->first();
         }
-
     }
 
 
@@ -206,15 +250,21 @@ class LiquidacionsImport implements
         if ($is_puesto_laboral->doesntExist()) {
             $this->puesto_laboral = PuestoLaboral::create([
                 'cod_laboral' => $p_laboral,
-                'organismo_id' => $this->declaracionjurada->organismo_id,
+                'organismo_id' => $this->organismo->id,
                 'agente_id' => $this->agente->id,
                 'fecha_ingreso' => date("Y-m-d", strtotime($this->declaracionjuradaline->fecha_ingreso)),
                 'fecha_egreso' => null,
 
             ]);
+            $this->puesto_laboral->clases()->attach($this->clase->id, [
+                'fecha_inicio' => $this->puesto_laboral->fecha_ingreso,
+                'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
+            ]);
         } else {
             $this->puesto_laboral = $is_puesto_laboral->first();
         }
+
+        //$this->historiasLaborales = $this->puesto_laboral->clases();
     }
 
 
@@ -236,11 +286,12 @@ class LiquidacionsImport implements
     }
 
 
-    
-    public function createConcepto(){
+
+    public function createConcepto()
+    {
         foreach (json_decode($this->declaracionjuradaline->detalle, true) as $index => $detalle) {
             $is_concepto = ConceptoLiquidacion::where('cod_concepto', $detalle['cod'])
-                        ->where('organismo_id', $this->declaracionjuradaline->cod_organismo);
+                ->where('organismo_id', $this->declaracionjuradaline->cod_organismo);
             if ($is_concepto->doesntExist()) {
                 $this->conceptos[$index] = ConceptoLiquidacion::create([
                     'cod_concepto' => $detalle['cod'],
@@ -250,18 +301,16 @@ class LiquidacionsImport implements
                     'subtipo_id' => $detalle['subtipo'],
                     'created_at' => now()
                 ]);
-            }else{
+            } else {
                 $this->conceptos[$index] = $is_concepto->first();
-                
             }
             $this->importes[$index] = $detalle['importe'];
         }
-
-         
     }
 
-    
-    public function createDdjjlines($row){
+
+    public function createDdjjlines($row)
+    {
         $this->declaracionjuradaline = DeclaracionJuradaLine::create([
             'declaracionjurada_id' => $this->declaracionjurada->id,
             'nombre' => $row['nombre'],
@@ -281,7 +330,7 @@ class LiquidacionsImport implements
             'jurisdiccion' => $this->jurisdiccion->jurisdiccion,
             'cod_organismo' => $this->organismo->cod_organismo,
             'organismo' => $this->organismo->organismo,
-            'detalle' =>$this->detalle_conceptos( $row['detalle']),
+            'detalle' => $this->detalle_conceptos($row['detalle']),
         ]);
     }
 
@@ -428,15 +477,13 @@ class LiquidacionsImport implements
 
 
 
-    public function store($row){
-
-
+    public function store($row)
+    {
     }
 
 
-    public function update($index , $row){
-        
-
+    public function update($index, $row)
+    {
     }
 
 
@@ -463,15 +510,15 @@ class LiquidacionsImport implements
         $validator = Validator::make($validacion, $reglas, $mensajes);
         if (!$validator->fails()) {
             foreach ($array_detalle as $index => $item) {
-                    $value[$index]['cod'] = $item[0];
-                    $value[$index]['concepto'] = $item[1];
-                    $value[$index]['subtipo'] = $item[2];
-                    $value[$index]['tipo'] = $item[3];
-                    $value[$index]['unidad'] = $item[4];
-                    $value[$index]['importe'] = $item[5];
-                }
+                $value[$index]['cod'] = $item[0];
+                $value[$index]['concepto'] = $item[1];
+                $value[$index]['subtipo'] = $item[2];
+                $value[$index]['tipo'] = $item[3];
+                $value[$index]['unidad'] = $item[4];
+                $value[$index]['importe'] = $item[5];
+            }
             return json_encode($value);
-        }else{
+        } else {
             Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
                 'detalle' => $validator->errors(),
             ]);

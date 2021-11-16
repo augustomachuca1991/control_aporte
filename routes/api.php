@@ -1,6 +1,6 @@
 <?php
 
-
+use App\TipoLiquidacion;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -234,20 +234,23 @@ Route::get('/dj', function (Request $request) {
     $validator = Validator::make($validacion, $reglas, $mensajes);
 
     //dd($validator->fails());
-        if (!$validator->fails()) {
-            foreach ($array_detalle as $index => $item) {
-                    $detalle[$index]['cod'] = $item[0];
-                    $detalle[$index]['concepto'] = $item[1];
-                    $detalle[$index]['unidad'] = $item[2];
-                    $detalle[$index]['subtipo'] = $item[3];
-                    $detalle[$index]['tipo'] = $item[4];
-                    $detalle[$index]['importe'] = $item[5];
-                }
-            dd(json_encode($detalle));
-        }else{
-            dd($validator->errors()->first());
+    if (!$validator->fails()) {
+        foreach ($array_detalle as $index => $item) {
+            $detalle[$index]['cod'] = $item[0];
+            $detalle[$index]['concepto'] = $item[1];
+            $detalle[$index]['unidad'] = $item[2];
+            $detalle[$index]['subtipo'] = $item[3];
+            $detalle[$index]['tipo'] = $item[4];
+            $detalle[$index]['importe'] = $item[5];
         }
-    
+        $json = json_encode($detalle);
+        //dd(json_decode($json, true));
+        $tipos = TipoLiquidacion::all();
+        dd($tipos->pluck('descripcion')->toArray());
+    } else {
+        dd($validator->errors()->first());
+    }
+
 
     // $validacion = [
     //     'detalle' => $array_detalle,
