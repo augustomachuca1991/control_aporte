@@ -620,9 +620,11 @@ export default {
             });
         },
         getDeclaracionesJudarasSin() {
-            axios.get("api/archivos-recientes").then(response => {
-                this.ddjj_sin = response.data;
-            });
+            axios
+                .get(`api/declaracion_jurada/aplicar/${this.user.id}`)
+                .then(response => {
+                    this.ddjj_sin = response.data;
+                });
         },
         aplicar(index, declaracion_jurada) {
             this.index = index;

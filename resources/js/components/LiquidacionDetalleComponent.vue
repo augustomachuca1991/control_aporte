@@ -238,16 +238,22 @@
                         <table
                             class="table table-sm table-borderless table-fixed"
                         >
-                            <!-- <caption class="justify-content-end">
-                                <small>
-                                    Total Neto $
-                                    {{
-                                        parseInt(liquidacionDetalle.liquidacion.bruto) +
-                                            parseInt(liquidacionDetalle.liquidacion.familiar) -
-                                            parseInt(liquidacionDetalle.liquidacion.descuento)
-                                    }}
-                                </small>
-                            </caption> -->
+                            <caption class="justify-content-end">
+                                Total Neto $
+                                {{
+                                    parseInt(
+                                        liquidacionDetalle.liquidacion.bruto
+                                    ) +
+                                        parseInt(
+                                            liquidacionDetalle.liquidacion
+                                                .adicionales
+                                        ) -
+                                        parseInt(
+                                            liquidacionDetalle.liquidacion
+                                                .descuento
+                                        )
+                                }}
+                            </caption>
                             <thead class="bg-light">
                                 <tr>
                                     <th scope="col" class="text-center">

@@ -11,14 +11,16 @@ class FinishJob extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    
+    protected $message;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -42,7 +44,7 @@ class FinishJob extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->greeting('Exito!')
-            ->line('La carga de archivo finalizo de forma exitosa.')
+            ->line($this->message)
             ->action('Instituto de Previsión Social', url('/import'))
             ->line('Gracias por Utilizar nuestra aplicación!');
     }
@@ -63,7 +65,7 @@ class FinishJob extends Notification implements ShouldQueue
 
     public function toArray($notifiable)
     {
-        return ['message' => 'se procesaron 900/1000 registro',
+        return ['message' => $this->message,
                 'image' => 'logo-ips.png',
                 'date' => now(),
         ];

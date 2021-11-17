@@ -20,10 +20,12 @@ class NotificationJob implements ShouldQueue
      * @return void
      */
     protected $user;
+    protected $message;
 
-    public function __construct(User $user)
+    public function __construct(User $user , $message)
     {
         $this->user = $user;
+        $this->message = $message;
     }
 
     /**
@@ -34,7 +36,7 @@ class NotificationJob implements ShouldQueue
     public function handle()
     {
         
-        $this->user->notify(new FinishJob);
+        $this->user->notify(new FinishJob($this->message));
         
     }
 }

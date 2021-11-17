@@ -239,6 +239,7 @@ class DeclaracionJuradaController extends Controller
      */
     public function getDeclaracionesJuradas()
     {
+        $user_id = 1;
         $declaracionesJuradas = DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion', 'ddjj_lines'])
             ->latest()->where('status', false)->paginate($this->perPage);
 
@@ -289,9 +290,12 @@ class DeclaracionJuradaController extends Controller
     }
 
 
-    public function recientes(Request $request)
+    public function sinAplicar($user_id)
     {
-        return DeclaracionJurada::with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->where('status', true)->get();
+        
+        return DeclaracionJurada::whereHas('user' , function($query) use ($user_id){
+            $query->where('id' , $user_id);
+         })->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->where('status', true)->get();
     }
 
     public function cast_jsonDecode(DeclaracionJuradaLine $declaracionJuradaLine)

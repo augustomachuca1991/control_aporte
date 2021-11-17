@@ -30,7 +30,7 @@ Route::delete('declaracion_jurada/delete/{id}', 'DeclaracionJuradaController@des
 //Declaraciones Juradas detalle
 Route::get('/declaracion_jurada/buscar/{search}', 'DeclaracionJuradaController@search');
 Route::post('/declaracion_jurada/download', 'DeclaracionJuradaController@download');
-Route::get('/archivos-recientes', 'DeclaracionJuradaController@recientes')->name('archivos-recientes');
+Route::get('/declaracion_jurada/aplicar/{user_id}', 'DeclaracionJuradaController@sinAplicar')->name('archivos-recientes');
 
 
 Route::get('/declaracion_jurada_lines/{cabecara_id}', 'DeclaracionJuradaLineController@getDeclaracionesJuradasLines');
