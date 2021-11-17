@@ -129,13 +129,14 @@ Vue.component(
     require("./components/PanelHistoriaComponent.vue").default
 );
 
+//liquidaciones
 Vue.component(
     "listaliquidaciones-component",
-    require("./components/ListLiquidacionesComponent.vue").default
+    require("./components/components-liquidacion/LiquidacionesComponent.vue").default
 );
 Vue.component(
     "liquidaciondetalle-component",
-    require("./components/LiquidacionDetalleComponent.vue").default
+    require("./components/components-liquidacion/LiquidacionDetalleComponent.vue").default
 );
 
 //computos

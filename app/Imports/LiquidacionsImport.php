@@ -509,6 +509,7 @@ class LiquidacionsImport implements
 
     public function createConcepto()
     {
+        $departamento = Dpto::find(1);
         foreach (json_decode($this->declaracionjuradaline->detalle, true) as $index => $detalle) {
             $is_concepto = ConceptoLiquidacion::where('cod_concepto', $detalle['cod'])
                 ->where('organismo_id', $this->declaracionjuradaline->cod_organismo);
@@ -520,6 +521,13 @@ class LiquidacionsImport implements
                     'organismo_id' => $this->declaracionjuradaline->cod_organismo,
                     'subtipo_id' => $detalle['subtipo'],
                     'created_at' => now()
+                ]);
+                
+                $departamento->conceptos()->attach($this->conceptos[$index]->id, [
+                    'user_id' => $this->importedBy->id,
+                    'tipocodigo_id' => $detalle['tipo'],
+                    'subtipo_id' => $detalle['subtipo'],
+                    'created_at' => now(),
                 ]);
             } else {
                 $this->conceptos[$index] = $is_concepto->first();
