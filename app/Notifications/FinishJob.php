@@ -31,7 +31,7 @@ class FinishJob extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database','mail'];
     }
 
     /**
@@ -66,8 +66,8 @@ class FinishJob extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return ['message' => $this->message,
-                'image' => 'logo-ips.png',
-                'date' => now(),
+                'icon' => 'far fa-envelope-open',
+                'date' => now()->diffForhumans(),
         ];
     }
 }

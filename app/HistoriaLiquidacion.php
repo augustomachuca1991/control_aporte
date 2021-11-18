@@ -11,7 +11,7 @@ class HistoriaLiquidacion extends Model
    
     protected $dates = ['deleted_at'];
     protected $table = 'historia_liquidacion';
-    protected $fillable = ['estado_id','funcion_id' , 'h_laboral_id'];
+    protected $fillable = ['estado_id','funcion_id' , 'h_laboral_id', 'liquidacion_id'];
 
     public function estado()
     {

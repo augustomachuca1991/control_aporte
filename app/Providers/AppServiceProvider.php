@@ -8,6 +8,8 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use Illuminate\Support\Facades\Auth;
 use App\Notification;
 
+use function GuzzleHttp\json_decode;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -33,9 +35,9 @@ class AppServiceProvider extends ServiceProvider
             if ($notificationes->count() > 0) {
                 foreach ($notificationes as $notificacion) {
                     $menu[] = [
-                        'text' => $notificacion->data,
+                        'text' => json_decode($notificacion->data, true)['message'],
                         'url'  => '#',
-                        'icon' => 'mr-2 fas fa-fw fa-envelope text-primary',
+                        'icon' => json_decode($notificacion->data, true)['icon'],
                     ];
                 }
             } else {

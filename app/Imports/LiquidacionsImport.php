@@ -84,10 +84,10 @@ class LiquidacionsImport implements
                     $this->createAgente();
                     $this->createCategoria();
                     $this->createClase();
-                    $this->createPuestoLaboral();
                     $this->createLiquidacion();
+                    $this->createPuestoLaboral();
                     $this->liquidacion_organismo();
-                    $this->historias_liquidaciones();   
+                    //$this->historias_liquidaciones();   
                     DB::commit();
                 } catch (Exception $e) {
                     DB::rollback();
@@ -268,12 +268,7 @@ class LiquidacionsImport implements
         // Log::channel('daily')->info('puesto laboral' , [
         //     'clase ' => $this->puesto_laboral->clases->first()->pivot,
         // ]);
-        foreach ($this->puesto_laboral->clases as $index => $historiaLaboral) {
-            $this->liquidacion->historia_laborales()->attach($historiaLaboral->pivot->id, [
-                'estado_id' => $this->declaracionjuradaline->cod_estado,
-                'funcion_id' => 1
-            ]);
-        }
+        
     }
 
 
@@ -301,67 +296,7 @@ class LiquidacionsImport implements
         $adicionales = 0;
         $aporte_personal = 0;
         $descuento = 0;
-        // foreach ($this->conceptos as $key => $concepto) {
-        //     if ($concepto->subtipo->tipocodigo->id == 1) {
-        //         # remunerativo
-        //         if ($concepto->subtipo->id == 1) {
-        //             # sueldo basico
-        //             $basico += $this->importes[$key];
-        //         } elseif ($concepto->subtipo->id == 2) {
-        //             # antiguedad
-        //             $antiguedad += $this->importes[$key];
-        //         }
-        //         $remunerativo += 1;
-        //     } elseif ($concepto->subtipo->tipocodigo->id == 2) {
-        //         # remunerativo bonificable
-        //         $bonificable += $this->importes[$key];
-        //     } elseif ($concepto->subtipo->tipocodigo->id == 3) {
-        //         # remunerativo no bonificable
-        //         $no_bonificable += $this->importes[$key];
-        //     } elseif ($concepto->subtipo->tipocodigo->id == 4) {
-        //         # no remunerativo
-        //         $no_remunerativo += $this->importes[$key];
-        //     } elseif ($concepto->subtipo->tipocodigo->id == 5) {
-        //         # adicioneales sociales
-        //         $adicionales += $this->importes[$key];
-        //         if ($concepto->subtipo->id == 6) {
-        //             # salario familiar
-        //             $familiar += $this->importes[$key];
-        //         } elseif ($concepto->subtipo->id == 7) {
-        //             # hijo
-        //             $hijo += $this->importes[$key];
-        //         } elseif ($concepto->subtipo->id == 8) {
-        //             #esposa
-        //             $esposa += $this->importes[$key];
-        //         }
-                
-        //     } elseif ($concepto->subtipo->tipocodigo->id == 6) {
-        //         # descuento
-        //         $descuento += $this->importes[$key];
-        //         if ($concepto->subtipo->id == 9) {
-        //             # Aportes Jubilatorio
-        //             $aporte_personal += $this->importes[$key];
-        //         }
-        //     }
-        // }
-        // $this->liquidacion = Liquidacion::create([
-        //     'declaracion_id' => $this->declaracionjurada->id,
-        //     'bruto' => 0,
-        //     'haberes_con_aporte' => 0,
-        //     'basico' => $basico,
-        //     'antiguedad' => $antiguedad,
-        //     'remunerativo' => $remunerativo,
-        //     'bonificable' => $bonificable,
-        //     'no_bonificable' => $no_bonificable,
-        //     'no_remunerativo' => $no_remunerativo,
-        //     'familiar' => $familiar,
-        //     'hijo' => $hijo,
-        //     'esposa' => $esposa,
-        //     'adicionales' => $adicionales,
-        //     'aporte_personal' => $aporte_personal,
-        //     'descuento' => $descuento
-
-        // ]);
+        
         
         $this->liquidacion  = new Liquidacion();
         $this->liquidacion->declaracion_id = $this->declaracionjurada->id;
@@ -369,6 +304,7 @@ class LiquidacionsImport implements
         foreach ($this->conceptos as $key => $concepto) {
             if ($concepto->subtipo->tipocodigo->id == 1) {
                 # remunerativo
+                $remunerativo += $this->importes[$key];
                 if ($concepto->subtipo->id == 1) {
                     # sueldo basico
                     $basico += $this->importes[$key];
@@ -376,7 +312,6 @@ class LiquidacionsImport implements
                     # antiguedad
                     $antiguedad += $this->importes[$key];
                 }
-                $remunerativo += $this->importes[$key];
             } elseif ($concepto->subtipo->tipocodigo->id == 2) {
                 # remunerativo bonificable
                 $bonificable += $this->importes[$key];
@@ -388,6 +323,7 @@ class LiquidacionsImport implements
                 $no_remunerativo += $this->importes[$key];
             } elseif ($concepto->subtipo->tipocodigo->id == 5) {
                 # adicioneales sociales
+                $adicionales += $this->importes[$key];
                 if ($concepto->subtipo->id == 6) {
                     # salario familiar
                     $familiar += $this->importes[$key];
@@ -398,14 +334,13 @@ class LiquidacionsImport implements
                     #esposa
                     $esposa += $this->importes[$key];
                 }
-                $adicionales += $this->importes[$key];
             } elseif ($concepto->subtipo->tipocodigo->id == 6) {
                 # descuento
+                $descuento += $this->importes[$key];
                 if ($concepto->subtipo->id == 9) {
                     # Aportes Jubilatorio
                     $aporte_personal += $this->importes[$key];
                 }
-                $descuento += $this->importes[$key];
             }
             $this->liquidacion->conceptos()->attach($concepto->id, ['importe' => $this->importes[$key]]);
         }
@@ -425,10 +360,6 @@ class LiquidacionsImport implements
         $this->liquidacion->aporte_personal = $aporte_personal;
         $this->liquidacion->descuento = $descuento;
         $this->liquidacion->save();
-
-        // foreach ($this->conceptos as $key => $concepto) {
-        //     $this->liquidacion->conceptos()->attach($concepto->id, ['importe' => $this->importes[$key]]);
-        // }
     }
 
 
@@ -482,6 +413,32 @@ class LiquidacionsImport implements
                 'fecha_inicio' => $this->puesto_laboral->fecha_ingreso,
                 'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
             ]);
+            Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
+
+                
+                'hl' => $this->puesto_laboral->clases()->where('clase_id', $this->clase->id)->first()->pivot->id
+            ]);
+            $hl_id = $this->puesto_laboral->clases()->where('clase_id', $this->clase->id)->first()->pivot->id;
+            if (!empty($this->liquidacion->id)) {
+                HistoriaLiquidacion::create([
+                    'estado_id' => $this->declaracionjuradaline->cod_estado,
+                    'funcion_id' => 1,
+                    'liquidacion_id' => $this->liquidacion->id,
+                    'h_laboral_id' => $hl_id
+                ]);
+            }
+            
+            // $this->liquidacion->historia_laborales()->attach($hl_id , [
+            //     'estado_id' => $this->declaracionjuradaline->cod_estado,
+            //     'funcion_id' => 1
+            // ]);
+
+            // foreach ($this->puesto_laboral->clases as $index => $historiaLaboral) {
+            //     $this->liquidacion->historia_laborales()->attach($historiaLaboral->pivot->id, [
+            //         'estado_id' => $this->declaracionjuradaline->cod_estado,
+            //         'funcion_id' => 1
+            //     ]);
+            // }
         } else {
             $this->puesto_laboral = $is_puesto_laboral->first();
         }
@@ -655,6 +612,9 @@ class LiquidacionsImport implements
                     'errors' => $failure->errors(),
                     'values' => $failure->values()[$failure->attribute()],
                 ]);
+                $message =$failure->errors();
+                NotificationJob::dispatch($this->importedBy , $message);
+
             }
         }
     }
