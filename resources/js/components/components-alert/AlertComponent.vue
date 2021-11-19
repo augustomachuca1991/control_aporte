@@ -83,9 +83,10 @@ export default {
     data: function() {
         return {
             alerts: [],
+            alert: {},
             fileName: "",
             hasAlert: false,
-            failed: "2"
+            index: ""
         };
     },
     mounted() {
@@ -101,7 +102,17 @@ export default {
             });
         },
         deleteAlert(index, alert) {
-            //this.alerts.splice(index, 1);
+            this.alert = alert;
+            this.index = index;
+            const params = {
+                alert_id: this.alert.id
+            };
+            axios
+                .post(`api/unReadNotification/${this.auth.id}`, params)
+                .then(response => {
+                    console.log(response.data);
+                    console.log(this.index);
+                });
         }
     }
 };

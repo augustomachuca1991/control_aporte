@@ -381,12 +381,22 @@
                                                         class="fas fa-file-invoice-dollar"
                                                     ></i
                                                 ></span>
-                                                Tipo
-                                                {{
-                                                    declaracion_jurada
-                                                        .tipoliquidacion
-                                                        .descripcion
-                                                }}
+                                                <span
+                                                    class="badge"
+                                                    :class="
+                                                        declaracion_jurada
+                                                            .tipoliquidacion
+                                                            .id == 1
+                                                            ? 'badge-success'
+                                                            : 'badge-warning'
+                                                    "
+                                                    >Tipo
+                                                    {{
+                                                        declaracion_jurada
+                                                            .tipoliquidacion
+                                                            .descripcion
+                                                    }}</span
+                                                >
                                             </li>
                                             <li class="small">
                                                 <span class="fa-li"
@@ -415,7 +425,6 @@
                                                 d="M5 13l4 4L19 7"
                                             />
                                         </svg>
-                                        <span class="text-xs"> completed</span>
                                     </div>
                                 </div>
                             </div>

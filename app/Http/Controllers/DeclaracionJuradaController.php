@@ -306,7 +306,16 @@ class DeclaracionJuradaController extends Controller
     public function getFailedNotificationImport($user_id)
     {
         $user = User::find($user_id);
-        return $user->notifications->where('type', 'App\Notifications\FailedRowNotification')->all();
+        return $user->unreadNotifications->where('type', 'App\Notifications\FailedRowNotification')->all();
         //return Notification::where('notifiable_id', $user_id)->first()->type;
+    }
+
+
+    public function unReadNotifications(Request $request , $user_id)
+    {
+        $alert_id = $request->alert_id;
+        $user = User::find($user_id);
+        //$notification = $user->unreadNotifications->find($alert_id);
+        return $user->unreadNotifications->find($alert_id)->update(['read_at' => now()]);
     }
 }

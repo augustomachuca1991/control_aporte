@@ -126,11 +126,13 @@ class LiquidacionsImport implements
                     $this->createDdjjlines($row);
                 }
 
-                $this->rectifyConcepto($row['fila'] - 1);
-                $this->rectifyAgente();
-                $this->rectifyCategoria();
-                $this->rectifyClase();
-                $this->rectifyPuestoLaboral();
+                // $this->rectifyConcepto($row['fila'] - 1);
+                // $this->rectifyAgente();
+                // $this->rectifyCategoria();
+                // $this->rectifyClase();
+                // $this->rectifyPuestoLaboral();
+
+
                 //$this->rectifyLiquidacion($row['fila']-1);
 
                 // Log::channel('daily')->info('fila ' . $row['fila'], [
@@ -413,11 +415,6 @@ class LiquidacionsImport implements
             $this->puesto_laboral->clases()->attach($this->clase->id, [
                 'fecha_inicio' => $this->puesto_laboral->fecha_ingreso,
                 'fecha_fin' => now()->endOfMonth()->modify('0 month')->toDateString(),
-            ]);
-            Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
-
-
-                'hl' => $this->puesto_laboral->clases()->where('clase_id', $this->clase->id)->first()->pivot->id
             ]);
             $hl_id = $this->puesto_laboral->clases()->where('clase_id', $this->clase->id)->first()->pivot->id;
             if (!empty($this->liquidacion->id)) {

@@ -1,25 +1,25 @@
 <template>
     <div class="container">
         {{ search }}
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text"
-                    ><i class="fas fa-search"></i
-                ></span>
-            </div>
-            <input
-                type="text"
-                class="form-control"
-                placeholder="search"
-                v-model="search"
-                @keyup="buscar()"
-            />
-        </div>
 
-        <div v-if="declaraciones_juradas.length">
+        <div v-if="declaraciones_juradas.length > 0">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                        ><i class="fas fa-search"></i
+                    ></span>
+                </div>
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="search"
+                    v-model="search"
+                    @keyup="buscar()"
+                />
+            </div>
             <div
                 v-for="(declaracion_jurada, index) in declaraciones_juradas"
-                :key="declaracion_jurada.id"
+                :key="index"
                 class="card card-outline card-secondary"
             >
                 <div class="card-hearder">
@@ -138,8 +138,7 @@
                 </ul>
             </div> -->
         </div>
-        <div v-else class="card card-outline card-dark">
-            <div class="card-hearder">
+        <!-- <div class="card-hearder">
                 <h4 class="mb-1 ml-2">Declaraciones Juradas</h4>
             </div>
             <div class="card-body">
@@ -147,6 +146,20 @@
             </div>
             <div class="card-footer">
                 Registros Totales 0
+            </div> -->
+        <div v-else class="ph-item">
+            <div class="ph-col-12">
+                <div class="ph-picture"></div>
+                <div class="ph-row">
+                    <div class="ph-col-6 big"></div>
+                    <div class="ph-col-4 empty big"></div>
+                    <div class="ph-col-2 big"></div>
+                    <div class="ph-col-4"></div>
+                    <div class="ph-col-8 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-6 empty"></div>
+                    <div class="ph-col-12"></div>
+                </div>
             </div>
         </div>
         <!-- <paginate
