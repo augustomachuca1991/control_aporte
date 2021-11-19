@@ -318,6 +318,13 @@ Vue.component(
     "create-subtipo",
     require("./components/components-subtipo/CreateSubtipo.vue").default
 );
+
+
+//Alerts
+Vue.component(
+    "alert-notifications",
+    require("./components/components-alert/AlertComponent.vue").default
+);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

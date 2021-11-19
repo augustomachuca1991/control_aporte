@@ -32,6 +32,7 @@ Route::get('/declaracion_jurada/buscar/{search}', 'DeclaracionJuradaController@s
 Route::post('/declaracion_jurada/download', 'DeclaracionJuradaController@download');
 Route::get('/declaracion_jurada/aplicar/{user_id}', 'DeclaracionJuradaController@sinAplicar')->name('archivos-recientes');
 
+Route::get('/failedRow/{user_id}', 'DeclaracionJuradaController@getFailedNotificationImport');
 
 Route::get('/declaracion_jurada_lines/{cabecara_id}', 'DeclaracionJuradaLineController@getDeclaracionesJuradasLines');
 
@@ -73,6 +74,7 @@ Route::get('/liquidacion/filter/query', 'LiquidacionController@filter');
 //Files Routes
 Route::post('/import', 'ExcelController@import')->name('import');
 Route::post('/export', 'ExcelController@export')->name('export');
+
 
 
 

@@ -5,20 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\LiquidacionsExport;
 use App\Imports\LiquidacionsImport;
-use App\Jobs\DeleteFileJob;
-use App\{DeclaracionJurada, Periodo, TipoLiquidacion, Organismo, User};
+use App\{DeclaracionJurada, Notification};
 use Illuminate\Support\Facades\Auth;
-use Validator;
 use Illuminate\Http\File;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class ExcelController extends Controller
 {
 
-    // public function __construct(){
-    //     $this->middleware('admin');
-    // }
+    protected $auth;
+
+    public function __construct()
+    {
+        //$this->middleware('auth');
+        $this->auth = Auth::user();
+    }
 
 
 

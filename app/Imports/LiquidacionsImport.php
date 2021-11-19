@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\{DeclaracionJurada, Liquidacion, DeclaracionJuradaLine, Categoria, Clase, Jurisdiccion, Agente, PuestoLaboral, HistoriaLaboral, ConceptoLiquidacion, Dpto, HistoriaLiquidacion, LiquidacionDetalle, LiquidacionOrganismo, Notification, Organismo, TipoCodigo, User};
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Jobs\{ImportFailedJob, CompletedImport, DeleteFileImportJob, NotificationJob};
+use App\Jobs\{ImportFailedJob, CompletedImport, DeleteFileImportJob, FailedRowJob, NotificationJob};
 use App\Events\{NotificationImport, FailedImport};
 use App\Notifications\ImportHasFailedNotification;
 use Exception;
@@ -51,7 +51,7 @@ class LiquidacionsImport implements
     public $tries = 2;
     public $totalRows;
     public $countCicles = 0;
-    public $errores;
+    public $success = 0;
 
 
 
@@ -73,7 +73,6 @@ class LiquidacionsImport implements
         $chunkOffset = $this->getChunkOffset() - 2;
         $count = ($chunkOffset / 100) + 1;
         $cicles = intdiv($this->totalRows, $rows->count());
-
         if (!$this->rectificar) {
             foreach ($rows as $index => $row) {
                 DB::beginTransaction();
@@ -87,25 +86,25 @@ class LiquidacionsImport implements
                     $this->createLiquidacion();
                     $this->createPuestoLaboral();
                     $this->liquidacion_organismo();
-                    //$this->historias_liquidaciones();   
+                    //$this->historias_liquidaciones();
+                    $this->success += 1;
                     DB::commit();
                 } catch (Exception $e) {
                     DB::rollback();
                     Log::channel('daily')->info('catch', [
-                        $this->declaracionjurada->nombre_archivo.' Exception '. $index => $e->getMessage(),
+                        $this->declaracionjurada->nombre_archivo . ' Exception ' . $index => $e->getMessage(),
                     ]);
                 } catch (\Throwable $e) {
                     Log::channel('daily')->info('catch', [
-                        $this->declaracionjurada->nombre_archivo.' Throwable '. $index => $e->getMessage(),
+                        $this->declaracionjurada->nombre_archivo . ' Throwable ' . $index => $e->getMessage(),
                     ]);
                 }
-                
             }
         } else {
             foreach ($rows as $index => $row) {
                 #update
-                if (!empty($this->declaracionjurada->ddjj_lines[$row['fila']-1])) {
-                    $this->declaracionjurada->ddjj_lines[$row['fila']-1]->update([
+                if (!empty($this->declaracionjurada->ddjj_lines[$row['fila'] - 1])) {
+                    $this->declaracionjurada->ddjj_lines[$row['fila'] - 1]->update([
                         'nombre' => $row['nombre'],
                         'cuil' => $row['cuil'],
                         'fecha_nac' => date("Y-m-d", strtotime($row['fecha_nac'])),
@@ -122,12 +121,12 @@ class LiquidacionsImport implements
                         'detalle' => $this->detalle_conceptos($row['detalle']),
                         'updated_at' => now()
                     ]);
-                    $this->declaracionjuradaline = $this->declaracionjurada->ddjj_lines[$row['fila']-1];
-                }else{
+                    $this->declaracionjuradaline = $this->declaracionjurada->ddjj_lines[$row['fila'] - 1];
+                } else {
                     $this->createDdjjlines($row);
                 }
 
-                $this->rectifyConcepto($row['fila']-1);
+                $this->rectifyConcepto($row['fila'] - 1);
                 $this->rectifyAgente();
                 $this->rectifyCategoria();
                 $this->rectifyClase();
@@ -137,7 +136,7 @@ class LiquidacionsImport implements
                 // Log::channel('daily')->info('fila ' . $row['fila'], [
                 //     'liquidacion' => $this->declaracionjurada->liquidaciones[$row['fila']-1]->conceptos,
                 // ]);
-                
+
 
             }
         }
@@ -148,8 +147,8 @@ class LiquidacionsImport implements
             $this->declaracionjurada->apply = true;
             $this->declaracionjurada->rectificar = false;
             $this->declaracionjurada->save();
-            $message = 'se precesaron 9/'.$this->totalRows.' registros';
-            $notificationJob = new NotificationJob($this->importedBy , $message);
+            $message = 'se precesaron' . $this->success . '/' . $this->totalRows . ' registros';
+            $notificationJob = new NotificationJob($this->importedBy, $message);
             CompletedImport::dispatch()->chain([$notificationJob]);
             Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
                 'final' => 'termino',
@@ -158,7 +157,8 @@ class LiquidacionsImport implements
     }
 
 
-    public function rectifyLiquidacion($fila){
+    public function rectifyLiquidacion($fila)
+    {
         if (!empty($this->declaracionjurada->liquidaciones[$fila])) {
             $this->liquidacion = $this->declaracionjurada->liquidaciones[$fila];
             foreach ($this->importes as $index => $importe) {
@@ -170,12 +170,11 @@ class LiquidacionsImport implements
                 //     'detalle' => $this->liquidacion->detalles[$index]
                 // ]);
             }
-
         }
-        
     }
 
-    public function rectifyPuestoLaboral(){
+    public function rectifyPuestoLaboral()
+    {
 
         $p_laboral = $this->random_puesto_laboral($this->declaracionjuradaline->puesto_laboral);
         $is_puesto_laboral = PuestoLaboral::where('cod_laboral', $p_laboral);
@@ -193,10 +192,11 @@ class LiquidacionsImport implements
         }
     }
 
-    public function rectifyClase(){
+    public function rectifyClase()
+    {
 
-        $is_clase = Clase::where('cod_clase' , $this->declaracionjuradaline->cod_clase)
-        ->where('categoria_id' , $this->categoria->id);
+        $is_clase = Clase::where('cod_clase', $this->declaracionjuradaline->cod_clase)
+            ->where('categoria_id', $this->categoria->id);
         if ($is_clase->exists()) {
             $this->clase = $is_clase->first();
             $this->clase->update([
@@ -206,9 +206,10 @@ class LiquidacionsImport implements
         }
     }
 
-    public function rectifyCategoria(){
+    public function rectifyCategoria()
+    {
 
-        $is_categoria = Categoria::where('cod_categoria' , $this->declaracionjuradaline->cod_categoria);
+        $is_categoria = Categoria::where('cod_categoria', $this->declaracionjuradaline->cod_categoria);
         if ($is_categoria->exists()) {
             $this->categoria = $is_categoria->first();
             $this->categoria->update([
@@ -216,13 +217,12 @@ class LiquidacionsImport implements
                 'updated_at' => now()
             ]);
         }
-        
-        
     }
 
-    public function rectifyAgente(){
+    public function rectifyAgente()
+    {
 
-        $is_agente = Agente::where('cuil' , $this->declaracionjuradaline->cuil);
+        $is_agente = Agente::where('cuil', $this->declaracionjuradaline->cuil);
         if ($is_agente->exists()) {
             $this->agente = $is_agente->first();
             $this->agente->update([
@@ -234,7 +234,8 @@ class LiquidacionsImport implements
         }
     }
 
-    public function rectifyConcepto($fila){
+    public function rectifyConcepto($fila)
+    {
 
         if (!empty($this->declaracionjurada->liquidaciones[$fila])) {
             foreach ($this->declaracionjurada->liquidaciones[$fila]->conceptos as $index => $concepto) {
@@ -242,11 +243,11 @@ class LiquidacionsImport implements
                     'concepto' => json_decode($this->declaracionjuradaline->detalle, true)[$index]['concepto'],
                     'unidad' => json_decode($this->declaracionjuradaline->detalle, true)[$index]['unidad'],
                     'subtipo_id' => json_decode($this->declaracionjuradaline->detalle, true)[$index]['subtipo'],
-                    'organismo_id' => $this->organismo->id, 
+                    'organismo_id' => $this->organismo->id,
                     'updated_at' => now()
                 ]);
 
-                Log::channel('daily')->info('detalles' , [
+                Log::channel('daily')->info('detalles', [
                     'detalle ' . $index => $concepto->detalles[$index],
                 ]);
 
@@ -261,14 +262,14 @@ class LiquidacionsImport implements
         }
     }
 
-    
+
     public function historias_liquidaciones()
     {
 
         // Log::channel('daily')->info('puesto laboral' , [
         //     'clase ' => $this->puesto_laboral->clases->first()->pivot,
         // ]);
-        
+
     }
 
 
@@ -296,8 +297,8 @@ class LiquidacionsImport implements
         $adicionales = 0;
         $aporte_personal = 0;
         $descuento = 0;
-        
-        
+
+
         $this->liquidacion  = new Liquidacion();
         $this->liquidacion->declaracion_id = $this->declaracionjurada->id;
         $this->liquidacion->save();
@@ -415,7 +416,7 @@ class LiquidacionsImport implements
             ]);
             Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
 
-                
+
                 'hl' => $this->puesto_laboral->clases()->where('clase_id', $this->clase->id)->first()->pivot->id
             ]);
             $hl_id = $this->puesto_laboral->clases()->where('clase_id', $this->clase->id)->first()->pivot->id;
@@ -427,7 +428,7 @@ class LiquidacionsImport implements
                     'h_laboral_id' => $hl_id
                 ]);
             }
-            
+
             // $this->liquidacion->historia_laborales()->attach($hl_id , [
             //     'estado_id' => $this->declaracionjuradaline->cod_estado,
             //     'funcion_id' => 1
@@ -479,7 +480,7 @@ class LiquidacionsImport implements
                     'subtipo_id' => $detalle['subtipo'],
                     'created_at' => now()
                 ]);
-                
+
                 $departamento->conceptos()->attach($this->conceptos[$index]->id, [
                     'user_id' => $this->importedBy->id,
                     'tipocodigo_id' => $detalle['tipo'],
@@ -612,9 +613,7 @@ class LiquidacionsImport implements
                     'errors' => $failure->errors(),
                     'values' => $failure->values()[$failure->attribute()],
                 ]);
-                $message =$failure->errors();
-                NotificationJob::dispatch($this->importedBy , $message);
-
+                FailedRowJob::dispatch($this->importedBy, $failure);
             }
         }
     }

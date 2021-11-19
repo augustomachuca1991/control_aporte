@@ -16,9 +16,10 @@ class ImportHasFailedNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user, Failures $failures)
     {
-        //
+        $this->failures = $failures;
+        $this->user = $user;
     }
 
     /**

@@ -29,36 +29,36 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Dispatcher $events)
     {
-        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $event->menu->add('© Copyright 2021');
-            $notificationes = Notification::where('notifiable_id', Auth::id())->get();
-            if ($notificationes->count() > 0) {
-                foreach ($notificationes as $notificacion) {
-                    $menu[] = [
-                        'text' => json_decode($notificacion->data, true)['message'],
-                        'url'  => '#',
-                        'icon' => json_decode($notificacion->data, true)['icon'],
-                    ];
-                }
-            } else {
-                $menu[] = [
-                    'text' => 'sin notificaciones',
-                    'url'  => '#',
-                    'icon' => 'fas  fa-file-csv',
-                ];
-            }
+        // $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+        //     $event->menu->add('© Copyright 2021');
+        //     $user = Auth::user();
+        //     $notificationes = $user->notifications->where('type', 'App\Notifications\FinishJob')->all();
+        //     if ($notificationes) {
+        //         foreach ($notificationes as $notificacion) {
+        //             $menu[] = [
+        //                 'text' => $notificacion->data,
+        //                 'url'  => '#',
+        //                 'icon' => 'fa fas-edit',
+        //             ];
+        //         }
+        //     } else {
+        //         $menu[] = [
+        //             'text' => 'sin notificaciones',
+        //             'url'  => '#',
+        //             'icon' => 'fas  fa-file-csv',
+        //         ];
+        //     }
 
 
-            $event->menu->add([
-                'text'        => '',
-                'url'         => '#',
-                'icon'        => 'far fa-bell',
-                'label'       => $notificationes->count(),
-                'label_color' => 'danger',
-                'topnav_right' => true,
-                'submenu' => $menu,
-            ]);
-        
-        });
+        //     $event->menu->add([
+        //         'text'        => '',
+        //         'url'         => '#',
+        //         'icon'        => 'far fa-bell',
+        //         'label'       => $notificationes->count(),
+        //         'label_color' => 'danger',
+        //         'topnav_right' => true,
+        //         'submenu' => $menu,
+        //     ]);
+        // });
     }
 }

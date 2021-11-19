@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 //use App\{DeclaracionJurada,Liquidacion,Agente,PuestoLaboral,Clase,Categoria,HistoriaLaboral,Jurisdiccion};
-use App\{DeclaracionJurada, DeclaracionJuradaLine, Periodo, TipoLiquidacion, Organismo, User};
+use App\{DeclaracionJurada, DeclaracionJuradaLine, Notification, Periodo, TipoLiquidacion, Organismo, User};
 use Illuminate\Http\Request;
 use App\Jobs\LiquidacionJob;
 use Illuminate\Support\Facades\Auth;
@@ -292,14 +292,21 @@ class DeclaracionJuradaController extends Controller
 
     public function sinAplicar($user_id)
     {
-        
-        return DeclaracionJurada::whereHas('user' , function($query) use ($user_id){
-            $query->where('id' , $user_id);
-         })->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->where('status', true)->get();
+
+        return DeclaracionJurada::whereHas('user', function ($query) use ($user_id) {
+            $query->where('id', $user_id);
+        })->with(['organismo', 'user', 'periodo', 'tipoliquidacion'])->where('status', true)->get();
     }
 
     public function cast_jsonDecode(DeclaracionJuradaLine $declaracionJuradaLine)
     {
         $declaracionJuradaLine->detalle = json_decode($declaracionJuradaLine->detalle, true);
+    }
+
+    public function getFailedNotificationImport($user_id)
+    {
+        $user = User::find($user_id);
+        return $user->notifications->where('type', 'App\Notifications\FailedRowNotification')->all();
+        //return Notification::where('notifiable_id', $user_id)->first()->type;
     }
 }

@@ -6,6 +6,11 @@
 <template>
     <section class="content container">
         <div class="row">
+            <div class="col-12 text-xs">
+                <alert-notifications :auth="user"></alert-notifications>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-12">
                 <div class="card-hover-shadow-2x mb-3 card">
                     <div class="card-header-tab card-header">
