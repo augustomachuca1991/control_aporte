@@ -14,14 +14,16 @@ class FailedRowNotification extends Notification implements ShouldQueue
 
 
     protected $failure;
+    protected $fileName;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Failure $failure)
+    public function __construct(Failure $failure, $fileName)
     {
         $this->failure = $failure;
+        $this->fileName = $fileName;
     }
 
     /**
@@ -44,8 +46,9 @@ class FailedRowNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
+            ->greeting('Se importó el archivo ' . $this->fileName)
+            ->line('Hubo fallós en la fila ' . $this->failure->row() . ' con el siguente error: ' . $this->failure->errors()[0])
+            ->action('Notification Action', url('/import'))
             ->line('Thank you for using our application!');
     }
 
@@ -62,6 +65,7 @@ class FailedRowNotification extends Notification implements ShouldQueue
 
 
         return [
+            'fileName' => $this->fileName,
             'message' => $this->failure->toArray()[0],
             'row' => $this->failure->row(),
             'attribute' => $this->failure->attribute(),

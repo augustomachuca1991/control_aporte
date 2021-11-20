@@ -11,7 +11,7 @@ class FinishJob extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    
+
     protected $message;
     /**
      * Create a new notification instance.
@@ -31,7 +31,7 @@ class FinishJob extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database','mail'];
+        return ['database'];
     }
 
     /**
@@ -65,9 +65,10 @@ class FinishJob extends Notification implements ShouldQueue
 
     public function toArray($notifiable)
     {
-        return ['message' => $this->message,
-                'icon' => 'far fa-envelope-open',
-                'date' => now()->diffForhumans(),
+        return [
+            'message' => $this->message,
+            'icon' => 'far fa-envelope-open',
+            'date' => now()->diffForhumans(),
         ];
     }
 }

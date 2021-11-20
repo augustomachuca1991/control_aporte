@@ -33,6 +33,7 @@ Route::post('/declaracion_jurada/download', 'DeclaracionJuradaController@downloa
 Route::get('/declaracion_jurada/aplicar/{user_id}', 'DeclaracionJuradaController@sinAplicar')->name('archivos-recientes');
 
 Route::get('/failedRow/{user_id}', 'DeclaracionJuradaController@getFailedNotificationImport');
+Route::post('/readNotifications', 'DeclaracionJuradaController@unReadNotifications');
 
 Route::get('/declaracion_jurada_lines/{cabecara_id}', 'DeclaracionJuradaLineController@getDeclaracionesJuradasLines');
 

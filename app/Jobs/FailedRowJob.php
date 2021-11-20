@@ -17,11 +17,13 @@ class FailedRowJob implements ShouldQueue
 
     protected $user;
     protected $failure;
+    protected $fileName;
 
-    public function __construct(User $user, Failure $failure)
+    public function __construct(User $user, Failure $failure, $fileName)
     {
         $this->user = $user;
         $this->failure = $failure;
+        $this->fileName = $fileName;
     }
 
     /**
@@ -31,6 +33,6 @@ class FailedRowJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->user->notify(new FailedRowNotification($this->failure));
+        $this->user->notify(new FailedRowNotification($this->failure, $this->fileName));
     }
 }

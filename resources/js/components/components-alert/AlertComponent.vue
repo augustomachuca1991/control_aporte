@@ -1,35 +1,18 @@
 <template>
     <div v-if="hasAlert">
-        <!-- <div class="alert alert-danger alert-dismissible">
-                    <button
-                        type="button"
-                        class="close"
-                        data-dismiss="alert"
-                        aria-hidden="true"
-                    >
-                        ×
-                    </button>
-                    <h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                    Danger alert preview. This alert is dismissable. A wonderful
-                    serenity has taken possession of my entire soul, like these
-                    sweet mornings of spring which I enjoy with my whole heart.
-                </div>
-                <div class="alert alert-info alert-dismissible">
-                    <button
-                        type="button"
-                        class="close"
-                        data-dismiss="alert"
-                        aria-hidden="true"
-                    >
-                        ×
-                    </button>
-                    <h5><i class="icon fas fa-info"></i> Alert!</h5>
-                    Info alert preview. This alert is dismissable.
-                </div> -->
+        <!-- <x-adminlte-callout
+            theme="danger"
+            class="bg-gradient-pink"
+            title-class="text-uppercase"
+            icon="fas fa-lg fa-leaf text-purple"
+            title="observation"
+        >
+            <i>A styled observation for the user.</i>
+        </x-adminlte-callout> -->
         <div
-            class="alert bg-yellow alert-dismissible mb-2"
-            v-for="(alert, index) in alerts"
-            :key="alert.id"
+            class="callout callout-warning  mb-1 text-warning"
+            v-for="(alert, index, ht) in alerts"
+            :key="index"
         >
             <!-- {{ alert.data }} -->
             <button
@@ -37,16 +20,22 @@
                 class="close"
                 data-dismiss="alert"
                 aria-hidden="true"
-                @click="deleteAlert(index, alert)"
+                @click="deleteAlert(index, ht, alert)"
             >
                 ×
             </button>
             <h5>
                 <i class="icon fas fa-exclamation-triangle"></i>
-                Atencion! nombre_archivo.csv
+                Atencion!!!
+                <i class="text-bold">"{{ alert.data.fileName }}"</i> tuvo los
+                siguentes fallos:
             </h5>
-            {{ alert.data.message }}
-            <ul>
+            La fila <b>"{{ alert.data.row }}"</b>
+            <span v-for="(error, index) in alert.data.errors" :key="index">
+                {{ error }}</span
+            >
+            y se recibió un valor "{{ alert.data.values }}"
+            <!-- <ul>
                 <li>Fila: {{ alert.data.row }}</li>
                 <li>Atributo: {{ alert.data.attribute }}</li>
                 <li>
@@ -60,7 +49,7 @@
                     </i>
                 </li>
                 <li>Valor: {{ alert.data.values }}</li>
-            </ul>
+            </ul> -->
         </div>
         <!-- <div class="alert alert-success alert-dismissible">
                     <button
@@ -83,7 +72,6 @@ export default {
     data: function() {
         return {
             alerts: [],
-            fileName: "",
             hasAlert: false,
             failed: "2"
         };
@@ -100,8 +88,15 @@ export default {
                 }
             });
         },
-        deleteAlert(index, alert) {
-            //this.alerts.splice(index, 1);
+        deleteAlert(index, ht, alert) {
+            console.log("click");
+            const param = {
+                alert_id: alert.id,
+                user_id: this.auth.id
+            };
+            axios.post(`api/readNotifications`, param).then(response => {
+                this.alerts = response.data;
+            });
         }
     }
 };

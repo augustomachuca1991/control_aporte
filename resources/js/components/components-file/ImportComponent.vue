@@ -1,8 +1,3 @@
-<style>
-.custom-file-input ~ .custom-file-label::after {
-    content: "Elegir";
-}
-</style>
 <template>
     <section class="content container">
         <div class="row">
@@ -298,28 +293,53 @@
                         </div>
                     </div>
                 </section>
-                <div class="row" v-if="declaraciones_juradas.length === 0">
-                    <div class="col">
-                        <div class="card">
-                            <h5 class="card-header card-outline card-navy">
-                                Declaraciones Juradas
-                            </h5>
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    No Hay Datos
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div v-else class="row">
+                <div v-if="declaraciones_juradas.length > 0" class="row">
                     <div
                         v-for="(declaracion_jurada,
                         index) in declaraciones_juradas"
                         :key="index"
-                        class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column"
+                        class="col-12 col-lg-4 d-flex rounded"
                     >
-                        <div class="card bg-light d-flex flex-fill">
+                        <div class="four columns">
+                            <a href="#">
+                                <div class="content-box color-effect-1">
+                                    <p>
+                                        {{
+                                            declaracion_jurada.created_at
+                                                | moment
+                                        }}
+                                        <span
+                                            v-if="declaracion_jurada.rectificar"
+                                            class="badge badge-danger"
+                                        >
+                                            rectificada</span
+                                        >
+                                    </p>
+                                    <h3>
+                                        {{ declaracion_jurada.nombre_archivo }}
+                                    </h3>
+                                    <div
+                                        class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a"
+                                    >
+                                        <div class="box-icon">
+                                            <i class="fa fa-file"></i>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        Perido
+                                        {{ declaracion_jurada.periodo.periodo }}
+                                    </p>
+                                    <p>
+                                        Tipo
+                                        <span class="badge bg-olive">{{
+                                            declaracion_jurada.tipoliquidacion
+                                                .descripcion
+                                        }}</span>
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                        <!-- <div class="card bg-light d-flex flex-fill">
                             <div class="card-header text-muted border-bottom-0">
                                 <nav class="navbar navbar-light bg-light">
                                     <p class="navbar-brand text-muted">
@@ -381,12 +401,22 @@
                                                         class="fas fa-file-invoice-dollar"
                                                     ></i
                                                 ></span>
-                                                Tipo
-                                                {{
-                                                    declaracion_jurada
-                                                        .tipoliquidacion
-                                                        .descripcion
-                                                }}
+                                                <span
+                                                    class="badge"
+                                                    :class="
+                                                        declaracion_jurada
+                                                            .tipoliquidacion
+                                                            .id == 1
+                                                            ? 'badge-success'
+                                                            : 'badge-warning'
+                                                    "
+                                                    >Tipo
+                                                    {{
+                                                        declaracion_jurada
+                                                            .tipoliquidacion
+                                                            .descripcion
+                                                    }}</span
+                                                >
                                             </li>
                                             <li class="small">
                                                 <span class="fa-li"
@@ -415,7 +445,6 @@
                                                 d="M5 13l4 4L19 7"
                                             />
                                         </svg>
-                                        <span class="text-xs"> completed</span>
                                     </div>
                                 </div>
                             </div>
@@ -429,10 +458,10 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-                <div v-if="declaraciones_juradas.length">
+                <div v-if="declaraciones_juradas.length > 0">
                     <span
                         >total registros encontrados: {{ paginate.total }}</span
                     >
@@ -459,7 +488,6 @@ const Toast = swal.mixin({
         toast.addEventListener("mouseleave", swal.resumeTimer);
     }
 });
-
 export default {
     props: ["user"],
     data: function() {
@@ -504,7 +532,6 @@ export default {
             let formData = new FormData();
             formData.append("file", this.file);
             formData.append("user_id", this.user.id);
-
             axios
                 .post("api/declaracion_jurada/create", formData, {
                     headers: {
@@ -546,7 +573,6 @@ export default {
                                 if (result.isConfirmed) {
                                     this.rectificar(response.data.data);
                                     // this.declaracion_jurada = response.data.data
-
                                     // Toast.fire({
                                     //     icon: "success",
                                     //     title:"rectificacion con exitó",
@@ -653,7 +679,6 @@ export default {
                 status: true,
                 rectificar: true
             };
-
             axios
                 .put(`api/declaracion_jurada/update/` + data.id, data)
                 .then(response => {
@@ -684,3 +709,6 @@ export default {
     }
 };
 </script>
+
+© 2021 GitHub, Inc. Terms Privacy Security Status Docs Contact GitHub Pricing
+API Training Blog About

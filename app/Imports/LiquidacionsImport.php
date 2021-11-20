@@ -613,7 +613,7 @@ class LiquidacionsImport implements
                     'errors' => $failure->errors(),
                     'values' => $failure->values()[$failure->attribute()],
                 ]);
-                FailedRowJob::dispatch($this->importedBy, $failure);
+                FailedRowJob::dispatch($this->importedBy, $failure, $this->declaracionjurada->nombre_archivo);
             }
         }
     }
