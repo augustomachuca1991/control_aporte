@@ -10,9 +10,10 @@
             <i>A styled observation for the user.</i>
         </x-adminlte-callout> -->
         <div
-            class="callout callout-warning  mb-1 text-warning"
+            class="callout callout-warning  mb-1 text-orange"
             v-for="(alert, index, ht) in alerts"
             :key="index"
+            style=" background-color: #fff3cd;"
         >
             <!-- {{ alert.data }} -->
             <button

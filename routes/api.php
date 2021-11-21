@@ -191,7 +191,10 @@ Route::post('/notification/leida/{id}', 'NotificationController@markAsReads')->n
 //Agentes
 
 //Route::get('/agente', 'AgenteController@getAgentes')->name('agente');
-Route::post('/agente', 'AgenteController@search')->name('agente_search');
+// Route::post('/agente', 'AgenteController@search')->name('agente_search');
+Route::get('/agente/{cuil}', 'AgenteController@porCuil');
+Route::get('/agente/puesto/{puesto}', 'AgenteController@porPuesto');
+
 
 
 

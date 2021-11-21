@@ -111,23 +111,14 @@ Vue.component(
     "filtrocategoria-component",
     require("./components/FiltroCategoriaComponent.vue").default
 );
-Vue.component(
-    "panelcategoria-component",
-    require("./components/PanelCategoriaComponent.vue").default
-);
-Vue.component(
-    "panelcomputo-component",
-    require("./components/PanelComputoComponent.vue").default
-);
+
+
 
 Vue.component(
     "historialaborales-component",
-    require("./components/HistoriaLaboralesComponent.vue").default
+    require("./components/component-historiaLaboral/HistoriaLaboralesComponent.vue").default
 );
-Vue.component(
-    "panel-historialaboral",
-    require("./components/PanelHistoriaComponent.vue").default
-);
+
 
 //liquidaciones
 Vue.component(
@@ -141,16 +132,20 @@ Vue.component(
 
 //computos
 Vue.component(
+    "panelcomputo-component",
+    require("./components/components-computo/ComputoComponent.vue").default
+);
+Vue.component(
     "computoorigen-component",
-    require("./components/ComputoOrigenComponent.vue").default
+    require("./components/components-computo/ComputoOrigenComponent.vue").default
 );
 Vue.component(
     "computojur-component",
-    require("./components/ComputoJurisdiccionComponent.vue").default
+    require("./components/components-computo/ComputoJurisdiccionComponent.vue").default
 );
 Vue.component(
     "computoorganismo-component",
-    require("./components/ComputoOrganismoComponent.vue").default
+    require("./components/components-computo/ComputoOrganismoComponent.vue").default
 );
 
 //csv
@@ -170,17 +165,9 @@ Vue.component(
         .default
 );
 
-//notificaticion
-Vue.component(
-    "notification-component",
-    require("./components/NotificacionComponent.vue").default
-);
 
-//panel lateral
-Vue.component(
-    "panel-config",
-    require("./components/PanelConfiguracionComponent.vue").default
-);
+
+
 
 //usuarios
 Vue.component(

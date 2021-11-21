@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agente extends Model
 {
-    use SoftDeletes; 
+    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
     protected $fillable = [
@@ -16,15 +16,16 @@ class Agente extends Model
         'fecha_nac',
         'sexo',
     ];
-    
 
-    public function organismos(){
 
-        return $this->belongsToMany( 'App\Organismo');
+    public function organismos()
+    {
+
+        return $this->belongsToMany('App\Organismo', 'agente_organismo', 'agente_id', 'organismo_id')->as('puesto_laboral')->withPivot('cod_laboral', 'fecha_ingreso', 'fecha_egreso');
     }
 
     public function puestolaborales()
     {
         return $this->hasMany('App\PuestoLaboral')->with('organismo');
-    } 
-} 
+    }
+}

@@ -102,22 +102,65 @@ class AgenteController extends Controller
      * @param  \App\Agente  $agente
      * @return \Illuminate\Http\Response
      */
-    public function search(Request $request)
+    // public function search(Request $request)
+    // {
+
+    //     $data = ['cuil' => $request->cuil];
+    //     $rules = ['cuil' => 'required|integer|exists:agentes,cuil|digits_between:10,11'];
+    //     $message = [
+    //         'cuil.integer' => 'Debe ingresar un tipo de cuil valido. Verifique ',
+    //         'cuil.exists' => 'El cuil ingresado no existe en nuestra base de datos.',
+    //         'cuil.digits_between' => 'digitos minimos 10 y max 11 (sin guiones)'
+    //     ];
+    //     $validator = Validator::make($data, $rules, $message);
+    //     if ($validator->fails()) {
+    //         return response()->json(['isError' => true, 'data' => $validator->errors()]);
+    //     } else {
+    //         $agentes = Agente::with('puestolaborales')->where('cuil', $request->cuil)->first();
+    //         return response()->json(['isError' => false, 'data' => $agentes]);
+    //     }
+    // }
+
+    public function porCuil($cuil)
     {
-        
-        $data = ['cuil' => $request->cuil];
+        $data = ['cuil' => $cuil];
         $rules = ['cuil' => 'required|integer|exists:agentes,cuil|digits_between:10,11'];
-        $message = ['cuil.integer' => 'Debe ingresar un tipo de cuil valido. Verifique ',
-                    'cuil.exists' => 'El cuil ingresado no existe en nuestra base de datos.',
-                    'cuil.digits_between' => 'digitos minimos 10 y max 11 (sin guiones)'];
-        $validator = Validator::make($data,$rules,$message);
+        $message = [
+            'cuil.integer' => 'Debe ingresar un tipo de cuil valido. Verifique ',
+            'cuil.exists' => 'El cuil ingresado no existe en nuestra base de datos.',
+            'cuil.digits_between' => 'digitos minimos 10 y max 11 (sin guiones)',
+            'cuil.required' => 'complete el campo'
+        ];
+        $validator = Validator::make($data, $rules, $message);
         if ($validator->fails()) {
-            return response()->json(['isError' => true ,'data' => $validator->errors()]);
-        }else{
-            $agentes = Agente::with('puestolaborales')->where('cuil' , $request->cuil)->first();
-            return response()->json(['isError' => false ,'data' => $agentes]);
+            return response()->json(['isError' => true, 'data' => $validator->errors()]);
+        } else {
+            $agentes = Agente::with('organismos')->where('cuil', $cuil)->first();
+            return response()->json(['isError' => false, 'data' => $agentes]);
         }
     }
 
 
+
+    public function porPuesto($puesto)
+    {
+
+
+
+        $data = ['puesto_laboral' => $puesto];
+        $rules = ['puesto_laboral' => 'required|integer|exists:agente_organismo,cod_laboral'];
+        $message = [
+            'puesto_laboral.integer' => 'El puesto laboral debe se un numero entero',
+            'puesto_laboral.exists' => 'El puesto laboral ingresado no existe en nuestra base de datos.',
+        ];
+        $validator = Validator::make($data, $rules, $message);
+        if ($validator->fails()) {
+            return response()->json(['isError' => true, 'data' => $validator->errors()]);
+        } else {
+            $agentes = Agente::with('organismos')->whereHas('organismos', function ($organismos) use ($puesto) {
+                $organismos->where('agente_organismo.cod_laboral', $puesto);
+            })->first();
+            return response()->json(['isError' => false, 'data' => $agentes]);
+        }
+    }
 }

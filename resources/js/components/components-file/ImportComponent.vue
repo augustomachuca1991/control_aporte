@@ -6,16 +6,56 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 mt-3">
                 <div class="card-hover-shadow-2x mb-3 card">
-                    <div class="card-header-tab card-header">
-                        <div
-                            class="card-header-title font-size-lg text-capitalize font-weight-normal text-info"
-                        >
-                            <i class="fas fa-database"></i>Lista Tareas
-                        </div>
+                    <div class="card-footer">
+                        <form @submit.prevent="submitFile()">
+                            <div class="form-group">
+                                <label for="inputFile" class="text-muted"
+                                    ><i class="fas fa-upload"></i> &nbsp;Subir
+                                    Archivo</label
+                                >
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input
+                                            type="file"
+                                            class="custom-file-input"
+                                            id="inputFile"
+                                            name="file"
+                                            ref="file"
+                                            @change="handleFileUpload"
+                                            required
+                                            lang="es"
+                                        />
+                                        <label
+                                            class="custom-file-label"
+                                            for="inputFile"
+                                            >Seleccione un archivo</label
+                                        >
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn input-group-text"
+                                            type="submit"
+                                            name="import"
+                                            id="import"
+                                        >
+                                            <i class="fas fa-link"></i>Poner en
+                                            cola
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="scroll-area-lg">
+                </div>
+            </div>
+            <div class="col-12" v-if="ddjj_sin.length > 0">
+                <div class="hr-sect capitalize">
+                    <h4>Tareas Pendientes</h4>
+                </div>
+                <div class="card">
+                    <div class="card-body">
                         <section
                             class="ps-container scrollbar-container ps ps--theme_default ps--active-y"
                         >
@@ -23,35 +63,6 @@
                                 class="todo-list-wrapper list-group list-group-flush"
                             >
                                 <li
-                                    class="list-group-item"
-                                    v-if="ddjj_sin.length === 0"
-                                >
-                                    <div class="widget-content p-0">
-                                        <div
-                                            class="widget-content-wrapper text-muted"
-                                        >
-                                            <p>No hay tareas por realizar</p>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="h-5 w-5"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                                width="48"
-                                            >
-                                                <path
-                                                    d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"
-                                                />
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                    clip-rule="evenodd"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li
-                                    v-else
                                     class="list-group-item"
                                     v-for="(declaracion_jurada,
                                     index) in ddjj_sin"
@@ -130,16 +141,47 @@
                                                             .periodo.periodo
                                                     }}</span
                                                 >
+                                                <a
+                                                    href="#"
+                                                    class="stretched-link"
+                                                    v-if="
+                                                        !declaracion_jurada.apply
+                                                    "
+                                                    @click="
+                                                        aplicar(
+                                                            index,
+                                                            declaracion_jurada
+                                                        )
+                                                    "
+                                                    >Importar</a
+                                                >
                                             </div>
                                             <div
                                                 class="widget-content-right widget-content-actions col-12 col-lg-3"
                                             >
-                                                <div
-                                                    v-if="
-                                                        !declaracion_jurada.apply
-                                                    "
-                                                >
-                                                    <button
+                                                <div class="text-muted">
+                                                    <p class="text-sm">
+                                                        <i
+                                                            class="far fa-user"
+                                                        ></i
+                                                        >Subido por
+                                                        <b class="d-block">{{
+                                                            declaracion_jurada
+                                                                .user.name
+                                                        }}</b>
+                                                    </p>
+                                                    <p class="text-sm">
+                                                        <i
+                                                            class="far fa-clock"
+                                                        ></i
+                                                        >Tiempo
+                                                        <b class="d-block">{{
+                                                            declaracion_jurada.created_at
+                                                                | moment
+                                                        }}</b>
+                                                    </p>
+
+                                                    <!-- <button
                                                         @click="
                                                             aplicar(
                                                                 index,
@@ -166,28 +208,20 @@
                                                             class="fas fa-times"
                                                         ></i
                                                         >&nbsp;Quitar de la cola
-                                                    </button>
+                                                    </button> -->
                                                 </div>
-                                                <div v-else>
+                                                <div
+                                                    v-if="
+                                                        declaracion_jurada.apply
+                                                    "
+                                                >
                                                     <div
-                                                        class="d-flex align-items-center"
+                                                        class="spinner-border text-primary"
+                                                        role="status"
                                                     >
-                                                        <strong
-                                                            class="text-muted"
-                                                            >Cargando...</strong
+                                                        <span class="sr-only"
+                                                            >Cargando...</span
                                                         >
-                                                        <div
-                                                            class="spinner-grow text-primary"
-                                                            role="status"
-                                                        ></div>
-                                                        <div
-                                                            class="spinner-grow text-secondary"
-                                                            role="status"
-                                                        ></div>
-                                                        <div
-                                                            class="spinner-grow text-success"
-                                                            role="status"
-                                                        ></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,53 +231,14 @@
                             </ul>
                         </section>
                     </div>
-                    <div class="card-footer">
-                        <form @submit.prevent="submitFile()">
-                            <div class="form-group">
-                                <label for="inputFile" class="text-muted"
-                                    >Subir Archivo</label
-                                >
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input
-                                            type="file"
-                                            class="custom-file-input"
-                                            id="inputFile"
-                                            name="file"
-                                            ref="file"
-                                            @change="handleFileUpload"
-                                            required
-                                            lang="es"
-                                        />
-                                        <label
-                                            class="custom-file-label"
-                                            for="inputFile"
-                                            >Seleccione un archivo</label
-                                        >
-                                    </div>
-                                    <div class="input-group-append">
-                                        <button
-                                            class="btn input-group-text"
-                                            type="submit"
-                                            name="import"
-                                            id="import"
-                                        >
-                                            <i class="fas fa-link"></i>Poner en
-                                            cola
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
 
             <div class="col-12">
                 <div class="hr-sect capitalize">
-                    <h4>Lista de Declaraciones Juradas</h4>
+                    <h4>Tareas Finalizadas</h4>
                 </div>
-                <section class="content mb-5">
+                <!-- <section class="content mb-5">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
@@ -292,7 +287,7 @@
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> -->
                 <div v-if="declaraciones_juradas.length > 0" class="row">
                     <div
                         v-for="(declaracion_jurada,
@@ -301,7 +296,13 @@
                         class="col-12 col-lg-4 d-flex rounded"
                     >
                         <div class="four columns">
-                            <a href="#">
+                            <a
+                                href="#"
+                                data-toggle="tooltip"
+                                data-placement="bottom"
+                                title="Descargar Archivo"
+                                @click="download(declaracion_jurada.path)"
+                            >
                                 <div class="content-box color-effect-1">
                                     <p>
                                         {{
@@ -316,7 +317,10 @@
                                         >
                                     </p>
                                     <h3>
-                                        {{ declaracion_jurada.nombre_archivo }}
+                                        {{
+                                            declaracion_jurada.organismo
+                                                .organismo
+                                        }}
                                     </h3>
                                     <div
                                         class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a"
@@ -461,7 +465,7 @@
                         </div> -->
                     </div>
                 </div>
-                <div v-if="declaraciones_juradas.length > 0">
+                <div v-if="declaraciones_juradas.length > perPage">
                     <span
                         >total registros encontrados: {{ paginate.total }}</span
                     >
@@ -694,6 +698,27 @@ export default {
                         this.asignar(response);
                     });
             }, this.timeOut);
+        },
+        download: function(pathToFile) {
+            const params = {
+                path: pathToFile
+            };
+            axios
+                .post("api/declaracion_jurada/download", params, {
+                    responseType: "arraybuffer"
+                })
+                .then(response => {
+                    //console.log(response.data)
+                    var fileUrl = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    var fileLink = document.createElement("a");
+                    fileLink.href = fileUrl;
+
+                    fileLink.setAttribute("download", "declaracionjurada.csv");
+                    document.body.appendChild(fileLink);
+                    fileLink.click();
+                });
         },
         asignar(response) {
             this.declaraciones_juradas = response.data.data;

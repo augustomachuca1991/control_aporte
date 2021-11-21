@@ -10,19 +10,24 @@
 @stop
 
 
- @section('right-sidebar')
-	@include('layouts.right_sidebar')
- @stop
+@section('right-sidebar')
+    @include('layouts.right_sidebar')
+@stop
 
 @section('content_header')
-    <h1 class="text-secondary h1-responsive">Panel de Historia Laboral</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('home') }}"> <i class="fas fa-home"></i> Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Historias Laborales</li>
+        </ol>
+    </nav>
 @stop
 
 
 @section('content')
-  <div id="app">
-    <panel-historialaboral></panel-historialaboral>   
-  </div>
+    <div id="app">
+        <historialaborales-component></historialaborales-component>
+    </div>
 @stop
 
 
