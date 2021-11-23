@@ -167,10 +167,7 @@
                                                         </dd>
                                                         <dt>Cuil</dt>
                                                         <dd>
-                                                            {{
-                                                                agente.cuil
-                                                                    | formatCuil
-                                                            }}
+                                                            {{ agente.cuil }}
                                                         </dd>
                                                         <dt>Edad</dt>
                                                         <dd>
@@ -267,11 +264,12 @@
                                                 <!-- Placement of additional controls. Optional -->
                                                 <div class="timeline-footer">
                                                     <a
+                                                        @click="info()"
                                                         class="btn bg-gradient-secondary btn-sm"
                                                         ><i
                                                             class="fas fa-print"
                                                         ></i>
-                                                        Imprimir</a
+                                                        Obtener Info</a
                                                     >
                                                     <a
                                                         class="btn bg-gradient-orange btn-sm"
@@ -280,6 +278,164 @@
                                                             class="fas fa-broom"
                                                         ></i
                                                         >&nbsp;Limpiar</a
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <i
+                                                class="fas fa-comments bg-yellow"
+                                            ></i>
+                                            <div class="timeline-item">
+                                                <span class="time"
+                                                    ><i
+                                                        class="fas fa-clock"
+                                                    ></i>
+                                                    27 mins ago</span
+                                                >
+                                                <h3 class="timeline-header">
+                                                    <a href="#">Agente</a>
+                                                    historia laboral
+                                                </h3>
+                                                <div class="timeline-body">
+                                                    <div
+                                                        class="col-12 col-md-8 col-xl-4"
+                                                    >
+                                                        <!-- Widget: user widget style 2 -->
+                                                        <div
+                                                            class="card card-widget widget-user-2"
+                                                        >
+                                                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                                                            <div
+                                                                class="widget-user-header bg-warning"
+                                                            >
+                                                                <div
+                                                                    class="widget-user-image"
+                                                                >
+                                                                    <img
+                                                                        class="img-circle elevation-2"
+                                                                        src="https://ui-avatars.com/api/?name=Augusto+Machuca&color=7F9CF5&background=EBF4FF"
+                                                                        alt="User Avatar"
+                                                                    />
+                                                                </div>
+                                                                <!-- /.widget-user-image -->
+                                                                <h3
+                                                                    class="widget-user-username"
+                                                                >
+                                                                    {{
+                                                                        agente.nombre
+                                                                    }}
+                                                                </h3>
+                                                                <h5
+                                                                    class="widget-user-desc"
+                                                                >
+                                                                    {{
+                                                                        agente.cuil
+                                                                    }}
+                                                                </h5>
+                                                            </div>
+                                                            <div
+                                                                class="card-footer p-0"
+                                                            >
+                                                                <ul
+                                                                    class="nav flex-column"
+                                                                >
+                                                                    <li
+                                                                        class="nav-item"
+                                                                    >
+                                                                        <a
+                                                                            href="#"
+                                                                            class="nav-link"
+                                                                        >
+                                                                            Organismo
+                                                                            <span
+                                                                                class="float-right"
+                                                                                >{{
+                                                                                    organismo.organismo
+                                                                                }}</span
+                                                                            >
+                                                                        </a>
+                                                                    </li>
+                                                                    <li
+                                                                        class="nav-item"
+                                                                    >
+                                                                        <a
+                                                                            href="#"
+                                                                            class="nav-link"
+                                                                        >
+                                                                            Puesto
+                                                                            Laboral
+                                                                            <span
+                                                                                class="float-right"
+                                                                                >{{
+                                                                                    puesto_laboral.cod_laboral
+                                                                                }}</span
+                                                                            >
+                                                                        </a>
+                                                                    </li>
+                                                                    <li
+                                                                        class="nav-item"
+                                                                    >
+                                                                        <a
+                                                                            href="#"
+                                                                            class="nav-link"
+                                                                        >
+                                                                            Duracion
+                                                                            <span
+                                                                                class="float-right"
+                                                                                >{{
+                                                                                    puesto_laboral.fecha_ingreso
+                                                                                        | getYears
+                                                                                }}
+                                                                                Años</span
+                                                                            >
+                                                                        </a>
+                                                                    </li>
+                                                                    <li
+                                                                        class="nav-item"
+                                                                    >
+                                                                        <a
+                                                                            href="#"
+                                                                            class="nav-link"
+                                                                        >
+                                                                            Fecha
+                                                                            Inicio
+                                                                            -
+                                                                            Fecha
+                                                                            Cese
+                                                                            <span
+                                                                                class="float-right badge bg-success"
+                                                                                v-if="
+                                                                                    puesto_laboral.fecha_egreso
+                                                                                "
+                                                                                >{{
+                                                                                    puesto_laboral.fecha_egreso
+                                                                                }}</span
+                                                                            >
+                                                                            <span
+                                                                                v-else
+                                                                                class="float-right badge bg-success"
+                                                                            >
+                                                                                Continúa
+                                                                            </span>
+                                                                            <span
+                                                                                class="float-right badge bg-danger"
+                                                                                >{{
+                                                                                    puesto_laboral.fecha_ingreso
+                                                                                }}</span
+                                                                            >
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.widget-user -->
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-footer">
+                                                    <a
+                                                        class="btn btn-warning btn-sm"
+                                                        >Print Report</a
                                                     >
                                                 </div>
                                             </div>
@@ -305,6 +461,7 @@ export default {
             errors: [],
             datos: [],
             organismos: [],
+            cod_laboral: "",
             agente: {},
             puesto_laboral: {},
             shown: false,
@@ -403,6 +560,10 @@ export default {
                     }, this.timeOut);
                 }
             });
+        },
+        info() {
+            console.log("dame la info");
+            console.log(this.organismo);
         }
     },
     filters: {

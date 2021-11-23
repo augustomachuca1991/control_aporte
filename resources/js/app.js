@@ -43,6 +43,10 @@ Vue.filter("reverse", function(value) {
     return value.slice().reverse();
 });
 
+Vue.filter("getYears", function(value) {
+    return moment().diff(value, "years", false);
+});
+
 // Vue.filter('formatCuil', function(cuil){
 // 	value = value.toString();
 
@@ -112,22 +116,22 @@ Vue.component(
     require("./components/FiltroCategoriaComponent.vue").default
 );
 
-
-
 Vue.component(
     "historialaborales-component",
-    require("./components/component-historiaLaboral/HistoriaLaboralesComponent.vue").default
+    require("./components/component-historiaLaboral/HistoriaLaboralesComponent.vue")
+        .default
 );
-
 
 //liquidaciones
 Vue.component(
     "listaliquidaciones-component",
-    require("./components/components-liquidacion/LiquidacionesComponent.vue").default
+    require("./components/components-liquidacion/LiquidacionesComponent.vue")
+        .default
 );
 Vue.component(
     "liquidaciondetalle-component",
-    require("./components/components-liquidacion/LiquidacionDetalleComponent.vue").default
+    require("./components/components-liquidacion/LiquidacionDetalleComponent.vue")
+        .default
 );
 
 //computos
@@ -137,15 +141,18 @@ Vue.component(
 );
 Vue.component(
     "computoorigen-component",
-    require("./components/components-computo/ComputoOrigenComponent.vue").default
+    require("./components/components-computo/ComputoOrigenComponent.vue")
+        .default
 );
 Vue.component(
     "computojur-component",
-    require("./components/components-computo/ComputoJurisdiccionComponent.vue").default
+    require("./components/components-computo/ComputoJurisdiccionComponent.vue")
+        .default
 );
 Vue.component(
     "computoorganismo-component",
-    require("./components/components-computo/ComputoOrganismoComponent.vue").default
+    require("./components/components-computo/ComputoOrganismoComponent.vue")
+        .default
 );
 
 //csv
@@ -164,10 +171,6 @@ Vue.component(
     require("./components/components-ddjj/DeclaracionJuradaComponent.vue")
         .default
 );
-
-
-
-
 
 //usuarios
 Vue.component(
@@ -305,7 +308,6 @@ Vue.component(
     "create-subtipo",
     require("./components/components-subtipo/CreateSubtipo.vue").default
 );
-
 
 //Alerts
 Vue.component(

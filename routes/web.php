@@ -20,12 +20,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
-
-Route::get('/dashboard', function () {
-    return view('admin.index');
-})->name('admin');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
 
 //-------- Declaraciones Juradas------------
 Route::get('/declaraciones_juradas', 'DeclaracionJuradaController@index')->name('ddjj');
@@ -81,3 +78,4 @@ Route::get('/users/locker', 'UserController@locker')->name('locker');
 
 //---------- Configuracion Controller -------------------------
 Route::get('/configuracion', 'ConfiguracionController@index')->name('config');
+});

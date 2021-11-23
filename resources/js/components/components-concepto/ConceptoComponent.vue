@@ -144,9 +144,6 @@
         ></create-concepto> -->
         <div class="card">
             <div class="card-header border-0">
-                <h3 class="card-title text-muted">
-                    Concepto | Subtipo | Tipo
-                </h3>
                 <div class="card-tools">
                     <a href="#" class="btn btn-sm btn-tool">
                         <img
@@ -157,9 +154,91 @@
                         />
                     </a>
                 </div>
+                <h2 class="text-muted" v-if="conceptos.length <= 0">
+                    No se encontraron resutados para esta busqueda
+                </h2>
             </div>
             <div class="card-body">
+                <div class="row mb-4 text-muted">
+                    <div class="col-12 col-lg-3"><b>CONCEPTO</b></div>
+                    <div class="col-12 col-lg-3"><b>SUBTIPO DE CODIGO</b></div>
+                    <div class="col-12 col-lg-3"><b>TIPO DE CODIGO</b></div>
+                    <div class="col-12 col-lg-3">
+                        <span class="d-inline-flex d-lg-none"
+                            ><b>HISTORIAL</b></span
+                        >
+                    </div>
+                </div>
                 <div
+                    class="row mb-4 mb-lg-0"
+                    v-for="(concepto, index) in conceptos"
+                    :key="index"
+                >
+                    <div class="col-12 col-lg-3">
+                        <p
+                            class="text-md text-justify d-flex flex-column mb-0 mb-lg-3"
+                        >
+                            <span>
+                                <a
+                                    href="#"
+                                    @click="edit(index, concepto)"
+                                    data-toggle="modal"
+                                    data-target="#concepto_edit"
+                                    class="text-olive"
+                                >
+                                    {{ concepto.cod_concepto }} -
+                                    {{ concepto.concepto | capitalize }}
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                            </span>
+                            <span class="text-muted">
+                                {{ concepto.organismo.organismo }}</span
+                            >
+                        </p>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        {{ concepto.subtipo.descripcion | capitalize }}
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        {{
+                            concepto.subtipo.tipocodigo.descripcion | capitalize
+                        }}
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <span class="font-weight-bold">
+                            <a
+                                href="#"
+                                class="text-info"
+                                @click="history(index, concepto)"
+                                data-toggle="modal"
+                                data-target="#conceptoHistory"
+                            >
+                                <i class="fas fa-eye"></i>
+                                ver historial
+                            </a>
+                        </span>
+                    </div>
+                    <div class="hr-sect capitalize d-lg-none">
+                        <svg
+                            aria-hidden="true"
+                            focusable="false"
+                            data-prefix="fal"
+                            data-icon="angle-double-down"
+                            role="img"
+                            width="14"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 256 512"
+                            class="svg-inline--fa fa-angle-double-down fa-w-8 fa-7x"
+                        >
+                            <path
+                                fill="currentColor"
+                                d="M119.5 262.9L3.5 145.1c-4.7-4.7-4.7-12.3 0-17l7.1-7.1c4.7-4.7 12.3-4.7 17 0L128 223.3l100.4-102.2c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L136.5 263c-4.7 4.6-12.3 4.6-17-.1zm17 128l116-117.8c4.7-4.7 4.7-12.3 0-17l-7.1-7.1c-4.7-4.7-12.3-4.7-17 0L128 351.3 27.6 249.1c-4.7-4.7-12.3-4.7-17 0l-7.1 7.1c-4.7 4.7-4.7 12.3 0 17l116 117.8c4.7 4.6 12.3 4.6 17-.1z"
+                                class=""
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+                <!-- <div
                     v-for="(concepto, index) in conceptos"
                     :key="concepto.id"
                     class="d-flex justify-content-between align-items-center border-bottom mb-3"
@@ -198,7 +277,7 @@
                             {{ concepto.organismo.organismo }}</span
                         >
                     </p>
-                </div>
+                </div> -->
             </div>
         </div>
         <span>total registros encontrados: {{ paginate.total }}</span>
@@ -291,7 +370,7 @@ export default {
                 next_page_url: "",
                 prev_page_url: ""
             },
-            perPage: 10,
+            perPage: "",
             search: "",
             setTimeoutBuscador: "",
             timeOut: 400,
@@ -347,6 +426,7 @@ export default {
             this.paginate.to = response.data.to;
             this.paginate.next_page_url = response.data.next_page_url;
             this.paginate.prev_page_url = response.data.prev_page_url;
+            this.perPage = response.data.per_page;
         },
         paginator() {
             axios

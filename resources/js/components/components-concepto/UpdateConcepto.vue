@@ -158,12 +158,7 @@
                                         type="text"
                                         v-model="unidad"
                                     />
-                                    <i v-else>
-                                        <div v-if="unidad">
-                                            {{ concepto.unidad }}
-                                        </div>
-                                        <div v-else>-</div>
-                                    </i>
+                                    <i v-else>{{ concepto.unidad }} </i>
                                 </div>
                             </div>
                         </li>

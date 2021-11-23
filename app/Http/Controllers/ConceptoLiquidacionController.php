@@ -13,7 +13,7 @@ class ConceptoLiquidacionController extends Controller
 {
 
 
-    public $perPage = 10;
+    public $perPage = 15;
     /**
      * Display a listing of the resource.
      *
@@ -111,7 +111,7 @@ class ConceptoLiquidacionController extends Controller
 
     public function getConceptos()
     {
-        return ConceptoLiquidacion::with(['organismo', 'subtipo', 'departamentos', 'users'])->latest()->paginate($this->perPage);
+        return ConceptoLiquidacion::with(['organismo', 'subtipo', 'departamentos', 'users'])->orderBy('cod_concepto', 'ASC')->paginate($this->perPage);
     }
 
 

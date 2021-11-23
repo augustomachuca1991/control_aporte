@@ -141,6 +141,7 @@
                                                             .periodo.periodo
                                                     }}</span
                                                 >
+
                                                 <a
                                                     href="#"
                                                     class="stretched-link"
@@ -153,6 +154,29 @@
                                                             declaracion_jurada
                                                         )
                                                     "
+                                                    ><svg
+                                                        aria-hidden="true"
+                                                        focusable="false"
+                                                        data-prefix="fad"
+                                                        data-icon="link"
+                                                        role="img"
+                                                        width="14"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 512 512"
+                                                        class="svg-inline--fa fa-link fa-w-16 fa-7x"
+                                                    >
+                                                        <g class="fa-group">
+                                                            <path
+                                                                fill="currentColor"
+                                                                d="M44.45 252.59l37.11-37.1c9.84-9.84 26.78-3.3 27.29 10.6a184.45 184.45 0 0 0 9.69 52.72 16.08 16.08 0 0 1-3.78 16.61l-13.09 13.09c-28 28-28.9 73.66-1.15 102a72.07 72.07 0 0 0 102.32.51L270 343.79A72 72 0 0 0 270 242a75.64 75.64 0 0 0-10.34-8.57 16 16 0 0 1-6.95-12.6A39.86 39.86 0 0 1 264.45 191l21.06-21a16.06 16.06 0 0 1 20.58-1.74A152.05 152.05 0 0 1 327 400l-.36.37-67.2 67.2c-59.27 59.27-155.7 59.26-215 0s-59.26-155.72.01-214.98z"
+                                                                class="fa-secondary"
+                                                            ></path>
+                                                            <path
+                                                                fill="currentColor"
+                                                                d="M410.33 203.49c28-28 28.9-73.66 1.15-102a72.07 72.07 0 0 0-102.32-.49L242 168.21A72 72 0 0 0 242 270a75.64 75.64 0 0 0 10.34 8.57 16 16 0 0 1 6.94 12.6A39.81 39.81 0 0 1 247.55 321l-21.06 21.05a16.07 16.07 0 0 1-20.58 1.74A152.05 152.05 0 0 1 185 112l.36-.37 67.2-67.2c59.27-59.27 155.7-59.26 215 0s59.27 155.7 0 215l-37.11 37.1c-9.84 9.84-26.78 3.3-27.29-10.6a184.45 184.45 0 0 0-9.69-52.72 16.08 16.08 0 0 1 3.78-16.61z"
+                                                                class="fa-primary"
+                                                            ></path>
+                                                        </g></svg
                                                     >Importar</a
                                                 >
                                             </div>
@@ -171,9 +195,22 @@
                                                         }}</b>
                                                     </p>
                                                     <p class="text-sm">
-                                                        <i
-                                                            class="far fa-clock"
-                                                        ></i
+                                                        <svg
+                                                            aria-hidden="true"
+                                                            focusable="false"
+                                                            data-prefix="fal"
+                                                            data-icon="clock"
+                                                            role="img"
+                                                            width="14"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 512 512"
+                                                            class="svg-inline--fa fa-clock fa-w-16 fa-7x"
+                                                        >
+                                                            <path
+                                                                fill="currentColor"
+                                                                d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm216 248c0 118.7-96.1 216-216 216-118.7 0-216-96.1-216-216 0-118.7 96.1-216 216-216 118.7 0 216 96.1 216 216zm-148.9 88.3l-81.2-59c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h14c6.6 0 12 5.4 12 12v146.3l70.5 51.3c5.4 3.9 6.5 11.4 2.6 16.8l-8.2 11.3c-3.9 5.3-11.4 6.5-16.8 2.6z"
+                                                                class=""
+                                                            ></path></svg
                                                         >Tiempo
                                                         <b class="d-block">{{
                                                             declaracion_jurada.created_at
