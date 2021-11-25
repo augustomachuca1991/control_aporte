@@ -24,58 +24,59 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
-//-------- Declaraciones Juradas------------
-Route::get('/declaraciones_juradas', 'DeclaracionJuradaController@index')->name('ddjj');
+    //-------- Declaraciones Juradas------------
+    Route::get('/declaraciones_juradas', 'DeclaracionJuradaController@index')->name('ddjj');
 
 
-//-------- Declaraciones Juradas Lines------------
-Route::get('/declaracion_jurada_lines/{id}', 'DeclaracionJuradaLineController@index')->name('ddjj_detalle');
+    //-------- Declaraciones Juradas Lines------------
+    Route::get('/declaracion_jurada_lines/{id}', 'DeclaracionJuradaLineController@index')->name('ddjj_detalle');
 
-//-------- Liquidacion Controller------------
-Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidaciones');
+    //-------- Liquidacion Controller------------
+    Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidaciones');
 
-//-------- Computo Controller------------
-Route::get('/computos', 'LiquidacionOrganismoController@index')->name('computos');
+    //-------- Computo Controller------------
+    Route::get('/computos', 'LiquidacionOrganismoController@index')->name('computos');
 
-//-------- import/export Controller------------
-Route::get('/import', 'ExcelController@indexImport')->name('csv_import');
-Route::get('/export', 'ExcelController@indexExport')->name('csv_export');
-
-
-//-------- Categoria Controller------------
-Route::get('/categorias', 'CategoriaController@index')->name('categorias');
-
-//-------- Clase Controller------------
-
-Route::get('/clases', 'ClaseController@index')->name('clases');
-
-//-------- Jurisdicciones Controller------------
-
-Route::get('/jurisdicciones', 'JurisdiccionController@index')->name('jurisdicciones');
-
-//-------- Organismos Controller------------
-Route::get('/organismos', 'OrganismoController@index')->name('organismos');
-
-//-------- Historia Laborales Controller------------
-Route::get('/hlaborales', 'HistoriaLaboralController@index')->name('hlaborales');
+    //-------- import/export Controller------------
+    Route::get('/import', 'ExcelController@indexImport')->middleware('admin')->name('csv_import');
+    Route::get('/export', 'ExcelController@indexExport')->name('csv_export');
 
 
-//---------- Periodos Controller -------------------------
-Route::get('/periodos', 'PeriodoController@index')->name('periodos');
+    //-------- Categoria Controller------------
+    Route::get('/categorias', 'CategoriaController@index')->name('categorias');
 
-//---------- Conceptos Controller -------------------------
-Route::get('/conceptos', 'ConceptoLiquidacionController@index')->name('conceptos');
+    //-------- Clase Controller------------
 
-//---------- Subtipos Controller -------------------------
-Route::get('/subtipo-codigos', 'SubtipoCodigoController@index')->name('subtipos');
+    Route::get('/clases', 'ClaseController@index')->name('clases');
 
-Route::get('/notificaciones', 'NotificationController@index')->name('notificaciones');
+    //-------- Jurisdicciones Controller------------
 
-//---------- User Controller -------------------------
-Route::get('/users', 'UserController@index')->name('users');
-Route::get('/users/locker', 'UserController@locker')->name('locker');
+    Route::get('/jurisdicciones', 'JurisdiccionController@index')->name('jurisdicciones');
+
+    //-------- Organismos Controller------------
+    Route::get('/organismos', 'OrganismoController@index')->name('organismos');
+
+    //-------- Historia Laborales Controller------------
+    Route::get('/hlaborales', 'HistoriaLaboralController@index')->name('hlaborales');
 
 
-//---------- Configuracion Controller -------------------------
-Route::get('/configuracion', 'ConfiguracionController@index')->name('config');
+    //---------- Periodos Controller -------------------------
+    Route::get('/periodos', 'PeriodoController@index')->name('periodos');
+
+    //---------- Conceptos Controller -------------------------
+    Route::get('/conceptos', 'ConceptoLiquidacionController@index')->name('conceptos');
+
+    //---------- Subtipos Controller -------------------------
+    Route::get('/subtipo-codigos', 'SubtipoCodigoController@index')->name('subtipos');
+
+    Route::get('/notificaciones', 'NotificationController@index')->name('notificaciones');
+
+    //---------- User Controller -------------------------
+    Route::get('/users', 'UserController@index')->name('users');
+    Route::get('/users/locker', 'UserController@locker')->name('locker');
+    Route::get('/users/profile', 'UserController@profile')->name('user.profile');
+
+
+    //---------- Configuracion Controller -------------------------
+    Route::get('/configuracion', 'ConfiguracionController@index')->name('config');
 });

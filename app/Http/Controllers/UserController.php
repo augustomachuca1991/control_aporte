@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 
 class UserController extends Controller
@@ -111,5 +113,16 @@ class UserController extends Controller
     public function filter($filter)
     {
         return User::filterRole($filter)->with('roles')->paginate($this->perPage);
+    }
+
+
+    public function profile()
+    {
+        $id = Auth::id();
+        $auth = User::find($id);
+        $auth->hasAllRoles(Role::all());
+        return view('users.profile' , [
+            'auth' => $auth,
+        ]);
     }
 }

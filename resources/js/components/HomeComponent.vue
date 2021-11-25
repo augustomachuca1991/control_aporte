@@ -1,335 +1,201 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Column -->
-            <div class="col-md-6 col-lg-2 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-warning text-center">
-                        <a href="/home">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-home"></i>
-                            </h1>
-                            <h6 class="text-white">Dashboard</h6>
-                        </a>
+    <div class="row">
+        <div class="col-md-6">
+            <!-- AREA CHART -->
+            <div class="card card-olive">
+                <div class="card-header">
+                    <h3 class="card-title">Periodos Anuales</h3>
+                    <div class="card-tools">
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="collapse"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="remove"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-4 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-olive text-center">
-                        <a href="/import">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-file-csv"></i>
-                            </h1>
-                            <h6 class="text-white">Excel / CSV</h6>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-2 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-orange text-center">
-                        <a href="/declaraciones_juradas">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-book"></i>
-                            </h1>
-                            <h6 class="text-white">Declaraciones Juradas</h6>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-2 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-danger text-center">
-                        <a href="/users">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-users"></i>
-                            </h1>
-                            <h6 class="text-white">Usuarios</h6>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-2 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-info text-center">
-                        <a href="/computos">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-calculator"></i>
-                            </h1>
-                            <h6 class="text-white">Computos</h6>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <!-- Column -->
-            <div class="col-md-6 col-lg-4 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-danger text-center">
-                        <a href="/liquidacion">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-file-invoice-dollar"></i>
-                            </h1>
-                            <h6 class="text-white">Liquidaciones</h6>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-2 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-info text-center">
-                        <a href="/hlaborales">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-stream"></i>
-                            </h1>
-                            <h6 class="text-white">Historias Laborales</h6>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-2 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-warning text-center">
-                        <a href="/conceptos">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-cogs"></i>
-                            </h1>
-                            <h6 class="text-white">Configuraciones</h6>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-2 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-olive text-center">
-                        <h1 class="font-light text-white">
-                            <i class="fas fa-building"></i>
-                        </h1>
-                        <h6 class="text-white">Departamentos</h6>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-2 col-xlg-3">
-                <div class="card card-hover">
-                    <div class="box bg-orange text-center">
-                        <a href="/subtipo-codigos">
-                            <h1 class="font-light text-white">
-                                <i class="fas fa-list"></i>
-                            </h1>
-                            <h6 class="text-white">Codigos</h6>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <!-- AREA CHART -->
-                <div class="card card-olive">
-                    <div class="card-header">
-                        <h3 class="card-title">Periodos Anuales</h3>
-                        <div class="card-tools">
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="collapse"
-                            >
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="remove"
-                            >
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas
-                                id="areaChart"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
-                            ></canvas>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-                <!-- DONUT CHART -->
-                <div class="card card-warning">
-                    <div class="card-header">
-                        <h3 class="card-title">Donut Chart</h3>
-                        <div class="card-tools">
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="collapse"
-                            >
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="remove"
-                            >
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
+                <div class="card-body">
+                    <div class="chart">
                         <canvas
-                            id="donutChart"
+                            id="areaChart"
                             style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
                         ></canvas>
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
-                <!-- PIE CHART -->
-                <div class="card card-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">Pie Chart</h3>
-                        <div class="card-tools">
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="collapse"
-                            >
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="remove"
-                            >
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            <!-- DONUT CHART -->
+            <div class="card card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Donut Chart</h3>
+                    <div class="card-tools">
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="collapse"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="remove"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <div class="card-body">
+                </div>
+                <div class="card-body">
+                    <canvas
+                        id="donutChart"
+                        style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
+                    ></canvas>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            <!-- PIE CHART -->
+            <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Pie Chart</h3>
+                    <div class="card-tools">
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="collapse"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="remove"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas
+                        id="pieChart"
+                        style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
+                    ></canvas>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col (LEFT) -->
+        <div class="col-md-6">
+            <!-- LINE CHART -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Line Chart</h3>
+                    <div class="card-tools">
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="collapse"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="remove"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
                         <canvas
-                            id="pieChart"
+                            id="lineChart"
                             style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
                         ></canvas>
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
             </div>
-            <!-- /.col (LEFT) -->
-            <div class="col-md-6">
-                <!-- LINE CHART -->
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Line Chart</h3>
-                        <div class="card-tools">
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="collapse"
-                            >
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="remove"
-                            >
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
+            <!-- /.card -->
+            <!-- BAR CHART -->
+            <div class="card card-olive">
+                <div class="card-header">
+                    <h3 class="card-title">Bar Chart</h3>
+                    <div class="card-tools">
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="collapse"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="remove"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas
-                                id="lineChart"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
-                            ></canvas>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
-                <!-- BAR CHART -->
-                <div class="card card-olive">
-                    <div class="card-header">
-                        <h3 class="card-title">Bar Chart</h3>
-                        <div class="card-tools">
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="collapse"
-                            >
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="remove"
-                            >
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas
+                            id="barChart"
+                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
+                        ></canvas>
                     </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas
-                                id="barChart"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
-                            ></canvas>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
-                <!-- STACKED BAR CHART -->
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h3 class="card-title">Stacked Bar Chart</h3>
-                        <div class="card-tools">
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="collapse"
-                            >
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-tool"
-                                data-card-widget="remove"
-                            >
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas
-                                id="stackedBarChart"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
-                            ></canvas>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
             </div>
-            <!-- /.col (RIGHT) -->
+            <!-- /.card -->
+            <!-- STACKED BAR CHART -->
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Stacked Bar Chart</h3>
+                    <div class="card-tools">
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="collapse"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-tool"
+                            data-card-widget="remove"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas
+                            id="stackedBarChart"
+                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"
+                        ></canvas>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
         </div>
-        <!-- /.row -->
+        <!-- /.col (RIGHT) -->
     </div>
+    <!-- /.row -->
     <!-- /.container-fluid -->
 </template>
 

@@ -115,9 +115,177 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <p v-if="!isAgente" class="text-center">
-                                    Sin resultados encontrados
-                                </p>
+                                <div class="row" v-if="!isAgente">
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://picsum.photos/id/237/200/300"
+                                            data-toggle="lightbox"
+                                            data-title="sample 1 - white"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/FFFFFF?text=1"
+                                                class="img-fluid mb-2"
+                                                alt="white sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://via.placeholder.com/1200/000000.png?text=2"
+                                            data-toggle="lightbox"
+                                            data-title="sample 2 - black"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/000000?text=2"
+                                                class="img-fluid mb-2"
+                                                alt="black sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3"
+                                            data-toggle="lightbox"
+                                            data-title="sample 3 - red"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3"
+                                                class="img-fluid mb-2"
+                                                alt="red sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4"
+                                            data-toggle="lightbox"
+                                            data-title="sample 4 - red"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4"
+                                                class="img-fluid mb-2"
+                                                alt="red sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://via.placeholder.com/1200/000000.png?text=5"
+                                            data-toggle="lightbox"
+                                            data-title="sample 5 - black"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://i.picsum.photos/id/1002/4312/2868.jpg?hmac=5LlLE-NY9oMnmIQp7ms6IfdvSUQOzP_O3DPMWmyNxwo"
+                                                class="img-fluid mb-2"
+                                                alt="black sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://picsum.photos/id/237/200/300"
+                                            data-toggle="lightbox"
+                                            data-title="sample 6 - white"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://i.picsum.photos/id/101/2621/1747.jpg?hmac=cu15YGotS0gIYdBbR1he5NtBLZAAY6aIY5AbORRAngs"
+                                                class="img-fluid mb-2"
+                                                alt="white sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://via.placeholder.com/1200/FFFFFF.png?text=7"
+                                            data-toggle="lightbox"
+                                            data-title="sample 7 - white"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/FFFFFF?text=7"
+                                                class="img-fluid mb-2"
+                                                alt="white sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://via.placeholder.com/1200/000000.png?text=8"
+                                            data-toggle="lightbox"
+                                            data-title="sample 8 - black"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/000000?text=8"
+                                                class="img-fluid mb-2"
+                                                alt="black sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=9"
+                                            data-toggle="lightbox"
+                                            data-title="sample 9 - red"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/FF0000/FFFFFF?text=9"
+                                                class="img-fluid mb-2"
+                                                alt="red sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://picsum.photos/id/237/200/3000"
+                                            data-toggle="lightbox"
+                                            data-title="sample 10 - white"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/FFFFFF?text=10"
+                                                class="img-fluid mb-2"
+                                                alt="white sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://picsum.photos/id/237/200/3001"
+                                            data-toggle="lightbox"
+                                            data-title="sample 11 - white"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/FFFFFF?text=11"
+                                                class="img-fluid mb-2"
+                                                alt="white sample"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            href="https://via.placeholder.com/1200/000000.png?text=12"
+                                            data-toggle="lightbox"
+                                            data-title="sample 12 - black"
+                                            data-gallery="gallery"
+                                        >
+                                            <img
+                                                src="https://via.placeholder.com/300/000000?text=12"
+                                                class="img-fluid mb-2"
+                                                alt="black sample"
+                                            />
+                                        </a>
+                                    </div>
+                                </div>
+
                                 <div v-else>
                                     <div v-if="shown">
                                         <div
@@ -284,7 +452,7 @@
                                         </div>
                                         <div>
                                             <i
-                                                class="fas fa-comments bg-yellow"
+                                                class="fas fa-comments bg-red"
                                             ></i>
                                             <div class="timeline-item">
                                                 <span class="time"
@@ -307,7 +475,7 @@
                                                         >
                                                             <!-- Add the bg color to the header using any of the bg-* classes -->
                                                             <div
-                                                                class="widget-user-header bg-warning"
+                                                                class="widget-user-header bg-red"
                                                             >
                                                                 <div
                                                                     class="widget-user-image"
@@ -422,6 +590,7 @@
                                                                                 class="float-right badge bg-danger"
                                                                                 >{{
                                                                                     puesto_laboral.fecha_ingreso
+                                                                                        | formatMoment
                                                                                 }}</span
                                                                             >
                                                                         </a>

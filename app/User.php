@@ -6,12 +6,14 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use SoftDeletes;
-
     use Notifiable;
+    use HasRoles;
+
 
     /**
      * The attributes that are mass assignable.
@@ -42,10 +44,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function roles(){
+    // public function roles(){
 
-        return $this->belongsToMany( 'App\Role');
-    }
+    //     return $this->belongsToMany( 'App\Role');
+    // }
 
     public function declaracionesJuradas()
     {
@@ -68,12 +70,12 @@ class User extends Authenticatable
 
     public function adminlte_desc()
     {
-        return $this->roles->first()->rol;
+        return $this->roles->first()->name;
     }
 
     public function adminlte_profile_url()
     {
-        return 'usuario/perfil';
+        return 'users/profile';
     }
 
     public function scopeFilterRole($query, $filter){

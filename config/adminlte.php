@@ -224,13 +224,13 @@ return [
     */
 
     'menu' => [
-        [
-            'text' => 'Buscar',
-            'search' => true,
-            'topnav' => true,
-            'url' => '#',
-            'method' => 'POST',
-        ],
+        // [
+        //     'text' => 'Buscar',
+        //     'search' => true,
+        //     'topnav' => true,
+        //     'url' => '#',
+        //     'method' => 'POST',
+        // ],
         // [
         //     'text' => '',
         //     'button' => true,
@@ -260,6 +260,7 @@ return [
                 'route' => 'csv_import',
                 'icon' => 'fas fa-file-upload',
                 'icon_color' => 'gray-dark',
+                'can' => 'importar'
                 ],
                 // ['text' => 'Exportar',
                 // 'route' => 'csv_export',
@@ -316,6 +317,7 @@ return [
             'route'  => 'users',
             'icon' => 'fas fa-fw fa-user',
             'icon_color' => 'indigo',
+            'can' => 'usuarios'
         ],
         [
             'text' => 'change_password',
@@ -329,26 +331,31 @@ return [
             'text'       => 'Categorias',
             'icon_color' => 'info',
             'route'        => 'categorias',
+            'can' => 'categorias',
         ],
         [
             'text'       => 'Clases',
             'icon_color' => 'teal',
             'route'        => 'clases',
+            'can' => 'clases',
         ],
         [
             'text'       => 'Jurisdicciones',
             'icon_color' => 'olive',
             'route'        => 'jurisdicciones',
+            'can' => 'jurisdicciones',
         ],
         [
             'text'       => 'Organismos',
             'icon_color' => 'success',
             'route'        => 'organismos',
+            'can' => 'organismos',
         ],
         [
             'text'       => 'Periodos',
             'icon_color' => 'lime',
             'route'        => 'periodos',
+            'can' => 'periodos',
         ],
         
 
@@ -370,6 +377,7 @@ return [
             'icon_color' => 'orange',
             'route'        => 'hlaborales',
         ],
+        
     ],
 
     /*

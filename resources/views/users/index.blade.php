@@ -28,7 +28,9 @@
  @stop
 
 
-
+@section('layout-footer-fixed')
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem alias quam omnis. Provident veritatis tenetur officiis in facere amet. Nesciunt praesentium laudantium recusandae modi adipisci, consequatur explicabo iste ipsa autem?</p>
+@stop
 
  @section('js')
      <script src="{{ asset('js/app.js') }}" defer></script>

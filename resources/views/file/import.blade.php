@@ -150,6 +150,7 @@
         }
 
     </style>
+    
 @stop
 
 @section('content_header')
@@ -206,4 +207,5 @@
             })
         });
     </script>
+    
 @stop
