@@ -60,6 +60,24 @@ class UserController extends Controller
         return $this->show($user->id);
     }
 
+    
+    
+    public function update(Request $request , $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'telefono' => 'digits:10|numeric',
+        ]);
+        $user = User::find($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+        ]);
+        //return $user;
+    }
+
 
     public function desbloquear($id)
     {

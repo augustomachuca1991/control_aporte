@@ -201,6 +201,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     //usuarios
     Route::get('/users', 'UserController@getUsers');
+    Route::put('/users/update/{id}', 'UserController@update');
     Route::post('/users/create', 'UserController@store');
     Route::get('/users/desbloquear/{id}', 'UserController@desbloquear');
     Route::delete('/users/delete/{id}', 'UserController@destroy');

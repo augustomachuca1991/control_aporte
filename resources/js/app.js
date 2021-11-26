@@ -185,6 +185,10 @@ Vue.component(
     "update-user",
     require("./components/components-user/UpdateUser.vue").default
 );
+Vue.component(
+    "profile-user",
+    require("./components/components-user/ProfileUser.vue").default
+);
 
 Vue.component(
     "home-component",

@@ -120,7 +120,7 @@
                                         <span
                                             v-for="(role, index) in user.roles"
                                             :key="role.id"
-                                            >{{ role.rol }}
+                                            >{{ role.name }}
                                             <i
                                                 v-show="
                                                     index < user.roles.lenght
@@ -142,7 +142,12 @@
                                                     class="fas fa-lg fa-phone"
                                                 ></i
                                             ></span>
-                                            + 800 - 12 12 23 52
+                                            <div v-if="user.telefono">
+                                                {{ user.telefono }}
+                                            </div>
+                                            <div v-else>
+                                                -
+                                            </div>
                                         </li>
                                     </ul>
                                 </div>

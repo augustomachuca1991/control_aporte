@@ -260,7 +260,7 @@ return [
                 'route' => 'csv_import',
                 'icon' => 'fas fa-file-upload',
                 'icon_color' => 'gray-dark',
-                'can' => 'importar'
+                'can' => 'importar csv'
                 ],
                 // ['text' => 'Exportar',
                 // 'route' => 'csv_export',
@@ -276,6 +276,7 @@ return [
             'text'    => 'Documentos',
             'icon'    => 'fas fa-folder',
             'icon_color' => 'warning',
+            'can' => 'listar ddjj',
             'submenu' => [
                 [
                     'text' => 'Declaraciones Juradas',
@@ -317,7 +318,7 @@ return [
             'route'  => 'users',
             'icon' => 'fas fa-fw fa-user',
             'icon_color' => 'indigo',
-            'can' => 'usuarios'
+            'can' => 'listar usuarios'
         ],
         [
             'text' => 'change_password',
@@ -331,25 +332,25 @@ return [
             'text'       => 'Categorias',
             'icon_color' => 'info',
             'route'        => 'categorias',
-            'can' => 'categorias',
+            'can' => 'listar categorias',
         ],
         [
             'text'       => 'Clases',
             'icon_color' => 'teal',
             'route'        => 'clases',
-            'can' => 'clases',
+            'can' => 'listar clases',
         ],
         [
             'text'       => 'Jurisdicciones',
             'icon_color' => 'olive',
             'route'        => 'jurisdicciones',
-            'can' => 'jurisdicciones',
+            'can' => 'listar jurisdicciones',
         ],
         [
             'text'       => 'Organismos',
             'icon_color' => 'success',
             'route'        => 'organismos',
-            'can' => 'organismos',
+            'can' => 'listar organismos',
         ],
         [
             'text'       => 'Periodos',

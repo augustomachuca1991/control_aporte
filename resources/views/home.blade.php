@@ -11,14 +11,22 @@
 @stop
 
 @section('content_header')
-    <h1>Panel de Control</h1>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      
+      <li class="breadcrumb-item active" aria-current="page">
+            <i class="fas fa-home"></i> Home
+        
+      </li>
+    </ol>
+</nav>
 @stop
 
 @section('content')
     <section id="app" class="content">
         <div class="container-fluid">
             
-            @can('btn_dashboard')
+            @can('ver botones panel')
             <div class="row">
                 <!-- Column -->
                 <div class="col-md-6 col-lg-2 col-xlg-3">

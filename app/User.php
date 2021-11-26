@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'tefelono'
     ];
 
     protected $dates = ['deleted_at', 'created_at', 'updated_at'];
@@ -75,7 +75,7 @@ class User extends Authenticatable
 
     public function adminlte_profile_url()
     {
-        return 'users/profile';
+        return 'profile';
     }
 
     public function scopeFilterRole($query, $filter){
