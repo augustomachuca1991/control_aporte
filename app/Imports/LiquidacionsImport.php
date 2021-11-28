@@ -642,15 +642,15 @@ class LiquidacionsImport implements
                 }
             },
 
-            AfterImport::class => function (AfterImport $event) {
-                $creator = $event->reader->getProperties()->getCreator();
-                if (!empty($creator)) {
-                    //echo $totalRows['Worksheet'];
-                    Log::channel('daily')->info('after import', [
-                        'creator' => $creator
-                    ]);
-                }
-            },
+            // AfterImport::class => function (AfterImport $event) {
+            //     $creator = $event->reader->getProperties()->getCreator();
+            //     if (!empty($creator)) {
+            //         //echo $totalRows['Worksheet'];
+            //         Log::channel('daily')->info('after import', [
+            //             'creator' => $creator
+            //         ]);
+            //     }
+            // },
 
 
         ];

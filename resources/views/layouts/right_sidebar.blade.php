@@ -1,16 +1,23 @@
 <div class="p-3 control-sidebar-content">
-    <h5>Panel de Configuracion</h5>
-    <hr class="mb-2" />
+    <div class="p-3">
+        <h5>Configuraciones</h5>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"><a
+                    href=" {{ route('conceptos') }}">Conceptos</a></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center"><a
+                    href=" {{ route('subtipos') }}">Subtipos de Codigos</a></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">Departamentos</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center"><a
+                    href="{{ route('config') }}">Configuración</a></li>
+        </ul>
+    </div>
+    {{-- <h5>Panel de Configuracion</h5>
+    <hr class="mb-2" /> --}}
     <!-- <div class="mb-1"><input type="checkbox" value="1" class="mr-1" /><span>Conceptos</span></div>
     <div class="mb-1"><input type="checkbox" value="1" class="mr-1" /><span>Tipo</span></div>
     <div class="mb-1"><input type="checkbox" value="1" class="mr-1" /><span>Subtipo</span></div> -->
-    <ul>
-        <li><a href=" {{ route('conceptos') }}">Conceptos</a></li>
-        <li><a href=" {{ route('subtipos') }}">Subtipos de Codigos</a></li>
-        <li><a href="#">Departamentos</a></li>
-        <li><a href="{{route('config')}}">Configuración</a></li>
-        {{-- <li><a href=" {{ route('tipos') }}">Tipo de Codigos</a></li> --}}
-    </ul>
+
 
     {{-- <ul class="list-group">
         <li class="list-group-item list-group-item-primary">
@@ -24,7 +31,7 @@
         <li class="list-group-item list-group-item-dark">This is a dark list group item</li>
     </ul> --}}
 
-    <h6>Navbar Variants</h6>
+    {{-- <h6>Navbar Variants</h6>
     <div class="d-flex">
         <div class="d-flex flex-wrap mb-3">
             <div class="bg-primary elevation-2"
@@ -128,5 +135,5 @@
         <div class="bg-olive elevation-2"
             style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;">
         </div>
-    </div>
+    </div> --}}
 </div>

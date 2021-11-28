@@ -55,16 +55,17 @@ class User extends Authenticatable
     }
 
 
-    public function conceptos(){
+    public function conceptos()
+    {
 
-        return $this->belongsToMany( 'App\ConceptoLiquidacion' ,'configuracions' ,'user_id' , 'concepto_id');
+        return $this->belongsToMany('App\ConceptoLiquidacion', 'configuracions', 'user_id', 'concepto_id');
     }
 
 
     public function adminlte_image()
     {
         //return 'https://picsum.photos/300/300';
-        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 
 
@@ -78,11 +79,12 @@ class User extends Authenticatable
         return 'profile';
     }
 
-    public function scopeFilterRole($query, $filter){
+    public function scopeFilterRole($query, $filter)
+    {
 
         if (!empty($filter)) {
-            $query->whereHas('roles', function($roles) use ($filter){
-                $roles->where('role_id' , $filter);
+            $query->whereHas('roles', function ($roles) use ($filter) {
+                $roles->where('role_id', $filter);
             });
         }
     }
