@@ -440,10 +440,19 @@
                                     </p>
                                     <p>
                                         Tipo
-                                        <span class="badge bg-olive">{{
-                                            declaracion_jurada.tipoliquidacion
-                                                .descripcion
-                                        }}</span>
+                                        <span
+                                            class="badge"
+                                            :class="
+                                                declaracion_jurada
+                                                    .tipoliquidacion.id === 2
+                                                    ? 'bg-warning'
+                                                    : 'bg-olive'
+                                            "
+                                            >{{
+                                                declaracion_jurada
+                                                    .tipoliquidacion.descripcion
+                                            }}</span
+                                        >
                                     </p>
                                 </div>
                             </a>

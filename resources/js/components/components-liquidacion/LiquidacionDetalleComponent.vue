@@ -269,6 +269,14 @@
                                         <small>Remunerativo</small>
                                     </th>
                                     <th scope="col" class="text-center">
+                                        <small>Remunerativo Bonificable</small>
+                                    </th>
+                                    <th scope="col" class="text-center">
+                                        <small
+                                            >Remunerativo No Bonificable</small
+                                        >
+                                    </th>
+                                    <th scope="col" class="text-center">
                                         <small>No-Remunerativo</small>
                                     </th>
                                     <th scope="col" class="text-center">
@@ -304,7 +312,27 @@
                                         <small
                                             v-if="
                                                 detalle.concepto.subtipo
-                                                    .tipocodigo.id < 4
+                                                    .tipocodigo.id == 1
+                                            "
+                                            >{{ detalle.importe }}</small
+                                        >
+                                        <small v-else>-</small>
+                                    </td>
+                                    <td>
+                                        <small
+                                            v-if="
+                                                detalle.concepto.subtipo
+                                                    .tipocodigo.id == 2
+                                            "
+                                            >{{ detalle.importe }}</small
+                                        >
+                                        <small v-else>-</small>
+                                    </td>
+                                    <td>
+                                        <small
+                                            v-if="
+                                                detalle.concepto.subtipo
+                                                    .tipocodigo.id == 3
                                             "
                                             >{{ detalle.importe }}</small
                                         >
@@ -351,6 +379,20 @@
                                     {{
                                         liquidacionDetalle.liquidacion
                                             .remunerativo
+                                    }}
+                                </td>
+                                <td>
+                                    $
+                                    {{
+                                        liquidacionDetalle.liquidacion
+                                            .bonificable
+                                    }}
+                                </td>
+                                <td>
+                                    $
+                                    {{
+                                        liquidacionDetalle.liquidacion
+                                            .no_bonificable
                                     }}
                                 </td>
                                 <td>

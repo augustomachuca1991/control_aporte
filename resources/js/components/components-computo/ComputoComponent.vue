@@ -199,6 +199,7 @@ export default {
             jurisdicciones: [],
             organismos: [],
             periodo: "",
+            tipo_id: "",
             fecha_actual: null,
             mes: null,
             anio: null,
@@ -221,32 +222,10 @@ export default {
     },
     methods: {
         getTipoLiquidacion: function(id) {
-            axios
-                .get(`api/computo/origen/tipo-liquidacion/${id}`)
-                .then(response => {
-                    this.origenes = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-
-            axios
-                .get(`api/computo/jurisdiccion/tipo-liquidacion/${id}`)
-                .then(response => {
-                    this.jurisdicciones = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-
-            axios
-                .get(`api/computo/organismo/tipo-liquidacion/${id}`)
-                .then(response => {
-                    this.organismos = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+            this.tipo_id = id;
+            this.getComputoOrigen();
+            this.getComputoJurisdiccion();
+            this.getComputoOrganismo();
         },
         showDate(date) {
             this.date = date;
@@ -285,7 +264,38 @@ export default {
                     console.log(error);
                 });
         },
-        getCompoutoOrigen() {}
+        getComputoOrigen() {
+            axios
+                .get(`api/computo/origen/tipo-liquidacion/${this.tipo_id}`)
+                .then(response => {
+                    this.origenes = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        getComputoJurisdiccion() {
+            axios
+                .get(
+                    `api/computo/jurisdiccion/tipo-liquidacion/${this.tipo_id}`
+                )
+                .then(response => {
+                    this.jurisdicciones = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        getComputoOrganismo() {
+            axios
+                .get(`api/computo/organismo/tipo-liquidacion/${this.tipo_id}`)
+                .then(response => {
+                    this.organismos = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        }
     }
 };
 </script>
