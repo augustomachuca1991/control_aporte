@@ -161,6 +161,35 @@
                                 ></textarea>
                             </div>
                         </div>
+                        <div class="form-group row" v-if="hasRoleAdmin">
+                            <label
+                                for="inputExperience"
+                                class="col-sm-2 col-form-label"
+                                >Roles</label
+                            >
+                            <div class="col-sm-10">
+                                <div
+                                    class="form-check form-check-inline"
+                                    v-for="(role, index) in roles"
+                                    :key="index"
+                                >
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="inlineRadioOptions"
+                                        :id="role.id"
+                                        :value="role.id"
+                                        v-model="roleUser"
+                                        :disabled="!editMode"
+                                    />
+                                    <label
+                                        class="form-check-label"
+                                        for="inlineRadio1"
+                                        >{{ role.name }}</label
+                                    >
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group row" v-if="editMode">
                             <div class="offset-sm-2 col-sm-10">
                                 <button type="submit" class="btn btn-info">
@@ -195,11 +224,15 @@ export default {
             telefono: "",
             aptitudes: "",
             editMode: false,
-            errors: []
+            errors: [],
+            roles: [],
+            roleUser: [],
+            hasRoleAdmin: false
         };
     },
     mounted() {
         console.log("Profile User");
+        this.getRoles();
     },
     methods: {
         pluck(array) {
@@ -209,29 +242,36 @@ export default {
             });
         },
         editProfile() {
+            //alert(JSON.stringify(this.auth.roles));
             this.id = this.auth.id;
             this.name = this.auth.name;
             this.email = this.auth.email;
             this.telefono = this.auth.telefono;
             this.aptitudes = "";
             this.editMode = true;
+            this.auth.roles.forEach(roles => {
+                if (roles.name === "admin") {
+                    this.hasRoleAdmin = true;
+                }
+                this.roleUser.push(roles.id);
+            });
         },
         updateProfile() {
             const params = {
                 name: this.name,
                 email: this.email,
                 telefono: this.telefono,
-                aptitudes: this.aptitudes
+                aptitudes: this.aptitudes,
+                roles_id: this.roleUser
             };
-            //alert(JSON.stringify(params));
-            this.auth.name = this.name;
-            this.auth.email = this.email;
-            this.auth.telefono = this.telefono;
-            this.clear();
             axios
                 .put(`api/users/update/${this.auth.id}`, params)
                 .then(response => {
-                    this.auth = response.data;
+                    //alert(JSON.stringify(response.data));
+                    this.auth.name = response.data.name;
+                    this.auth.email = response.data.email;
+                    this.auth.telefono = response.data.telefono;
+
                     this.clear();
                 })
                 .catch(err => {
@@ -245,6 +285,12 @@ export default {
             this.telefono = "";
             this.aptitudes = "";
             this.editMode = false;
+            this.hasRoleAdmin = false;
+        },
+        getRoles() {
+            axios.get("api/roles").then(response => {
+                this.roles = response.data;
+            });
         }
     },
     filters: {

@@ -95,8 +95,46 @@ class NotificationController extends Controller
     public function notReadNotifications($user_id)
     {
 
-        $notification_no_leidas = User::find($user_id)->unreadNotifications;
-        return $notification_no_leidas->sortByDesc('created_at');
+        $notification_no_leidas = User::find($user_id)->unreadNotifications->where('type', 'App\Notifications\FinishJob')->all();
+        // return $notification_no_leidas->sortByDesc('created_at');
+        $notifications = [];
+        foreach ($notification_no_leidas as $key => $noRead) {
+            $array = [
+                'id' => $noRead->id,
+                'icon' => 'fas fa-fw fa-envelope text-warning',
+                'text' => $noRead->data['message'],
+                'time' => $noRead->created_at->diffForHumans(),
+            ];
+            $notifications[$key] = $array;
+                
+        }
+    
+        $dropdownHtml = '';
+    
+        foreach ($notifications as $key => $not) {
+            $icon = "<i class='mr-2 {$not['icon']}'></i>";
+    
+            $time = "<span class='float-right text-muted text-sm'>
+                       {$not['time']}
+                     </span>";
+    
+            $dropdownHtml .= "<a href='api/notification/leida/'".$not['id']." class='dropdown-item text-sm'>
+                                {$icon}{$not['text']}{$time}
+                              </a>";
+    
+            if ($key < count($notifications) - 1) {
+                $dropdownHtml .= "<div class='dropdown-divider'></div>";
+            }
+        }
+    
+        // Return the new notification data.
+    
+        return [
+            'label'       => count($notifications),
+            'label_color' => 'danger',
+            'icon_color'  => 'dark',
+            'dropdown'    => $dropdownHtml,
+        ];
     }
 
 

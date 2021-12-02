@@ -51,7 +51,7 @@ class LiquidacionsImport implements
     public $tries = 2;
     public $totalRows;
     public $countCicles = 0;
-    public $success = 0;
+    public $countError = 0;
 
 
 
@@ -91,7 +91,6 @@ class LiquidacionsImport implements
                     $this->createPuestoLaboral();
                     $this->liquidacion_organismo();
                     //$this->historias_liquidaciones();
-                    $this->success += 1;
                     DB::commit();
                 } catch (Exception $e) {
                     DB::rollback();
@@ -151,7 +150,7 @@ class LiquidacionsImport implements
             $this->declaracionjurada->apply = true;
             $this->declaracionjurada->rectificar = false;
             $this->declaracionjurada->save();
-            $message = 'se precesaron' . $this->success . '/' . $this->totalRows . ' registros';
+            $message = ($this->countError - $this->totalRows) . '/' . $this->totalRows . ' registros se procesaron correctamente';
             $notificationJob = new NotificationJob($this->importedBy, $message);
             CompletedImport::dispatch()->chain([$notificationJob]);
             Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
@@ -603,6 +602,7 @@ class LiquidacionsImport implements
     public function onFailure(Failure ...$failures)
     {
         if (!empty($failures)) {
+            $this->countError += 1;
             foreach ($failures as $key => $failure) {
                 Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
 

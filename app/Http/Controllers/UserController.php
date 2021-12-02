@@ -67,15 +67,27 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email,'.$id,
-            'telefono' => 'digits:10|numeric',
+            'telefono' => 'nullable|digits:10|numeric',
         ]);
+        
+        
+
         $user = User::find($id);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'telefono' => $request->telefono,
-        ]);
-        //return $user;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->telefono = $request->telefono;
+        $user->updated_at = now();
+        $user->save();
+        //$user->syncRoles($request->roles_id)
+        foreach ($request->roles_id as $role_id) {
+            if (!empty($role_id)) {
+                $role = Role::find($role_id);
+                $user->syncRoles($role);
+            }
+        }
+        
+        return $user;
+
     }
 
 

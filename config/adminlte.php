@@ -378,6 +378,20 @@ return [
             'icon_color' => 'orange',
             'route'        => 'hlaborales',
         ],
+        [
+            'type'         => 'navbar-notification',
+            'id'           => 'my-notification',
+            'icon'         => 'fas fa-bell',
+            'label_color'  => 'danger',
+            'url'          => '',
+            'topnav_right' => true,
+            'dropdown_mode'   => true,
+            'dropdown_flabel' => 'Mostrar todos',
+            'update_cfg'   => [
+                'url' => 'api/notification/1',
+                'period' => 30,
+            ],
+        ]
         
     ],
 
