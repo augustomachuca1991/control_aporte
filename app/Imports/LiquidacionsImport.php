@@ -605,7 +605,6 @@ class LiquidacionsImport implements
             $this->countError += 1;
             foreach ($failures as $key => $failure) {
                 Log::channel('daily')->info($this->declaracionjurada->nombre_archivo, [
-
                     'message' => $failure->toArray()[0],
                     'row' => $failure->row(),
                     'attribute' => $failure->attribute(),
