@@ -373,6 +373,12 @@ return [
             'route'        => 'liquidaciones',
         ],
         [
+            'text'       => 'Liquidaciones vista 2',
+            'icon' => 'fas fa-search-dollar',
+            'icon_color' => 'pink',
+            'route'        => 'liquidaciones2',
+        ],
+        [
             'text'       => 'Historia Laboral',
             'icon' => 'fa fa-calendar',
             'icon_color' => 'orange',

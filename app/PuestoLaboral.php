@@ -18,6 +18,7 @@ class PuestoLaboral extends Model
         'fecha_ingreso',
         'fecha_egreso'
     ];
+    protected $primaryKey = 'cod_laboral';
 
     public function clases(){
 

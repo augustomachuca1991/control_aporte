@@ -163,4 +163,11 @@ class AgenteController extends Controller
             return response()->json(['isError' => false, 'data' => $agentes]);
         }
     }
+
+    public function autocomplete(Request $request)
+    {
+        $search = $request->search;
+        $query = Agente::autocompleteAgente($search);
+        return $query->with('puestolaborales')->get();
+    }
 }

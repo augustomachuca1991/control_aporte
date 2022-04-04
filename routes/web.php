@@ -1,5 +1,6 @@
 <?php
 
+use App\PuestoLaboral;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,6 +34,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //-------- Liquidacion Controller------------
     Route::get('/liquidacion', 'LiquidacionController@index')->name('liquidaciones');
+    Route::get('/liquidacion2', 'LiquidacionController@index2')->name('liquidaciones2');
 
     //-------- Computo Controller------------
     Route::get('/computos', 'LiquidacionOrganismoController@index')->name('computos');
@@ -79,4 +81,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     //---------- Configuracion Controller -------------------------
     Route::get('/configuracion', 'ConfiguracionController@index')->middleware('admin')->name('config');
+});
+
+
+Route::get('/test' , function (){
+    $pl = PuestoLaboral::where('cod_laboral' , 1)->with('agente')->get();
+    dd($pl);
+
 });

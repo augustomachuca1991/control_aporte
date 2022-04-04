@@ -128,6 +128,13 @@ Vue.component(
     require("./components/components-liquidacion/LiquidacionesComponent.vue")
         .default
 );
+
+Vue.component(
+    "liquidaciones-table",
+    require("./components/components-liquidacion/LiquidacionesTable.vue")
+        .default
+);
+
 Vue.component(
     "liquidaciondetalle-component",
     require("./components/components-liquidacion/LiquidacionDetalleComponent.vue")

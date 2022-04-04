@@ -28,4 +28,11 @@ class Agente extends Model
     {
         return $this->hasMany('App\PuestoLaboral')->with('organismo');
     }
+
+    public function scopeAutocompleteAgente($query, $search)
+    {
+        if (!empty($search)) {
+            $query->where('cuil', 'LIKE', "%" . $search . "%")->orWhere('nombre', 'LIKE', "%" . $search . "%");
+        }
+    }
 }

@@ -241,6 +241,7 @@ export default {
                 .get(`api/computo/origen/${this.periodo}`)
                 .then(response => {
                     this.origenes = response.data;
+                    console.log(response.data)
                 })
                 .catch(function(error) {
                     console.log(error);

@@ -24,6 +24,13 @@ class LiquidacionController extends Controller
         return view('liquidaciones.index');
     }
 
+
+
+    public function index2()
+    {
+        return view('liquidaciones.index2');
+    }
+
     /**
      * Muestra una liquidacion especifica con su respectivo detalle.
      *

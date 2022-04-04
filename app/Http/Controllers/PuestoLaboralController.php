@@ -85,15 +85,33 @@ class PuestoLaboralController extends Controller
 
     public function getpuestoLaboral()
     {
-         return PuestoLaboral::with('clases')->get();
+        return PuestoLaboral::with('clases')->get();
     }
 
     public function getPuestoLaboralSelected($id)
     {
-        try{
-            return PuestoLaboral::with('agente')->where('organismo_id',$id)->get();
-        }catch (\Exception $e){
+        try {
+            return PuestoLaboral::with('agente')->where('organismo_id', $id)->get();
+        } catch (\Exception $e) {
             return [];
         }
     }
+
+
+    // public function autocomplete(Request $request)
+    // {
+    //     $search = $request->search;
+
+    //     //validate
+    //     // $query = PuestoLaboral::where('cod_laboral',$search)->with('agente')->get();
+    //     // return $query;
+
+
+
+    //     $query = PuestoLaboral::where('cod_laboral', $search)
+    //         ->whereHas('agente', function ($agente) use ($search) {
+    //             $agente->where('cuil', 'LIKE', "%" . $search . "%")->orWhere('nombre', 'LIKE', "%" . $search . "%");
+    //         })->get();
+    //     return $query;
+    // }
 }

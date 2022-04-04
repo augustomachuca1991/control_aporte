@@ -282,6 +282,13 @@ class LiquidacionsImport implements
         $this->liquidacion->organismos()->attach($this->declaracionjurada->organismo_id, [
             'periodo_id' => $this->periodo->cod_periodo,
             'tipo_id' => $this->tipo->id,
+            'total_aporte_personal' => $this->liquidacion->aporte_personal,
+            'total_sueldo_basico' => $this->liquidacion->basico,
+            'total_antiguedad' => ($this->liquidacion->remunerativo - $this->liquidacion->basico),
+            'total_adicional' => $this->liquidacion->adicionales,
+            'total_familiar' => $this->liquidacion->familiar,
+            'total_hijo' => $this->liquidacion->hijo,
+            'total_esposa' => $this->liquidacion->esposa,
         ]);
     }
 
