@@ -20,9 +20,10 @@ class PuestoLaboral extends Model
     ];
     protected $primaryKey = 'cod_laboral';
 
-    public function clases(){
+    public function clases()
+    {
 
-        return $this->belongsToMany( 'App\Clase', 'historia_laborals','puesto_id','clase_id')->with('Categoria')->withPivot('id');
+        return $this->belongsToMany('App\Clase', 'historia_laborals', 'puesto_id', 'clase_id')->with('Categoria')->withPivot('id');
     }
 
     public function agente()
@@ -37,7 +38,6 @@ class PuestoLaboral extends Model
 
     public function historialaborales()
     {
-        return $this->hasMany('App\HistoriaLaboral' ,'puesto_id');
+        return $this->hasMany('App\HistoriaLaboral');
     }
-
 }

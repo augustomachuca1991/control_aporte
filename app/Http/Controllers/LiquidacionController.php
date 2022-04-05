@@ -71,7 +71,7 @@ class LiquidacionController extends Controller
         return $liquidacion;
     }
 
-    
+
 
     /**
      * obtener todas las liquidaciones almacenadas.
@@ -83,7 +83,7 @@ class LiquidacionController extends Controller
     {
         return LiquidacionOrganismo::with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])->paginate($this->perPage);
     }
-    
+
 
 
     public function search($search)
@@ -115,10 +115,31 @@ class LiquidacionController extends Controller
 
     public function filter(Request $request)
     {
-        
-        return LiquidacionOrganismo::filtroLiquidacion($request->all())
-        ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])->paginate($this->perPage);
 
-        
+        return LiquidacionOrganismo::filtroLiquidacion($request->all())
+            ->with(['organismo', 'liquidacion', 'tipoliquidacion', 'periodo'])->paginate($this->perPage);
+    }
+
+    public function getFromTo(Request $request)
+    {
+        $request->validate([
+            'agente' => 'required|exists:agentes,id',
+            'desde' => 'required|date|before_or_equal:hasta',
+            'hasta' => 'required|date'
+        ]);
+
+        $agente_id = $request->agente;
+        $desde = 202001;
+        $hasta = 202201;
+        $liquidaciones = Liquidacion::whereHas('periodos', function ($periodos) use ($desde, $hasta) {
+            $periodos->whereBetween('cod_periodo', [$desde, $hasta]);
+        })->whereHas('historia_laborales', function ($hlaborales) use ($agente_id) {
+            $hlaborales->whereHas('puesto', function ($puesto) use ($agente_id) {
+                $puesto->whereHas('agente', function ($agente) use ($agente_id) {
+                    $agente->where('id', $agente_id);
+                });
+            });
+        })->with(['liquidacionOrganismo', 'historia_laborales'])->get();
+        return $liquidaciones;
     }
 }

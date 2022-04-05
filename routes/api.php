@@ -66,7 +66,7 @@ Route::get('/liquidacion/hl', 'LiquidacionController@hl');
 
 Route::get('/liquidacion/filter/query', 'LiquidacionController@filter');
 
-//Route::get('/liquidacion/secuencia/q', 'LiquidacionController@secuencia');
+Route::post('/liquidaciones', 'LiquidacionController@getFromTo');
 
 
 

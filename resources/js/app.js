@@ -47,15 +47,15 @@ Vue.filter("getYears", function(value) {
     return moment().diff(value, "years", false);
 });
 
-// Vue.filter('formatCuil', function(cuil){
-// 	value = value.toString();
+Vue.filter('formatCuil', function(cuil){
+	value = value.toString();
 
-// 	  if (value.length === 10 ) {
-// 	    value = '0'+value;
-// 	  }
+	  if (value.length === 10 ) {
+	    value = '0'+value;
+	  }
 
-// 	  return value.charAt(0)+value.charAt(1)+'-'+value.slice(2,-1)+'-'+value.slice(-1);
-// })
+	  return value.charAt(0)+value.charAt(1)+'-'+value.slice(2,-1)+'-'+value.slice(-1);
+})
 
 /**
  * The following block of code may be used to automatically register your

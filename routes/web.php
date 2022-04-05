@@ -1,5 +1,6 @@
 <?php
 
+use App\Liquidacion;
 use App\PuestoLaboral;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -84,8 +85,21 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
-Route::get('/test' , function (){
-    $pl = PuestoLaboral::where('cod_laboral' , 1)->with('agente')->get();
-    dd($pl);
+Route::get('/test', function () {
+    $desde = 202001;
+    $hasta = 202007;
+    $pl = Liquidacion::where('id', 1)
+        ->whereHas('periodos', function ($periodos) use ($desde, $hasta) {
+            $periodos->whereBetween('cod_periodo', [$desde, $hasta]);
+        })->with(['liquidacionOrganismo', 'historia_laborales'])->get();
+    return $pl;
 
+
+    // $agente_id = 3;
+    // return PuestoLaboral::whereHas('agente', function ($agente) use ($agente_id) {
+    //     $agente->where('id', $agente_id);
+    // })->with('agente')->get();
+
+    // $pl = PuestoLaboral::where('id', 1);
+    // return $pl->with('agente')->get();
 });
